@@ -3,9 +3,9 @@
 # ----------------------- #
 
 url: http://shishougang.github.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: (learn&think)
+subtitle: 不浮躁，不自傲，学习，思考，总结
+author: DreamRunner
 simple_search: http://google.com/search
 description:
 
@@ -72,7 +72,7 @@ twitter_show_follower_count: false
 twitter_tweet_button: true
 
 # Google +1
-google_plus_one: false
+google_plus_one: true
 google_plus_one_size: medium
 
 # Google Plus Profile
@@ -89,11 +89,11 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
-disqus_show_comment_count: false
+disqus_short_name: dreamrunner
+disqus_show_comment_count: true
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-32977383-1
 
 # Facebook Like
 facebook_like: false
