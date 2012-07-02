@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-06-28T16:53:01+08:00</updated>
+  <updated>2012-07-02T12:32:15+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hello]]></title>
+    <link href="http://shishougang.github.com/blog/2012/07/02/hello/"/>
+    <updated>2012-07-02T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2012/07/02/hello</id>
+    <content type="html"><![CDATA[#+BEGIN_HTML
+---
+layout: post
+title: "hello"
+date: 2012-07-02 12:30
+comments: true
+categories: 
+#+END_HTML
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[test]]></title>
