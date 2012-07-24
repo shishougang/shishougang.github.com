@@ -5,6 +5,7 @@ title: "test more"
 date: 2012-07-24 09:46
 comments: true
 categories: 
+---
 #+END_HTML
 
 #+begin_html
