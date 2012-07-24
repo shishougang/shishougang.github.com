@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-07-02T12:32:15+08:00</updated>
+  <updated>2012-07-24T09:59:40+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -14,18 +14,20 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Hello]]></title>
-    <link href="http://shishougang.github.com/blog/2012/07/02/hello/"/>
-    <updated>2012-07-02T00:00:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2012/07/02/hello</id>
-    <content type="html"><![CDATA[#+BEGIN_HTML
----
-layout: post
-title: "hello"
-date: 2012-07-02 12:30
+    <title type="html"><![CDATA[Test More]]></title>
+    <link href="http://shishougang.github.com/blog/2012/07/24/test-more/"/>
+    <updated>2012-07-24T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2012/07/24/test-more</id>
+    <content type="html"><![CDATA[<hr />
+
+<p>layout: post
+title: &#8220;test more&#8221;
+date: 2012-07-24 09:46
 comments: true
-categories: 
-#+END_HTML
+categories:</p>
+
+<script src="https://gist.github.com/3137526.js"> </script>
+
 ]]></content>
   </entry>
   
