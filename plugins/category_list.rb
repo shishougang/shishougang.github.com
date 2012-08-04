@@ -1,88 +1,114 @@
-# encoding: utf-8
+# Tag Cloud for Octopress, modified by pf_miles, for use with utf-8 encoded blogs(all regexp added 'u' option).
+# modified by alswl, tag_cloud -> category_cloud
+# =======================
+# 
+# Description:
+# ------------
+# Easy output tag cloud and category list.
+# 
+# Syntax:
+# -------
+#     {% tag_cloud [counter:true] %}
+#     {% category_list [counter:true] %}
+# 
+# Example:
+# --------
+# In some template files, you can add the following markups.
+# 
+# ### source/_includes/custom/asides/tag_cloud.html ###
+# 
+#     <section>
+#       <h1>Tag Cloud</h1>
+#         <span id="tag-cloud">{% tag_cloud %}</span>
+#     </section>
+# 
+# ### source/_includes/custom/asides/category_list.html ###
+# 
+#     <section>
+#       <h1>Categories</h1>
+#         <ul id="category-list">{% category_list counter:true %}</ul>
+#     </section>
+# 
+# Notes:
+# ------
+# Be sure to insert above template files into `default_asides` array in `_config.yml`.
+# And also you can define styles for 'tag-cloud' or 'category-list' in a `.scss` file.
+# (ex: `sass/custom/_styles.scss`)
+# 
+# Licence:
+# --------
+# Distributed under the [MIT License][MIT].
+# 
+# [MIT]: http://www.opensource.org/licenses/mit-license.php
+# 
 module Jekyll
 
-  class Site
+  class CategoryCloud < Liquid::Tag
 
-    def create_category_list
-      write_to_tag_cloud if @config['category_tag_cloud']
-      write_to_sidebar if @config['category_sidebar']
+    def initialize(tag_name, markup, tokens)
+      @opts = {}
+      if markup.strip =~ /\s*counter:(\w+)/iu
+        @opts['counter'] = ($1 == 'true')
+        markup = markup.strip.sub(/counter:\w+/iu,'')
+      end
+      super
     end
 
-    private
-    # generate category tag list and write to 'source/_includes/asides/categories_tag.html'
-    def write_to_tag_cloud
-      puts ' => Creating Categories Tag Cloud'
+    def render(context)
       lists = {}
       max, min = 1, 1
-      @categories.keys.sort_by{ |str| str.downcase }.each do |category|
-        count = @categories[category].count
+      config = context.registers[:site].config
+      category_dir = config['root'] + config['category_dir'] + '/'
+      categories = context.registers[:site].categories
+      categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        count = categories[category].count
         lists[category] = count
         max = count if count > max
       end
 
       html = ''
       lists.each do | category, counter |
-        url = get_category_url category
+        url = category_dir + category.gsub(/_|\P{Word}/u, '-').gsub(/-{2,}/u, '-').downcase
         style = "font-size: #{100 + (60 * Float(counter)/max)}%"
-        if @config['category_counter']
-          html << " <a href='#{url}' style='#{style}'>#{category.capitalize}(#{@categories[category].count})</a> "
-        else
-          html << " <a href='#{url}' style='#{style}'>#{category.capitalize}</a> "
+        html << "<a href='#{url}' style='#{style}'>#{category}"
+        if @opts['counter']
+          html << "(#{categories[category].count})"
         end
+        html << "</a> "
       end
-
-      File.open(File.join(@source, '_includes/asides/categories_tag.html'), 'w') do |file|
-        file << """{% if site.category_tag_cloud %}
-<section>
-<h1>#{@config['category_title'] || 'Categories'}</h1>
-<span class='categories_tag'>#{html}</span>
-</section>
-{% endif %}
-"""
-      end
-    end
-
-    # generate category lists and write to 'source/_includes/asides/categories_sidebar.html'
-    def write_to_sidebar
-      puts ' => Creating Categories Sidebar'
-      html = "<ul>\n"
-      # case insensitive sorting
-      @categories.keys.sort_by{ |str| str.downcase }.each do |category|
-        url = get_category_url category
-        if @config['category_counter']
-          html << "  <li><a href='#{url}'>#{category.capitalize} (#{@categories[category].count})</a></li>\n"
-        else
-          html << "  <li><a href='#{url}'>#{category.capitalize}</a></li>\n"
-        end
-      end
-      html << "</ul>"
-      File.open(File.join(@source, '_includes/asides/categories_sidebar.html'), 'w') do |file|
-        file << """{% if site.category_sidebar %}
-<section>
-<h1>#{@config['category_title'] || 'Categories'}</h1>
-#{html}
-</section>
-{% endif %}
-"""
-      end
-    end
-
-    def get_category_url(category)
-      dir = @config['category_dir'] || 'categories'
-      File.join @config['root'], dir, category.gsub(/_|\P{Word}/, '-').gsub(/-{2,}/, '-').downcase
+      html
     end
   end
 
-  class CategoryList < Generator
-    safe true
-    priority :low
+  class CategoryList < Liquid::Tag
 
-    def generate(site)
-      if site.config['category_list']
-        puts "## Generating Categories.."
-        site.create_category_list
+    def initialize(tag_name, markup, tokens)
+      @opts = {}
+      if markup.strip =~ /\s*counter:(\w+)/iu
+        @opts['counter'] = ($1 == 'true')
+        markup = markup.strip.sub(/counter:\w+/iu,'')
       end
+      super
+    end
+
+    def render(context)
+      html = ""
+      config = context.registers[:site].config
+      category_dir = config['root'] + config['category_dir'] + '/'
+      categories = context.registers[:site].categories
+      categories.keys.sort_by{ |str| str.downcase }.each do |category|
+        url = category_dir + category.gsub(/_|\P{Word}/u, '-').gsub(/-{2,}/u, '-').downcase
+        html << "<li><a href='#{url}'>#{category}"
+        if @opts['counter']
+          html << " (#{categories[category].count})"
+        end
+        html << "</a></li>"
+      end
+      html
     end
   end
 
 end
+
+Liquid::Template.register_tag('category_cloud', Jekyll::CategoryCloud)
+Liquid::Template.register_tag('category_list', Jekyll::CategoryList)

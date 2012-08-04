@@ -1,0 +1,11 @@
+---
+layout: post
+title: "test info"
+date: 2012-08-04 15:35
+comments: true
+categories: test
+tags: hello  more
+---
+<p class="info"> info </p>
+<p class="warning"> warning </p>
+
