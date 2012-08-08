@@ -1,24 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://shishougang.github.com/blog/2012/06/28/test/</loc>
-        <lastmod>2012-06-28T16:51:27+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://shishougang.github.com/blog/2012/07/24/test-more/</loc>
-        <lastmod>2012-07-24T10:05:02+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://shishougang.github.com/blog/2012/08/04/hello/</loc>
-        <lastmod>2012-08-04T12:58:17+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://shishougang.github.com/blog/2012/08/04/hellomore/</loc>
-        <lastmod>2012-08-04T13:03:19+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://shishougang.github.com/blog/2012/08/04/test-info/</loc>
-        <lastmod>2012-08-04T15:36:59+08:00</lastmod>
+        <loc>http://shishougang.github.com/blog/2012/08/08/first-post/</loc>
+        <lastmod>2012-08-08T18:37:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://shishougang.github.com/about/</loc>
@@ -26,7 +10,7 @@
     </url>
     <url>
         <loc>http://shishougang.github.com/</loc>
-        <lastmod>2012-08-04T15:36:59+08:00</lastmod>
+        <lastmod>2012-08-08T18:37:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://shishougang.github.com/404.html</loc>
@@ -34,7 +18,7 @@
     </url>
     <url>
         <loc>http://shishougang.github.com/blog/archives/</loc>
-        <lastmod>2012-08-04T15:36:59+08:00</lastmod>
+        <lastmod>2012-08-08T18:37:45+08:00</lastmod>
     </url>
     <url>
         <loc>http://shishougang.github.com/tag-cloud/</loc>
