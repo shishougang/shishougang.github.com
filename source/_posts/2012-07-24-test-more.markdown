@@ -1,9 +1,0 @@
----
-layout: post
-title: "test more"
-date: 2012-07-24 09:46
-comments: true
-categories: 
----
-
-<script src="https://gist.github.com/3137526.js"> </script>
