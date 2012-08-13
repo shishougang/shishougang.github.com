@@ -1,0 +1,30 @@
+#+begin_html
+---
+layout: post
+title: "License Server Administration for CCS"
+date: 2012-08-08 18:27
+comments: true
+categories: [DSP, SoftWare]
+tags: CCS DSP
+---
+#+end_html
+Official site: http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio
+* Requirements
++ lmadmin if graphical installation is desired
++ lmgrd and lmtools for command-line installation. Windows also has an additional utility called lmutils.
++ Texas Instruments’ vendor daemon tidspssw
+
+* License server setup[fn:1]
+**  Download the graphical utility <lmadmin-i86_n3-11_9_0_0.exe> and save it to any directory in your system:
+http://www.globes.com/support/fnp_utilities_download.htm
+** Download the license server utilities <lmutil>, <lmgrd> and <lmtools> for your PC type
+http://www.globes.com/support/fnp_utilities_download.htm
+** Download the TI daemon server <tidspssw.zip> 
+http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip
+
+* Footnotes
+
+[fn:1] adfasdf
+
+
+

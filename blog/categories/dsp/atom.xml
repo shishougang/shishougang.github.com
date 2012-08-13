@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[(learn&think)]]></title>
-  <link href="http://shishougang.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: DSP | (learn&think)]]></title>
+  <link href="http://shishougang.github.com/blog/categories/dsp/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
   <updated>2012-08-13T21:29:21+08:00</updated>
   <id>http://shishougang.github.com/</id>
@@ -88,21 +88,6 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 
 </div>
 </div>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First Post]]></title>
-    <link href="http://shishougang.github.com/blog/2012/08/08/first-post/"/>
-    <updated>2012-08-08T18:27:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2012/08/08/first-post</id>
-    <content type="html"><![CDATA[<blockquote><p>Every Generation Has A Legend. Every Journey Has A First Step. Every Saga Has A Beginning.</p><footer><strong>The Phantom Menace Trailer</strong> <cite>Star Wars Episode I</cite></footer></blockquote>
-
-
-<p>Keep learning, thinking and summarizing.</p>
-
-<blockquote><p>All I want to do is just sit here<br/>And write it all down and rest for a while</p><footer><strong>Sinead O’Connor</strong> <cite><a href='http://www.tudou.com/programs/view/2xSUmtSyvp0/'>The Emperor’s New Clothes</a></cite></footer></blockquote>
 
 ]]></content>
   </entry>
