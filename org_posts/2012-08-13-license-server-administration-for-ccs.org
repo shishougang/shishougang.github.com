@@ -1,0 +1,71 @@
+#+begin_html
+---
+layout: post
+title: "License Server Administration for CCS"
+date:  2012-08-13 21:27
+comments: true
+categories: [DSP, SoftWare]
+tags: CCS DSP
+---
+#+end_html
+#+options: H:2 num:t toc:t 
+Official site: http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio
+* Requirements
++ =lmadmin= if graphical installation is desired
++ =lmgrd= and lmtools for command-line installation. Windows also has an additional utility called lmutils.
++ Texas Instruments’ vendor daemon tidspssw
+
+#+begin_html
+<!-- more -->
+#+end_html
+
+* License server setup
+**  Download the graphical utility =<lmadmin-i86_n3-11_9_0_0.exe>= and save it to any directory in your system:
+http://www.globes.com/support/fnp_utilities_download.htm
+** Download the license server utilities <lmutil>, <lmgrd> and <lmtools> for your PC type
+http://www.globes.com/support/fnp_utilities_download.htm
+** Download the TI daemon server <tidspssw.zip> 
+http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip
+** Run the  =<lmadmin-i86_n3-11_9_0_0.exe>= installer and follow the on-screen instructions:
++ In the step Important information select *Install Visual C++ SP1 Redistributable Package* if you do not have it installed in your system.
++ In the step Service Configuration check the box Run as a service to guarantee the license server will be active even if nobody is logged to the host PC.
++ In the step Start the Server check the box Start server now. A
+  browser window will open with the main license manager GUI. 
++ Get the HTTP server port is 8090. (browser it =localhost:8090= or
+  =127.0.0.1:8090=).
+** Open a Windows Explorer window and unzip the utilities downloaded in step 2 above to the directory where <lmadmin.exe> is installed. The default installation directory is
+
+ =C:\Program Files\FLEXnet Publisher License Server Manager=
+**  At last, unzip the TI daemon server to the installation directory
+#+begin_html
+<p class="info"> Note: on a Microsoft Windows system, the files
+<tidspssw.exe> and <.manifest> should be placed in the same directory
+as <lmadmin.exe>.</p>
+#+end_html
+** Go back to the browser window opened in step 4 and click on Administration at the top right corner. 
+The default username/password is admin/admin and the first run a
+window will open to perform a mandatory change to the password.
+** In the main administration view click on Vendor Daemon Configuration and click on the Import License icon. 
+ Browse to where the .lic file is located and click on Import license.
+ A message will be displayed saying the license was successfully
+ imported. Click OK.
+** The Vendor Daemon Configuration screen should now show a tidspssw daemon.
+ Click on Sign Out and close the browser window.
+** The license server is now configured and running. 
+To go back to the license administrator GUI in the future, open a web
+browser and type the URL  =localhost:8090= or =127.0.0.1:8090=.
+
+* Configuring Code Composer Studio
+** Using the graphical license manager (recommended)
+*** Run the CCS
+*** Help->Code Composer Studio Licensing Information
++ Status: check the Licensed Status and License Type
++ Upgrade: Launch License Setup and input License Server:
+  127.0.0.1:8090.
+
+
+
+
+
+
+
