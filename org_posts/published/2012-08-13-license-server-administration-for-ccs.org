@@ -60,8 +60,9 @@ browser and type the URL  =localhost:8090= or =127.0.0.1:8090=.
 *** 3.1.1 Run the CCS
 *** 3.1.2 Help->Code Composer Studio Licensing Information
 + Status: check the Licensed Status and License Type
-+ Upgrade: Launch License Setup and input License Server:
-  127.0.0.1:8090.
++ Upgrade: Launch License Setup and input License
+  Server:=localhost:8090= or =127.0.0.1:8090=.
+
 
 
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Category: DSP | (learn&think)]]></title>
   <link href="http://shishougang.github.com/blog/categories/dsp/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-08-13T22:50:11+08:00</updated>
+  <updated>2012-08-13T22:56:51+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -200,10 +200,11 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
 <ul>
 <li>Status: check the Licensed Status and License Type
 </li>
-<li>Upgrade: Launch License Setup and input License Server:
-  127.0.0.1:8090.
+<li>Upgrade: Launch License Setup and input License
+  Server:=localhost:8090= or <code>127.0.0.1:8090</code>.
 </li>
 </ul>
+
 
 
 
