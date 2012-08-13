@@ -1,83 +1,511 @@
-<hr />
 
-<p>===
-  Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a></p>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>License Server Administration for CCS - (learn&think)</title>
+  <meta name="author" content="DreamRunner">
 
-<h2>1) Requirements</h2>
+  
+  <meta name="description" content="Official site: http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio 1. Requirements &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="/javascripts/ender.js"></script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32977383-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">(learn&think)</a></h1>
+  
+    <h2>不浮躁，不自傲，学习，思考，总结</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shishougang.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/tag-cloud">Tag Cloud</a></li>
+  <li><a href="/my-wiki">My Wiki</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">License Server Administration for CCS</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-13T21:27:00+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2012</time>
+        
+         | <a href="#disqus_thread">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>
+Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
+</p>
+
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1">1. Requirements</h2>
+<div class="outline-text-2" id="text-1">
 
 <ul>
-<li>lmadmin if graphical installation is desired</li>
-<li>lmgrd and lmtools for command-line installation. Windows also has an additional utility called lmutils.</li>
-<li>Texas Instruments’ vendor daemon tidspssw</li>
+<li><code>lmadmin</code> if graphical installation is desired
+</li>
+<li><code>lmgrd</code> and lmtools for command-line installation. Windows also has an additional utility called lmutils.
+</li>
+<li>Texas Instruments’ vendor daemon tidspssw
+</li>
 </ul>
 
 
-<h2>2) License server setup</h2>
 
-<h3>2.1) Download the graphical utility =&lt;lmadmin-i86_n3-11_9_0_0.exe>= and save it to any directory in your system:</h3>
 
-<p>  <a href="http://www.globes.com/support/fnp_utilities_download.htm">http://www.globes.com/support/fnp_utilities_download.htm</a></p>
+<!-- more -->
 
-<h3>2.2) Download the license server utilities <lmutil>, <lmgrd> and <lmtools> for your PC type</h3>
+</div>
 
-<p>  <a href="http://www.globes.com/support/fnp_utilities_download.htm">http://www.globes.com/support/fnp_utilities_download.htm</a></p>
+</div>
 
-<h3>2.3) Download the TI daemon server &lt;tidspssw.zip></h3>
 
-<p>  <a href="http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip">http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip</a></p>
 
-<h3>2.4) Run the  =&lt;lmadmin-i86_n3-11_9_0_0.exe>= installer and follow the on-screen instructions:</h3>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2">2. License server setup</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1">2.1 Download the graphical utility <code>&lt;lmadmin-i86_n3-11_9_0_0.exe&gt;</code> and save it to any directory in your system:</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<p><a href="http://www.globes.com/support/fnp_utilities_download.htm">http://www.globes.com/support/fnp_utilities_download.htm</a>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2">2.2 Download the license server utilities &lt;lmutil&gt;, &lt;lmgrd&gt; and &lt;lmtools&gt; for your PC type</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<p><a href="http://www.globes.com/support/fnp_utilities_download.htm">http://www.globes.com/support/fnp_utilities_download.htm</a>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3">2.3 Download the TI daemon server &lt;tidspssw.zip&gt;</h3>
+<div class="outline-text-3" id="text-2-3">
+
+<p><a href="http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip">http://software-dl.ti.com/dsps/dsps_registered_sw/sdo_ccstudio/CCSv4/tidspssw/win32/tidspssw.zip</a>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-3">
+<h3 id="sec-2-4">2.4 Run the  <code>&lt;lmadmin-i86_n3-11_9_0_0.exe&gt;</code> installer and follow the on-screen instructions:</h3>
+<div class="outline-text-3" id="text-2-4">
 
 <ul>
-<li>In the step Important information select Install Visual C++ SP1 Redistributable Package if you do not have it installed in your system.</li>
-<li>In the step Service Configuration check the box Run as a service to guarantee the license server will be active even if nobody is logged to the host PC.</li>
-<li><p>In the step Start the Server check the box Start server now. A</p>
+<li>In the step Important information select <b>Install Visual C++ SP1 Redistributable Package</b> if you do not have it installed in your system.
+</li>
+<li>In the step Service Configuration check the box Run as a service to guarantee the license server will be active even if nobody is logged to the host PC.
+</li>
+<li>In the step Start the Server check the box Start server now. A
+  browser window will open with the main license manager GUI. 
+</li>
+<li>Get the HTTP server port is 8090. (browser it <code>localhost:8090</code> or
+  <code>127.0.0.1:8090</code>).
+</li>
+</ul>
 
-<p>browser window will open with the main license manager GUI.</p></li>
-<li><p>Get the HTTP server port is 8090. (browser it localhost:8090 or</p>
+</div>
 
-<p>127.0.0.1:8090).</p></li>
+</div>
+
+<div id="outline-container-2-5" class="outline-3">
+<h3 id="sec-2-5">2.5 Open a Windows Explorer window and unzip the utilities downloaded in step 2 above to the directory where &lt;lmadmin.exe&gt; is installed. The default installation directory is</h3>
+<div class="outline-text-3" id="text-2-5">
+
+
+<p>
+ <code>C:\Program Files\FLEXnet Publisher License Server Manager</code>
+</p></div>
+
+</div>
+
+<div id="outline-container-2-6" class="outline-3">
+<h3 id="sec-2-6">2.6 At last, unzip the TI daemon server to the installation directory</h3>
+<div class="outline-text-3" id="text-2-6">
+
+
+<p class="info"> Note: on a Microsoft Windows system, the files
+<tidspssw.exe> and <.manifest> should be placed in the same directory
+as <lmadmin.exe>.</p>
+</div>
+
+</div>
+
+<div id="outline-container-2-7" class="outline-3">
+<h3 id="sec-2-7">2.7 Go back to the browser window opened in step 4 and click on Administration at the top right corner.</h3>
+<div class="outline-text-3" id="text-2-7">
+
+<p>The default username/password is admin/admin and the first run a
+window will open to perform a mandatory change to the password.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-8" class="outline-3">
+<h3 id="sec-2-8">2.8 In the main administration view click on Vendor Daemon Configuration and click on the Import License icon.</h3>
+<div class="outline-text-3" id="text-2-8">
+
+<p> Browse to where the .lic file is located and click on Import license.
+ A message will be displayed saying the license was successfully
+ imported. Click OK.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-9" class="outline-3">
+<h3 id="sec-2-9">2.9 The Vendor Daemon Configuration screen should now show a tidspssw daemon.</h3>
+<div class="outline-text-3" id="text-2-9">
+
+<p> Click on Sign Out and close the browser window.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-10" class="outline-3">
+<h3 id="sec-2-10">2.10 The license server is now configured and running.</h3>
+<div class="outline-text-3" id="text-2-10">
+
+<p>To go back to the license administrator GUI in the future, open a web
+browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</code>.
+</p>
+</div>
+</div>
+
+</div>
+
+
+
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3">3. Configuring Code Composer Studio</h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1">3.1 Using the graphical license manager (recommended)</h3>
+<div class="outline-text-3" id="text-3-1">
+
+
+</div>
+
+<div id="outline-container-3-1-1" class="outline-4">
+<h4 id="sec-3-1-1">3.1.1 Run the CCS</h4>
+<div class="outline-text-4" id="text-3-1-1">
+
+</div>
+
+</div>
+
+<div id="outline-container-3-1-2" class="outline-4">
+<h4 id="sec-3-1-2">3.1.2 Help-&gt;Code Composer Studio Licensing Information</h4>
+<div class="outline-text-4" id="text-3-1-2">
+
+<ul>
+<li>Status: check the Licensed Status and License Type
+</li>
+<li>Upgrade: Launch License Setup and input License Server:
+  127.0.0.1:8090.
+</li>
 </ul>
 
 
-<h3>2.5) Open a Windows Explorer window and unzip the utilities downloaded in step 2 above to the directory where &lt;lmadmin.exe> is installed. The default installation directory is</h3>
-
-<p>   C:\Program Files\FLEXnet Publisher License Server Manager</p>
-
-<h3>2.6) At last, unzip the TI daemon server to the installation directory</h3>
-
-<h3>2.7) Go back to the browser window opened in step 4 and click on Administration at the top right corner.</h3>
-
-<p>  The default username/password is admin/admin and the first run a
-  window will open to perform a mandatory change to the password.</p>
-
-<h3>2.8) In the main administration view click on Vendor Daemon Configuration and click on the Import License icon.</h3>
-
-<p>   Browse to where the .lic file is located and click on Import license.
-   A message will be displayed saying the license was successfully
-   imported. Click OK.</p>
-
-<h3>2.9) The Vendor Daemon Configuration screen should now show a tidspssw daemon.</h3>
-
-<p>   Click on Sign Out and close the browser window.</p>
-
-<h3>2.10) The license server is now configured and running.</h3>
-
-<p>  To go back to the license administrator GUI in the future, open a web
-  browser and type the URL  localhost:8090 or 127.0.0.1:8090.</p>
-
-<h2>3) Configuring Code Composer Studio</h2>
-
-<h3>3.1) Using the graphical license manager (recommended)</h3>
-
-<h4>3.1.1) Run the CCS</h4>
-
-<h4>3.1.2) Help->Code Composer Studio Licensing Information</h4>
-
-<ul>
-<li>Status: check the Licensed Status and License Type</li>
-<li>Upgrade: Launch License Setup and input License Server:</li>
-</ul>
 
 
-<p>0.0.1:8090.</p>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">DreamRunner</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-08-13T21:27:00+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/dsp/'>DSP</a>, <a class='category' href='/blog/categories/software/'>SoftWare</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/" data-via="" data-counturl="http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div id="ckepop">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_qzone">QQ空间</a>
+	<a class="jiathis_button_tsina">新浪微博</a>
+	<a class="jiathis_button_tqq">腾讯微博</a>
+	<a class="jiathis_button_renren">人人网</a>
+	<a href="http://www.jiathis.com/share?uid=1658718" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">var jiathis_config = {data_track_clickback:true};</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1342523038679945" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/08/08/first-post/" title="Previous Post: First Post">&laquo; First Post</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/08/08/first-post/">First Post</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Category Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/dsp' style='font-size: 160.0%'>DSP(1)</a> <a href='/blog/categories/misc' style='font-size: 160.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>SoftWare(1)</a> </span>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shishougang">@shishougang</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shishougang',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2012 - DreamRunner -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'dreamrunner';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/';
+        var disqus_url = 'http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
