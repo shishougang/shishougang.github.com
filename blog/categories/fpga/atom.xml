@@ -4,7 +4,7 @@
   <title><![CDATA[Category: FPGA | (learn&think)]]></title>
   <link href="http://shishougang.github.com/blog/categories/fpga/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T13:11:58+08:00</updated>
+  <updated>2012-09-12T13:29:21+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -119,7 +119,7 @@ On 64-bit
 sudo make lib32
 ```</p>
 
-<h1>Setup up the driver</h1>
+<h2>Setup up the driver</h2>
 
 <p><code>bash setup up
 $ ./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
@@ -136,7 +136,7 @@ Installing udev rules:
 done
 </code></p>
 
-<h1>Setting the ISE</h1>
+<h2>Setting the ISE</h2>
 
 <p><code>bash Setting
 cd /opt/Xilinx/14.2/ISE_DS
@@ -150,13 +150,13 @@ bash ./settings32.sh
 . /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
 </code></p>
 
-<h1>Restart udev</h1>
+<h2>Restart udev</h2>
 
 <p><code>bash Restart udev
 /etc/init.d/boot.udev restart
 </code></p>
 
-<h1>Fixing the Path</h1>
+<h2>Fixing the Path</h2>
 
 <p><code>bash Fixing the Path
 32-bit
@@ -165,7 +165,7 @@ echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin" &gt;&gt; ~/.bashrc echo "
 echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/" &gt;&gt; ~/.bashrc echo "export PATH" &gt;&gt; ~/.bashrc
 </code></p>
 
-<h1>Run the IMPACK to check everything</h1>
+<h2>Run the IMPACK to check everything</h2>
 
 <p class="warning"> Errors </p>
 
@@ -181,11 +181,12 @@ libusb requires write access to USB device nodes.
 * Restart udev <code>/etc/init.d/boot.udev restart</code>
 * Still wrong, reboot and try again.</p>
 
-<h1>Reference</h1>
+<h2>Reference</h2>
 
-<p>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux</p>
+<pre><code>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux
 
-<p>http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb=HEAD</p>
+http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb=HEAD
+</code></pre>
 ]]></content>
   </entry>
   
