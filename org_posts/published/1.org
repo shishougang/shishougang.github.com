@@ -1,0 +1,13 @@
+#+begin_html
+---
+layout: post
+title: "Install Xilinx ISE on the Ubuntu"
+date: 2012-08-08 18:27
+comments: true
+categories:  Misc
+tags: Misc 
+---
+#+end_html
+ 
+
+
