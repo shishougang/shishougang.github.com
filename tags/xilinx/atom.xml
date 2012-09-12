@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Xilinx | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/xilinx/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:32:44+08:00</updated>
+  <updated>2012-09-12T12:36:37+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -18,7 +18,7 @@
     <link href="http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/"/>
     <updated>2012-09-12T20:44:00+08:00</updated>
     <id>http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu</id>
-    <content type="html"><![CDATA[<h1>Download Xilinx ISE</h1>
+    <content type="html"><![CDATA[<h2>Download Xilinx ISE</h2>
 
 <p>Official site: http://www.xilinx.com/support/download/index.htm</p>
 
@@ -27,7 +27,7 @@
 <!-- more -->
 
 
-<h1>Install</h1>
+<h2>Install</h2>
 
 <p><code>bash Install
 cd the folder
@@ -36,15 +36,16 @@ sudo chmod +x xsetup
 sudo ./xsetup
 </code>
 1. Just use the default install path: <code>/opt/Xilinx</code>
-2. Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.
-   <code>bash Xilinx Software Steup
+2. Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</p>
+
+<p>   <code>bash Xilinx Software Steup
    Driver installation failed. Please check the /.xinstall/install.log file for
    ...
   </code>
 3. The Xilinx License Configuration Manager appears
 4. Finish</p>
 
-<h1>Installing Cable Drivers</h1>
+<h2>Installing Cable Drivers</h2>
 ]]></content>
   </entry>
   
