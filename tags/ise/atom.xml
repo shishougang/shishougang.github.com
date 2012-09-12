@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: ISE | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/ise/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:38:22+08:00</updated>
+  <updated>2012-09-12T12:40:17+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -38,12 +38,17 @@ sudo ./xsetup
 1. Just use the default install path: <code>/opt/Xilinx</code>
 2. Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</p>
 
-<p><code>bash Xilinx Software Steup
-   Driver installation failed. Please check the /.xinstall/install.log file for
-   ...
-</code>
-3. The Xilinx License Configuration Manager appears
-4. Finish</p>
+<pre><code>``` bash Xilinx Software Steup
+    Driver installation failed. Please check the /.xinstall/install.log file for
+    ...
+```
+</code></pre>
+
+<ol>
+<li>The Xilinx License Configuration Manager appears</li>
+<li>Finish</li>
+</ol>
+
 
 <h2>Installing Cable Drivers</h2>
 ]]></content>

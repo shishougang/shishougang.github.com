@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:38:22+08:00</updated>
+  <updated>2012-09-12T12:40:17+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -42,18 +42,15 @@
 
 <ol>
 <li>Just use the default install path: <code>/opt/Xilinx</code></li>
-<li>Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</li>
-</ol>
+<li><p>Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</p>
 
+<p> &#8220;` bash Xilinx Software Steup</p>
 
-<figure class='code'><figcaption><span>Xilinx Software Steup</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>   Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
-</span><span class='line'>   ...
-</span></code></pre></td></tr></table></div></figure>
+<pre><code> Driver installation failed. Please check the /.xinstall/install.log file for
+ ...
+</code></pre>
 
-
-<ol>
+<p> &#8220;`</p></li>
 <li>The Xilinx License Configuration Manager appears</li>
 <li>Finish</li>
 </ol>
