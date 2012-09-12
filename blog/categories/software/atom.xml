@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Software | (learn&think)]]></title>
   <link href="http://shishougang.github.com/blog/categories/software/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:50:48+08:00</updated>
+  <updated>2012-09-12T12:52:33+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -41,8 +41,8 @@ sudo ./xsetup
 <pre><code><div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Xilinx Software Steup  </span></figcaption>
  <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>    Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
-</span><span class='line'>    ...
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
+</span><span class='line'>...
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 </code></pre>
 
