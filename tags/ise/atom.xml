@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: ISE | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/ise/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:54:17+08:00</updated>
+  <updated>2012-09-12T13:11:58+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -42,8 +42,52 @@ sudo ./xsetup
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
 </span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-* The Xilinx License Configuration Manager appears
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The details of the <code>/.xinstall/install.log</code> will be
+<code>`` bash install.log
+--Installing windrvr6---------------------------------------------
+--Checking version.
+--File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
+--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o does not exist.
+--Setting source version to 1301.
+--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o is newer than the destination file.
+USE_KBUILD = yes
+creating cache ./config.cache
+checking for cpu architecture... i386
+checking for WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+checking for linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+not found
+loading cache ./config.cache
+checking for cpu architecture... i386
+checking for WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+checking for linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+not found
+make -f makefile.usb.kbuild clean
+make[1]: Entering directory</code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+make[1]: Leaving directory <code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+make -f makefile.usb.kbuild
+make[1]: Entering directory</code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+make[1]: Leaving directory <code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+make -f makefile.usb.kbuild
+make[1]: Entering directory</code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
+--make windrvr install rc= 2
+--install_windrvr6 rc = 2
+--Module windrvr6 is not running.
+--Module xpc4drvr is not running.
+--Note: By default, the file permission of /dev/windrvr6 is enabled for the root user only
+  and must be changed to allow access to other users.</p>
+
+<p>--real rc=2</p>
+
+<p>--Driver installation failed.</p>
+
+<p>--Digilent Return code = 0
+--Xilinx Return code = 1
+--Return code = 1
+```
+* The Xilinx License Configuration Manager appears and configure
 * Finish</p>
 
 <h2>Installing Cable Drivers</h2>
@@ -61,9 +105,87 @@ sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxlo
 </code></p>
 
 <ul>
-<li>Download the driver source and install</li>
+<li>Download the driver source and install
+``` bash download and install
+cd /opt/Xilinx
+sudo git clone git://git.zerfleddert.de/usb-driver</li>
 </ul>
 
+
+<p>cd usb-driver/
+On 32-bit
+sudo make
+On 64-bit
+sudo make lib32
+```</p>
+
+<h1>Setup up the driver</h1>
+
+<p><code>bash setup up
+$ ./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
+Looking for USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
+Copying firmware to /usr/share:
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusbdfwu.hex' -&gt; `/usr/share/xusbdfwu.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_emb.hex' -&gt; `/usr/share/xusb_emb.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xlp.hex' -&gt; `/usr/share/xusb_xlp.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xp2.hex' -&gt; `/usr/share/xusb_xp2.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xpr.hex' -&gt; `/usr/share/xusb_xpr.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xse.hex' -&gt; `/usr/share/xusb_xse.hex'
+`/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xup.hex' -&gt; `/usr/share/xusb_xup.hex'
+Installing udev rules:
+done
+</code></p>
+
+<h1>Setting the ISE</h1>
+
+<p><code>bash Setting
+cd /opt/Xilinx/14.2/ISE_DS
+bash ./settings32.sh
+. /opt/Xilinx/14.2/ISE_DS/common/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common
+. /opt/Xilinx/14.2/ISE_DS/EDK/.settings32.sh /opt/Xilinx/14.2/ISE_DS/EDK
+. /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery
+. /opt/Xilinx/14.2/ISE_DS/PlanAhead/.settings32.sh /opt/Xilinx/14.2/ISE_DS/PlanAhead
+. /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2
+. /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
+. /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
+</code></p>
+
+<h1>Restart udev</h1>
+
+<p><code>bash Restart udev
+/etc/init.d/boot.udev restart
+</code></p>
+
+<h1>Fixing the Path</h1>
+
+<p><code>bash Fixing the Path
+32-bit
+echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin" &gt;&gt; ~/.bashrc echo "export PATH" &gt;&gt; ~/.bashrc
+64-bit
+echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/" &gt;&gt; ~/.bashrc echo "export PATH" &gt;&gt; ~/.bashrc
+</code></p>
+
+<h1>Run the IMPACK to check everything</h1>
+
+<p class="warning"> Errors </p>
+
+
+<p>If it appears:
+<code>bash Errors
+INFO:iMPACT - Selected Current Working Directory:
+   '/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin'
+libusb couldn't open USB device /dev/bus/usb/002/035: Permission denied.
+libusb requires write access to USB device nodes.
+</code>
+* First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code>
+* Restart udev <code>/etc/init.d/boot.udev restart</code>
+* Still wrong, reboot and try again.</p>
+
+<h1>Reference</h1>
+
+<p>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux</p>
+
+<p>http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb=HEAD</p>
 ]]></content>
   </entry>
   

@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:54:17+08:00</updated>
+  <updated>2012-09-12T13:11:58+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -54,8 +54,93 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
+<p>The details of the <code>/.xinstall/install.log</code> will be</p>
+
+<figure class='code'><figcaption><span>install.log</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--Installing windrvr6---------------------------------------------
+</span><span class='line'>--Checking version.
+</span><span class='line'>--File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
+</span><span class='line'>--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o does not exist.
+</span><span class='line'>--Setting <span class="nb">source </span>version to 1301.
+</span><span class='line'>--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o is newer than the destination file.
+</span><span class='line'><span class="nv">USE_KBUILD</span> <span class="o">=</span> yes
+</span><span class='line'>creating cache ./config.cache
+</span><span class='line'>checking <span class="k">for </span>cpu architecture... i386
+</span><span class='line'>checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+</span><span class='line'>checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+</span><span class='line'>not found
+</span><span class='line'>loading cache ./config.cache
+</span><span class='line'>checking <span class="k">for </span>cpu architecture... i386
+</span><span class='line'>checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+</span><span class='line'>checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+</span><span class='line'>not found
+</span><span class='line'>make -f makefile.usb.kbuild clean
+</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class='line'>make -f makefile.usb.kbuild
+</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class='line'>make -f makefile.usb.kbuild
+</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class='line'>--make windrvr install <span class="nv">rc</span><span class="o">=</span> 2
+</span><span class='line'>--install_windrvr6 <span class="nv">rc</span> <span class="o">=</span> 2
+</span><span class='line'>--Module windrvr6 is not running.
+</span><span class='line'>--Module xpc4drvr is not running.
+</span><span class='line'>--Note: By default, the file permission of /dev/windrvr6 is enabled <span class="k">for </span>the root user only
+</span><span class='line'>  and must be changed to allow access to other users.
+</span><span class='line'>
+</span><span class='line'>--real <span class="nv">rc</span><span class="o">=</span>2
+</span><span class='line'>
+</span><span class='line'>--Driver installation failed.
+</span><span class='line'>
+</span><span class='line'>--Digilent Return <span class="nv">code</span> <span class="o">=</span> 0
+</span><span class='line'>--Xilinx Return <span class="nv">code</span> <span class="o">=</span> 1
+</span><span class='line'>--Return <span class="nv">code</span> <span class="o">=</span> 1
+</span></code></pre></td></tr></table></div></figure>
+
+
 <ul>
-<li>The Xilinx License Configuration Manager appears</li>
+<li>The Xilinx License Configuration Manager appears and configure</li>
 <li>Finish</li>
 </ul>
 
@@ -82,6 +167,128 @@
 <li>Download the driver source and install</li>
 </ul>
 
+
+<figure class='code'><figcaption><span>download and install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /opt/Xilinx
+</span><span class='line'>sudo git clone git://git.zerfleddert.de/usb-driver
+</span><span class='line'>
+</span><span class='line'><span class="nb">cd </span>usb-driver/
+</span><span class='line'>On 32-bit
+</span><span class='line'>sudo make
+</span><span class='line'>On 64-bit
+</span><span class='line'>sudo make lib32
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Setup up the driver</h1>
+
+<figure class='code'><figcaption><span>setup up</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
+</span><span class='line'>Looking <span class="k">for </span>USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
+</span><span class='line'>Copying firmware to /usr/share:
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusbdfwu.hex<span class="s1">&#39; -&gt; `/usr/share/xusbdfwu.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_emb.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_emb.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xlp.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xlp.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xp2.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xp2.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xpr.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xpr.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xse.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xse.hex&#39;</span>
+</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xup.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xup.hex&#39;</span>
+</span><span class='line'>Installing udev rules:
+</span><span class='line'><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Setting the ISE</h1>
+
+<figure class='code'><figcaption><span>Setting </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /opt/Xilinx/14.2/ISE_DS
+</span><span class='line'>bash ./settings32.sh
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/common/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/EDK/.settings32.sh /opt/Xilinx/14.2/ISE_DS/EDK
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/PlanAhead/.settings32.sh /opt/Xilinx/14.2/ISE_DS/PlanAhead
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
+</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Restart udev</h1>
+
+<figure class='code'><figcaption><span>Restart udev</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/init.d/boot.udev restart
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Fixing the Path</h1>
+
+<figure class='code'><figcaption><span>Fixing the Path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>32-bit
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
+</span><span class='line'>64-bit
+</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h1>Run the IMPACK to check everything</h1>
+
+<p class="warning"> Errors </p>
+
+
+<p>If it appears:</p>
+
+<figure class='code'><figcaption><span>Errors</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>INFO:iMPACT - Selected Current Working Directory:
+</span><span class='line'>   <span class="s1">&#39;/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&#39;</span>
+</span><span class='line'>libusb couldn<span class="err">&#39;</span>t open USB device /dev/bus/usb/002/035: Permission denied.
+</span><span class='line'>libusb requires write access to USB device nodes.
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code></li>
+<li>Restart udev <code>/etc/init.d/boot.udev restart</code></li>
+<li>Still wrong, reboot and try again.</li>
+</ul>
+
+
+<h1>Reference</h1>
+
+<p>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux</p>
+
+<p>http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb=HEAD</p>
 ]]></content>
   </entry>
   
