@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: ISE | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/ise/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:43:33+08:00</updated>
+  <updated>2012-09-12T12:46:41+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -38,10 +38,10 @@ sudo ./xsetup
 1. Just use the default install path: <code>/opt/Xilinx</code>
 2. Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</p>
 
-<pre><code>``` bash Xilinx Software Steup
-Driver installation failed. Please check the /.xinstall/install.log file for
-...
-```
+<pre><code>    ``` bash Xilinx Software Steup
+    Driver installation failed. Please check the /.xinstall/install.log file for
+    ...
+    ```
 </code></pre>
 
 <ol>
@@ -53,7 +53,19 @@ Driver installation failed. Please check the /.xinstall/install.log file for
 <h2>Installing Cable Drivers</h2>
 
 <ol>
-<li>install the pre</li>
+<li>install the prerequisite</li>
+</ol>
+
+
+<p><code>bash install
+On 32-bit
+sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev fxload
+On 64-bit
+sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxload
+</code></p>
+
+<ol>
+<li></li>
 </ol>
 
 ]]></content>
