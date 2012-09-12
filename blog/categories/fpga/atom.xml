@@ -4,7 +4,7 @@
   <title><![CDATA[Category: FPGA | (learn&think)]]></title>
   <link href="http://shishougang.github.com/blog/categories/fpga/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2012-09-12T12:36:37+08:00</updated>
+  <updated>2012-09-12T12:37:20+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -38,10 +38,10 @@ sudo ./xsetup
 1. Just use the default install path: <code>/opt/Xilinx</code>
 2. Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</p>
 
-<p>   <code>bash Xilinx Software Steup
+<p> <code>bash Xilinx Software Steup
    Driver installation failed. Please check the /.xinstall/install.log file for
    ...
-  </code>
+</code>
 3. The Xilinx License Configuration Manager appears
 4. Finish</p>
 
