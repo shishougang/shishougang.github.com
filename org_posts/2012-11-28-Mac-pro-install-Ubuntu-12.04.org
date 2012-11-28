@@ -31,7 +31,10 @@ To confirm that the app is working, reboot your system: if you see a
 startup menu like the one below, you're good. It may take a couple of
 reboots to appear, but it worked on the first try for me.
 
-[[images/blog/2012/rEFIt.jpg]]
+#+begin_html
+{% img right /images/blog/2012/rEFIt.jpg  'rEFIt' %}
+#+end_html
+
 ** Partition Your Mac's Hard Drive
 *** Open Disk Utility (Applications > Utilities > Disk Utility.)
 *** Select your hard drive from the list on the left, and click the Partition tab on the right.
