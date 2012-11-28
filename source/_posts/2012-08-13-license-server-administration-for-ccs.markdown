@@ -3,7 +3,7 @@ layout: post
 title: "License Server Administration for CCS"
 date:  2012-08-13 21:27
 comments: true
-categories: [DSP, SoftWare]
+categories: [DSP, Software]
 tags: CCS DSP
 ---
 <p>
