@@ -1,0 +1,19 @@
+rake new_post[""]
+
+change the org file name
+
+add
+
+#+begin_html
+---
+layout: post
+title: "First Post"
+date: 2012-08-08 18:27
+comments: true
+categories:  Misc
+tags: Misc 
+---
+#+end_html
+#+options: H:2 num:t toc:t 
+
+org-publish-project octopress

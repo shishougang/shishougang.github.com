@@ -8,3 +8,16 @@ categories:  Misc
 tags: Misc 
 ---
 #+end_html
+#+options: H:2 num:t toc:t 
+
+
+#+begin_html
+<!-- more -->
+#+end_html
+
+
+#+begin_html
+<p class="info"> Note: on a Microsoft Windows system, the files
+<tidspssw.exe> and <.manifest> should be placed in the same directory
+as <lmadmin.exe>.</p>
+#+end_html
