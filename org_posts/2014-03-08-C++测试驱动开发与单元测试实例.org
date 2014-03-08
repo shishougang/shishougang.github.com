@@ -3,13 +3,13 @@
 ---
 layout: post
 title: "C++测试驱动开发与单元测试实例"
-date: 2014-03-08 
+date: 2014-03-08
 comments: true
-categories: Software
-tags: [Mac Linux]
+categories: C++
+tags: C++ Test Mock
 ---
 #+end_html
-#+options: H:1 num:t toc:t 
+#+OPTIONS: toc:nil 
 
 * 测试驱动开发基础
 ** 测试驱动开发
@@ -22,13 +22,20 @@ TDD有它自身的
 [[http://en.wikipedia.org/wiki/Test-driven_development#Benefits][优点]]与
 [[http://en.wikipedia.org/wiki/Test-driven_development#Vulnerabilities][缺点]]
 
+#+begin_html
+<!-- more -->
+#+end_html
+
 TDD的一个周期可以总结如下:[fn:1]
 1. 快速加一个测试
 2. 运行所有测试，然后发现新测试失败
 3. 修改代码，让新测试通过
 4. 运行所有测试并都通过
 5. 重构代码
-[[./Files/Test-driven_development.PNG]]
+
+#+begin_html
+{% img /images/blog/2014/Test-driven_development.PNG  'TDD' %}
+#+end_html
 
 ** 单元测试与其框架
 [[http://en.wikipedia.org/wiki/Unit_testing][单元测试(unit testing)]]是测试一小段独立代码其是否正确的一种方法。
