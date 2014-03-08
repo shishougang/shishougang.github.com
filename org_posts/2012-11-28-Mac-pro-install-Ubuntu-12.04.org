@@ -1,5 +1,4 @@
 
-#+TITLE: Mac pro install Ubuntu 12.04
 #+begin_html
 ---
 layout: post
@@ -11,7 +10,6 @@ tags: [Mac Linux]
 ---
 #+end_html
 #+options: H:1 num:t toc:t 
-
 
 * Determine your hardware revision[fn:1]
 ** OS X
