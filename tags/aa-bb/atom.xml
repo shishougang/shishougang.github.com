@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Tag: aa bb | (learn&think)]]></title>
-  <link href="http://dreamrunner.org/tags/aa-bb/atom.xml" rel="self"/>
-  <link href="http://dreamrunner.org/"/>
-  <updated>2014-03-08T14:19:34+08:00</updated>
-  <id>http://dreamrunner.org/</id>
+  <link href="http://shishougang.github.com/tags/aa-bb/atom.xml" rel="self"/>
+  <link href="http://shishougang.github.com/"/>
+  <updated>2014-03-08T15:25:49+08:00</updated>
+  <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[test_test]]></title>
-    <link href="http://dreamrunner.org/blog/2014/03/08/test-test/"/>
+    <link href="http://shishougang.github.com/blog/2014/03/08/test-test/"/>
     <updated>2014-03-08T14:18:53+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/03/08/test-test</id>
+    <id>http://shishougang.github.com/blog/2014/03/08/test-test</id>
     <content type="html"><![CDATA[<h2>Test</h2>
 
 <p>more</p>

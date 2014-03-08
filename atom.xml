@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[(learn&think)]]></title>
-  <link href="http://dreamrunner.org/atom.xml" rel="self"/>
-  <link href="http://dreamrunner.org/"/>
-  <updated>2014-03-08T14:19:34+08:00</updated>
-  <id>http://dreamrunner.org/</id>
+  <link href="http://shishougang.github.com/atom.xml" rel="self"/>
+  <link href="http://shishougang.github.com/"/>
+  <updated>2014-03-08T15:25:49+08:00</updated>
+  <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Test_test]]></title>
-    <link href="http://dreamrunner.org/blog/2014/03/08/test-test/"/>
+    <link href="http://shishougang.github.com/blog/2014/03/08/test-test/"/>
     <updated>2014-03-08T14:18:53+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/03/08/test-test</id>
+    <id>http://shishougang.github.com/blog/2014/03/08/test-test</id>
     <content type="html"><![CDATA[<h2>Test</h2>
 
 <p>more</p>
@@ -26,9 +26,9 @@
   
   <entry>
     <title type="html"><![CDATA[Mac Pro Install Ubuntu 12.04]]></title>
-    <link href="http://dreamrunner.org/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/"/>
+    <link href="http://shishougang.github.com/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/"/>
     <updated>2012-11-28T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04</id>
+    <id>http://shishougang.github.com/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04</id>
     <content type="html"><![CDATA[<div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
@@ -90,7 +90,7 @@ startup menu like the one below, you&#8217;re good. It may take a couple of
 reboots to appear, but it worked on the first try for me.
 </p>
 
-<img class="right" src="http://dreamrunner.org/images/blog/2012/rEFIt.jpg" title="'rEFIt'" >
+<img class="right" src="http://shishougang.github.com/images/blog/2012/rEFIt.jpg" title="'rEFIt'" >
 </div>
 </li>
 <li>Partition Your Mac&#8217;s Hard Drive<br  /><ol class="org-ol"><li>Open Disk Utility (Applications &gt; Utilities &gt; Disk Utility.)<br  /></li>
@@ -607,9 +607,9 @@ sudo apt-get -y &#8211;-auto-remove purge unity-asset-pool
   
   <entry>
     <title type="html"><![CDATA[Install Xilinx ISE on the Ubuntu]]></title>
-    <link href="http://dreamrunner.org/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/"/>
+    <link href="http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/"/>
     <updated>2012-09-12T20:44:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu</id>
+    <id>http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu</id>
     <content type="html"><![CDATA[<h2>Download Xilinx ISE</h2>
 
 <p>Official site: <a href="http://www.xilinx.com/support/download/index.htm">http://www.xilinx.com/support/download/index.htm</a></p>
@@ -887,9 +887,9 @@ http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb
   
   <entry>
     <title type="html"><![CDATA[License Server Administration for CCS]]></title>
-    <link href="http://dreamrunner.org/blog/2012/08/13/license-server-administration-for-ccs/"/>
+    <link href="http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/"/>
     <updated>2012-08-13T21:27:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2012/08/13/license-server-administration-for-ccs</id>
+    <id>http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs</id>
     <content type="html"><![CDATA[<p>
 Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
 </p>
@@ -1095,9 +1095,9 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
   
   <entry>
     <title type="html"><![CDATA[First Post]]></title>
-    <link href="http://dreamrunner.org/blog/2012/08/08/first-post/"/>
+    <link href="http://shishougang.github.com/blog/2012/08/08/first-post/"/>
     <updated>2012-08-08T18:27:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2012/08/08/first-post</id>
+    <id>http://shishougang.github.com/blog/2012/08/08/first-post</id>
     <content type="html"><![CDATA[<blockquote><p>Every Generation Has A Legend. Every Journey Has A First Step. Every Saga Has A Beginning.</p><footer><strong>The Phantom Menace Trailer</strong> <cite>Star Wars Episode I</cite></footer></blockquote>
 
 
