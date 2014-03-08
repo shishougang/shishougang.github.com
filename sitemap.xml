@@ -1,49 +1,51 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://shishougang.github.com/blog/2012/08/08/first-post/</loc>
-        <lastmod>2012-08-11T09:44:46+08:00</lastmod>
+        <loc>http://dreamrunner.org/blog/2012/08/08/first-post/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>
-            http://shishougang.github.com/blog/2012/08/13/license-server-administration-for-ccs/
-        </loc>
-        <lastmod>2012-11-28T17:42:21+08:00</lastmod>
+        <loc>http://dreamrunner.org/blog/2012/08/13/license-server-administration-for-ccs/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/</loc>
-        <lastmod>2012-09-12T13:14:55+08:00</lastmod>
+        <loc>http://dreamrunner.org/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/</loc>
-        <lastmod>2012-11-28T18:48:15+08:00</lastmod>
+        <loc>http://dreamrunner.org/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/</loc>
+        <lastmod>2014-03-08T11:33:21+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/about/</loc>
-        <lastmod>2012-08-04T13:07:54+08:00</lastmod>
+        <loc>http://dreamrunner.org/tag-cloud/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/</loc>
-        <lastmod>2012-11-28T18:48:15+08:00</lastmod>
+        <loc>http://dreamrunner.org/404.html</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/404.html</loc>
-        <lastmod>2012-08-04T12:54:50+08:00</lastmod>
+        <loc>http://dreamrunner.org/friends-links/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/blog/archives/</loc>
-        <lastmod>2012-11-28T18:48:15+08:00</lastmod>
+        <loc>http://dreamrunner.org/blog/archives/</loc>
+        <lastmod>2014-03-08T11:33:21+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/friends-links/</loc>
-        <lastmod>2012-08-22T16:04:04+08:00</lastmod>
+        <loc>http://dreamrunner.org/robots.txt</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/tag-cloud/</loc>
-        <lastmod>2012-08-04T15:30:29+08:00</lastmod>
+        <loc>http://dreamrunner.org/</loc>
+        <lastmod>2014-03-08T11:33:21+08:00</lastmod>
     </url>
     <url>
-        <loc>http://shishougang.github.com/my-wiki/</loc>
-        <lastmod>2012-07-30T10:33:43+08:00</lastmod>
+        <loc>http://dreamrunner.org/my-wiki/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://dreamrunner.org/about/</loc>
+        <lastmod>2014-03-08T11:26:02+08:00</lastmod>
     </url>
 </urlset>

@@ -18,13 +18,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shishougang.github.comblog/categories/dsp/">
+  <link rel="canonical" href="http://dreamrunner.orgblog/categories/dsp">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <script src="/javascripts/modernizr-2.0.js"></script>
-  <script src="/javascripts/ender.js"></script>
-  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
@@ -61,7 +62,7 @@
   
 <form action="http://google.com/search" method="get">
   <fieldset role="search">
-    <input type="hidden" name="q" value="site:shishougang.github.com" />
+    <input type="hidden" name="q" value="site:dreamrunner.org" />
     <input class="search" type="text" name="q" results="0" placeholder="Search"/>
   </fieldset>
 </form>
@@ -69,10 +70,6 @@
 <ul class="main-navigation">
   <li><a href="/">Blog</a></li>
   <li><a href="/blog/archives">Archives</a></li>
-  <li><a href="/tag-cloud">Tag Cloud</a></li>
-  <li><a href="/my-wiki">My Wiki</a></li>
-  <li><a href="/friends-links">Friends' Links</a></li>
-  <li><a href="/about">About</a></li>
 </ul>
 
 </nav>
@@ -119,7 +116,7 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/">Mac pro install Ubuntu 12.04</a>
+        <a href="/blog/2012/11/28/Mac-pro-install-Ubuntu-12.04/">Mac Pro Install Ubuntu 12.04</a>
       </li>
     
       <li class="post">
@@ -138,7 +135,7 @@
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/dsp' style='font-size: 130.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 130.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 130.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(2)</a> </span>
 </section>
 
 <section>
@@ -150,7 +147,7 @@
   <a href="https://github.com/shishougang">@shishougang</a> on GitHub
   
   <script type="text/javascript">
-    $.domReady(function(){
+    $(document).ready(function(){
         if (!window.jXHR){
             var jxhr = document.createElement('script');
             jxhr.type = 'text/javascript';
@@ -182,7 +179,7 @@
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2012 - DreamRunner -
+  Copyright &copy; 2014 - DreamRunner -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -197,7 +194,7 @@
       
     (function () {
       var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     }());
 </script>
@@ -208,7 +205,7 @@
 <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
   if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
+  js = d.createElement(s); js.id = id; js.async = true;
   js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
@@ -230,7 +227,7 @@
       var twitterWidgets = document.createElement('script');
       twitterWidgets.type = 'text/javascript';
       twitterWidgets.async = true;
-      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
       document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
     })();
   </script>

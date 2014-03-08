@@ -305,11 +305,11 @@ sudo /usr/lib/lightdm/lightdm-set-defaults -s gnome-shell
 #+end_src
 接下来就可以卸载unity了。
 #+begin_src sh
-sudo apt-get -y –auto-remove purge unity
-sudo apt-get -y –auto-remove purge unity-commonp
-sudo apt-get -y –auto-remove purge unity-lens*
-sudo apt-get -y –auto-remove purge unity-services
-sudo apt-get -y –auto-remove purge unity-asset-pool
+sudo apt-get -y -–auto-remove purge unity
+sudo apt-get -y -–auto-remove purge unity-commonp
+sudo apt-get -y -–auto-remove purge unity-lens*
+sudo apt-get -y -–auto-remove purge unity-services
+sudo apt-get -y –-auto-remove purge unity-asset-pool
 #+end_src
 
 

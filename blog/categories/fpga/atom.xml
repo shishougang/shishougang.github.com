@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: FPGA | (learn&think)]]></title>
-  <link href="http://shishougang.github.com/blog/categories/fpga/atom.xml" rel="self"/>
-  <link href="http://shishougang.github.com/"/>
-  <updated>2012-11-28T18:49:15+08:00</updated>
-  <id>http://shishougang.github.com/</id>
+  <link href="http://dreamrunner.org/blog/categories/fpga/atom.xml" rel="self"/>
+  <link href="http://dreamrunner.org/"/>
+  <updated>2014-03-08T11:51:00+08:00</updated>
+  <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
     
@@ -15,12 +15,12 @@
   
   <entry>
     <title type="html"><![CDATA[Install Xilinx ISE on the Ubuntu]]></title>
-    <link href="http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/"/>
+    <link href="http://dreamrunner.org/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/"/>
     <updated>2012-09-12T20:44:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu</id>
+    <id>http://dreamrunner.org/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu</id>
     <content type="html"><![CDATA[<h2>Download Xilinx ISE</h2>
 
-<p>Official site: http://www.xilinx.com/support/download/index.htm</p>
+<p>Official site: <a href="http://www.xilinx.com/support/download/index.htm">http://www.xilinx.com/support/download/index.htm</a></p>
 
 <p>Choose <code>Full Installer for Linux</code></p>
 
@@ -37,11 +37,11 @@ sudo ./xsetup
 </code>
 * Just use the default install path: <code>/opt/Xilinx</code>
 * Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.
-<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Xilinx Software Steup  </span></figcaption>
- <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<div class='bogus-wrapper'><notextile><figure class='code'><figcaption><span>Xilinx Software Steup </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
-</span><span class='line'>...
+</span><span class='line'>&amp;hellip;
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
 <p>The details of the <code>/.xinstall/install.log</code> will be
@@ -72,20 +72,20 @@ make[1]: Leaving directory <code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_
 make -f makefile.usb.kbuild
 make[1]: Entering directory</code>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
 make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr'
---make windrvr install rc= 2
---install_windrvr6 rc = 2
---Module windrvr6 is not running.
---Module xpc4drvr is not running.
---Note: By default, the file permission of /dev/windrvr6 is enabled for the root user only
+&mdash;make windrvr install rc= 2
+&mdash;install_windrvr6 rc = 2
+&mdash;Module windrvr6 is not running.
+&mdash;Module xpc4drvr is not running.
+&mdash;Note: By default, the file permission of /dev/windrvr6 is enabled for the root user only
   and must be changed to allow access to other users.</p>
 
-<p>--real rc=2</p>
+<p>&mdash;real rc=2</p>
 
-<p>--Driver installation failed.</p>
+<p>&mdash;Driver installation failed.</p>
 
-<p>--Digilent Return code = 0
---Xilinx Return code = 1
---Return code = 1
+<p>&mdash;Digilent Return code = 0
+&mdash;Xilinx Return code = 1
+&mdash;Return code = 1
 ```
 * The Xilinx License Configuration Manager appears and configure
 * Finish</p>
