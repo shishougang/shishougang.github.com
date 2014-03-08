@@ -4,120 +4,62 @@ title: "Mac pro install Ubuntu 12.04"
 date: 2012-11-28 18:27
 comments: true
 categories: Software
-tags: [Mac Linux]
+tags: Mac Linux
 ---
 
-
-
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1">Determine your hardware revision<sup><a class="footref" name="fnr.1" href="#fn.1">1</a></sup></h2>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Determine your hardware revision<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
 <div class="outline-text-2" id="text-1">
-
-
+</div><ol class="org-ol"><li>OS X<br  /><div class="outline-text-3" id="text-1-1">
+<p>
+click in OS X on the Apple on the top left, then "About this Mac" &#x2013; "More Info&#x2026;", see the generation in the "Model Identifier" row; or &#x2026; 
+</p>
 </div>
+</li>
 
-<div id="outline-container-1-1" class="outline-3">
-<h3 id="sec-1-1">OS X</h3>
-<div class="outline-text-3" id="text-1-1">
-
-<p>click in OS X on the Apple on the top left, then "About this Mac" &ndash; "More Info&hellip;", see the generation in the "Model Identifier" row; or &hellip; 
-</p></div>
-
-</div>
-
-<div id="outline-container-1-2" class="outline-3">
-<h3 id="sec-1-2">ubuntu</h3>
-<div class="outline-text-3" id="text-1-2">
-
-
-
+<li>ubuntu<br  /><div class="outline-text-3" id="text-1-2">
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo dmidecode -s system-product-name
 </pre>
-
+</div>
 
 <!-- more -->
 </div>
+</li></ol>
 </div>
 
-</div>
-
-<div id="outline-container-2" class="outline-2">
-<h2 id="sec-2">Install rEFIt and Partition Your Mac's Hard Drive(Dual-Boot: Mac OSX and Ubuntu)</h2>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Install rEFIt and Partition Your Mac's Hard Drive(Dual-Boot: Mac OSX and Ubuntu)</h2>
 <div class="outline-text-2" id="text-2">
-
-
-</div>
-
-<div id="outline-container-2-1" class="outline-3">
-<h3 id="sec-2-1">First, install the rEFIt boot manager</h3>
-<div class="outline-text-3" id="text-2-1">
-
-<p><a href="http://refit.sourceforge.net/doc/c1s1_install.html">http://refit.sourceforge.net/doc/c1s1_install.html</a>
+</div><ol class="org-ol"><li>First, install the rEFIt boot manager<br  /><div class="outline-text-3" id="text-2-1">
+<p>
+<a href="http://refit.sourceforge.net/doc/c1s1_install.html">http://refit.sourceforge.net/doc/c1s1_install.html</a>
 To confirm that the app is working, reboot your system: if you see a
 startup menu like the one below, you're good. It may take a couple of
 reboots to appear, but it worked on the first try for me.
 </p>
 
-
 {% img right /images/blog/2012/rEFIt.jpg  'rEFIt' %}
-
 </div>
-
+</li>
+<li>Partition Your Mac's Hard Drive<br  /><ol class="org-ol"><li>Open Disk Utility (Applications &gt; Utilities &gt; Disk Utility.)<br  /></li>
+<li>Select your hard drive from the list on the left, and click the Partition tab on the right.<br  /></li>
+<li>You'll see the current partition layout. Click the right corner of the current partition and shrink it to the size you want. The display will show you the minimum size, so don't worry about going too far. Alternatively, just select the current partition and type in the final size<br  /></li>
+<li>Click apply. Disk Utility will shrink the current partition for you and free up space for your Ubuntu install.<br  /></li></ol>
+</li></ol>
 </div>
-
-<div id="outline-container-2-2" class="outline-3">
-<h3 id="sec-2-2">Partition Your Mac's Hard Drive</h3>
-<div class="outline-text-3" id="text-2-2">
-
-
-</div>
-
-<div id="outline-container-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1">Open Disk Utility (Applications &gt; Utilities &gt; Disk Utility.)</h4>
-<div class="outline-text-4" id="text-2-2-1">
-
-</div>
-
-</div>
-
-<div id="outline-container-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2">Select your hard drive from the list on the left, and click the Partition tab on the right.</h4>
-<div class="outline-text-4" id="text-2-2-2">
-
-</div>
-
-</div>
-
-<div id="outline-container-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3">You'll see the current partition layout. Click the right corner of the current partition and shrink it to the size you want. The display will show you the minimum size, so don't worry about going too far. Alternatively, just select the current partition and type in the final size</h4>
-<div class="outline-text-4" id="text-2-2-3">
-
-</div>
-
-</div>
-
-<div id="outline-container-2-2-4" class="outline-4">
-<h4 id="sec-2-2-4">Click apply. Disk Utility will shrink the current partition for you and free up space for your Ubuntu install.</h4>
-<div class="outline-text-4" id="text-2-2-4">
-
-
-</div>
-</div>
-</div>
-
-</div>
-
-<div id="outline-container-3" class="outline-2">
-<h2 id="sec-3">Install Ubuntu</h2>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Install Ubuntu</h2>
 <div class="outline-text-2" id="text-3">
-
-<p>Now that your Mac's hard drive has room for Ubuntu, pop in your
+<p>
+Now that your Mac's hard drive has room for Ubuntu, pop in your
 freshly burned Ubuntu CD and reboot. rEFIt will appear and ask you if
 you'd like to boot to the CD. Select the CD and let Ubuntu start up.
 It may take a while, but be patient. Once it's up and running, it'll
 ask you if you want to try Ubuntu (as a Live CD) or install it.
 </p>
+
 <p>
 start the Ubuntu Installer from the desktop icon. When prompted,
 choose to manually partition. Select the EXT4 partition and click
@@ -125,67 +67,60 @@ change. Select to use the space as the EXT4 filesystem and root (/) as
 the mount point. You will also want to check the box to format the
 partition.
 </p>
+
 <p>
 Note: if there is a warning for booting, I just ignore it and it
 has no problem.
 </p>
 </div>
-
 </div>
-
-<div id="outline-container-4" class="outline-2">
-<h2 id="sec-4">Let rEFIt Fix Your Partition Tables</h2>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Let rEFIt Fix Your Partition Tables</h2>
 <div class="outline-text-2" id="text-4">
-
-<p>According to <a href="https://help.ubuntu.com/community/MactelSupportTeam/AppleIntelInstallation">Ubuntu's Mactel</a> installation guide, there's a bug in the
+<p>
+According to <a href="https://help.ubuntu.com/community/MactelSupportTeam/AppleIntelInstallation">Ubuntu's Mactel</a> installation guide, there's a bug in the
 Ubuntu installer that can cause boot problems after installing and
 cause problems booting into OS X or Ubuntu. Thankfully, it's an easy
 fix for rEFIt, you just have to boot into rEFIt's partition tool and
 check. Here's how:
 </p>
-<ul>
+
+<ul class="org-ul">
 <li>Reboot your Mac. When rEFIt appears, select the "Partition Tool" from the startup menu.
 </li>
 <li>The tool will load automatically. In most cases, rEFIt will notice
-  the problem, and ask you for permission to sync your partition
-  tables. Type "Y."
-
+the problem, and ask you for permission to sync your partition
+tables. Type "Y."
 </li>
+
 <li>The process takes a couple of seconds, but when it's finished, shut
-  down your Mac. rEFIt hasn't read the new partition tables yet, so if
-  you try to boot into anything at this stage, your Mac will hang.
-
+down your Mac. rEFIt hasn't read the new partition tables yet, so if
+you try to boot into anything at this stage, your Mac will hang.
 </li>
+
 <li>Start your Mac again, and pick your preferred OS. If you enter the
-  Partition Tool again, you'll see a notification that your partition
-  tables are in sync.
+Partition Tool again, you'll see a notification that your partition
+tables are in sync.
 </li>
 </ul>
-
 
 <p>
 Now here's the catch: If the rEFIt partition tool tells you that the
 tables are out of sync but doesn't offer to fix them, or if you see
-another strange error message, head over to <a href="https://help.ubuntu.com/community/MactelSupportTeam/AppleIntelInstallation#Detailed_How-To">this section of the Ubuntu install guide</a> and scroll down to "Fix Your Partition Tables" for a
+another strange error message, head over to <a href="https://help.ubuntu.com/community/MactelSupportTeam/AppleIntelInstallation#Detailed_How-To">this section of the Ubuntu
+install guide</a> and scroll down to "Fix Your Partition Tables" for a
 breakdown of what you should do for each type of error.
 </p>
 </div>
-
 </div>
-
-<div id="outline-container-5" class="outline-2">
-<h2 id="sec-5">configuration</h2>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> configuration</h2>
 <div class="outline-text-2" id="text-5">
-
-
-</div>
-
-<div id="outline-container-5-1" class="outline-3">
-<h3 id="sec-5-1">Screen(Not)</h3>
-<div class="outline-text-3" id="text-5-1">
-
-<p>The resolution is right recognised, the LED-backlit works properly.
+</div><ol class="org-ol"><li>Screen(Not)<br  /><div class="outline-text-3" id="text-5-1">
+<p>
+The resolution is right recognised, the LED-backlit works properly.
 </p>
+
 <p>
 NOTE: In order to be able to adjust the brightness you will have to
 install the apple-gmux package and boot with acpi<sub>backlight</sub>=vendor
@@ -194,14 +129,10 @@ in GRUB<sub>CMDLINE</sub><sub>LINUX</sub> line. Details:
 <a href="https://wiki.ubuntu.com/Kernel/AppleGmuxBacklight">https://wiki.ubuntu.com/Kernel/AppleGmuxBacklight</a>
 </p>
 </div>
-
-</div>
-
-<div id="outline-container-5-2" class="outline-3">
-<h3 id="sec-5-2">Colors</h3>
-<div class="outline-text-3" id="text-5-2">
-
-<p>import these profiles as .icc files in System Settings - Color by
+</li>
+<li>Colors<br  /><div class="outline-text-3" id="text-5-2">
+<p>
+import these profiles as .icc files in System Settings - Color by
  selecting the appropriate screen icon, clicking "add profile" and
  navigating to the .icc files (located in OS X under
  <code>/Users/username/Library/ColorSync/Profiles</code> or
@@ -209,41 +140,41 @@ in GRUB<sub>CMDLINE</sub><sub>LINUX</sub> line. Details:
  if the settings were saved for all users). After this, 
 choosing the radio button under the new OS X profile should
  yield a nice color profile. 
-</p></div>
-
+</p>
 </div>
+</li>
 
-<div id="outline-container-5-3" class="outline-3">
-<h3 id="sec-5-3">HFS+</h3>
-<div class="outline-text-3" id="text-5-3">
-
-<p>HFS is mounted as Read-Only. By turning <a href="http://support.apple.com/kb/ht2355">journaling</a> off in OS X, the
+<li>HFS+<br  /><div class="outline-text-3" id="text-5-3">
+<p>
+HFS is mounted as Read-Only. By turning <a href="http://support.apple.com/kb/ht2355">journaling</a> off in OS X, the
 HFS+ file system will be read/write under Linux. 
 </p>
+
 <p>
 This is the recommended solution if you need read/write access to your OS X partition.
 </p>
+
 <p>
 It's also possible to mount HFS+ journaling-enabled volumes using the
 "-o force,rw" option though this is extremely risky.
 </p>
+
 <p>
 Leaving the HFS's journaling turned on you're able to access it as root. 
-</p></div>
-
+</p>
 </div>
+</li>
 
-<div id="outline-container-5-4" class="outline-3">
-<h3 id="sec-5-4">Touchpad</h3>
-<div class="outline-text-3" id="text-5-4">
-
-<p>Works fine out-of-the-box. You can disable the mouse-click with the
+<li>Touchpad<br  /><div class="outline-text-3" id="text-5-4">
+<p>
+Works fine out-of-the-box. You can disable the mouse-click with the
 trackpad tap and the horizontal scrolling in Preferences.
 </p>
+
 <p>
 Unity supports multitouch with this funcs:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">1 finger
     <span style="color: #eedd82;">move</span> = move the cursor;
@@ -255,75 +186,63 @@ Unity supports multitouch with this funcs:
     <span style="color: #eedd82;">move</span> = move the window and shows resizing options; 
 4 fingers
     <span style="color: #eedd82;">move</span> = show/hide the launcher (horizontal-scroll, enable auto-hide the launcher first);
-    single-tap = show the dash. 
+    single-tap = show the dash.
 </pre>
-
+</div>
 <p>
 To get multitouch with just two finger scrolling and drag-and-drop
 follow these instructions:
 </p>
 
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo add-apt-repository ppa:mactel-support &amp;&amp; sudo apt-get update
 sudo apt-get install xserver-xorg-input-synaptics
 </pre>
-
-
-
+</div>
 </div>
 
-<div id="outline-container-5-4-1" class="outline-4">
-<h4 id="sec-5-4-1">Palm Recognition</h4>
-<div class="outline-text-4" id="text-5-4-1">
-
-
+<ol class="org-ol"><li>Palm Recognition<br  /><div class="outline-text-4" id="text-5-4-1">
 <p>
 By default palm recognition is not turned off, so you might have trouble moving the cursor or clicking something by brushing the trackpad with your palm while typing. To turn palm recognition on, open up a terminal and copy your default conf file:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo cp /usr/share/X11/xorg.conf.d/50-synaptics.conf /etc/X11/xorg.conf.d/my-synaptics.conf
 </pre>
-
+</div>
 <p>
 Now edit the new conf file:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">gksudo gedit /etc/X11/xorg.conf.d/my-synaptics.conf
 </pre>
-
+</div>
 <p>
 and add the following line just before the EndSection marker of your input class:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">Option <span style="color: #ffa07a;">"PalmDetect"</span> <span style="color: #ffa07a;">"on"</span>
 </pre>
-
 </div>
-
 </div>
+</li>
 
-<div id="outline-container-5-4-2" class="outline-4">
-<h4 id="sec-5-4-2">Fine-tuning the touchpad</h4>
-<div class="outline-text-4" id="text-5-4-2">
-
-<p>You can play with other options offered by Synaptic 
+<li>Fine-tuning the touchpad<br  /><div class="outline-text-4" id="text-5-4-2">
+<p>
+You can play with other options offered by Synaptic 
 input drivers that are explained <a href="http://manpages.ubuntu.com/manpages/karmic/man4/synaptics.4.html">here</a> and in this <a href="http://uselessuseofcat.com/?p=74">blog post</a>. 
 </p>
 </div>
-</div>
-
-</div>
-
-<div id="outline-container-5-5" class="outline-3">
-<h3 id="sec-5-5"><span class="todo TODO">TODO</span> External Monitor</h3>
-<div class="outline-text-3" id="text-5-5">
-
-<p>External monitors connected via HDMI work out of the box.
+</li></ol>
+</li>
+<li><span class="todo TODO">TODO</span> External Monitor<br  /><div class="outline-text-3" id="text-5-5">
+<p>
+External monitors connected via HDMI work out of the box.
 </p>
+
 <p>
 If your external display's native resolution is not recognised when
  connected via a VGA port (only a lower resolution, such as 800x600 is 
@@ -331,120 +250,116 @@ offered, for example), then you need to issue a couple of xrandr
 commands in a terminal to force add the desired resolution. 
 The source of information for this fix comes from <a href="http://mac.linux.be/content/setting-xorgconf-manually-xrandr">here</a>.
 </p>
+
 <p>
 To check that xrandr is installed issue:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">$ sudo apt-get install xrandr
 </pre>
-
+</div>
 <p>
 You have to create a modeline using the gtf or cvt utility. For
 example, if you want to add a mode with resolution 1920x1080, you can
 enter the following command (The output is shown following):
 </p>
 
-
+<div class="org-src-container">
 
 <pre class="src src-sh">$ cvt 1920 1080
 <span style="color: #ff7f24;"># </span><span style="color: #ff7f24;">1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span>
 Modeline <span style="color: #ffa07a;">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 </pre>
-
+</div>
 <p>
 Then copy the information after the word "Modeline" into the xrandr command (which would in my example state):
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">xrandr --newmode <span style="color: #ffa07a;">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 </pre>
-
+</div>
 <p>
 Now get the code of your external monitor by issuing xrandr. For me the external screen is branded DP1.
 </p>
+
 <p>
 Now add this mode to the available ones for your external screen:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">xrandr --addmode DP1 1920x1080_60.00
 </pre>
-
+</div>
 <p>
 And select it:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">xrandr --output DP1 --mode 1920x1080_60.00
 </pre>
-
+</div>
 <p>
 If everything goes well, the resolution should be ok now and you'll have the desired option in the normal display preferences. This will have to be repeated every time. The easiest way to automate the task, add the 3 xrandr commands to the ~/.xprofile file.
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">$ gedit ~/.xprofile
 </pre>
-
+</div>
 <p>
 The file should look something like:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">xrandr --newmode <span style="color: #ffa07a;">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
 xrandr --addmode DP1 1920x1080_60.00
 xrandr --output DP1 --mode 1920x1080_60.00
 </pre>
-
+</div>
 <p>
 Afterwards, you have to add executable access to the file:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">$ chmod +x ~/.xprofile
 </pre>
-
+</div>
 <p>
 Note: if you make a mistake in the .xprofile file, you might have trouble reverting back to normal settings - in this case you can always use ctrl+alt+F1 to open the shell interface and issue mv ~/.xprofile ~/.xprofile-old; sudo reboot to get the previous settings back. 
 </p>
 </div>
-
-</div>
-
-<div id="outline-container-5-6" class="outline-3">
-<h3 id="sec-5-6">Sound</h3>
-<div class="outline-text-3" id="text-5-6">
-
-<p>Works out-of the box, but some volume corrections are necessary.
+</li>
+<li>Sound<br  /><div class="outline-text-3" id="text-5-6">
+<p>
+Works out-of the box, but some volume corrections are necessary.
 </p>
+
 <p>
 You can install gnome-alsamixer for a nice GUI to set up your sound:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo apt-get install gnome-alsamixer
 </pre>
-
 </div>
-
 </div>
+</li>
 
-<div id="outline-container-5-7" class="outline-3">
-<h3 id="sec-5-7">Wireless(more <sup><a class="footref" name="fnr.2" href="#fn.2">2</a></sup>)</h3>
-<div class="outline-text-3" id="text-5-7">
-
-<p>   There is no official support yet in Ubuntu 11.10, but you can get
-   it working with the following repository:
+<li>Wireless(more <sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup>)<br  /><div class="outline-text-3" id="text-5-7">
+<p>
+There is no official support yet in Ubuntu 11.10, but you can get
+it working with the following repository:
 </p>
 
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo add-apt-repository ppa:mpodroid/mactel
 sudo apt-get update
 sudo apt-get install b43-fwcutter firmware-b43-installer
 </pre>
-
+</div>
 <p>
 Then install the <code>linux-backports-modules-cw-3.2-oneiric-generic</code> or, if
 you have the pae kernel installed, the
@@ -455,200 +370,174 @@ work for Precise, with the above installation of
 "<code>linux-backports-modules-cw-3.3-precise-generic</code>" .
 </p>
 
+
 <p>
 Edit the /etc/modprobe.d/blacklist.conf and add the line:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">blacklist ndiswrapper
 </pre>
-
+</div>
 <p>
 Create or edit the file <code>/etc/pm/config.d/modules</code> and make sure the
 wireless modules (b43 and bcma) are blacklisted:
 </p>
 
-
+<div class="org-src-container">
 
 <pre class="src src-sh"><span style="color: #eedd82;">SUSPEND_MODULES</span>=<span style="color: #ffa07a;">"b43 bcma"</span>
 </pre>
-
+</div>
 <p>
 Reboot and the wireless should work. 
 </p>
 </div>
-
-</div>
-
-<div id="outline-container-5-8" class="outline-3">
-<h3 id="sec-5-8">Graphics</h3>
-<div class="outline-text-3" id="text-5-8">
-
-<p>System info says
+</li>
+<li>Graphics<br  /><div class="outline-text-3" id="text-5-8">
+<p>
+System info says
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">Graphics: unknown.  
 Driver: unknown,  
 Experience: Standard.
 </pre>
-
+</div>
 <p>
 it means that it cannot acquire the information because glxinfo is not installed on the system.
 </p>
+
 <p>
 Install it by clicking here:
 <a href="https://apps.ubuntu.com/cat/applications/mesa-utils/">https://apps.ubuntu.com/cat/applications/mesa-utils/</a>
 Install via the software center
 </p>
+
 <p>
 Or by typing:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo apt-get install mesa-utils
 </pre>
-
-
 </div>
 </div>
-
+</li></ol>
 </div>
-
-<div id="outline-container-6" class="outline-2">
-<h2 id="sec-6">Install Software</h2>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Install Software</h2>
 <div class="outline-text-2" id="text-6">
-
-
-</div>
-
-<div id="outline-container-6-1" class="outline-3">
-<h3 id="sec-6-1">lightum<sup><a class="footref" name="fnr.3" href="#fn.3">3</a></sup></h3>
-<div class="outline-text-3" id="text-6-1">
-
-<p>Lightum is a daemon to control the keyboard brightness and screen backlight on MacBook based laptops.
+</div><ol class="org-ol"><li>lightum<sup><a id="fnr.3" name="fnr.3" class="footref" href="#fn.3">3</a></sup><br  /><div class="outline-text-3" id="text-6-1">
+<p>
+Lightum is a daemon to control the keyboard brightness and screen backlight on MacBook based laptops.
 </p>
+
 <p>
 If you are running Ubuntu, you can install it by adding lightum-mba ppa to your system:
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo add-apt-repository ppa:poliva/lightum-mba
 sudo apt-get update
 sudo apt-get install lightum
 </pre>
-
+</div>
 <p>
 Otherwise, you can build it from <a href="https://github.com/poliva/lightum">source</a>. 
-</p></div>
-
+</p>
 </div>
+</li>
 
-<div id="outline-container-6-2" class="outline-3">
-<h3 id="sec-6-2">lightum-indicator<sup><a class="footref" name="fnr.4" href="#fn.4">4</a></sup></h3>
-<div class="outline-text-3" id="text-6-2">
-
-
-
+<li>lightum-indicator<sup><a id="fnr.4" name="fnr.4" class="footref" href="#fn.4">4</a></sup><br  /><div class="outline-text-3" id="text-6-2">
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo add-apt-repository ppa:poliva/lightum-mba
 sudo apt-get update
 sudo apt-get install lightum-indicator
 </pre>
-
 </div>
-
 </div>
+</li>
 
-<div id="outline-container-6-3" class="outline-3">
-<h3 id="sec-6-3">ubuntu-tweak</h3>
-<div class="outline-text-3" id="text-6-3">
-
-
-
+<li>ubuntu-tweak<br  /><div class="outline-text-3" id="text-6-3">
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo add-apt-repository ppa:tualatrix/ppa
 sudo apt-get update
 sudo apt-get install ubuntu-tweak
 </pre>
-
 </div>
-
 </div>
+</li>
 
-<div id="outline-container-6-4" class="outline-3">
-<h3 id="sec-6-4">gnome</h3>
-<div class="outline-text-3" id="text-6-4">
-
-<p>ubuntu 12.04 中安装gnome桌面的命令为：
+<li>gnome<br  /><div class="outline-text-3" id="text-6-4">
+<p>
+ubuntu 12.04 中安装gnome桌面的命令为：
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo apt-get install gnome-session-fallback
 &#20063;&#21487;&#20197;&#29992;&#65306;
 sudo apt-get install gnome-panel
 </pre>
-
+</div>
 
 <p>
 安装好gnome桌面后注销重新登录，在用户名右边有一个图标，可以选择使用进入的桌面，我选择了gnome classic，然后就可以重返经典的gnome桌面了。
 在删除unity桌面之前，要把ubuntu默认的登录界面也改为gnome，命令如下：
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo /usr/lib/lightdm/lightdm-set-defaults -s gnome-classic
 </pre>
-
+</div>
 <p>
 这是设置登录界面为 gnome classic的，如果你喜欢gnome3，则用：
 </p>
-
+<div class="org-src-container">
 
 <pre class="src src-sh">sudo /usr/lib/lightdm/lightdm-set-defaults -s gnome-shell
 </pre>
-
+</div>
 <p>
 接下来就可以卸载unity了。
 </p>
+<div class="org-src-container">
 
-
-<pre class="src src-sh">sudo apt-get -y &#8211;auto-remove purge unity
-sudo apt-get -y &#8211;auto-remove purge unity-commonp
-sudo apt-get -y &#8211;auto-remove purge unity-lens*
-sudo apt-get -y &#8211;auto-remove purge unity-services
-sudo apt-get -y &#8211;auto-remove purge unity-asset-pool
+<pre class="src src-sh">sudo apt-get -y -&#8211;auto-remove purge unity
+sudo apt-get -y -&#8211;auto-remove purge unity-commonp
+sudo apt-get -y -&#8211;auto-remove purge unity-lens*
+sudo apt-get -y -&#8211;auto-remove purge unity-services
+sudo apt-get -y &#8211;-auto-remove purge unity-asset-pool
 </pre>
-
-
-
 </div>
-
 </div>
+</li>
 
-<div id="outline-container-6-5" class="outline-3">
-<h3 id="sec-6-5">other</h3>
-<div class="outline-text-3" id="text-6-5">
-
-
+<li>other<br  /></li></ol>
+</div>
 <div id="footnotes">
 <h2 class="footnotes">Footnotes: </h2>
 <div id="text-footnotes">
-<p class="footnote"><sup><a class="footnum" name="fn.1" href="#fnr.1">1</a></sup> <a href="https://help.ubuntu.com/community/MacBookPro">https://help.ubuntu.com/community/MacBookPro</a>
-</p>
 
-
-<p class="footnote"><sup><a class="footnum" name="fn.2" href="#fnr.2">2</a></sup> <a href="http://homepage.uibk.ac.at/~c705283/archives/2011/09/04/linux_support_for_broadcom_4331_wireless_chip_macbook_pro_81/index.html">http://homepage.uibk.ac.at/~c705283/archives/2011/09/04/linux_support_for_broadcom_4331_wireless_chip_macbook_pro_81/index.html</a>
-</p>
-
-
-<p class="footnote"><sup><a class="footnum" name="fn.3" href="#fnr.3">3</a></sup> <a href="https://github.com/poliva/lightum#lightum---macbook-automatic-light-sensor-daemon">https://github.com/poliva/lightum#lightum&mdash;macbook-automatic-light-sensor-daemon</a>
-</p>
-
-
-<p class="footnote"><sup><a class="footnum" name="fn.4" href="#fnr.4">4</a></sup> <a href="https://github.com/poliva/lightum-indicator">https://github.com/poliva/lightum-indicator</a>
+<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
+<a href="https://help.ubuntu.com/community/MacBookPro">https://help.ubuntu.com/community/MacBookPro</a>
 </p></div>
-</div>
-</div>
+
+<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">
+<a href="http://homepage.uibk.ac.at/~c705283/archives/2011/09/04/linux_support_for_broadcom_4331_wireless_chip_macbook_pro_81/index.html">http://homepage.uibk.ac.at/~c705283/archives/2011/09/04/linux_support_for_broadcom_4331_wireless_chip_macbook_pro_81/index.html</a>
+</p></div>
+
+<div class="footdef"><sup><a id="fn.3" name="fn.3" class="footnum" href="#fnr.3">3</a></sup> <p class="footpara">
+<a href="https://github.com/poliva/lightum#lightum---macbook-automatic-light-sensor-daemon">https://github.com/poliva/lightum#lightum---macbook-automatic-light-sensor-daemon</a>
+</p></div>
+
+<div class="footdef"><sup><a id="fn.4" name="fn.4" class="footnum" href="#fnr.4">4</a></sup> <p class="footpara">
+<a href="https://github.com/poliva/lightum-indicator">https://github.com/poliva/lightum-indicator</a>
+</p></div>
+
 
 </div>
 </div>

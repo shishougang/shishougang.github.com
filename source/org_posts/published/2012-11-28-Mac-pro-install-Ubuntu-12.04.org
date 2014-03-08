@@ -1,5 +1,4 @@
 
-#+TITLE: Mac pro install Ubuntu 12.04
 #+begin_html
 ---
 layout: post
@@ -11,7 +10,6 @@ tags: [Mac Linux]
 ---
 #+end_html
 #+options: H:1 num:t toc:t 
-
 
 * Determine your hardware revision[fn:1]
 ** OS X
@@ -305,11 +303,11 @@ sudo /usr/lib/lightdm/lightdm-set-defaults -s gnome-shell
 #+end_src
 接下来就可以卸载unity了。
 #+begin_src sh
-sudo apt-get -y –auto-remove purge unity
-sudo apt-get -y –auto-remove purge unity-commonp
-sudo apt-get -y –auto-remove purge unity-lens*
-sudo apt-get -y –auto-remove purge unity-services
-sudo apt-get -y –auto-remove purge unity-asset-pool
+sudo apt-get -y -–auto-remove purge unity
+sudo apt-get -y -–auto-remove purge unity-commonp
+sudo apt-get -y -–auto-remove purge unity-lens*
+sudo apt-get -y -–auto-remove purge unity-services
+sudo apt-get -y –-auto-remove purge unity-asset-pool
 #+end_src
 
 
