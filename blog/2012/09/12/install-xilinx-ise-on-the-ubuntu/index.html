@@ -10,8 +10,7 @@
 
   
   <meta name="description" content="Download Xilinx ISE
-Official site: http://www.xilinx.com/support/download/index.htm Choose Full Installer for Linux Install
-Install1
+Official site: http://www.xilinx.com/support/download/index.htm Choose Full Installer for Linux Install Install1
 2
 3
 4
@@ -140,6 +139,7 @@ MathJax.Hub.Config({
 <!-- more --></p>
 
 <h2 id="install">Install</h2>
+
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
@@ -161,8 +161,9 @@ MathJax.Hub.Config({
 </span><span class="line">...
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>The details of the <code>/.xinstall/install.log</code> will be
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>install.log</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<p>The details of the <code>/.xinstall/install.log</code> will be</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>install.log</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -202,7 +203,7 @@ MathJax.Hub.Config({
 <span class="line-number">38</span>
 <span class="line-number">39</span>
 <span class="line-number">40</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">--Installing windrvr6---------------------------------------------
+</pre></td><td class="code"><pre><code class="bash"><span class="line">--Installing windrvr6---------------------------------------------
 </span><span class="line">--Checking version.
 </span><span class="line">--File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
 </span><span class="line">--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o does not exist.
@@ -242,9 +243,11 @@ MathJax.Hub.Config({
 </span><span class="line">--Digilent Return <span class="nv">code</span> <span class="o">=</span> 0
 </span><span class="line">--Xilinx Return <span class="nv">code</span> <span class="o">=</span> 1
 </span><span class="line">--Return <span class="nv">code</span> <span class="o">=</span> 1
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-* The Xilinx License Configuration Manager appears and configure
-* Finish</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>The Xilinx License Configuration Manager appears and configure</li>
+  <li>Finish</li>
+</ul>
 
 <h2 id="installing-cable-drivers">Installing Cable Drivers</h2>
 <ul>
@@ -262,17 +265,18 @@ MathJax.Hub.Config({
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-  <li>Download the driver source and install
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>download and install</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+  <li>Download the driver source and install</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>download and install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
 <span class="line-number">6</span>
 <span class="line-number">7</span>
-<span class="line-number">8</span></figure></notextile></li>
-</ul>
-<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line"><span class="nb">cd</span> /opt/Xilinx
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> /opt/Xilinx
 </span><span class="line">sudo git clone git://git.zerfleddert.de/usb-driver
 </span><span class="line">
 </span><span class="line"><span class="nb">cd </span>usb-driver/
@@ -280,9 +284,10 @@ MathJax.Hub.Config({
 </span><span class="line">sudo make
 </span><span class="line">On 64-bit
 </span><span class="line">sudo make lib32
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/notextile&gt;&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="setup-up-the-driver">Setup up the driver</h2>
+
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>setup up</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
@@ -310,6 +315,7 @@ MathJax.Hub.Config({
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="setting-the-ise">Setting the ISE</h2>
+
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Setting </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
@@ -329,12 +335,14 @@ MathJax.Hub.Config({
 </span><span class="line">. /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
 </span><span class="line">. /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>## Restart udev
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Restart udev</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">/etc/init.d/boot.udev restart
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+<p>## Restart udev</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Restart udev</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">/etc/init.d/boot.udev restart
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="fixing-the-path">Fixing the Path</h2>
+
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Fixing the Path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
@@ -347,19 +355,22 @@ MathJax.Hub.Config({
 <p>## Run the IMPACK to check everything</p>
 
 <p class="warning"> Errors </p>
-<p>If it appears:
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Errors</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<p>If it appears:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Errors</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">INFO:iMPACT - Selected Current Working Directory:
+</pre></td><td class="code"><pre><code class="bash"><span class="line">INFO:iMPACT - Selected Current Working Directory:
 </span><span class="line">   <span class="s1">&#39;/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&#39;</span>
 </span><span class="line">libusb couldn<span class="err">&#39;</span>t open USB device /dev/bus/usb/002/035: Permission denied.
 </span><span class="line">libusb requires write access to USB device nodes.
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-* First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code>
-* Restart udev <code>/etc/init.d/boot.udev restart</code>
-* Still wrong, reboot and try again.</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code></li>
+  <li>Restart udev <code>/etc/init.d/boot.udev restart</code></li>
+  <li>Still wrong, reboot and try again.</li>
+</ul>
 
 <h2 id="reference">Reference</h2>
 <pre><code>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux

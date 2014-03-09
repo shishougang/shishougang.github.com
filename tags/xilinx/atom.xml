@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Xilinx | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/xilinx/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-09T22:13:40+08:00</updated>
+  <updated>2014-03-09T22:14:44+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -25,6 +25,7 @@
 <!-- more --></p>
 
 <h2 id="install">Install</h2>
+
 <p><code>bash Install
 cd the folder
 untar the archives
@@ -40,8 +41,9 @@ sudo ./xsetup
 </span><span class='line'>…
 </span></code></pre></td></tr></table></div></figure></notextile></div></p>
 
-<p>The details of the <code>/.xinstall/install.log</code> will be
-``` bash install.log
+<p>The details of the <code>/.xinstall/install.log</code> will be</p>
+
+<p>``` bash install.log
 –Installing windrvr6———————————————
 –Checking version.
 –File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
@@ -99,11 +101,12 @@ sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxlo
 </code></p>
 
 <ul>
-  <li>Download the driver source and install
-``` bash download and install
-cd /opt/Xilinx 
-sudo git clone git://git.zerfleddert.de/usb-driver</li>
+  <li>Download the driver source and install</li>
 </ul>
+
+<p>``` bash download and install
+cd /opt/Xilinx 
+sudo git clone git://git.zerfleddert.de/usb-driver</p>
 
 <p>cd usb-driver/ 
 On 32-bit
@@ -113,6 +116,7 @@ sudo make lib32
 ```</p>
 
 <h2 id="setup-up-the-driver">Setup up the driver</h2>
+
 <p><code>bash setup up
 $ ./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
 Looking for USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
@@ -129,6 +133,7 @@ done
 </code></p>
 
 <h2 id="setting-the-ise">Setting the ISE</h2>
+
 <p><code>bash Setting 
 cd /opt/Xilinx/14.2/ISE_DS
 bash ./settings32.sh 
@@ -140,12 +145,14 @@ bash ./settings32.sh
 . /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
 . /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
 </code>
-## Restart udev
-<code>bash Restart udev
+## Restart udev</p>
+
+<p><code>bash Restart udev
 /etc/init.d/boot.udev restart
 </code></p>
 
 <h2 id="fixing-the-path">Fixing the Path</h2>
+
 <p><code>bash Fixing the Path
 32-bit
 echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin" &gt;&gt; ~/.bashrc echo "export PATH" &gt;&gt; ~/.bashrc 
@@ -155,8 +162,9 @@ echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/" &gt;&gt; ~/.bashrc ech
 ## Run the IMPACK to check everything</p>
 
 <p class="warning"> Errors </p>
-<p>If it appears:
-<code>bash Errors
+<p>If it appears:</p>
+
+<p><code>bash Errors
 INFO:iMPACT - Selected Current Working Directory:
    '/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin'
 libusb couldn't open USB device /dev/bus/usb/002/035: Permission denied.
