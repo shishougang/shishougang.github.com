@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-08T16:15:51+08:00</updated>
+  <updated>2014-03-09T16:49:50+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,261 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Gflags 简明使用]]></title>
+    <link href="http://shishougang.github.com/blog/2014/03/09/gflags-jian-ming-shi-yong/"/>
+    <updated>2014-03-09T11:53:54+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/03/09/gflags-jian-ming-shi-yong</id>
+    <content type="html"><![CDATA[<h2>简介</h2>
+
+<p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：<a href="http://gflags.googlecode.com/svn/trunk/doc/gflags.html">http://gflags.googlecode.com/svn/trunk/doc/gflags.html</a></p>
+
+<p>你能从<a href="http://shishougang.github.com/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
+
+<h2>example源代码</h2>
+
+<p>先看example源代码，然后逐步介绍。</p>
+
+<figure class='code'><figcaption><span>example.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="cp">#include &lt;gflags/gflags.h&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">languages</span><span class="p">,</span> <span class="s">&quot;english,french,german&quot;</span><span class="p">,</span> <span class="s">&quot;comma-separated list of languages to offer in the &#39;lang&#39; menu&quot;</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="n">google</span><span class="o">::</span><span class="n">ParseCommandLineFlags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;argc=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">argc</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="n">FLAGS_big_menu</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;big menu is ture&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class='line'>    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;big menu is flase&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;languages=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">FLAGS_languages</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+</span><span class='line'>  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>运行程序</h3>
+
+<ul>
+<li>直接运行</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  ➜  bin  ./sample
+</span><span class='line'>  <span class="nv">argc</span><span class="o">=</span>1
+</span><span class='line'>  big menu is ture
+</span><span class='line'>  <span class="nv">languages</span><span class="o">=</span>english,french,german
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>help命令</li>
+</ul>
+
+
+<figure class='code'><figcaption><span>run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  ➜  bin  ./sample --help
+</span><span class='line'>  sample: Warning: SetUsageMessage<span class="o">()</span> never called
+</span><span class='line'>
+</span><span class='line'>  Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
+</span><span class='line'>    -big_menu <span class="o">(</span>Include <span class="s1">&#39;advanced&#39;</span> options in the menu listing<span class="o">)</span> <span class="nb">type</span>: bool
+</span><span class='line'>      default: <span class="nb">true</span>
+</span><span class='line'>    -languages <span class="o">(</span>comma-separated list of languages to offer in the <span class="s1">&#39;lang&#39;</span> menu<span class="o">)</span>
+</span><span class='line'>      <span class="nb">type</span>: string default: <span class="s2">&quot;english,french,german&quot;</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>  Flags from src/gflags.cc:
+</span><span class='line'>    -flagfile <span class="o">(</span>load flags from file<span class="o">)</span> <span class="nb">type</span>: string default: <span class="s2">&quot;&quot;</span>
+</span><span class='line'>  .........
+</span><span class='line'>
+</span><span class='line'>  ➜  bin  ./sample --helpshort
+</span><span class='line'>  sample: Warning: SetUsageMessage<span class="o">()</span> never called
+</span><span class='line'>
+</span><span class='line'>  Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
+</span><span class='line'>    -big_menu <span class="o">(</span>Include <span class="s1">&#39;advanced&#39;</span> options in the menu listing<span class="o">)</span> <span class="nb">type</span>: bool
+</span><span class='line'>      default: <span class="nb">true</span>
+</span><span class='line'>    -languages <span class="o">(</span>comma-separated list of languages to offer in the <span class="s1">&#39;lang&#39;</span> menu<span class="o">)</span>
+</span><span class='line'>      <span class="nb">type</span>: string default: <span class="s2">&quot;english,french,german&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>在程序里定义参数</h2>
+
+<h3>包含头文件</h3>
+
+<figure class='code'><figcaption><span>header_file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">gflags</span><span class="o">/</span><span class="n">gflags</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>利用gflag提供的宏定义参数</h3>
+
+<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。</p>
+
+<figure class='code'><figcaption><span>define_flags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
+</span><span class='line'><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">languages</span><span class="p">,</span> <span class="s">&quot;english,french,german&quot;</span><span class="p">,</span> <span class="s">&quot;comma-separated list of languages to offer in the &#39;lang&#39; menu&quot;</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>gflags暂时支持如下参数的类型：</p>
+
+<figure class='code'><figcaption><span>supported_types</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='sh'><span class='line'>DEFINE_bool: boolean
+</span><span class='line'>DEFINE_int32: 32-bit integer
+</span><span class='line'>DEFINE_int64: 64-bit integer
+</span><span class='line'>DEFINE_uint64: unsigned 64-bit integer
+</span><span class='line'>DEFINE_double: double
+</span><span class='line'>DEFINE_string: C++ string
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>访问参数</h2>
+
+<p>通过FLAGS_name像正常变量一样访问标志参数。在这个程序中，通过
+<code>FLAGS_big_menu</code>和<code>FLAGS_languages</code>访问它们。</p>
+
+<h2>不同文件访问参数</h2>
+
+<p>如果想再另外一个不是定义这个参数的文件访问这个参数的话，以参数
+<code>FLAGS_big_menu</code>为例，用宏<code>DECLARE_bool(big_menu）</code>来声明引入这个参数。
+这个宏相当于做了<code>extern FLAGS_big_menu</code>.</p>
+
+<h2>整合一起，初始化所有参数</h2>
+
+<p>定义号参数后，最后要告诉执行程序去处理命令行传入的参数，使得
+<code>FLAGS_*</code>参数们得到正确赋值。</p>
+
+<p>通常就是再<code>main()</code>函数中调用;</p>
+
+<figure class='code'><figcaption><span>set_up_flag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="n">google</span><span class="o">::</span><span class="n">ParseCommandLineFlags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p><code>argc</code>和<code>argv</code>就是main的入口参数，因为这个函数会改变他们的值，所以都是
+以指针传入。</p>
+
+<p>第三个参数被称为<code>remove_flags</code>。如果它是<code>true</code>,<code>ParseCommandLineFlags</code>会
+从<code>argv</code>中移除标识和它们的参数，相应减少<code>argc</code>的值。然后argv只保留命令
+行参数。</p>
+
+<p>相反，<code>remove_flags</code>是<code>false</code>,<code>ParseCommandLineFlags</code>会保留<code>argc</code>不变，
+但将会重新调整它们的顺序，使得标识再前面。</p>
+
+<p>Note: <code>./sample --big_menu=false arg1</code>中再<code>big_menu</code>是标识，<code>false</code>是
+它的参数，<code>arg1</code>是命令行参数。</p>
+
+<h2>命令行设置参数</h2>
+
+<p>gflags提供多种命令行设置参数。</p>
+
+<p><code>string</code>和<code>int</code>之类，可以用如下方式：</p>
+
+<figure class='code'><figcaption><span>set_languages</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>app_containing_foo --languages<span class="o">=</span><span class="s2">&quot;chinese,japanese,korean&quot;</span>
+</span><span class='line'>app_containing_foo -languages<span class="o">=</span><span class="s2">&quot;chinese,japanese,korean&quot;</span>
+</span><span class='line'>app_containing_foo --languages <span class="s2">&quot;chinese,japanese,korean&quot;</span>
+</span><span class='line'>app_containing_foo -languages <span class="s2">&quot;chinese,japanese,korean&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>对于<code>boolean</code>的标识来说，用如下方式:</p>
+
+<figure class='code'><figcaption><span>set_boolean</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>app_containing_foo --big_menu
+</span><span class='line'>app_containing_foo --nobig_menu
+</span><span class='line'>app_containing_foo --big_menu<span class="o">=</span><span class="nb">true</span>
+</span><span class='line'>app_containing_foo --big_menu<span class="o">=</span><span class="nb">false</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>和<code>getopt()</code>一样，<code>--</code>将会终止标识的处理。所以在<code>foo -f1 1 -- -f2 2</code>中，
+<code>f1</code>被认为是一个标识，但<code>f2</code>不会。</p>
+
+<h2>特殊标识</h2>
+
+<figure class='code'><figcaption><span>special_flags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>--help  显示文件中所有标识的完整帮助信息
+</span><span class='line'>--helpfull  和-help一样，
+</span><span class='line'>--helpshort  只显示当前执行文件里的标志
+</span><span class='line'>--helpxml  以xml凡是打印，方便处理
+</span><span class='line'>--version  打印版本信息，由google::SetVersionString<span class="o">()</span>设定
+</span><span class='line'>--flagfile  -flagfile<span class="o">=</span>f从文件f中读取命令行参数
+</span><span class='line'>...
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>具体见：：<a href="http://gflags.googlecode.com/svn/trunk/doc/gflags.html">http://gflags.googlecode.com/svn/trunk/doc/gflags.html</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[C++测试驱动开发与单元测试实例]]></title>
