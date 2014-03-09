@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: DSP | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/dsp/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-09T16:50:58+08:00</updated>
+  <updated>2014-03-09T21:19:00+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -21,8 +21,6 @@
     <content type="html"><![CDATA[<p>
 Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
 </p>
-
-
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1">1. Requirements</h2>
 <div class="outline-text-2" id="text-1">
@@ -44,9 +42,6 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 </div>
 
 </div>
-
-
-
 
 <div id="outline-container-2" class="outline-2">
 <h2 id="sec-2">2. License server setup</h2>
@@ -120,11 +115,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 
 
 <p class="info"> Note: on a Microsoft Windows system, the files
-<tidspssw.exe> and <.manifest> should be placed in the same directory
-as <lmadmin.exe>.</p>
-</div>
+<tidspssw.exe> and &lt;.manifest&gt; should be placed in the same directory
+as <lmadmin.exe>.
 
-</div>
+
+
 
 <div id="outline-container-2-7" class="outline-3">
 <h3 id="sec-2-7">2.7 Go back to the browser window opened in step 4 and click on Administration at the top right corner.</h3>
@@ -165,9 +160,6 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
 </p>
 </div>
 </div>
-
-</div>
-
 
 
 
@@ -217,7 +209,7 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
 </div>
 </div>
 </div>
-
+</lmadmin.exe></tidspssw.exe></p></div></div></div>
 ]]></content>
   </entry>
   

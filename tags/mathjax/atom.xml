@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: MathJax | (learn&think)]]></title>
+  <link href="http://shishougang.github.com/tags/mathjax/atom.xml" rel="self"/>
+  <link href="http://shishougang.github.com/"/>
+  <updated>2014-03-09T21:19:00+08:00</updated>
+  <id>http://shishougang.github.com/</id>
+  <author>
+    <name><![CDATA[DreamRunner]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Octopress中使用Latex写数学公式]]></title>
+    <link href="http://shishougang.github.com/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/"/>
+    <updated>2014-03-09T19:41:06+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi</id>
+    <content type="html"><![CDATA[<p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
+
+<h2 id="section">测试</h2>
+
+<h3 id="latex">整段LaTex公式</h3>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='latex'><span class='line'><span class="sb">$$</span><span class="nb"></span>
+</span><span class='line'><span class="nv">\begin</span><span class="nb">{align}</span>
+</span><span class='line'><span class="nv">\mbox</span><span class="nb">{Union: } &amp;amp; A</span><span class="nv">\cup</span><span class="nb"> B </span><span class="o">=</span><span class="nb"> {x</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ or } x</span><span class="nv">\in</span><span class="nb"> B} &lt;br </span><span class="o">/</span><span class="nb">&gt;</span>
+</span><span class='line'><span class="nv">\mbox</span><span class="nb">{Concatenation: } &amp;amp; A</span><span class="nv">\circ</span><span class="nb"> B  </span><span class="o">=</span><span class="nb"> {xy</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ and } y</span><span class="nv">\in</span><span class="nb"> B} &lt;br </span><span class="o">/</span><span class="nb">&gt;</span>
+</span><span class='line'><span class="nv">\mbox</span><span class="nb">{Star: } &amp;amp; A^</span><span class="nv">\star</span><span class="nb">  </span><span class="o">=</span><span class="nb"> {x&lt;em&gt;</span><span class="m">1</span><span class="nb">x&lt;</span><span class="o">/</span><span class="nb">em&gt;</span><span class="m">2</span><span class="nv">\ldots</span><span class="nb"> x_k </span><span class="nv">\mid</span><span class="nb">  k</span><span class="nv">\geq</span><span class="nb"> </span><span class="m">0</span><span class="nb"> </span><span class="nv">\mbox</span><span class="nb">{ and each } x_i</span><span class="nv">\in</span><span class="nb"> A} &lt;br </span><span class="o">/</span><span class="nb">&gt;</span>
+</span><span class='line'><span class="nv">\end</span><span class="nb">{align}</span>
+</span><span class='line'><span class="s">$$</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<script type="math/tex; mode=display">% &lt;![CDATA[
+
+\begin{align}
+\mbox{Union: } & A\cup B = \{x\mid x\in A \mbox{ or } x\in B\} \\
+\mbox{Concatenation: } & A\circ B  = \{xy\mid x\in A \mbox{ and } y\in B\} \\
+\mbox{Star: } & A^\star  = \{x_1x_2\ldots x_k \mid  k\geq 0 \mbox{ and each } x_i\in A\} \\
+\end{align}
+ %]]&gt;</script>
+
+<h3 id="latex-1">内嵌LaTex公式</h3>
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='latex'><span class='line'>If <span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="o">=</span><span class="nb">b</span><span class="s">$</span> and <span class="s">$</span><span class="nb">b</span><span class="o">=</span><span class="m">2</span><span class="s">$</span>, then the solution must be
+</span><span class='line'>either <span class="s">$</span><span class="nb">a</span><span class="o">=+</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span> or <span class="s">$</span><span class="nb">a</span><span class="o">=-</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span>.
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>If $a^2=b$ and $b=2$, then the solution must be
+either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
+
+<!-- more -->
+
+<h2 id="section-1">设置</h2>
+
+<h3 id="kramdownhttpkramdowngettalongorgrdiscount">1.用<a href="http://kramdown.gettalong.org/">kramdown</a>代替rdiscount</h3>
+<ul>
+  <li>安装</li>
+</ul>
+
+<p><code>bash
+gem install kramdown
+</code></p>
+
+<ul>
+  <li>修改<code>_config.yml</code>
+把<code>_config.yml</code>中所有<code>rdiscount</code>替换成<code>kramdown</code>。</li>
+</ul>
+
+<p><code>diff
+--- a/_config.yml
++++ b/_config.yml
+@@ -34,8 +34,8 @@ destination: public
+ plugins: plugins
+ code_dir: downloads/code
+ category_dir: blog/categories
+-markdown: rdiscount
+-rdiscount:
++markdown: kramdown
++kramdown:
+   extensions:
+     - autolink
+     - footnotes
+</code></p>
+
+<ul>
+  <li>在<code>Gemfile</code>中把<code>gem 'ridiscount'</code>改成<code>gem 'kramdown in Gemfile</code></li>
+</ul>
+
+<p><code>diff
+diff --git a/Gemfile b/Gemfile
+index cd8ce57..e1d8d30 100644
+--- a/Gemfile
++++ b/Gemfile
+@@ -3,7 +3,7 @@ source "https://rubygems.org"
+ group :development do
+   gem 'rake', '~&gt; 0.9'
+   gem 'jekyll', '~&gt; 0.12'
+-  gem 'rdiscount', '~&gt; 2.0.7'
++  gem 'kramdown'
+   gem 'pygments.rb', '~&gt; 0.3.4'
+   gem 'RedCloth', '~&gt; 4.2.9'
+</code></p>
+
+<h3 id="mathjax">2.添加MathJax配置</h3>
+<p>在<code>/source/_includes/custom/head.html</code>文件里添加<sup id="fnref:fn1"><a href="#fn:fn1" rel="footnote">1</a></sup>：</p>
+
+<p><code>javascript
+&lt;!-- mathjax config similar to math.stackexchange --&gt;
+&lt;script type="text/x-mathjax-config"&gt;
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+&lt;/script&gt;
+&lt;script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"&gt;&lt;/script&gt;
+</code></p>
+
+<h3 id="mathjaxbugfn2">3.修复MathJax右击页面空白bug<sup id="fnref:fn2"><a href="#fn:fn2" rel="footnote">2</a></sup></h3>
+
+<p><code>diff
+diff --git a/sass/base/_theme.scss b/sass/base/_theme.scss
+index c35136d..3ee3999 100644
+--- a/sass/base/_theme.scss
++++ b/sass/base/_theme.scss
+@@ -74,7 +74,7 @@ html {
+   background: $page-bg image-url('line-tile.png') top left;
+ }
+ body {
+-  &gt; div {
++  &gt; div#main {
+     background: $sidebar-bg $noise-bg;
+     border-bottom: 1px solid $page-border-bottom;
+     &gt; div {
+</code></p>
+
+<h2 id="section-2">更多信息</h2>
+
+<ul>
+  <li><a href="http://kramdown.gettalong.org/">kramdown语法</a></li>
+  <li><a href="http://kramdown.gettalong.org/syntax.html#math-blocks">kramdown数学模块</a></li>
+</ul>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:fn1">
+      <p>http://www.idryman.org/blog/2012/03/10/writing-math-equations-on-octopress/<a href="#fnref:fn1" rel="reference">&#8617;</a></p>
+    </li>
+    <li id="fn:fn2">
+      <p>http://luikore.github.com/2011/09/good-things-learned-from-octopress/<a href="#fnref:fn2" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+]]></content>
+  </entry>
+  
+</feed>

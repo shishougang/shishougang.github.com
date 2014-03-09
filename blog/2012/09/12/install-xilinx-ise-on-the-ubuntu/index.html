@@ -9,7 +9,9 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="Download Xilinx ISE Official site: http://www.xilinx.com/support/download/index.htm Choose Full Installer for Linux Install Install1
+  <meta name="description" content="Download Xilinx ISE
+Official site: http://www.xilinx.com/support/download/index.htm Choose Full Installer for Linux Install
+Install1
 2
 3
 4
@@ -33,6 +35,23 @@ cd the &hellip;">
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -114,274 +133,235 @@ cd the &hellip;">
   </header>
 
 
-<div class="entry-content"><h2>Download Xilinx ISE</h2>
+<div class="entry-content"><h2 id="download-xilinx-ise">Download Xilinx ISE</h2>
+<p>Official site: http://www.xilinx.com/support/download/index.htm</p>
 
-<p>Official site: <a href="http://www.xilinx.com/support/download/index.htm">http://www.xilinx.com/support/download/index.htm</a></p>
+<p>Choose <code>Full Installer for Linux</code>
+<!-- more --></p>
 
-<p>Choose <code>Full Installer for Linux</code></p>
-
-<!-- more -->
-
-
-<h2>Install</h2>
-
-<figure class='code'><figcaption><span>Install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd </span>the folder
-</span><span class='line'>untar the archives
-</span><span class='line'>sudo chmod +x xsetup
-</span><span class='line'>sudo ./xsetup
-</span></code></pre></td></tr></table></div></figure>
-
-
+<h2 id="install">Install</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd </span>the folder
+</span><span class="line">untar the archives
+</span><span class="line">sudo chmod +x xsetup
+</span><span class="line">sudo ./xsetup
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 <ul>
-<li>Just use the default install path: <code>/opt/Xilinx</code></li>
-<li>Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</li>
+  <li>Just use the default install path: <code>/opt/Xilinx</code></li>
+  <li>Uncheck <code>Install cable drivers</code>(if checked, it will pop the error info below, just click <code>OK</code>.</li>
 </ul>
 
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Xilinx Software Steup </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
+</span><span class="line">...
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<figure class='code'><figcaption><span>Xilinx Software Steup </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>Driver installation failed. Please check the /.xinstall/install.log file <span class="k">for</span>
-</span><span class='line'>...
-</span></code></pre></td></tr></table></div></figure>
+<p>The details of the <code>/.xinstall/install.log</code> will be
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>install.log</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">--Installing windrvr6---------------------------------------------
+</span><span class="line">--Checking version.
+</span><span class="line">--File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
+</span><span class="line">--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o does not exist.
+</span><span class="line">--Setting <span class="nb">source </span>version to 1301.
+</span><span class="line">--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o is newer than the destination file.
+</span><span class="line"><span class="nv">USE_KBUILD</span> <span class="o">=</span> yes
+</span><span class="line">creating cache ./config.cache
+</span><span class="line">checking <span class="k">for </span>cpu architecture... i386
+</span><span class="line">checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+</span><span class="line">checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+</span><span class="line">not found
+</span><span class="line">loading cache ./config.cache
+</span><span class="line">checking <span class="k">for </span>cpu architecture... i386
+</span><span class="line">checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
+</span><span class="line">checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
+</span><span class="line">not found
+</span><span class="line">make -f makefile.usb.kbuild clean
+</span><span class="line">make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class="line"><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class="line">make -f makefile.usb.kbuild
+</span><span class="line">make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class="line"><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class="line">make -f makefile.usb.kbuild
+</span><span class="line">make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
+</span><span class="line"><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
+</span><span class="line">--make windrvr install <span class="nv">rc</span><span class="o">=</span> 2
+</span><span class="line">--install_windrvr6 <span class="nv">rc</span> <span class="o">=</span> 2
+</span><span class="line">--Module windrvr6 is not running.
+</span><span class="line">--Module xpc4drvr is not running.
+</span><span class="line">--Note: By default, the file permission of /dev/windrvr6 is enabled <span class="k">for </span>the root user only
+</span><span class="line">  and must be changed to allow access to other users.
+</span><span class="line">
+</span><span class="line">--real <span class="nv">rc</span><span class="o">=</span>2
+</span><span class="line">
+</span><span class="line">--Driver installation failed.
+</span><span class="line">
+</span><span class="line">--Digilent Return <span class="nv">code</span> <span class="o">=</span> 0
+</span><span class="line">--Xilinx Return <span class="nv">code</span> <span class="o">=</span> 1
+</span><span class="line">--Return <span class="nv">code</span> <span class="o">=</span> 1
+</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
+* The Xilinx License Configuration Manager appears and configure
+* Finish</p>
 
-
-<p>The details of the <code>/.xinstall/install.log</code> will be</p>
-
-<figure class='code'><figcaption><span>install.log</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>--Installing windrvr6---------------------------------------------
-</span><span class='line'>--Checking version.
-</span><span class='line'>--File /lib/modules/2.6.32-42-generic-pae/kernel/drivers/misc/windrvr6.o does not exist.
-</span><span class='line'>--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o does not exist.
-</span><span class='line'>--Setting <span class="nb">source </span>version to 1301.
-</span><span class='line'>--File LINUX.2.6.32-42-generic-pae.i386/windrvr6.o is newer than the destination file.
-</span><span class='line'><span class="nv">USE_KBUILD</span> <span class="o">=</span> yes
-</span><span class='line'>creating cache ./config.cache
-</span><span class='line'>checking <span class="k">for </span>cpu architecture... i386
-</span><span class='line'>checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
-</span><span class='line'>checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
-</span><span class='line'>not found
-</span><span class='line'>loading cache ./config.cache
-</span><span class='line'>checking <span class="k">for </span>cpu architecture... i386
-</span><span class='line'>checking <span class="k">for </span>WinDriver root directory... /opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32
-</span><span class='line'>checking <span class="k">for </span>linux kernel source... found at /lib/modules/2.6.32-42-generic-pae/build
-</span><span class='line'>not found
-</span><span class='line'>make -f makefile.usb.kbuild clean
-</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
-</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
-</span><span class='line'>make -f makefile.usb.kbuild
-</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
-</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
-</span><span class='line'>make -f makefile.usb.kbuild
-</span><span class='line'>make<span class="o">[</span>1<span class="o">]</span>: Entering directory <span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr<span class="s1">&#39;</span>
-</span><span class='line'><span class="s1">make[1]: Leaving directory `/opt/Xilinx/14.2/ISE_DS/common/bin/lin/install_script/install_drivers/linux_drivers/windriver32/windrvr&#39;</span>
-</span><span class='line'>--make windrvr install <span class="nv">rc</span><span class="o">=</span> 2
-</span><span class='line'>--install_windrvr6 <span class="nv">rc</span> <span class="o">=</span> 2
-</span><span class='line'>--Module windrvr6 is not running.
-</span><span class='line'>--Module xpc4drvr is not running.
-</span><span class='line'>--Note: By default, the file permission of /dev/windrvr6 is enabled <span class="k">for </span>the root user only
-</span><span class='line'>  and must be changed to allow access to other users.
-</span><span class='line'>
-</span><span class='line'>--real <span class="nv">rc</span><span class="o">=</span>2
-</span><span class='line'>
-</span><span class='line'>--Driver installation failed.
-</span><span class='line'>
-</span><span class='line'>--Digilent Return <span class="nv">code</span> <span class="o">=</span> 0
-</span><span class='line'>--Xilinx Return <span class="nv">code</span> <span class="o">=</span> 1
-</span><span class='line'>--Return <span class="nv">code</span> <span class="o">=</span> 1
-</span></code></pre></td></tr></table></div></figure>
-
-
+<h2 id="installing-cable-drivers">Installing Cable Drivers</h2>
 <ul>
-<li>The Xilinx License Configuration Manager appears and configure</li>
-<li>Finish</li>
+  <li>install the prerequisite</li>
 </ul>
 
-
-<h2>Installing Cable Drivers</h2>
-
-<ul>
-<li>install the prerequisite</li>
-</ul>
-
-
-<figure class='code'><figcaption><span>install </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>On 32-bit
-</span><span class='line'>sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev fxload
-</span><span class='line'>On 64-bit
-</span><span class='line'>sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxload
-</span></code></pre></td></tr></table></div></figure>
-
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>install </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">On 32-bit
+</span><span class="line">sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev fxload
+</span><span class="line">On 64-bit
+</span><span class="line">sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxload
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <ul>
-<li>Download the driver source and install</li>
+  <li>Download the driver source and install
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>download and install</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span></figure></notextile></li>
 </ul>
+<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line"><span class="nb">cd</span> /opt/Xilinx
+</span><span class="line">sudo git clone git://git.zerfleddert.de/usb-driver
+</span><span class="line">
+</span><span class="line"><span class="nb">cd </span>usb-driver/
+</span><span class="line">On 32-bit
+</span><span class="line">sudo make
+</span><span class="line">On 64-bit
+</span><span class="line">sudo make lib32
+</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/notextile&gt;&lt;/div&gt;</p>
 
+<h2 id="setup-up-the-driver">Setup up the driver</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>setup up</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nv">$ </span>./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
+</span><span class="line">Looking <span class="k">for </span>USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
+</span><span class="line">Copying firmware to /usr/share:
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusbdfwu.hex<span class="s1">&#39; -&gt; `/usr/share/xusbdfwu.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_emb.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_emb.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xlp.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xlp.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xp2.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xp2.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xpr.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xpr.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xse.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xse.hex&#39;</span>
+</span><span class="line"><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xup.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xup.hex&#39;</span>
+</span><span class="line">Installing udev rules:
+</span><span class="line"><span class="k">done</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<figure class='code'><figcaption><span>download and install</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /opt/Xilinx
-</span><span class='line'>sudo git clone git://git.zerfleddert.de/usb-driver
-</span><span class='line'>
-</span><span class='line'><span class="nb">cd </span>usb-driver/
-</span><span class='line'>On 32-bit
-</span><span class='line'>sudo make
-</span><span class='line'>On 64-bit
-</span><span class='line'>sudo make lib32
-</span></code></pre></td></tr></table></div></figure>
+<h2 id="setting-the-ise">Setting the ISE</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Setting </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line"><span class="nb">cd</span> /opt/Xilinx/14.2/ISE_DS
+</span><span class="line">bash ./settings32.sh
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/common/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/EDK/.settings32.sh /opt/Xilinx/14.2/ISE_DS/EDK
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/PlanAhead/.settings32.sh /opt/Xilinx/14.2/ISE_DS/PlanAhead
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
+</span><span class="line">. /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>## Restart udev
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Restart udev</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">/etc/init.d/boot.udev restart
+</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
 
-
-<h2>Setup up the driver</h2>
-
-<figure class='code'><figcaption><span>setup up</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nv">$ </span>./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
-</span><span class='line'>Looking <span class="k">for </span>USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
-</span><span class='line'>Copying firmware to /usr/share:
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusbdfwu.hex<span class="s1">&#39; -&gt; `/usr/share/xusbdfwu.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_emb.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_emb.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xlp.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xlp.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xp2.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xp2.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xpr.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xpr.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xse.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xse.hex&#39;</span>
-</span><span class='line'><span class="sb">`</span>/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin/xusb_xup.hex<span class="s1">&#39; -&gt; `/usr/share/xusb_xup.hex&#39;</span>
-</span><span class='line'>Installing udev rules:
-</span><span class='line'><span class="k">done</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Setting the ISE</h2>
-
-<figure class='code'><figcaption><span>Setting </span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="nb">cd</span> /opt/Xilinx/14.2/ISE_DS
-</span><span class='line'>bash ./settings32.sh
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/common/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/EDK/.settings32.sh /opt/Xilinx/14.2/ISE_DS/EDK
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery/.settings32.sh /opt/Xilinx/14.2/ISE_DS/common/CodeSourcery
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/PlanAhead/.settings32.sh /opt/Xilinx/14.2/ISE_DS/PlanAhead
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado/2012.2
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/ISE/.settings32.sh /opt/Xilinx/14.2/ISE_DS/ISE
-</span><span class='line'>. /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Restart udev</h2>
-
-<figure class='code'><figcaption><span>Restart udev</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>/etc/init.d/boot.udev restart
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Fixing the Path</h2>
-
-<figure class='code'><figcaption><span>Fixing the Path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>32-bit
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
-</span><span class='line'>64-bit
-</span><span class='line'><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>Run the IMPACK to check everything</h2>
+<h2 id="fixing-the-path">Fixing the Path</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Fixing the Path</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">32-bit
+</span><span class="line"><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
+</span><span class="line">64-bit
+</span><span class="line"><span class="nb">echo</span> <span class="s2">&quot;PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/&quot;</span> &gt;&gt; ~/.bashrc <span class="nb">echo</span> <span class="s2">&quot;export PATH&quot;</span> &gt;&gt; ~/.bashrc
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>## Run the IMPACK to check everything</p>
 
 <p class="warning"> Errors </p>
+<p>If it appears:
+&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>Errors</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">INFO:iMPACT - Selected Current Working Directory:
+</span><span class="line">   <span class="s1">&#39;/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&#39;</span>
+</span><span class="line">libusb couldn<span class="err">&#39;</span>t open USB device /dev/bus/usb/002/035: Permission denied.
+</span><span class="line">libusb requires write access to USB device nodes.
+</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
+* First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code>
+* Restart udev <code>/etc/init.d/boot.udev restart</code>
+* Still wrong, reboot and try again.</p>
 
-
-<p>If it appears:</p>
-
-<figure class='code'><figcaption><span>Errors</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class='bash'><span class='line'>INFO:iMPACT - Selected Current Working Directory:
-</span><span class='line'>   <span class="s1">&#39;/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin&#39;</span>
-</span><span class='line'>libusb couldn<span class="err">&#39;</span>t open USB device /dev/bus/usb/002/035: Permission denied.
-</span><span class='line'>libusb requires write access to USB device nodes.
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>First check there is <code>/etc/udev/rules.d/xusbdfwu.rules</code></li>
-<li>Restart udev <code>/etc/init.d/boot.udev restart</code></li>
-<li>Still wrong, reboot and try again.</li>
-</ul>
-
-
-<h2>Reference</h2>
-
+<h2 id="reference">Reference</h2>
 <pre><code>http://www.george-smart.co.uk/wiki/Xilinx_JTAG_Linux
 
 http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb=HEAD
@@ -474,6 +454,10 @@ http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/09/gflags-jian-ming-shi-yong/">Gflags 简明使用</a>
       </li>
     
@@ -489,15 +473,11 @@ http://git.zerfleddert.de/cgi-bin/gitweb.cgi/usb-driver?a=blob_plain;f=README;hb
         <a href="/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/">Install Xilinx ISE on the Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 120.0%'>Web(1)</a> </span>
 </section>
 
 <section>

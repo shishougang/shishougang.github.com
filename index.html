@@ -9,7 +9,16 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="简介 Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括C++的版本和python的版本。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http:// &hellip;">
+  <meta name="description" content="Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。 测试 整段LaTex公式 1
+2
+3
+4
+5
+6
+7
+$$
+\begin{align}
+\mbox{Union: } &amp; A\cup B = \{x\mid x\in A \mbox{ or } x\ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -29,6 +38,23 @@
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -87,6 +113,90 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T19:41:06+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
+
+<h2 id="section">测试</h2>
+
+<h3 id="latex">整段LaTex公式</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="latex"><span class="line"><span class="sb">$$</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\begin</span><span class="nb">{align}</span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Union: } &amp; A</span><span class="nv">\cup</span><span class="nb"> B </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ or } x</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Concatenation: } &amp; A</span><span class="nv">\circ</span><span class="nb"> B  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">xy</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ and } y</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Star: } &amp; A^</span><span class="nv">\star</span><span class="nb">  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x_</span><span class="m">1</span><span class="nb">x_</span><span class="m">2</span><span class="nv">\ldots</span><span class="nb"> x_k </span><span class="nv">\mid</span><span class="nb">  k</span><span class="nv">\geq</span><span class="nb"> </span><span class="m">0</span><span class="nb"> </span><span class="nv">\mbox</span><span class="nb">{ and each } x_i</span><span class="nv">\in</span><span class="nb"> A</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\end</span><span class="nb">{align}</span>
+</span><span class="line"><span class="s">$$</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{align}
+\mbox{Union: } & A\cup B = \{x\mid x\in A \mbox{ or } x\in B\} \\
+\mbox{Concatenation: } & A\circ B  = \{xy\mid x\in A \mbox{ and } y\in B\} \\
+\mbox{Star: } & A^\star  = \{x_1x_2\ldots x_k \mid  k\geq 0 \mbox{ and each } x_i\in A\} \\
+\end{align}
+ %]]></script>
+
+<h3 id="latex-1">内嵌LaTex公式</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="latex"><span class="line">If <span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="o">=</span><span class="nb">b</span><span class="s">$</span> and <span class="s">$</span><span class="nb">b</span><span class="o">=</span><span class="m">2</span><span class="s">$</span>, then the solution must be
+</span><span class="line">either <span class="s">$</span><span class="nb">a</span><span class="o">=+</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span> or <span class="s">$</span><span class="nb">a</span><span class="o">=-</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span>.
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If $a^2=b$ and $b=2$, then the solution must be
+either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/03/09/gflags-jian-ming-shi-yong/">Gflags 简明使用</a></h1>
     
     
@@ -113,14 +223,11 @@
   </header>
 
 
-  <div class="entry-content"><h2>简介</h2>
+  <div class="entry-content"><h2 id="section">简介</h2>
+<p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
 
-<p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：<a href="http://gflags.googlecode.com/svn/trunk/doc/gflags.html">http://gflags.googlecode.com/svn/trunk/doc/gflags.html</a></p>
-
-<p>你能从<a href="/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
-
-<h1>+begin_html</h1>
-
+<p>你能从<a href="/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。
+#+begin_html
 </div>
   
   
@@ -232,14 +339,14 @@ TDD有它自身的
   <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Determine your hardware revision<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup></h2>
 <div class="outline-text-2" id="text-1">
-</div><ol class="org-ol"><li>OS X<br  /><div class="outline-text-3" id="text-1-1">
+</div><ol class="org-ol"><li>OS X<br /><div class="outline-text-3" id="text-1-1">
 <p>
 click in OS X on the Apple on the top left, then &#8220;About this Mac&#8221; &#x2013; &#8220;More Info&#x2026;&#8221;, see the generation in the &#8220;Model Identifier&#8221; row; or &#x2026; 
 </p>
 </div>
 </li>
 
-<li>ubuntu<br  /><div class="outline-text-3" id="text-1-2">
+<li>ubuntu<br /><div class="outline-text-3" id="text-1-2">
 <div class="org-src-container">
 
 <pre class="src src-sh">sudo dmidecode -s system-product-name
@@ -288,12 +395,10 @@ click in OS X on the Apple on the top left, then &#8220;About this Mac&#8221; &#
   </header>
 
 
-  <div class="entry-content"><h2>Download Xilinx ISE</h2>
+  <div class="entry-content"><h2 id="download-xilinx-ise">Download Xilinx ISE</h2>
+<p>Official site: http://www.xilinx.com/support/download/index.htm</p>
 
-<p>Official site: <a href="http://www.xilinx.com/support/download/index.htm">http://www.xilinx.com/support/download/index.htm</a></p>
-
-<p>Choose <code>Full Installer for Linux</code></p>
-
+<p>Choose <code>Full Installer for Linux</code>
 </div>
   
   
@@ -339,8 +444,6 @@ click in OS X on the Apple on the top left, then &#8220;About this Mac&#8221; &#
   <div class="entry-content"><p>
 Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
 </p>
-
-
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1">1. Requirements</h2>
 <div class="outline-text-2" id="text-1">
@@ -401,11 +504,9 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 
   <div class="entry-content"><blockquote><p>Every Generation Has A Legend. Every Journey Has A First Step. Every Saga Has A Beginning.</p><footer><strong>The Phantom Menace Trailer</strong> <cite>Star Wars Episode I</cite></footer></blockquote>
 
+<p>Keep learning, thinking and summarizing.  </p>
 
-<p>Keep learning, thinking and summarizing.</p>
-
-<blockquote><p>All I want to do is just sit here<br/>And write it all down and rest for a while</p><footer><strong>Sinead O’Connor</strong> <cite><a href='http://www.tudou.com/programs/view/2xSUmtSyvp0/'>The Emperor’s New Clothes</a></cite></footer></blockquote>
-
+<blockquote><p>All I want to do is just sit here<br />And write it all down and rest for a while</p><footer><strong>Sinead O’Connor</strong> <cite><a href="http://www.tudou.com/programs/view/2xSUmtSyvp0/">The Emperor’s New Clothes</a></cite></footer></blockquote>
 </div>
   
   
@@ -426,6 +527,10 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/09/gflags-jian-ming-shi-yong/">Gflags 简明使用</a>
       </li>
     
@@ -441,15 +546,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
         <a href="/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/">Install Xilinx ISE on the Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 120.0%'>Web(1)</a> </span>
 </section>
 
 <section>

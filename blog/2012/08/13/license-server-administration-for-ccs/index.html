@@ -30,6 +30,23 @@
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
   
   <script type="text/javascript">
     var _gaq = _gaq || [];
@@ -113,8 +130,6 @@
 <div class="entry-content"><p>
 Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
 </p>
-
-
 <div id="outline-container-1" class="outline-2">
 <h2 id="sec-1">1. Requirements</h2>
 <div class="outline-text-2" id="text-1">
@@ -136,9 +151,6 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 </div>
 
 </div>
-
-
-
 
 <div id="outline-container-2" class="outline-2">
 <h2 id="sec-2">2. License server setup</h2>
@@ -212,11 +224,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
 
 
 <p class="info"> Note: on a Microsoft Windows system, the files
-<tidspssw.exe> and <.manifest> should be placed in the same directory
-as <lmadmin.exe>.</p>
-</div>
+<tidspssw.exe> and &lt;.manifest&gt; should be placed in the same directory
+as <lmadmin.exe>.
 
-</div>
+
+
 
 <div id="outline-container-2-7" class="outline-3">
 <h3 id="sec-2-7">2.7 Go back to the browser window opened in step 4 and click on Administration at the top right corner.</h3>
@@ -257,9 +269,6 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
 </p>
 </div>
 </div>
-
-</div>
-
 
 
 
@@ -309,7 +318,7 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
 </div>
 </div>
 </div>
-
+</lmadmin.exe></tidspssw.exe></p></div></div></div>
 </div>
 
 
@@ -398,6 +407,10 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/03/09/gflags-jian-ming-shi-yong/">Gflags 简明使用</a>
       </li>
     
@@ -413,15 +426,11 @@ browser and type the URL  <code>localhost:8090</code> or <code>127.0.0.1:8090</c
         <a href="/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/">Install Xilinx ISE on the Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 120.0%'>Web(1)</a> </span>
 </section>
 
 <section>

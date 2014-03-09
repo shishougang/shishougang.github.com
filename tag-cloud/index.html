@@ -13,13 +13,16 @@
 CCS
 DSP
 ISE
+LaTex
 Linux
 Mac
+MathJax
 Misc
 Mock
+Octopress
 Test
 Xilinx
-gflags Recent Posts Gflags 简明使用 C++测试驱动开发与单元测试实例 Mac Pro Install Ubuntu 12.04 Install &hellip;">
+gflags Recent Posts Octopress中使用Latex写数学公式 Gflags 简明使用 C++ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -39,6 +42,23 @@ gflags Recent Posts Gflags 简明使用 C++测试驱动开发与单元测试实�
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
 
   
   <script type="text/javascript">
@@ -100,21 +120,23 @@ gflags Recent Posts Gflags 简明使用 C++测试驱动开发与单元测试实�
   <div id="tag-archives">
   <h2>Tags</h2>
   <ul class="cloud">
-    <li><a style="font-size: 220%" href="/tags/c-/">C++</a></li>
+	<li><a style="font-size: 220%" href="/tags/c-/">C++</a></li>
 <li><a style="font-size: 100%" href="/tags/ccs/">CCS</a></li>
 <li><a style="font-size: 100%" href="/tags/dsp/">DSP</a></li>
 <li><a style="font-size: 100%" href="/tags/ise/">ISE</a></li>
+<li><a style="font-size: 100%" href="/tags/latex/">LaTex</a></li>
 <li><a style="font-size: 100%" href="/tags/linux/">Linux</a></li>
 <li><a style="font-size: 100%" href="/tags/mac/">Mac</a></li>
+<li><a style="font-size: 100%" href="/tags/mathjax/">MathJax</a></li>
 <li><a style="font-size: 100%" href="/tags/misc/">Misc</a></li>
 <li><a style="font-size: 100%" href="/tags/mock/">Mock</a></li>
+<li><a style="font-size: 100%" href="/tags/octopress/">Octopress</a></li>
 <li><a style="font-size: 100%" href="/tags/test/">Test</a></li>
 <li><a style="font-size: 100%" href="/tags/xilinx/">Xilinx</a></li>
 <li><a style="font-size: 100%" href="/tags/gflags/">gflags</a></li>
 
   </ul>
 </div>
-
 
   
 </article>
@@ -126,6 +148,10 @@ gflags Recent Posts Gflags 简明使用 C++测试驱动开发与单元测试实�
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/03/09/gflags-jian-ming-shi-yong/">Gflags 简明使用</a>
@@ -143,15 +169,11 @@ gflags Recent Posts Gflags 简明使用 C++测试驱动开发与单元测试实�
         <a href="/blog/2012/09/12/install-xilinx-ise-on-the-ubuntu/">Install Xilinx ISE on the Ubuntu</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 140.0%'>C++(2)</a> <a href='/blog/categories/dsp' style='font-size: 120.0%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 120.0%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 120.0%'>Misc(1)</a> <a href='/blog/categories/software' style='font-size: 160.0%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 120.0%'>Web(1)</a> </span>
 </section>
 
 <section>
