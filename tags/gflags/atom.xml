@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: gflags | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/gflags/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-09T21:19:00+08:00</updated>
+  <updated>2014-03-09T22:11:58+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -26,8 +26,9 @@
 <!-- more -->
 #+end_html
 ## example源代码
-先看example源代码，然后逐步介绍。
-``` c++ example.cc
+先看example源代码，然后逐步介绍。</p>
+
+<p>``` c++ example.cc
 #include &lt;gflags/gflags.h&gt;</p>
 
 <p>DEFINE_bool(big_menu, true, “Include ‘advanced’ options in the menu listing”);
@@ -50,55 +51,58 @@ DEFINE_string(languages, “english,french,german”, “comma-separated list of
 
 <h3 id="section-1">运行程序</h3>
 <ul>
-  <li>直接运行
-<code>bash run
-➜  bin  ./sample 
-argc=1
-big menu is ture
-languages=english,french,german
-</code></li>
-  <li>
-    <p>help命令
-``` bash run
-➜  bin  ./sample –help
-sample: Warning: SetUsageMessage() never called</p>
-
-    <p>Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
-  -big_menu (Include ‘advanced’ options in the menu listing) type: bool
-    default: true
-  -languages (comma-separated list of languages to offer in the ‘lang’ menu)
-    type: string default: “english,french,german”</p>
-
-    <p>Flags from src/gflags.cc:
-  -flagfile (load flags from file) type: string default: “”
-………</p>
-
-    <p>➜  bin  ./sample –helpshort 
-sample: Warning: SetUsageMessage() never called</p>
-
-    <p>Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
-  -big_menu (Include ‘advanced’ options in the menu listing) type: bool
-    default: true
-  -languages (comma-separated list of languages to offer in the ‘lang’ menu)
-    type: string default: “english,french,german”
-```</p>
-  </li>
+  <li>直接运行</li>
 </ul>
 
+<p><code>bash run
+  ➜  bin  ./sample 
+  argc=1
+  big menu is ture
+  languages=english,french,german
+</code>
+* help命令</p>
+
+<p>``` bash run
+  ➜  bin  ./sample –help
+  sample: Warning: SetUsageMessage() never called</p>
+
+<p>Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
+    -big_menu (Include ‘advanced’ options in the menu listing) type: bool
+      default: true
+    -languages (comma-separated list of languages to offer in the ‘lang’ menu)
+      type: string default: “english,french,german”</p>
+
+<p>Flags from src/gflags.cc:
+    -flagfile (load flags from file) type: string default: “”
+  ………</p>
+
+<p>➜  bin  ./sample –helpshort 
+  sample: Warning: SetUsageMessage() never called</p>
+
+<p>Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
+    -big_menu (Include ‘advanced’ options in the menu listing) type: bool
+      default: true
+    -languages (comma-separated list of languages to offer in the ‘lang’ menu)
+      type: string default: “english,french,german”
+```</p>
+
 <h2 id="section-2">在程序里定义参数</h2>
-<p>### 包含头文件
-<code>c++ header_file
+<p>### 包含头文件</p>
+
+<p><code>c++ header_file
  #include &lt;gflags/gflags.h&gt;
 </code></p>
 
 <h3 id="gflag">利用gflag提供的宏定义参数</h3>
-<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。
-<code>c++ define_flags
+<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。</p>
+
+<p><code>c++ define_flags
 DEFINE_bool(big_menu, true, "Include 'advanced' options in the menu listing");
 DEFINE_string(languages, "english,french,german", "comma-separated list of languages to offer in the 'lang' menu");
 </code>
-gflags暂时支持如下参数的类型：
-<code>sh supported_types
+gflags暂时支持如下参数的类型：</p>
+
+<p><code>sh supported_types
 DEFINE_bool: boolean
 DEFINE_int32: 32-bit integer
 DEFINE_int64: 64-bit integer
@@ -123,8 +127,9 @@ DEFINE_string: C++ string
 <p>定义号参数后，最后要告诉执行程序去处理命令行传入的参数，使得
 <code>FLAGS_*</code>参数们得到正确赋值。</p>
 
-<p>通常就是再<code>main()</code>函数中调用;
-<code>c++ set_up_flag
+<p>通常就是再<code>main()</code>函数中调用;</p>
+
+<p><code>c++ set_up_flag
 google::ParseCommandLineFlags(&amp;argc, &amp;argv, true);
 </code>
 <code>argc</code>和<code>argv</code>就是main的入口参数，因为这个函数会改变他们的值，所以都是
@@ -143,15 +148,17 @@ google::ParseCommandLineFlags(&amp;argc, &amp;argv, true);
 <h2 id="section-6">命令行设置参数</h2>
 <p>gflags提供多种命令行设置参数。</p>
 
-<p><code>string</code>和<code>int</code>之类，可以用如下方式：
-<code>bash set_languages
+<p><code>string</code>和<code>int</code>之类，可以用如下方式：</p>
+
+<p><code>bash set_languages
 app_containing_foo --languages="chinese,japanese,korean"
 app_containing_foo -languages="chinese,japanese,korean"
 app_containing_foo --languages "chinese,japanese,korean"
 app_containing_foo -languages "chinese,japanese,korean"
 </code>
-对于<code>boolean</code>的标识来说，用如下方式:
-<code>bash set_boolean
+对于<code>boolean</code>的标识来说，用如下方式:</p>
+
+<p><code>bash set_boolean
 app_containing_foo --big_menu
 app_containing_foo --nobig_menu
 app_containing_foo --big_menu=true
@@ -162,6 +169,7 @@ app_containing_foo --big_menu=false
 <code>f1</code>被认为是一个标识，但<code>f2</code>不会。</p>
 
 <h2 id="section-7">特殊标识</h2>
+
 <p><code>bash special_flags
 --help  显示文件中所有标识的完整帮助信息
 --helpfull  和-help一样，

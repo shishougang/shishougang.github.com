@@ -136,8 +136,9 @@ MathJax.Hub.Config({
 <!-- more -->
 #+end_html
 ## example源代码
-先看example源代码，然后逐步介绍。
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>example.cc</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+先看example源代码，然后逐步介绍。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>example.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -155,7 +156,7 @@ MathJax.Hub.Config({
 <span class="line-number">16</span>
 <span class="line-number">17</span>
 <span class="line-number">18</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="c++"><span class="line"><span class="cp">#include &lt;gflags/gflags.h&gt;</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;gflags/gflags.h&gt;</span>
 </span><span class="line">
 </span><span class="line"><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
 </span><span class="line"><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">languages</span><span class="p">,</span> <span class="s">&quot;english,french,german&quot;</span><span class="p">,</span> <span class="s">&quot;comma-separated list of languages to offer in the &#39;lang&#39; menu&quot;</span><span class="p">);</span>
@@ -173,23 +174,27 @@ MathJax.Hub.Config({
 </span><span class="line">  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;languages=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">FLAGS_languages</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 </span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 </span><span class="line"><span class="p">}</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h3 id="section-1">运行程序</h3>
 <ul>
-  <li>直接运行
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>run</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+  <li>直接运行</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
-<span class="line-number">4</span></figure></notextile></li>
-</ul>
-<p>&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">  ➜  bin  ./sample
+<span class="line-number">4</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">  ➜  bin  ./sample
 </span><span class="line">  <span class="nv">argc</span><span class="o">=</span>1
 </span><span class="line">  big menu is ture
 </span><span class="line">  <span class="nv">languages</span><span class="o">=</span>english,french,german
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;&lt;/figure&gt;&lt;/notextile&gt;&lt;/div&gt;
-* help命令
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>run</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<ul>
+  <li>help命令</li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
@@ -212,7 +217,7 @@ MathJax.Hub.Config({
 <span class="line-number">21</span>
 <span class="line-number">22</span>
 <span class="line-number">23</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">  ➜  bin  ./sample --help
+</pre></td><td class="code"><pre><code class="bash"><span class="line">  ➜  bin  ./sample --help
 </span><span class="line">  sample: Warning: SetUsageMessage<span class="o">()</span> never called
 </span><span class="line">
 </span><span class="line">  Flags from /home/shougang/workspace/drive/Google/cmake_cpp_gflags/src/sample.cc:
@@ -235,35 +240,38 @@ MathJax.Hub.Config({
 </span><span class="line">      default: <span class="nb">true</span>
 </span><span class="line">    -languages <span class="o">(</span>comma-separated list of languages to offer in the <span class="s1">&#39;lang&#39;</span> menu<span class="o">)</span>
 </span><span class="line">      <span class="nb">type</span>: string default: <span class="s2">&quot;english,french,german&quot;</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="section-2">在程序里定义参数</h2>
-<p>### 包含头文件
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>header_file</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="c++"><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">gflags</span><span class="o">/</span><span class="n">gflags</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+<p>### 包含头文件</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>header_file</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">gflags</span><span class="o">/</span><span class="n">gflags</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h3 id="gflag">利用gflag提供的宏定义参数</h3>
-<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>define_flags</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>define_flags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="c++"><span class="line"><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
 </span><span class="line"><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">languages</span><span class="p">,</span> <span class="s">&quot;english,french,german&quot;</span><span class="p">,</span> <span class="s">&quot;comma-separated list of languages to offer in the &#39;lang&#39; menu&quot;</span><span class="p">);</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-gflags暂时支持如下参数的类型：
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>supported_types</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>gflags暂时支持如下参数的类型：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>supported_types</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
 <span class="line-number">5</span>
 <span class="line-number">6</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="sh"><span class="line">DEFINE_bool: boolean
+</pre></td><td class="code"><pre><code class="sh"><span class="line">DEFINE_bool: boolean
 </span><span class="line">DEFINE_int32: 32-bit integer
 </span><span class="line">DEFINE_int64: 64-bit integer
 </span><span class="line">DEFINE_uint64: unsigned 64-bit integer
 </span><span class="line">DEFINE_double: double
 </span><span class="line">DEFINE_string: C++ string
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="section-3">访问参数</h2>
 
@@ -281,11 +289,12 @@ gflags暂时支持如下参数的类型：
 <p>定义号参数后，最后要告诉执行程序去处理命令行传入的参数，使得
 <code>FLAGS_*</code>参数们得到正确赋值。</p>
 
-<p>通常就是再<code>main()</code>函数中调用;
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>set_up_flag</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="c++"><span class="line"><span class="n">google</span><span class="o">::</span><span class="n">ParseCommandLineFlags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-<code>argc</code>和<code>argv</code>就是main的入口参数，因为这个函数会改变他们的值，所以都是
+<p>通常就是再<code>main()</code>函数中调用;</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>set_up_flag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">google</span><span class="o">::</span><span class="n">ParseCommandLineFlags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p><code>argc</code>和<code>argv</code>就是main的入口参数，因为这个函数会改变他们的值，所以都是
 以指针传入。</p>
 
 <p>第三个参数被称为<code>remove_flags</code>。如果它是<code>true</code>,<code>ParseCommandLineFlags</code>会
@@ -301,31 +310,34 @@ gflags暂时支持如下参数的类型：
 <h2 id="section-6">命令行设置参数</h2>
 <p>gflags提供多种命令行设置参数。</p>
 
-<p><code>string</code>和<code>int</code>之类，可以用如下方式：
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>set_languages</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+<p><code>string</code>和<code>int</code>之类，可以用如下方式：</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>set_languages</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">app_containing_foo --languages<span class="o">=</span><span class="s2">&quot;chinese,japanese,korean&quot;</span>
+</pre></td><td class="code"><pre><code class="bash"><span class="line">app_containing_foo --languages<span class="o">=</span><span class="s2">&quot;chinese,japanese,korean&quot;</span>
 </span><span class="line">app_containing_foo -languages<span class="o">=</span><span class="s2">&quot;chinese,japanese,korean&quot;</span>
 </span><span class="line">app_containing_foo --languages <span class="s2">&quot;chinese,japanese,korean&quot;</span>
 </span><span class="line">app_containing_foo -languages <span class="s2">&quot;chinese,japanese,korean&quot;</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;
-对于<code>boolean</code>的标识来说，用如下方式:
-&lt;div class=&#8217;bogus-wrapper&#8217;&gt;<notextile><figure class="code">&lt;figcaption&gt;<span>set_boolean</span>&lt;/figcaption&gt;&lt;div class=&#8221;highlight&#8221;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&#8221;gutter&#8221;&gt;&lt;pre class=&#8221;line-numbers&#8221;&gt;<span class="line-number">1</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>对于<code>boolean</code>的标识来说，用如下方式:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>set_boolean</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
 <span class="line-number">4</span>
-&lt;/pre&gt;&lt;/td&gt;&lt;td class=&#8217;code&#8217;&gt;&lt;pre&gt;<code class="bash"><span class="line">app_containing_foo --big_menu
+</pre></td><td class="code"><pre><code class="bash"><span class="line">app_containing_foo --big_menu
 </span><span class="line">app_containing_foo --nobig_menu
 </span><span class="line">app_containing_foo --big_menu<span class="o">=</span><span class="nb">true</span>
 </span><span class="line">app_containing_foo --big_menu<span class="o">=</span><span class="nb">false</span>
-</span></code>&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/div&gt;</figure></notextile>&lt;/div&gt;</p>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>和<code>getopt()</code>一样，<code>--</code>将会终止标识的处理。所以在<code>foo -f1 1 -- -f2 2</code>中，
 <code>f1</code>被认为是一个标识，但<code>f2</code>不会。</p>
 
 <h2 id="section-7">特殊标识</h2>
+
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>special_flags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
