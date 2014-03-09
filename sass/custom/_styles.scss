@@ -136,6 +136,18 @@ a[rev="footnote"]:before{
 	content: "[";
 }
 
+/*--- 脚注回到上标---*/
+#footnotify_targets_holder,
+#footnotify_holder,
+#footnotify_arrow{
+  background-image: none;
+}
+
+#footnotify_arrow,
+#footnotify_holder{
+  background-color: transparent;
+  border: none;
+}
 /*--- 关于脚注结束 ---*/
 
 
@@ -166,5 +178,3 @@ div.sharing{
 #tag-cloud {
   line-height: 2em;
 }
-
-
