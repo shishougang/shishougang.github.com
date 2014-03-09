@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: gflags | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/gflags/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-09T16:49:50+08:00</updated>
+  <updated>2014-03-09T16:50:58+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -23,6 +23,13 @@
 <p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：<a href="http://gflags.googlecode.com/svn/trunk/doc/gflags.html">http://gflags.googlecode.com/svn/trunk/doc/gflags.html</a></p>
 
 <p>你能从<a href="/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
+
+<h1>+begin_html</h1>
+
+<!-- more -->
+
+
+<h1>+end_html</h1>
 
 <h2>example源代码</h2>
 
