@@ -13,7 +13,8 @@ Official site: http://www.xilinx.com/support/download/index.htm
 Choose `Full Installer for Linux`
 <!-- more -->
 
-## Install 
+## Install
+
 ``` bash Install
 cd the folder
 untar the archives
@@ -28,6 +29,7 @@ Driver installation failed. Please check the /.xinstall/install.log file for
 {% endcodeblock %}
 
 The details of the `/.xinstall/install.log` will be
+
 ``` bash install.log
 --Installing windrvr6---------------------------------------------
 --Checking version.
@@ -84,6 +86,7 @@ sudo apt-get install gitk git-gui libusb-dev build-essential libc6-dev-i386 fxlo
 ```
 
 * Download the driver source and install
+
 ``` bash download and install
 cd /opt/Xilinx 
 sudo git clone git://git.zerfleddert.de/usb-driver
@@ -96,6 +99,7 @@ sudo make lib32
 ```
 
 ## Setup up the driver
+
 ``` bash setup up
 $ ./setup_pcusb /opt/Xilinx/13.2/ISE_DS/ISE/
 Looking for USB cable files: /opt/Xilinx/14.2/ISE_DS/ISE/bin/lin
@@ -112,6 +116,7 @@ done
 ```
 
 ## Setting the ISE
+
 ``` bash Setting 
 cd /opt/Xilinx/14.2/ISE_DS
 bash ./settings32.sh 
@@ -124,12 +129,14 @@ bash ./settings32.sh
 . /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2/.settings32.sh /opt/Xilinx/14.2/ISE_DS/../../Vivado_HLS/2012.2
 ```
 ## Restart udev
+
 ``` bash Restart udev
 /etc/init.d/boot.udev restart
 ```
 
 
 ## Fixing the Path
+
 ``` bash Fixing the Path
 32-bit
 echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin" >> ~/.bashrc echo "export PATH" >> ~/.bashrc 
@@ -140,6 +147,7 @@ echo "PATH=\$PATH:/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin64/" >> ~/.bashrc echo "exp
 
 <p class="warning"> Errors </p>
 If it appears:
+
 ``` bash Errors
 INFO:iMPACT - Selected Current Working Directory:
    '/opt/Xilinx/14.2/ISE_DS/ISE/bin/lin'
