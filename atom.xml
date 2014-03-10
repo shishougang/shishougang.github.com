@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-03-09T22:14:44+08:00</updated>
+  <updated>2014-03-10T20:19:39+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -229,12 +229,12 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
     <content type="html"><![CDATA[<h2 id="section">简介</h2>
 <p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
 
-<p>你能从<a href="http://shishougang.github.com/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。
-#+begin_html
+<p>你能从<a href="http://shishougang.github.com/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
+
 <!-- more -->
-#+end_html
-## example源代码
-先看example源代码，然后逐步介绍。</p>
+
+<h2 id="example">example源代码</h2>
+<p>先看example源代码，然后逐步介绍。</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>example.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
