@@ -11,9 +11,9 @@ tags: gflags C++
 Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括[C++的版本](https://code.google.com/p/gflags/)和[python的版本](https://code.google.com/p/python-gflags/)。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html
 
 你能从[这里下载](/downloads/code/2014/cmake_gflags_example.zip)本文章的源代码工程。
-#+begin_html
+
 <!-- more -->
-#+end_html
+
 ## example源代码
 先看example源代码，然后逐步介绍。
 
