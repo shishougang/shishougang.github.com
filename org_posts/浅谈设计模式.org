@@ -5,7 +5,7 @@ title: "浅谈设计模式"
 date: 2014-05-03
 comments: true
 categories: [Design Pattern]
-tags: C++ [Design Pattern]
+tags: C++ "Design Pattern"
 ---
 #+end_html
 #+OPTIONS: toc:nil 
