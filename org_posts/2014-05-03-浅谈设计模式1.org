@@ -15,7 +15,9 @@ tags: C++ [Design Pattern] Strategy
 有一个模拟鸭子的应用完成。这个应用可以仿真鸭子的各种活动，比如游泳，鸣
 叫，飞等等。能马上想到的模式设计如下：
 
-[[/images/blog/2014/strategy/duck1.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck1.jpeg %}
+#+end_html
 
 一个基类 =Duck= 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特
 性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
@@ -24,9 +26,15 @@ tags: C++ [Design Pattern] Strategy
 duck(子类）如果不具备 或 =fly()= 或 =quack= 的特性,那么就去覆盖父类相
 应的特性。
 
-[[/images/blog/2014/strategy/duck2.jpeg]]
-[[/images/blog/2014/strategy/duck3.jpeg]]
-[[/images/blog/2014/strategy/duck4.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck2.jpeg %}
+#+end_html
+#+begin_html
+{% img /images/blog/2014/strategy/duck3.jpeg %}
+#+end_html
+#+begin_html
+{% img /images/blog/2014/strategy/duck4.jpeg %}
+#+end_html
 
 #+begin_html
 <p class="info">
@@ -36,7 +44,9 @@ duck(子类）如果不具备 或 =fly()= 或 =quack= 的特性,那么就去覆�
 
 那么如果把不变的特性继续放在基类 =Duck= 里，而把变化的特性拿出来做成独
 立的接口呢？
-[[/images/blog/2014/strategy/duck5.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck5.jpeg %}
+#+end_html
 
 #+begin_html
 <p class="info">
@@ -63,7 +73,9 @@ duck(子类）如果不具备 或 =fly()= 或 =quack= 的特性,那么就去覆�
 接口(面向接口编程而不是实现)。C++中定义一个虚类，其他不同的行为类继承
 这个类并实现这个虚类中的虚函数接口（Java是实现这个接口）。基本如下：
 
-[[/images/blog/2014/strategy/duck_behavior.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck_behavior.jpeg %}
+#+end_html
 
 #+begin_src c++
 class FlyBehavior {
@@ -89,7 +101,9 @@ class FlyWithWings : public FlyBehavior {
 关键处在：现在Duck委托（delegate）它的 =flying= 和 =quacking= 行为，而
 不是直接使用类或子类里它们的方法。
 
-[[/images/blog/2014/strategy/duck_class.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck_class.jpeg %}
+#+end_html
 #+begin_src c++
 class Duck {
  public:
@@ -120,10 +134,14 @@ DecoyDuck::DecoyDuck() {
   model->performFly();
 #+end_src
 *** 总的框架
-[[/images/blog/2014/strategy/duck_summarize.jpeg]]
+#+begin_html
+{% img /images/blog/2014/strategy/duck_summarize.jpeg %}
+#+end_html
 * 总结
 ** 策略模式(Strategy)结构
-[[/images/blog/2014/strategy/strategy_structure.jpg]]
+#+begin_html
+{% img /images/blog/2014/strategy/strategy_structure.jpg %}
+#+end_html
 ** 组成
 + 策略类（Strategy)
   声明一个所有算法都支持的公共接口。场景(Context)利用这个接口来调用具

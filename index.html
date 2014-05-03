@@ -137,11 +137,7 @@ MathJax.Hub.Config({
 有一个模拟鸭子的应用完成。这个应用可以仿真鸭子的各种活动，比如游泳，鸣叫，飞等等。能马上想到的模式设计如下：
 </p>
 
-
-<div class="figure">
-<p><img src="file:///images/blog/2014/strategy/duck1.jpeg" alt="duck1.jpeg" />
-</p>
-</div>
+<img src="/images/blog/2014/strategy/duck1.jpeg" />
 
 <p>
 一个基类 <code>Duck</code> 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
@@ -152,11 +148,9 @@ MathJax.Hub.Config({
 duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的特性,那么就去覆盖父类相应的特性。
 </p>
 
-<p>
-<img src="file:///images/blog/2014/strategy/duck2.jpeg" alt="duck2.jpeg" />
-<img src="file:///images/blog/2014/strategy/duck3.jpeg" alt="duck3.jpeg" />
-<img src="file:///images/blog/2014/strategy/duck4.jpeg" alt="duck4.jpeg" />
-</p>
+<img src="/images/blog/2014/strategy/duck2.jpeg" />
+<img src="/images/blog/2014/strategy/duck3.jpeg" />
+<img src="/images/blog/2014/strategy/duck4.jpeg" />
 
 <p class="info">
 每增加一个不同的子类 duck，如果没有父类相应的特性都要去覆盖它，很冗余。
@@ -164,8 +158,8 @@ duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的�
 
 <p>
 那么如果把不变的特性继续放在基类 <code>Duck</code> 里，而把变化的特性拿出来做成独立的接口呢？
-<img src="file:///images/blog/2014/strategy/duck5.jpeg" alt="duck5.jpeg" />
 </p>
+<img src="/images/blog/2014/strategy/duck5.jpeg" />
 
 <p class="info">
 1. 增加代码的冗余性，每个子类duck都要去实现部分相同的特性;2. 想更改一个相同的 fly() 特性，要在相应的所有子类都修改
