@@ -1,6 +1,15 @@
-#+SETUPFILE: ~/.emacs.d/src/org-templates/level-2.org
-#+TITLE: 浅谈设计模式三: 装饰器模式(Decorator)
-#+OPTIONS: num:nil H:2
+
+#+begin_html
+---
+layout: post
+title: "浅谈设计模式三: 装饰器模式(Decorator)"
+date: 2014-05-03
+comments: true
+categories: [Design Pattern]
+tags: [Design Pattern, C++, Decorator]
+---
+#+end_html
+#+OPTIONS: toc:nil
 
 * 实例
 星巴克以咖啡文明，现在为它设计它的咖啡订餐系统。
@@ -10,12 +19,18 @@
 每种咖啡都有很多中附加，比如拿铁咖啡就有，加糖拿铁，加奶拿铁，加奶加糖
 拿铁等等。所以按照上面的设计来设计咖啡订餐系统，那么整个系统类结构如下：
 
-[[./images/decorator/beverage_structure.jpeg]]
+#+begin_html
+{% img /images/blog/2014/decorator/beverage_structure.jpeg %}
+#+end_html
 
 #+begin_html
 <p class="info">
 每种咖啡不同的附加组合导致太多类。
 </p>
+#+end_html
+
+#+begin_html
+<!-- more -->
 #+end_html
 
 * 装饰器模式(Decorator)
@@ -85,10 +100,14 @@ class Milk : public CondimentDecorator {
   cout << beverage2->description() << " $" << beverage2->cost() << endl;
 #+end_src
 *** 总的框架
-[[./images/decorator/beverage.jpeg]]
+#+begin_html
+{% img /images/blog/2014/decorator/beverage.jpeg %}
+#+end_html
 * 总结
 ** 装饰器模式(Decorator)结构
-[[./images/decorator/decorator_structure.jpg]]
+#+begin_html
+{% img /images/blog/2014/decorator/decorator_structure.jpg %}
+#+end_html
 ** 组成
 + 抽象组件（Component）
   定义一个对象接口，使得装饰对象能动态加入到组件中。

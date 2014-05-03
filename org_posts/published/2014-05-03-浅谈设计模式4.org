@@ -1,6 +1,15 @@
-#+SETUPFILE: ~/.emacs.d/src/org-templates/level-2.org
-#+TITLE: 浅谈设计模式四: 工厂模式(Factory Method)
-#+OPTIONS: num:nil H:2
+
+#+begin_html
+---
+layout: post
+title: "浅谈设计模式四: 工厂模式(Factory Method)"
+date: 2014-05-03
+comments: true
+categories: [Design Pattern]
+tags: [Design Pattern, C++, Factory Method]
+---
+#+end_html
+#+OPTIONS: toc:nil
 
 * 实例
 批萨店有各种不同的批萨，根据不同的用户来点批萨，基本实现如下：
@@ -27,6 +36,11 @@
 但是如果批萨店新添或下架其它的品种的批萨呢？就需要在这个函数里添加或删
 除不同的批萨，而这段代码包括变化的批萨品种，和不变的批萨制作过程。不易
 后期维护。
+
+#+begin_html
+<!-- more -->
+#+end_html
+
 * 工厂模式(Factory Method)
 ** 目的
 定义创建对象的一个接口，但是让子类来决定实例哪个类。工厂模式(Factory
@@ -67,7 +81,9 @@ Pizza* PizzaStore::orderPizza(string type) {
 }
 #+end_src
 *** 总的框架
-[[./images/factoryMethod/simplefactory.jpeg]]
+#+begin_html
+{% img /images/blog/2014/factoryMethod/simplefactory.jpeg %}
+#+end_html
 ** 实现2. 工厂模式（Factory Method)
 *** 在批萨店接口里定义工厂方法
 #+begin_src c++
@@ -103,10 +119,14 @@ Pizza* PizzaStore::orderPizza(string type) {
 }
 #+end_src
 *** 整的框架
-[[./images/factoryMethod/factorymethod.jpeg]]
+#+begin_html
+{% img /images/blog/2014/factoryMethod/factorymethod.jpeg %}
+#+end_html
 * 总结
 ** 工厂模式(Factory Method)结构
-[[./images/factoryMethod/factorymethod_structure.jpeg]]
+#+begin_html
+{% img /images/blog/2014/factoryMethod/factorymethod_structure.jpeg %}
+#+end_html
 ** 组成
 + 产品
   定义工厂模式创建对象的接口。

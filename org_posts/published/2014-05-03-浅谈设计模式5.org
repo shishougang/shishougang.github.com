@@ -1,6 +1,15 @@
-#+SETUPFILE: ~/.emacs.d/src/org-templates/level-2.org
-#+TITLE: 浅谈设计模式五: 抽象工厂模式(Abstract Factory)
-#+OPTIONS: num:nil H:2
+
+#+begin_html
+---
+layout: post
+title: "浅谈设计模式五: 抽象工厂模式(Abstract Factory)"
+date: 2014-05-03
+comments: true
+categories: [Design Pattern]
+tags: [Design Pattern, C++, Abstract Factory]
+---
+#+end_html
+#+OPTIONS: toc:nil
 
 * 实例
 继续扩展模式四中的批萨店实例，加入批萨配料对象。不同的地区的批萨店有一
@@ -11,6 +20,11 @@
 3. 整个批萨连锁在不同地区有不同的店。
 
 如何清晰而易维护的设计整个批萨连锁店系统呢？
+
+#+begin_html
+<!-- more -->
+#+end_html
+
 * 抽象工厂模式(Abstract Factory)
 ** 目的
 为创建一组相关或相依赖的对象提供一个接口，而不用指定它们具体的类。
@@ -135,10 +149,14 @@ Pizza* NYPizzaStore::createPizza(string item) {
 }
 #+end_src
 *** 总的框架
-[[./images/abstractFactory/pizzastore_structure.jpeg]]
+#+begin_html
+{% img /images/blog/2014/abstractFactory/pizzastore_structure.jpeg %}
+#+end_html
 * 总结
 ** 抽象工厂模式(Abstract Factory)结构
-[[./images/abstractFactory/abstractfactory_structure.jpeg]]
+#+begin_html
+{% img /images/blog/2014/abstractFactory/abstractfactory_structure.jpeg %}
+#+end_html
 ** 组成
 + 抽象工厂（AbstractFactory）
   为创建抽象产品类操作定义接口

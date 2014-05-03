@@ -1,0 +1,62 @@
+
+#+begin_html
+---
+layout: post
+title: "浅谈设计模式附录一: 标识"
+date: 2014-05-05
+comments: true
+categories: [Design Pattern]
+tags: [Design Pattern, C++]
+---
+#+end_html
+#+OPTIONS: toc:nil
+
+
+* 类图
+#+begin_html
+{% img /images/blog/2014/appendix/class relationships.svg %}
+#+end_html
+
+1. 实例化
+#+begin_html
+{% img /images/blog/2014/appendix/instantiate.jpeg %}
+#+end_html
+
+CreateTool创建LineShape对象。
+
+#+begin_html
+<!-- more -->
+#+end_html
+
+2. 继承
+#+begin_html
+{% img /images/blog/2014/appendix/subclass.jpeg %}
+#+end_html
+
+类LineShape是继承父类Shape.
+
+3. 委托
+#+begin_html
+{% img /images/blog/2014/appendix/delegation.jpeg %}
+#+end_html
+
+委托是组合的一种方法，使组合具有继承的复用功能。LineShape保持Color对象
+的一个引用，当LineShape做一些Color的功能时，它不用从父类继承，它把功能
+委托给Color来完成。
+
+4. 聚合
+#+begin_html
+{% img /images/blog/2014/appendix/aggregate.jpeg %}
+#+end_html
+
+聚合意味这一个对象拥有另一个对象或对对另一个对象负责。同时意味这一个聚
+合对象和它的拥有者具有相同的生命周期。
+
+5. 注释
+#+begin_html
+{% img /images/blog/2014/appendix/annotation.svg %}
+#+end_html
+
+右边的框框表示对 =Draw()= 的注释。
+
+

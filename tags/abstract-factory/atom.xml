@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: Abstract Factory | (learn&think)]]></title>
+  <link href="http://shishougang.github.com/tags/abstract-factory/atom.xml" rel="self"/>
+  <link href="http://shishougang.github.com/"/>
+  <updated>2014-05-03T15:51:13+08:00</updated>
+  <id>http://shishougang.github.com/</id>
+  <author>
+    <name><![CDATA[DreamRunner]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈设计模式五: 抽象工厂模式(Abstract Factory)]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/"/>
+    <updated>2014-05-03T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/03/浅谈设计模式5</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+继续扩展模式四中的批萨店实例，加入批萨配料对象。不同的地区的批萨店有一组共同的产品(如生面，酱汁，芝士等等），但是根据不同地区的口味有不同的实现。整个系统变得有点复杂了，
+</p>
+<ol class="org-ol">
+<li>有不同的批萨原料，同样的批萨原料在不同的地区有不同的作法；
+</li>
+<li>每个店有不同种类的批萨（即各种原料搭配不同）；
+</li>
+<li>整个批萨连锁在不同地区有不同的店。
+</li>
+</ol>
+
+<p>
+如何清晰而易维护的设计整个批萨连锁店系统呢？
+</p>
+
+<!-- more -->
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 抽象工厂模式(Abstract Factory)</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+为创建一组相关或相依赖的对象提供一个接口，而不用指定它们具体的类。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/abstract_factory">代码实例在这里</a>。
+</p>
+</div>
+<div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 定义各个原料的接口</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<p>
+比如 <code>Douge</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Dough</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">toString</span>() = 0;
+};
+</pre>
+</div>
+
+<p>
+比如 <code>Sauce</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Sauce</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">toString</span>() = 0;
+};
+</pre>
+</div>
+
+<p>
+其他原料等。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 根据原料接口定义原料</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+比如 <code>Douge</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ThickCrustDough</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Dough</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">toString</span>();
+};
+</pre>
+</div>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ThinCrustDough</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Dough</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">toString</span>();
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 定义批萨原料创建抽象工厂接口</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">PizzaIngredientFactory</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">PizzaIngredientFactory</span>() {}
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">Dough</span>* <span style="color: #87cefa;">createDough</span>() = 0;
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">Sauce</span>* <span style="color: #87cefa;">createSauce</span>() = 0;
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">Cheese</span>* <span style="color: #87cefa;">createCheese</span>() = 0;
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">Clams</span>* <span style="color: #87cefa;">createClam</span>() = 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-4" class="outline-4">
+<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 根据原料抽象工厂接口不同地区定义不同原料</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+比如 <code>Chicago</code>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">Dough</span>* <span style="color: #7fffd4;">ChicagoPizzaIngredientFactory</span>::<span style="color: #87cefa;">createDough</span>() {
+  <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">ThickCrustDough</span>();
+}
+
+<span style="color: #98fb98;">Sauce</span>* <span style="color: #7fffd4;">ChicagoPizzaIngredientFactory</span>::<span style="color: #87cefa;">createSauce</span>() {
+  <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">PlumTomatoSauce</span>();
+}
+
+<span style="color: #98fb98;">Cheese</span>* <span style="color: #7fffd4;">ChicagoPizzaIngredientFactory</span>::<span style="color: #87cefa;">createCheese</span>() {
+  <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">MozzarellaCheese</span>();
+}
+
+<span style="color: #98fb98;">Clams</span>* <span style="color: #7fffd4;">ChicagoPizzaIngredientFactory</span>::<span style="color: #87cefa;">createClam</span>() {
+  <span style="color: #00ffff;">return</span> <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">FrozenClams</span>();
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-5" class="outline-4">
+<h4 id="sec-2-2-5"><span class="section-number-4">2.2.5</span> 定义不同批萨的接口</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Pizza</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #87cefa;">Pizza</span>();
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Pizza</span>();
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">name</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_name</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">prepare</span>() = 0;
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">bake</span>();
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">cut</span>();
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">box</span>();
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">toString</span>();
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name_</span>;
+  <span style="color: #98fb98;">Dough</span> *<span style="color: #eedd82;">dough_</span>;
+  <span style="color: #98fb98;">Sauce</span> *<span style="color: #eedd82;">sauce_</span>;
+  <span style="color: #98fb98;">Cheese</span> *<span style="color: #eedd82;">cheese_</span>;
+  <span style="color: #98fb98;">Clams</span> *<span style="color: #eedd82;">clam_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-6" class="outline-4">
+<h4 id="sec-2-2-6"><span class="section-number-4">2.2.6</span> 根据批萨接口实现不同皮赛</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+比如 <code>Cheese Pizza</code> ， 同样的Cheese Pizza在不同地区的制作流程和配料种类相同，但同类的配料在不同的地区不同，利用原料抽象工厂接口来决定配料的不同。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #7fffd4;">CheesePizza</span>::<span style="color: #87cefa;">CheesePizza</span>(<span style="color: #98fb98;">PizzaIngredientFactory</span> *<span style="color: #eedd82;">ingredient_factory</span>) :
+    ingredient_factory_(ingredient_factory) {
+}
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CheesePizza</span>::<span style="color: #87cefa;">prepare</span>() {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Preparing "</span> &lt;&lt; name_ &lt;&lt; endl;
+  dough_ = ingredient_factory_-&gt;createDough();
+  sauce_ = ingredient_factory_-&gt;createSauce();
+  cheese_ = ingredient_factory_-&gt;createCheese();
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-7" class="outline-4">
+<h4 id="sec-2-2-7"><span class="section-number-4">2.2.7</span> 整合到一起</h4>
+<div class="outline-text-4" id="text-2-2-7">
+<p>
+比如New York Pizza Store，通过传入New York抽象工厂原料类来创建New York
+自己的批萨。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">Pizza</span>* <span style="color: #7fffd4;">NYPizzaStore</span>::<span style="color: #87cefa;">createPizza</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">item</span>) {
+  <span style="color: #98fb98;">Pizza</span> *<span style="color: #eedd82;">pizza</span> = <span style="color: #7fffd4;">NULL</span>;
+  <span style="color: #98fb98;">PizzaIngredientFactory</span>* <span style="color: #eedd82;">ingredientFactory</span> =
+      <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">NYPizzaIngredientFactory</span>();
+  <span style="color: #00ffff;">if</span> (item == <span style="color: #ffa07a;">"cheese"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">CheesePizza</span>(ingredientFactory);
+    pizza-&gt;set_name(<span style="color: #ffa07a;">"New York Style Cheese Pizza"</span>);
+  } <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">if</span> (item == <span style="color: #ffa07a;">"clam"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">ClamPizza</span>(ingredientFactory);
+    pizza-&gt;set_name(<span style="color: #ffa07a;">"New York Style Clam Pizza"</span>);
+  }
+  <span style="color: #00ffff;">return</span> pizza;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-8" class="outline-4">
+<h4 id="sec-2-2-8"><span class="section-number-4">2.2.8</span> 总的框架</h4>
+<div class="outline-text-4" id="text-2-2-8">
+<img src="/images/blog/2014/abstractFactory/pizzastore_structure.jpeg">
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 抽象工厂模式(Abstract Factory)结构</h3>
+<div class="outline-text-3" id="text-3-1">
+<img src="/images/blog/2014/abstractFactory/abstractfactory_structure.jpeg">
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>抽象工厂（AbstractFactory）为创建抽象产品类操作定义接口
+</li>
+<li>具体工厂（ConcreteFactory）实现创建具体产品类的操作
+</li>
+<li>抽象产品（AbstractProduct）为一种产品类定义一个接口
+</li>
+<li>具体产品（Concrete Product）
+<ol class="org-ol">
+<li>定义一个将被相应的具体工厂类创建的产品对象
+</li>
+<li>实现抽象产品（AbstractProduct）的接口
+</li>
+</ol>
+</li>
+<li>客户（Client）只使用抽象工厂（AbstractFactory）和抽象产品（AbstractProduct）类声明的接口
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li>一个系统要独立于它的产品如何创建，如何组成和如何表示
+</li>
+<li>一个系统需要被一家族产品之一来配置
+</li>
+<li>一家族相关的产品对象要设计成一起使用，你需要强制这个约束
+</li>
+<li>你想提供一类库的产品，而且你想只暴露它们的接口，而不是它们的实现细节。
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 缺点</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+支持新的产品种类较难。扩展抽象工厂来产生新的产品种类并不容易。那是因为抽象工厂接口固定能创建的产品集合。支持新的产品种类要求扩展工厂接口，那这涉及更改抽象工厂类和它的所有子类。
+</p>
+</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+</feed>

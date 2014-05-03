@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Design Pattern | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/design-pattern/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-05-03T14:39:23+08:00</updated>
+  <updated>2014-05-03T15:51:13+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -14,107 +14,298 @@
 
   
   <entry>
-    <title type="html"><![CDATA[浅谈设计模式二: 观察者模式(Observer)]]></title>
-    <link href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F2/"/>
-    <updated>2014-05-03T00:00:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2014/05/03/浅谈设计模式2</id>
+    <title type="html"><![CDATA[设计模式基本原则]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/"/>
+    <updated>2014-05-05T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/05/设计模式基本原则</id>
     <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<h2 id="sec-1"><span class="section-number-2">1</span> 封装那些改变的</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-有一个气候观测应用，包括三部分：
+识别出应用里改变的方面，然后把它们从不变部分里分离出来封装。这样变化的部分就不会影响到不变的部分。那么，之后代码改变的话，只需要修改封装好的变化部分，不引起无意的修改，并提供更好的扩展灵活性。
 </p>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 面向接口编程，而不是实现</h2>
+<div class="outline-text-2" id="text-2">
 <ol class="org-ol">
-<li>气候站(WeatherStation):物理设备用来采集实际天气数据;
+<li>由接口定义要实现的每个行为；
 </li>
-<li>气候数据对象(WeatherData)追踪来自气候站的数据和更新显示;
+<li>只要依照接口定义好的编程实现；
 </li>
-<li>给用户现在气候情况的显示(xxDisplay)
+<li>我们只需要知道接口是如何，根本不需要实现的细节而去使用这个接口派生的对象；
+</li>
+<li>在运行时才赋值具体的实现对象。
 </li>
 </ol>
-
-<p>
-现在气候收集这3个数据：温度，湿度和气压。有3种不同的显示：现在的天气情况，天气统计信息和天气预测信息。
-</p>
-
-<p>
-直观的话是在 <code>WeatherData</code> 类里的 <code>measurementsChanged()</code> 里直接调用不同显示器的 <code>update()</code> 来更新数据，如下：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #7fffd4;">WeatherData</span>::<span style="color: #87cefa;">measurementsChanged</span>() {
-currentConditionsDisplay.update(temp_, humidity_, pressure_);
-statisticsDisplay.update(temp_, humidity_, pressure_);
-forecastDisplay.update(temp_, humdity_, pressure_);
-</pre>
 </div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> 使用组合优于继承</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+使用组合创建系统提高灵活性。不单单可以使你把一族的算法封装成它们各自的类，同时让你在运行时可以改变算法行为。
+</p>
 
-<p class="info">
-1. WeatherData和Display比较紧的耦合。在函数内直接使用实例，每次增加或较少Display都要在这个函数内修改。<br />
-2. 以具体实例来编码，使得不能动态的添加和减少显示元素，唯有修改这段代码
+<p>
+而继承，子类直接实现好算法的具体行为，不能在运行时改变算法的行为，同时过多的继承加剧类图的复杂度。
 </p>
 
 <!-- more -->
 </div>
 </div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> 追求交互对象间的松耦合</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+当两个对象松耦合时，它们能交互，但互相了解很少。松耦合让我们建立能适应变化的灵活系统，因为它们最小化对象间的内部依赖。
+</p>
 
+<p>
+松耦合对象A和B：
+</p>
+<ol class="org-ol">
+<li>A和B只要知道对方的接口，就可以互相调用对方;
+</li>
+<li>我们可以独立复用A或B;
+</li>
+<li>改变A或B不会影响对方。
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> 类需要对扩展开放，对修改闭合(The Open-Closed Principle)</h2>
+<div class="outline-text-2" id="text-5">
+<ol class="org-ol">
+<li>开放：自由添加任何新的行为来扩展类。
+</li>
+<li>闭合：现有的代码经过长时间的测试和修正，不允许别人修改现有代码。
+</li>
+</ol>
+
+<p>
+目的是允许类能容易的被扩展新的行为而不用修改现有的代码。为了达到这个目的，模式设计需要能弹性改变并足够灵活来对变化需求的新功能做出反应。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> 依赖于抽象类，而不是依赖具体类（The Dependency Inversion Principle)</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+与“面向接口编程，而不是实现“原则类似，然而依赖反转原则对于抽象接口更严格：
+</p>
+
+<ol class="org-ol">
+<li>高层次的模块不应该依赖于低层次的模块，两者都应该依赖于抽象接口。
+</li>
+<li>抽象接口不应该依赖于具体实现。而具体实现则应该依赖于抽象接口。
+</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> 得墨忒耳定律(Law of Demeter or Principle of Least Knowledge)</h2>
+<div class="outline-text-2" id="text-7">
+<p>
+得墨忒耳定律是松耦合的一种具体案例:
+</p>
+<ol class="org-ol">
+<li>每个单元对于其他的单元只能拥有有限的知识：只是与当前单元紧密联系的单元；
+</li>
+<li>每个单元只能和它的朋友交谈：不能和陌生单元交谈；
+</li>
+<li>只和自己直接的朋友交谈
+</li>
+</ol>
+
+<p>
+这个原理的名称来源于希腊神话中的农业女神，孤独的得墨忒耳。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> 好莱坞原则(Hollywood Principle)</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+总的概括就是：不要调用我们（高层次模块），我们会调用你（低层次模块）。
+</p>
+
+<p>
+好莱坞原则提供一种防止依赖腐烂的方法。依赖腐烂发生当高层次模块依赖于低层次模块，低层次模块依赖于高层次模块，高层次模块又依赖于边际模块，边际模块依赖于低层次模块如此。当腐烂发生，没有人能轻易理解这个系统如何设计。
+</p>
+
+<p>
+遵循好莱坞原则，允许低层次模块连入到系统中，但是由高层次模块决定什么时候它们被需要，和怎么使用它们。而不允许低层次的模块直接去调用一个高层次模块。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> 单一功能原则（Single Responsibility Principle）</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+单一功能原则（Single responsibility principle）规定每个类都应该有一个单一的功能，并且该功能应该由这个类完全封装起来。
+</p>
+
+<p>
+也就是一个类或者模块应该有且只有一个改变的原因。一个具体的例子就是，想象有一个用于编辑和打印报表的模块。这样的一个模块存在两个改变的原因。第一，报表的内容可以改变（编辑）。第二，报表的格式可以改变（打印）。这两方面会的改变因为完全不同的起因而发生：一个是本质的修改，一个是表面的修改。单一功能原则认为这两方面的问题事实上是两个分离的功能，因此他们应该分离在不同的类或者模块里。把有不同的改变原因的事物耦合在一起的设计是糟糕的。
+</p>
+
+<p>
+保持一个类专注于单一功能点上的一个重要的原因是，它会使得类更加的健壮。继续上面的例子，如果有一个对于报表编辑流程的修改，那么将存在极大的危险性，打印功能的代码会因此不工作，假使这两个功能存在于同一个类中的话。
+</p>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈设计模式附录一: 标识]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/05/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%99%84%E5%BD%95%E4%B8%80/"/>
+    <updated>2014-05-05T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/05/浅谈设计模式附录一</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 类图</h2>
+<div class="outline-text-2" id="text-1">
+<img src="/images/blog/2014/appendix/class" title="relationships.svg" >
+
+<ol class="org-ol">
+<li>实例化
+</li>
+</ol>
+<img src="/images/blog/2014/appendix/instantiate.jpeg">
+
+<p>
+CreateTool创建LineShape对象。
+</p>
+
+<!-- more -->
+
+<ol class="org-ol">
+<li>继承
+</li>
+</ol>
+<img src="/images/blog/2014/appendix/subclass.jpeg">
+
+<p>
+类LineShape是继承父类Shape.
+</p>
+
+<ol class="org-ol">
+<li>委托
+</li>
+</ol>
+<img src="/images/blog/2014/appendix/delegation.jpeg">
+
+<p>
+委托是组合的一种方法，使组合具有继承的复用功能。LineShape保持Color对象的一个引用，当LineShape做一些Color的功能时，它不用从父类继承，它把功能委托给Color来完成。
+</p>
+
+<ol class="org-ol">
+<li>聚合
+</li>
+</ol>
+<img src="/images/blog/2014/appendix/aggregate.jpeg">
+
+<p>
+聚合意味这一个对象拥有另一个对象或对对另一个对象负责。同时意味这一个聚合对象和它的拥有者具有相同的生命周期。
+</p>
+
+<ol class="org-ol">
+<li>注释
+</li>
+</ol>
+<img src="/images/blog/2014/appendix/annotation.svg">
+
+<p>
+右边的框框表示对 <code>Draw()</code> 的注释。
+</p>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈设计模式二十三: 访问者模式(Visitor)]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F23/"/>
+    <updated>2014-05-04T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/04/浅谈设计模式23</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+一辆汽车的结构是定的，但是对方不同部件的操作确实会时常变化，比如查看汽车各个部件，发动汽车对各个部件操作或修理部件等。那么如何在不改变汽车部件类的前提下，对其定义不同的操作呢？
+</p>
+
+<!-- more -->
+</div>
+</div>
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 观察者模式(Observer)</h2>
+<h2 id="sec-2">访问者模式(Visitor)</h2>
 <div class="outline-text-2" id="text-2">
 </div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
+<h3 id="sec-2-1">目的</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-在对象间，定义一对多的依赖关系，那么当这一个对象改变状态时，所有它的依赖对象得到自动通知和更新。
+表示在对象结构元素上进行的一个操作。访问者模式让你在不改变一个类的前提下，对这个类的元素定义新的操作。 
 </p>
-<img src="/images/blog/2014/observer/subject_observer.jpeg">
 </div>
 </div>
 
 <div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
+<h3 id="sec-2-2">实现</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-这里一对多的依赖关系，我们把这单一的对象称为目标对象(Subject)，而所有依赖于它的称为观察者对象(Observer)。分别定义Subject和Observer的对象。
-<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/observer">代码实例在这里</a>。
+利用访问者设计模式，能很好的解决这个问题，一旦定义好汽车各个部件类，不用去修改它们，也能对它们定义新的操作。<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/visitor">代码实例在这里</a>。
 </p>
 </div>
 <div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 目标对象(Subject)接口</h4>
+<h4 id="sec-2-2-1">抽象元素类</h4>
 <div class="outline-text-4" id="text-2-2-1">
-<ol class="org-ol">
-<li>先建立好目标对象;
-</li>
-<li>然后观察者对象可以动态调用 <code>registerObserver</code> 来加入目标对象的更新列表内，调用 <code>registerObserver</code> 来从目标对象更新列表中移出;
-</li>
-<li>目标对象通过 <code>notifyObservers</code> 通知和更新观察者列表
-</li>
-</ol>
+<p>
+定义一个以访问类为参数的 <code>Accept</code> 操作。
+</p>
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Subject</span> {
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">CarElement</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">registerObserver</span>(<span style="color: #98fb98;">Observer</span> *<span style="color: #eedd82;">o</span>) = 0;
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">removeObserver</span>(<span style="color: #98fb98;">Observer</span> *<span style="color: #eedd82;">o</span>) = 0;
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">notifyObservers</span>() = 0;
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">CarElement</span>() {}
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">accept</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>) = 0;
 };
 </pre>
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 观察者对象(Observer)接口</h4>
+<h4 id="sec-2-2-2">汽车具体元素类</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
-观察者对象(Observer)接口只需要一个更新功能，使得目标对象通过
-<code>notifyObservers</code> 分别调用观察者的 <code>update</code> 函数来更新参数。
+这里仅仅定义了汽车部分结构类为例子，分别定义汽车的轮胎类，引擎类和车身类。都实现以访问类为参数的 <code>Accept</code> 操作。
 </p>
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Observer</span> {
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Wheel</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">CarElement</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">update</span>(<span style="color: #98fb98;">float</span> <span style="color: #eedd82;">temp</span>, <span style="color: #98fb98;">float</span> <span style="color: #eedd82;">humdity</span>, <span style="color: #98fb98;">float</span> <span style="color: #eedd82;">pressure</span>) = 0;
+  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">Wheel</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Wheel</span>();
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">accept</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>);
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">name</span>() <span style="color: #00ffff;">const</span> {<span style="color: #00ffff;">return</span> name_;}
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name_</span>;
+};
+
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Engine</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">CarElement</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Engine</span>();
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">accept</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>);
+};
+
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Body</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">CarElement</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Body</span>();
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">accept</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>);
 };
 </pre>
 </div>
@@ -122,41 +313,300 @@ forecastDisplay.update(temp_, humdity_, pressure_);
 </div>
 
 <div id="outline-container-sec-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 整合起来</h4>
+<h4 id="sec-2-2-3">对象结构</h4>
 <div class="outline-text-4" id="text-2-2-3">
+<p>
+整辆车的组合，能枚举它的各个部件，用 <code>vector</code> 维护一个无序的汽车元素集合。
+</p>
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #98fb98;">WeatherData</span> *<span style="color: #eedd82;">weather_data</span> = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">WeatherData</span>();
-<span style="color: #98fb98;">CurrentConditionsDisplay</span> *<span style="color: #eedd82;">current_display</span> =
-    <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">CurrentConditionsDisplay</span>(weather_data);
-<span style="color: #98fb98;">StatisticsDisplay</span> *<span style="color: #eedd82;">statistics_display</span> =
-    <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">StatisticsDisplay</span>(weather_data);
-<span style="color: #98fb98;">ForecastDisplay</span> *<span style="color: #eedd82;">forecast_display</span> =
-    <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">ForecastDisplay</span>(weather_data);
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Car</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #87cefa;">Car</span>();
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Car</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">visit_car</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>);
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">visit_elements</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>);
+  <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">CarElement</span> *&gt; <span style="color: #eedd82;">elements_array_</span>;
+};
 
-weather_data-&gt;setMeasurements(80, 65, 30.4f);
-weather_data-&gt;setMeasurements(82, 70, 29.2f);
+<span style="color: #7fffd4;">Car</span>::<span style="color: #87cefa;">Car</span>() {
+  elements_array_.push_back(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Wheel</span>(<span style="color: #ffa07a;">"front left"</span>));
+  elements_array_.push_back(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Wheel</span>(<span style="color: #ffa07a;">"front right"</span>));
+  elements_array_.push_back(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Body</span>());
+  elements_array_.push_back(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Engine</span>());
+}
+
+<span style="color: #7fffd4;">Car</span>::~<span style="color: #87cefa;">Car</span>() {
+  <span style="color: #00ffff;">for</span>(<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; elements_array_.size(); ++i) {
+    <span style="color: #98fb98;">CarElement</span> *<span style="color: #eedd82;">element</span> = elements_array_[i];
+    <span style="color: #00ffff;">delete</span> element;
+  }
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">Car</span>::<span style="color: #87cefa;">visit_car</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>) {
+  visit_elements(visitor);
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">Car</span>::<span style="color: #87cefa;">visit_elements</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>) {
+  <span style="color: #00ffff;">for</span>(<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; elements_array_.size(); ++i) {
+    <span style="color: #98fb98;">CarElement</span> *<span style="color: #eedd82;">element</span> = elements_array_[i];
+    element-&gt;accept(visitor);
+  }
+}
 </pre>
 </div>
 </div>
 </div>
 
 <div id="outline-container-sec-2-2-4" class="outline-4">
-<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 总的框架</h4>
+<h4 id="sec-2-2-4">抽象访问类</h4>
 <div class="outline-text-4" id="text-2-2-4">
-<img src="/images/blog/2014/observer/whole_structure.jpeg">
+<p>
+为结构中的具体元素类（ConcreteElement）类声明一个访问操作。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">CarElement</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">CarElement</span>() {}
+  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">accept</span>(<span style="color: #98fb98;">CarElementVisitor</span> *<span style="color: #eedd82;">visitor</span>) = 0;
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-5" class="outline-4">
+<h4 id="sec-2-2-5">具体访问类1：访问汽车部件</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementPrintVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Wheel</span> *<span style="color: #eedd82;">wheel</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Visiting "</span> &lt;&lt; wheel-&gt;name() &lt;&lt; <span style="color: #ffa07a;">" wheel"</span> &lt;&lt; endl;
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementPrintVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Engine</span> *<span style="color: #eedd82;">engine</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Visiting engine"</span> &lt;&lt; endl;
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementPrintVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Body</span> *<span style="color: #eedd82;">body</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Visiting body"</span> &lt;&lt; endl;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-6" class="outline-4">
+<h4 id="sec-2-2-6">具体访问类2：启动汽车部件</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementDoVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Wheel</span> *<span style="color: #eedd82;">wheel</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Kicking my "</span> &lt;&lt; wheel-&gt;name() &lt;&lt; <span style="color: #ffa07a;">" wheel"</span> &lt;&lt; endl;
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementDoVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Engine</span> *<span style="color: #eedd82;">engine</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Starting my engine"</span> &lt;&lt; endl;
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">CarElementDoVisitor</span>::<span style="color: #87cefa;">visit</span>(<span style="color: #98fb98;">Body</span> *<span style="color: #eedd82;">body</span>) {
+  cout &lt;&lt; <span style="color: #ffa07a;">"Moving my body"</span> &lt;&lt; endl;
+}
+</pre>
+</div>
 </div>
 </div>
 </div>
 </div>
 
 <div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3">总结</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1">访问者模式(Visitor)结构</h3>
+<div class="outline-text-3" id="text-3-1">
+<img src="/images/blog/2014/visitor/visitor_structure.jpeg">
+</div>
+</div>
+
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2">组成</h3>
+<div class="outline-text-3" id="text-3-2">
+<ul class="org-ul">
+<li>抽象访问类（Visitor）为结构中的具体元素类（ConcreteElement）类声明一个访问操作。这个操作的名字和签名标识了发送访问请求给访问类的类。以致能让访问者类决定正被访问元素的具体类。然后访问者类能直接通过它的特殊接口访问这个元素。
+</li>
+<li>具体访问类（ConcreteVisitor）实现抽象访问类声明的每个操作。每个操作实现部分的算法，而这些部分算法为相应的结构中对象类所定义。具体访问类（ConcreteVisitor）提供这算法的场景和存储它的本地状态。这一状态通常再遍历该结构的过程中积累结果。
+</li>
+<li>抽象元素类（Element）定义一个以访问类为参数的 <code>Accept</code> 操作。
+</li>
+<li>具体元素类（ConcreteElement）实现一个以访问类为参数的 <code>Accept</code> 操作。
+</li>
+<li>对象结构(ObjectStrucutre)
+<ol class="org-ol">
+<li>能枚举它的元素。
+</li>
+<li>可以提供允许访问类访问它的元素的上层接口。
+</li>
+<li>可以是一个组合或一个如列表或无序集合的集合。
+</li>
+</ol>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3-3" class="outline-3">
+<h3 id="sec-3-3">应用场景</h3>
+<div class="outline-text-3" id="text-3-3">
+<ul class="org-ul">
+<li>一个对象结构包含许多不同接口对象类，而且你想对这些对象进行一些依赖于它们具体类的操作。
+</li>
+<li>在一个对象结构中，需要对这些对象进行许多不相关不同的操作，而且你想避免以这些操作污染它们的类。访问者模式让你把相关的操作集中起来定义在一个类中。当这个对象结构被许多应用共享时，使用访问者模式让每个应用仅包含需要用到的操作。
+</li>
+<li>定义对象结构的类很少改变，但你时常想在这个结构上定义新的操作。改变对象结构类需要重定义对所有访问者类的结构，这潜在会是很大的开销。如果这些对象结构类经常改变，那么可能还是在这些类中定义这些操作。
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-3-4" class="outline-3">
+<h3 id="sec-3-4">缺点</h3>
+<div class="outline-text-3" id="text-3-4">
+<ul class="org-ul">
+<li>增加新的元素很困难。每增加一个新的元素将在抽象访问者类（Visitor)中增加一个新的抽象操作，并在每个具体访问类（ConcreteVisitor）中增加相应的操作。
+</li>
+<li>破坏封装性。访问者的方法假定具体元素类（ConcreteElement）接口足够强大让访问者对它元素进行操作。因而，这个模式强迫你提供能访问元素内部状态的公开操作，从而导致破坏了它的封装性。
+</li>
+</ul>
+</div>
+</div>
+</div>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈设计模式二十二: 备忘录模式(Memento)]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F22/"/>
+    <updated>2014-05-04T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/04/浅谈设计模式22</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+一个对象的状态必须被存储下来以便它之后能恢复到那个状态，并且一个直接获取状态的接口将暴露实现的细节并破坏对象的封装。 那么如何不用直接获取状态的情况下，实现状态的存储和恢复呢？
+</p>
+
+<!-- more -->
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> 备忘录模式(Memento)</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+不破坏封装的前提下，采集和外部化对象的内部状态，以便这个对象能被恢复到这状态之后。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+只有一个状态标识需要保存和恢复的简单发起类演示备忘录模式。<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/memento">代码实例在这里</a>。
+</p>
+</div>
+
+<div id="outline-container-sec-2-2-1" class="outline-4">
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 需要保存和恢复状态的发起类</h4>
+<div class="outline-text-4" id="text-2-2-1">
+<ol class="org-ol">
+<li><code>CreateMemento</code> ：创建一个包含它当前内部状态快照的备忘录类。
+</li>
+<li><code>SetMemento</code> ：使用备忘录类恢复它的内部状态。
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">T</span>&gt;
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Originator</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Originator</span>() {}
+  <span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt;* <span style="color: #87cefa;">CreateMemento</span>() {
+    <span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt; *<span style="color: #eedd82;">m</span> = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Memento</span>&lt;T&gt;();
+    m-&gt;set_state(state_);
+    <span style="color: #00ffff;">return</span> m;
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">SetMemento</span>(<span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt; *<span style="color: #eedd82;">m</span>) {
+    state_ = m-&gt;state();
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_state</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">T</span> &amp;<span style="color: #eedd82;">state</span>) {state_ = state;}
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">ShowState</span>() <span style="color: #00ffff;">const</span> {
+    cout &lt;&lt; state_ &lt;&lt; endl;
+  }
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-2" class="outline-4">
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 备忘录类</h4>
+<div class="outline-text-4" id="text-2-2-2">
+<p>
+保存和返回状态。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">T</span>&gt;
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Memento</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Memento</span>() {}
+  <span style="color: #98fb98;">T</span> <span style="color: #87cefa;">state</span>() <span style="color: #00ffff;">const</span> {<span style="color: #00ffff;">return</span> state_;}
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_state</span>(<span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state</span>) {state_ = state;}
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-3" class="outline-4">
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 管理者</h4>
+<div class="outline-text-4" id="text-2-2-3">
+<p>
+负责备忘录的保护。用 <code>vector</code> 存储备忘录类以便发起者恢复状态。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Caretaker</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Caretaker</span>() {}
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">SaveState</span>(<span style="color: #98fb98;">Originator</span>&lt;T&gt; *<span style="color: #eedd82;">orig</span>) {
+    memento_array_.push_back(orig-&gt;CreateMemento());
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">RestoreState</span>(<span style="color: #98fb98;">Originator</span>&lt;T&gt; *<span style="color: #eedd82;">orig</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">state_number</span>) {
+    orig-&gt;SetMemento(<span style="color: #98fb98;">memento_array_</span>[state_number]);
+  }
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">Memento</span>&lt;T&gt; *&gt; <span style="color: #eedd82;">memento_array_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
 <div class="outline-text-2" id="text-3">
 </div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 观察者模式(Observer)结构</h3>
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 备忘录模式(Memento)结构</h3>
 <div class="outline-text-3" id="text-3-1">
-<img src="/images/blog/2014/observer/observer_structure.jpg">
+<img src="/images/blog/2014/memento/memento_structure.jpeg">
 </div>
 </div>
 
@@ -164,35 +614,27 @@ weather_data-&gt;setMeasurements(82, 70, 29.2f);
 <h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
-<li>目标（Subject）
+<li>备忘录类（Memento）
 <ol class="org-ol">
-<li>知道它的观察者。任意多的观察者对象可以观察一个目标对象。
+<li>存储发起者（Originator）对象的内部状态。根据它的发起者的判定，备忘录存储尽量多或尽量少的发起者的内部状态。
 </li>
-<li>提供一个附加和分离观察者对象的接口。
+<li>防止发起者以外的对象访问。备忘录类实际有两个接口。管理者（Caretaker）拥有备忘录的窄接口——它只能把备忘录类传递给其他对象。发起者（Originator）相反拥有宽接口，让它访问所有必须的数据来自我恢复到之前状态。理想情况下，只有创建备忘录类的那个发起者才允许访问备忘录类的内部状态。
 </li>
 </ol>
 </li>
-<li>观察者（Observer）
+<li>发起者（Originator）
 <ol class="org-ol">
-<li>为在目标中得到改变通知的对象定义一个更新接口。
+<li>创建一个包含它当前内部状态快照的备忘录类。
+</li>
+<li>使用备忘录类恢复它的内部状态。
 </li>
 </ol>
 </li>
-<li>具体目标（ConcreteSubject）
+<li>管理者（Caretaker）
 <ol class="org-ol">
-<li>存储具体观察对象感兴趣的状态。
+<li>负责备忘录的保护。
 </li>
-<li>当状态改变时，发送更新给它的观察对象。
-</li>
-</ol>
-</li>
-<li>具体观察者（ConcreteObserver)
-<ol class="org-ol">
-<li>维持一个具体目标对象的引用。
-</li>
-<li>存储要和目标保持一致的状态。
-</li>
-<li>实现观察者更新接口来使得它的状态与目标保持一致。
+<li>从不操作或检查备忘录类的内容。
 </li>
 </ol>
 </li>
@@ -204,24 +646,23 @@ weather_data-&gt;setMeasurements(82, 70, 29.2f);
 <h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
-<li>当一个抽象类有2个方面，一个依赖另外一个。把这些不同的方面封装成独立的对象来让你独立的改变和复用他们。
+<li>一个对象的（或部分）状态快照必须被存储下来以便它之后能恢复到那个状态，并且
 </li>
-<li>当改变一个对象需要改变其他的对象们，而且你不知道有多少对象需要改变
-</li>
-<li>当一个对象需要能通知其他对象们，但不需要对这些对象们做任何假定。也就是说，你不想这些对象紧耦合。
+<li>一个直接获取状态的接口将暴露实现的细节并且破坏对象的封装。
 </li>
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-3-4" class="outline-3">
 <h3 id="sec-3-4"><span class="section-number-3">3.4</span> 缺点</h3>
 <div class="outline-text-3" id="text-3-4">
 <ul class="org-ul">
-<li>不可预期的更新。因为观察对象们不知道各自的存在，他们会忽略改变目标的最终代价。一个在目标（subject）看似无害的操作可能造成观察者和依赖它们的观察者的级联式更新。而且，没有很好定义或维护的依赖准则经常导致虚假的更新，这些都很难去追踪。
-
-<p>
-简单的更新协议没有提供任何细节关于 <b>什么</b> 会在目标内改变的事实加重了这个问题。没有附加的协议来帮助观察者发现什么改变了，它们可能必须努力的去推测这些改变。
-</p>
+<li>使用备忘录模式可能会开销很大。备忘录模式会导致很大的开销如果发起类必须在备忘录类你拷贝很大量的信息来恢复或如果客户过多的创建和返回备忘录给创建者。除非封装和恢复发起类状态的开销比较小，否则这个模式可能并不适合。
+</li>
+<li>定义窄和宽接口。在一些编程语言里确保只有发起类能访问备忘录类的状态可能比较困难。
+</li>
+<li>管理备忘录类的隐藏开销。一个管理者（caretaker）负责删除它管理的备忘录类。然而，这个管理者不清楚到底有多少的状态存储在备忘录里。因此一个轻量级管理者反而会引起大的存储开销当它存储备忘录时。
 </li>
 </ul>
 </div>
@@ -231,56 +672,38 @@ weather_data-&gt;setMeasurements(82, 70, 29.2f);
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[浅谈设计模式一: 策略模式(Strategy)]]></title>
-    <link href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/"/>
-    <updated>2014-05-03T00:00:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2014/05/03/浅谈设计模式1</id>
+    <title type="html"><![CDATA[浅谈设计模式二十一: 中介者模式(Mediator)]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/"/>
+    <updated>2014-05-04T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/04/浅谈设计模式21</id>
     <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-有一个模拟鸭子的应用完成。这个应用可以仿真鸭子的各种活动，比如游泳，鸣叫，飞等等。能马上想到的模式设计如下：
-</p>
-
-<img src="/images/blog/2014/strategy/duck1.jpeg">
-
-<p>
-一个基类 <code>Duck</code> 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
+在公司里，有不同的职位，比如销售人员，开发人员，系统维护人员，主管等等，经常不同的人会发出不同广播消息，比如主管通知大家会议室在何时被占用，系统维护人员通知大家系统将升级win7,因为xp将不再得到维护。并且公司内有不同类型的广播消息，比如公司销售会议只应该通知主管级别的人物。
 </p>
 
 <p>
-然后想让 <code>Duck</code> 具有有 <code>fly()</code> 的特性，把它加到父类中，相应的不同
-duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的特性,那么就去覆盖父类相应的特性。
+有不同类型的广播消息，不同职位接收和发送不同类型的消息给相应职位的人，整个公司的交互相对复杂，如何做到以下呢？
 </p>
-
-<img src="/images/blog/2014/strategy/duck2.jpeg">
-<img src="/images/blog/2014/strategy/duck3.jpeg">
-<img src="/images/blog/2014/strategy/duck4.jpeg">
-
-<p class="info">
-每增加一个不同的子类 duck，如果没有父类相应的特性都要去覆盖它，很冗余。
-</p>
-
-<p>
-那么如果把不变的特性继续放在基类 <code>Duck</code> 里，而把变化的特性拿出来做成独立的接口呢？
-</p>
-<img src="/images/blog/2014/strategy/duck5.jpeg">
-
-<p class="info">
-1. 增加代码的冗余性，每个子类duck都要去实现部分相同的特性;2. 想更改一个相同的 fly() 特性，要在相应的所有子类都修改
-</p>
+<ol class="org-ol">
+<li>理清和维护好现有的人员交互;
+</li>
+<li>灵活的扩展不同类型广播和不同消息群组。
+</li>
+</ol>
 
 <!-- more -->
 </div>
 </div>
 <div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 策略模式(Strategy)</h2>
+<h2 id="sec-2"><span class="section-number-2">2</span> 中介者模式(Mediator)</h2>
 <div class="outline-text-2" id="text-2">
 </div><div id="outline-container-sec-2-1" class="outline-3">
 <h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-定义一组算法，分别封装每一个，并使它们能互换。策略模式(Strategy)使得对象独立的变化使用这组算法。
+定义一个对象来封装一组对象如何交互。中介者模式使各个对象不显示的互相引用，并让你独立的改变它们的交互，从而达到提高松耦合的效果。
 </p>
 </div>
 </div>
@@ -289,74 +712,109 @@ duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的�
 <h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-如何使得不同子类的duck，<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/strategy">参考代码</a>。
+引入中介者模式集中式控制。由中介者模式来减少交互的复杂度，由它集中理清交互的关系。<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/mediator">代码实例在这里</a>。
 </p>
-<ol class="org-ol">
-<li>具有自己的行为特性;
-</li>
-<li>能复用代码，不同的duck能共享相同行为特性代码，不造成代码的冗余;
-</li>
-<li>易于后期特性的更改，不会造成修改一个行为特性，要修改很多处，并易于扩张的新的行为特性
-</li>
-</ol>
 </div>
 <div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 分离出那些变化的行为</h4>
+<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 中介者类</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
-这里 <code>fly()</code> 和 <code>quack()</code> 行为在不同duck类中变化。 把它们做成一个话的接口(面向接口编程而不是实现)。C++中定义一个虚类，其他不同的行为类继承这个类并实现这个虚类中的虚函数接口（Java是实现这个接口）。基本如下：
+中介者类实现同事间的消息广播：
 </p>
-
-<img src="/images/blog/2014/strategy/duck_behavior.jpeg">
+<ol class="org-ol">
+<li>模板类提供不同类型消息的复用;
+</li>
+<li>提供同事的注册和脱离不同消息的广播群组： <code>RegisterColleague</code> 和
+   <code>UnregisterColleague</code> ;
+</li>
+<li>发送消息广播事件： <code>FireEvent</code> ;
+</li>
+<li>用 <code>vector</code> 维护一个同事消息队列来对注册入队列的同事发生广播事件。
+</li>
+</ol>
 
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">FlyBehavior</span> {
+<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">EventArgType</span>&gt;
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mediator</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">FlyBehavior</span>() {}
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">fly</span>() = 0;
-};
+  <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;* &gt; <span style="color: #98fb98;">EventList</span>;
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Mediator</span>() {}
 
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">FlyNoWay</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">FlyBehavior</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">FlyNoWay</span>() {}
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">FlyNoWay</span>() {}
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">fly</span>();
-};
-
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">FlyWithWings</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">FlyBehavior</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">FlyWithWings</span>() {}
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">fly</span>();
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">EventList</span> <span style="color: #eedd82;">colleagues</span>;
+  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">instance</span>;
+  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;&amp; <span style="color: #87cefa;">GetInstance</span>() {
+    <span style="color: #00ffff;">if</span> (!instance) {
+      instance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Mediator</span>();
+    }
+    <span style="color: #00ffff;">return</span> *instance;
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">RegisterColleague</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">col_event</span>) {
+    colleagues.push_back(col_event);
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">FireEvent</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>) {
+    <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; colleagues.size(); ++i) {
+      <span style="color: #00ffff;">if</span> (colleagues[i] != source) {
+        colleagues[i]-&gt;handlerProc(source-&gt;event_context, event_arg,
+                                   <span style="color: #98fb98;">colleagues</span>[i]-&gt;event_context);
+      }
+    }
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">UnregisterColleague</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">col_event</span>) {
+    <span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">EventList</span>::<span style="color: #98fb98;">iterator</span> <span style="color: #eedd82;">it</span> = find(colleagues.begin(), colleagues.end(),
+                                  col_event);
+    <span style="color: #00ffff;">if</span> (it != colleagues.end()) {
+      colleagues.erase(it);
+    }
+  }
+  <span style="color: #00ffff;">friend</span> <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;;
 };
 </pre>
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 整合到Duck类里</h4>
+<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 同事消息事件类</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
-关键处在：现在Duck委托（delegate）它的 <code>flying</code> 和 <code>quacking</code> 行为，而不是直接使用类或子类里它们的方法。
+同事消息事件类封装消息事件：
 </p>
+<ol class="org-ol">
+<li>模板类提供不同类型消息的复用;
+</li>
+<li>消息的注册同事;
+</li>
+<li>消息的处理函数，不同同事实现各自的处理函数，当由消息到来时，中介者类调用各个同事的消息处理函数来操作;
+</li>
+<li>用中介者类注册和脱离消息群组;
+</li>
+<li>用中介着类出发消息事件;
+</li>
+</ol>
 
-<img src="/images/blog/2014/strategy/duck_class.jpeg">
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Duck</span> {
+<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">EventArgType</span>&gt;
+<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ColleagueEvent</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">Duck</span>(<span style="color: #98fb98;">void</span>);
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Duck</span>();
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">display</span>() = 0;
-  <span style="color: #00ffff;">virtual</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swim</span>();
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_fly_behavior</span>(<span style="color: #98fb98;">FlyBehavior</span> *<span style="color: #eedd82;">fly_behavior</span>);
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_quack_behavior</span>(<span style="color: #98fb98;">QuackBehavior</span> *<span style="color: #eedd82;">quack_behavior</span>);
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">performFly</span>();
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">performQuack</span>();
- <span style="color: #00ffff;">protected</span>:
-  <span style="color: #98fb98;">FlyBehavior</span> *<span style="color: #eedd82;">fly_behavior_</span>;
-  <span style="color: #98fb98;">QuackBehavior</span> *<span style="color: #eedd82;">quack_behavior_</span>;
+  <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">void</span> (*<span style="color: #98fb98;">ColleagueEventHandler</span>) (<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>,
+                                         <span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>,
+                                         <span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">context</span>);
+  <span style="color: #87cefa;">ColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">ColleagueEventHandler</span> <span style="color: #eedd82;">event_proc</span>)
+      : event_context(source), <span style="color: #98fb98;">handlerProc</span>(<span style="color: #eedd82;">event_proc</span>) {
+    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().RegisterColleague(<span style="color: #00ffff;">this</span>);
+  }
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">ColleagueEvent</span>() {
+    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().UnregisterColleague(<span style="color: #00ffff;">this</span>);
+  }
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">FireEvent</span>(<span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>) {
+    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().FireEvent(<span style="color: #00ffff;">this</span>, event_arg);
+  }
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">event_context</span>;
+  <span style="color: #98fb98;">ColleagueEventHandler</span> <span style="color: #eedd82;">handlerProc</span>;
+  <span style="color: #00ffff;">friend</span> <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;;
 };
 </pre>
 </div>
@@ -364,31 +822,221 @@ duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的�
 </div>
 
 <div id="outline-container-sec-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 子类Duck各自拥有自己的行为，并用 <code>set_xx_behavior</code> 动态改变行为</h4>
+<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 公司人员抽象类</h4>
 <div class="outline-text-4" id="text-2-2-3">
+<p>
+为同事定义接口。暂时是空的。
+</p>
 <div class="org-src-container">
 
-<pre class="src src-c++"><span style="color: #7fffd4;">DecoyDuck</span>::<span style="color: #87cefa;">DecoyDuck</span>() {
-  fly_behavior_ = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">FlyNoWay</span>;
-  quack_behavior_ = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">MuteQuack</span>;
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Colleague</span> {
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #87cefa;">Colleague</span>() {}
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Colleague</span>() {}
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-4" class="outline-4">
+<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 普通员工消息类型类</h4>
+<div class="outline-text-4" id="text-2-2-4">
+<p>
+消息有很多不同类型，如普通员工消息类型，主管级消息等等，这里以普通员工消息为例。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">StaffMsg</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #87cefa;">StaffMsg</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">data</span>) : msg_name_(name), <span style="color: #98fb98;">msg_data_</span>(<span style="color: #eedd82;">data</span>) {
+  }
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">StaffMsg</span>() {}
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">msg_name</span>() {<span style="color: #00ffff;">return</span> msg_name_;}
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">msg_data</span>() {<span style="color: #00ffff;">return</span> msg_data_;}
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">msg_name_</span>;
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">msg_data_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-5" class="outline-4">
+<h4 id="sec-2-2-5"><span class="section-number-4">2.2.5</span> 雇员基类</h4>
+<div class="outline-text-4" id="text-2-2-5">
+<p>
+有雇主和雇员之分，这里以雇员为例。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Employee</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Colleague</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #87cefa;">Employee</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : title_(title), name_(name) {
+  }
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Employee</span>() {}
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">title</span>() {<span style="color: #00ffff;">return</span> title_;}
+  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">name</span>() {<span style="color: #00ffff;">return</span> name_;}
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title_</span>;
+  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name_</span>;
+};
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-6" class="outline-4">
+<h4 id="sec-2-2-6"><span class="section-number-4">2.2.6</span> 普通员工类</h4>
+<div class="outline-text-4" id="text-2-2-6">
+<p>
+普通员工基于雇员类。维护普通员工消息事件实例，负责把自己注册到相应的中介者消息队列，实现普通员工如何处理接收到的消息。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">GeneralStaff</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Employee</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #87cefa;">GeneralStaff</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">GeneralStaff</span>();
+  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">OnColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">StaffMsg</span> <span style="color: #eedd82;">data</span>,
+                               <span style="color: #98fb98;">Colleague</span>* <span style="color: #eedd82;">context</span>);
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">StaffMsg</span>&gt; <span style="color: #eedd82;">general_staff_event_</span>;
+};
+
+<span style="color: #7fffd4;">GeneralStaff</span>::<span style="color: #87cefa;">GeneralStaff</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>)
+    : Employee(title, name), general_staff_event_(<span style="color: #00ffff;">this</span>, OnColleagueEvent) {
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">GeneralStaff</span>::<span style="color: #87cefa;">OnColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">StaffMsg</span> <span style="color: #eedd82;">data</span>,
+                                           <span style="color: #98fb98;">Colleague</span>* <span style="color: #eedd82;">context</span>) {
+  <span style="color: #98fb98;">Employee</span> *<span style="color: #eedd82;">src_colleague</span> = <span style="color: #00ffff;">static_cast</span>&lt;Employee *&gt; (source);
+  <span style="color: #98fb98;">Employee</span> *<span style="color: #eedd82;">ctx_colleague</span> = <span style="color: #00ffff;">static_cast</span>&lt;Employee *&gt; (context);
+  cout &lt;&lt; endl &lt;&lt; ctx_colleague-&gt;title()
+       &lt;&lt; <span style="color: #ffa07a;">" - "</span> &lt;&lt; ctx_colleague-&gt;name()
+       &lt;&lt; <span style="color: #ffa07a;">" is notified by "</span>
+       &lt;&lt; src_colleague-&gt;title() &lt;&lt; <span style="color: #ffa07a;">" - "</span>
+       &lt;&lt; src_colleague-&gt;name()
+       &lt;&lt; <span style="color: #ffa07a;">" of STAFF Event "</span> &lt;&lt; data.msg_name()
+       &lt;&lt; <span style="color: #ffa07a;">" with "</span> &lt;&lt; data.msg_data();
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2-7" class="outline-4">
+<h4 id="sec-2-2-7"><span class="section-number-4">2.2.7</span> 销售人员类</h4>
+<div class="outline-text-4" id="text-2-2-7">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">SalesMen</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">SalesMen</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) :
+      GeneralStaff(<span style="color: #ffa07a;">"Sales Man"</span>, name) {
+  }
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">SalesMen</span>() {}
+};
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-8" class="outline-4">
+<h4 id="sec-2-2-8"><span class="section-number-4">2.2.8</span> 系统维护人员类</h4>
+<div class="outline-text-4" id="text-2-2-8">
+<p>
+系统维护人员类注册普通员工消息队列，并有发起软件升级通知的权利。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">SysAdmin</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">SysAdmin</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">SysAdmin</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">AdviceForSoftwareUpdate</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">sw_name</span>);
+};
+
+<span style="color: #7fffd4;">SysAdmin</span>::<span style="color: #87cefa;">SysAdmin</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : GeneralStaff(<span style="color: #ffa07a;">"Sys Admin"</span>, name) {
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">SysAdmin</span>::<span style="color: #87cefa;">AdviceForSoftwareUpdate</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">sw_name</span>) {
+  general_staff_event_.FireEvent(StaffMsg(<span style="color: #ffa07a;">"Software Update Advice"</span>, sw_name));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-9" class="outline-4">
+<h4 id="sec-2-2-9"><span class="section-number-4">2.2.9</span> 主管人员类</h4>
+<div class="outline-text-4" id="text-2-2-9">
+<p>
+系统维护人员类注册普通员工消息队列，并有发起预订会议室通知的权利。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Manager</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">Manager</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Manager</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">BookMeetingRoom</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">meeting_room_name</span>);
+};
+
+<span style="color: #7fffd4;">Manager</span>::<span style="color: #87cefa;">Manager</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : GeneralStaff(<span style="color: #ffa07a;">"Manager"</span>, name) {
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">Manager</span>::<span style="color: #87cefa;">BookMeetingRoom</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">meeting_room_name</span>) {
+  general_staff_event_.FireEvent(StaffMsg(<span style="color: #ffa07a;">"Meeting Room Booking"</span>,
+                                          meeting_room_name));
+}
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2-10" class="outline-4">
+<h4 id="sec-2-2-10"><span class="section-number-4">2.2.10</span> 总的测试</h4>
+<div class="outline-text-4" id="text-2-2-10">
+<ol class="org-ol">
+<li>建立各个员工;
+</li>
+<li>发起不同类型消息测试。
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
+  <span style="color: #98fb98;">Manager</span> <span style="color: #eedd82;">mng1</span>(<span style="color: #ffa07a;">"Vivek"</span>), <span style="color: #eedd82;">mng2</span>(<span style="color: #ffa07a;">"Pradeep"</span>);
+  <span style="color: #98fb98;">SysAdmin</span> <span style="color: #eedd82;">sys_admin</span>(<span style="color: #ffa07a;">"Sony"</span>);
+  <span style="color: #98fb98;">SalesMen</span> <span style="color: #eedd82;">sl1</span>(<span style="color: #ffa07a;">"Dave"</span>), <span style="color: #eedd82;">s12</span>(<span style="color: #ffa07a;">"Mike"</span>), <span style="color: #eedd82;">s13</span>(<span style="color: #ffa07a;">"Allen"</span>);
+
+  mng1.BookMeetingRoom(<span style="color: #ffa07a;">"Big Room"</span>);
+  cout &lt;&lt; endl;
+  sys_admin.AdviceForSoftwareUpdate(<span style="color: #ffa07a;">"Win7"</span>);
+  cout &lt;&lt; endl;
+  <span style="color: #00ffff;">return</span> 0;
 }
 </pre>
 </div>
 
+<p>
+结果：
+</p>
 <div class="org-src-container">
 
-<pre class="src src-c++">model-&gt;performFly();
-model-&gt;set_fly_behavior(<span style="color: #00ffff;">new</span> <span style="color: #98fb98;">FlyRocketPowered</span>);
-model-&gt;performFly();
+<pre class="src src-c++">Manager - Pradeep is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sys Admin - Sony is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Dave is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Mike is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Allen is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+
+Manager - Vivek is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Manager - Pradeep is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Dave is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Mike is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Allen is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
 </pre>
 </div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-4" class="outline-4">
-<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 总的框架</h4>
-<div class="outline-text-4" id="text-2-2-4">
-<img src="/images/blog/2014/strategy/duck_summarize.jpeg">
 </div>
 </div>
 </div>
@@ -398,9 +1046,9 @@ model-&gt;performFly();
 <h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
 <div class="outline-text-2" id="text-3">
 </div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 策略模式(Strategy)结构</h3>
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 中介者模式(Mediator)结构</h3>
 <div class="outline-text-3" id="text-3-1">
-<img src="/images/blog/2014/strategy/strategy_structure.jpg">
+<img src="/images/blog/2014/mediator/mediator_structure.jpeg">
 </div>
 </div>
 
@@ -408,120 +1056,47 @@ model-&gt;performFly();
 <h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
 <div class="outline-text-3" id="text-3-2">
 <ul class="org-ul">
-<li>策略类（Strategy)
-声明一个所有算法都支持的公共接口。场景(Context)利用这个接口来调用具体策略类（ConcreteStrategy）实现的算法。
+<li>抽象中介者（Mediator）为与同事（Colleague）对象交流定义一个接口。
 </li>
-<li>具体策略类（ConcreteStrategy)
-用策略类接口实现自己的酸饭。
-</li>
-<li>场景（Context）
+<li>具体中介者（ConcreteMediator）
 <ol class="org-ol">
-<li>被具体策略对象配置。
+<li>实现与同事（Colleague）对象协作的合作行为。
 </li>
-<li>维持一个策略对象的引用。
+<li>知道和维护它的同事类。
 </li>
-<li>可能定义一个让策略对象获取它的数据的接口。
+</ol>
+</li>
+<li>同事类（Colleague classes）
+<ol class="org-ol">
+<li>每个同事类知道它的中介者对象。
+</li>
+<li>每个同事类任何它应该时与它的中介者交流，否则就与其他同事类交流。
 </li>
 </ol>
 </li>
 </ul>
 </div>
 </div>
-
 <div id="outline-container-sec-3-3" class="outline-3">
 <h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
 <div class="outline-text-3" id="text-3-3">
-<p>
-使用策略模式当
-</p>
-<ol class="org-ol">
-<li>很多相关的类只是不同于它们的行为。策略提供了一种能使用多种行为中一种来配置类的方法。
+<ul class="org-ul">
+<li>一组对象交流在很好定义的却复杂的方式上。导致的互相依赖性并没有好的组织而且难理解时。
 </li>
-<li>当你需要一种算法的不同变体。比如，你可能定义一组算法来发表达不同时间/空间的权衡。当这些变体实现为一个算法的类层次时，能使用策略模式。
+<li>复用一个对象是困难的，因为它引用并交流与许多其他对象。
 </li>
-<li>算法使用用户不应但知道的数据。使用策略模式来避免暴露复杂，于算法相关的数据结构。
+<li>分布在很多类中的一个行为需要被定制但不能进行太多子类化。
 </li>
-<li>一个类定义了很多行为，而这些行为有许多条件分支语句在它们的行为中。与其很多条件分支，把相关的条件分支移出到它们各自的策略类中。
-</li>
-</ol>
+</ul>
 </div>
 </div>
-
 <div id="outline-container-sec-3-4" class="outline-3">
 <h3 id="sec-3-4"><span class="section-number-3">3.4</span> 缺点</h3>
 <div class="outline-text-3" id="text-3-4">
-<ol class="org-ol">
-<li>用户必须意识不同的策略。这个模式的潜在缺点是，用户在使用不同策略前，必须知道如何的不同。实现问题可能暴露给用户。所以你使用策略模式仅当行为的变体于用户相关。
-</li>
-<li>Strategy和Context之间的通信开销。Strategy的接口被所有具体策略类所共有，无论这些类实现的算法简单还是复杂。所以会这样，一些具体策略类不会使用所有通过这个接口传递给他们的信息，简单的具体策略类可能根本用不到任何信息。这意味着，有时候当Context创建和初始化的参数将永远得不到使用。如果这是个问题，你将需要在Strategy和Context之间进行更紧密的耦合。
-</li>
-<li>增加策略类。各种策略类增加了应用的对象数量。有时，你可以将策略类实现为让Context共享的无状态对象来减少这开销。任何潜在的状态由Context
-维持，当调用Strategy时，把它传递过去。共享的策略类不应该在每次调用间维持状态。
-</li>
-</ol>
+<p>
+中介者模式集中式控制。中介者模式以减少交互的复杂度而增加中介者的复杂度。因为一个中介者类封装了协议，它会变得比任何同事类都复杂。这会导致中介者类自身是个难维护的庞然大物。
+</p>
 </div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[浅谈设计模式]]></title>
-    <link href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/"/>
-    <updated>2014-05-03T00:00:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2014/05/03/浅谈设计模式</id>
-    <content type="html"><![CDATA[<p>
-读完GOF的<a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?ie=UTF8&amp;qid=1394635442&amp;sr=8-1&amp;keywords=Design+Patterns">Design Patterns: Elements of Reusable Object-Oriented
-Software</a>和图文并茂的<a href="http://www.amazon.com/First-Design-Patterns-Elisabeth-Freeman/dp/0596007124/ref=sr_1_2?ie=UTF8&amp;qid=1394635442&amp;sr=8-2&amp;keywords=Design+Patterns">Head First Design Patterns</a>，一时并不是那么快消化和理解，所以试着用自己的语言总结一下。
-</p>
-
-<p>
-《Design Patterns》在Introduction章中"如何选一种模式设计"一节中给出了一张表格，5个创建模式（Abstract Factory; Builder; Factory Method;
-Prototype; Singleton)，7个结构模式(Adapter; Bridge; Compose;
-Decorator; Facade; Flyweight; Proxy)和11个行为模式（Chain of
-Responsibility; Command; Interpreter; Iterator; Mediator; Memento;
-Observer; State; Strategy; Template Method; Visitor)。
-</p>
-
-<!-- more -->
-
-<p>
-设计模式提倡：
-</p>
-<ol class="org-ol">
-<li>面向接口编程而不是实现；
-</li>
-<li>使用组合优于继承;
-</li>
-<li>程序模块低耦合,高内聚
-</li>
-<li>独立出变化部分，适应后期变化
-</li>
-</ol>
-
-<p>
-设计模式并不是只局限OO中，主要理解设计模式的思想，但它也引入了一定的复杂度，不要烂用设计模式，宗旨是写简单而清晰的代码。
-</p>
-
-<p>
-The best way to learn to write simple code is to write simple code!
-Patterns, like all forms of compexity, should be avoided until they
-are absolutely necessary. That's the first thing beginners need to
-learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>
-</p>
-
-<p>
-所有例子的代码在<a href="https://github.com/shishougang/DesignPattern-CPP">这里</a>。
-</p>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
-<a href="http://blog.codinghorror.com/head-first-design-patterns/">http://blog.codinghorror.com/head-first-design-patterns/</a>
-</p></div>
-
-
 </div>
 </div>
 ]]></content>
