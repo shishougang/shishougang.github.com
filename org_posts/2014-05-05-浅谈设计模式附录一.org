@@ -14,7 +14,7 @@ tags: [Design Pattern, C++]
 
 * 类图
 #+begin_html
-{% img /images/blog/2014/appendix/class relationships.svg %}
+{% img /images/blog/2014/appendix/class_relationships.svg %}
 #+end_html
 
 1. 实例化

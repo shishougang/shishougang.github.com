@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: C++ | (learn&think)]]></title>
   <link href="http://shishougang.github.com/tags/c-/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-05-03T15:51:13+08:00</updated>
+  <updated>2014-05-03T15:56:42+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -169,7 +169,7 @@
     <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> 类图</h2>
 <div class="outline-text-2" id="text-1">
-<img src="/images/blog/2014/appendix/class" title="relationships.svg" >
+<img src="/images/blog/2014/appendix/class_relationships.svg">
 
 <ol class="org-ol">
 <li>实例化
