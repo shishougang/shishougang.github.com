@@ -6,7 +6,7 @@ title: "浅谈设计模式一: 策略模式(Strategy)"
 date: 2014-05-03
 comments: true
 categories: [Design Pattern]
-tags: C++ [Design Pattern] Strategy
+tags: [Design Pattern, C++, Strategy]
 ---
 #+end_html
 #+OPTIONS: toc:nil 
