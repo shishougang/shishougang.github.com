@@ -69,29 +69,6 @@ Observer; State; Strategy; Template Method; Visitor)。
 + [[http://dreamrunner.org/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/][设计模式基本原则]]
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * Footnotes
 
 [fn:1] http://blog.codinghorror.com/head-first-design-patterns/

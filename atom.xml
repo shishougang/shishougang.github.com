@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://shishougang.github.com/atom.xml" rel="self"/>
   <link href="http://shishougang.github.com/"/>
-  <updated>2014-05-03T16:18:08+08:00</updated>
+  <updated>2014-05-10T23:34:20+08:00</updated>
   <id>http://shishougang.github.com/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,258 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Programming Pearls: Column1]]></title>
+    <link href="http://shishougang.github.com/blog/2014/05/10/column1/"/>
+    <updated>2014-05-10T00:00:00+08:00</updated>
+    <id>http://shishougang.github.com/blog/2014/05/10/column1</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Book notes</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> The Bitmap Data Structure</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+这个数据结构用来表明在有限域中的一个密集集合，当集合中每个元素最多出现一次且没有其他数据与这些元素相关。即使这些情况得不到满足（比如，当有多个相同元素或其他附加数据），一个来自有限域的键能被在一个复杂数据表中用来做索引。
+</p>
+
+<!-- more -->
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdio&gt;</span>
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">BITSPERINTEGER</span> 32
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">SHIFT</span> 5
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MASK</span> 0x1F
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MAX_BITS</span> 10000000
+
+<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[1 + MAX_BITS / BITSPERINTEGER];
+
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  array[i &gt;&gt; SHIFT] |= (1 &lt;&lt; (i &amp; MASK));
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">clr_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  array[i &gt;&gt; SHIFT] &amp;= ~(1 &lt;&lt; (i &amp; MASK));
+}
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">test_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  <span style="color: #00ffff;">return</span> array[i &gt;&gt; SHIFT] &amp; (1 &lt;&lt; (i &amp; MASK));
+}
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>;
+  <span style="color: #00ffff;">for</span> (i = 0; i &lt; MAX_BITS; ++i) {
+    clr_bit(i);
+  }
+  <span style="color: #00ffff;">while</span> (scanf(<span style="color: #ffa07a;">"%d"</span>, &amp;i) != EOF) {
+    set_bit(i);
+  }
+  <span style="color: #00ffff;">for</span> (i = 0; i &lt; MAX_BITS; ++i) {
+    <span style="color: #00ffff;">if</span> (test_bit(i)) {
+      printf(<span style="color: #ffa07a;">"%d\n"</span>, i);
+    }
+  }
+  <span style="color: #00ffff;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Problems</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 1</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+如果内存足够大，如何用库实现排序算法。
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdlib&gt;</span>
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdio&gt;</span>
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">comp</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">void</span> *<span style="color: #eedd82;">a</span>, <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">void</span> *<span style="color: #eedd82;">b</span>) {
+  <span style="color: #00ffff;">return</span> (*<span style="color: #00ffff;">reinterpret_cast</span>&lt;<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> *&gt;(a) -
+          *<span style="color: #00ffff;">reinterpret_cast</span>&lt;<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> *&gt;(b));
+}
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span> = 0;
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[10000];
+  <span style="color: #00ffff;">while</span> (scanf(<span style="color: #ffa07a;">"%d"</span>, &amp;array[n]) != EOF) {
+    ++n;
+  }
+  qsort(array, n, <span style="color: #00ffff;">sizeof</span>(<span style="color: #98fb98;">int</span>), comp);
+  <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; n; ++i) {
+      printf(<span style="color: #ffa07a;">"%d\n"</span>, array[i]);
+  }
+  <span style="color: #00ffff;">return</span> 0;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 2</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+如何使用bit操作来实现bit数组？
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">BITSPERINTEGER</span> 32
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">SHIFT</span> 5
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MASK</span> 0x1F
+<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MAX_BITS</span> 10000000
+
+<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[1 + MAX_BITS / BITSPERINTEGER];
+
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  array[i &gt;&gt; SHIFT] |= (1 &lt;&lt; (i &amp; MASK));
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">clr_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  array[i &gt;&gt; SHIFT] &amp;= ~(1 &lt;&lt; (i &amp; MASK));
+}
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">test_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
+  <span style="color: #00ffff;">return</span> array[i &gt;&gt; SHIFT] &amp; (1 &lt;&lt; (i &amp; MASK));
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 4</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+如何在0到n-1间随机生成k个唯一的随机整数？
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdlib&gt;</span>
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;utility&gt;</span>
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;ctime&gt;</span>
+
+<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">seed</span> = time(<span style="color: #7fffd4;">NULL</span>);
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">randint</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>) {
+  <span style="color: #00ffff;">return</span> m + rand_r(&amp;seed) / (RAND_MAX / (n + 1 - m) + 1);
+}
+
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">generate_unique_random</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>, <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">k</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">out</span>) {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">num</span>[n];
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>;
+  <span style="color: #00ffff;">for</span>(i = 0; i &lt; n; ++i) {
+    num[i] = i;
+  }
+  <span style="color: #00ffff;">for</span>(i = 0; i &lt; k; ++i) {
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span> = randint(i, n - 1);
+    <span style="color: #7fffd4;">std</span>::swap(num[i], num[p]);
+    out[i] = num[i];
+  }
+}
+</pre>
+</div>
+
+<p>
+类似于洗牌问题或不知道n时，选取随机数：
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Fisher%E2%80%93Yates%20shuffle.html">Fisher–Yates shuffle</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 5</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+使用两次传递算法，第一次排序0-4,999,999，第二次排序
+5,000,000-9,999,999.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 6</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+每个整数最多出现10次，用4bit就可以表示，多需要空间n×4bit就来存储每个数的个数就可以。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> 9</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+One problem with trading more space to use less time is that
+initializing the space can itself take a great deal of time. Show how
+to circumvent this problem by designing a technique to initialize an
+entry of a vector to zero the first time it is accessed. Your scheme
+should use constant time for initialization and for each vector
+access, and use extra space proportional to the size of the vector.
+</p>
+
+<p>
+data[0&#x2026;n-1]是这个未初始化的数组，每个元素都是个随机数，额外添加两个数组from[0..n-1]和to[0&#x2026;n]，和一个 <code>top</code> 变量。如果元素 <code>data[i]</code> 已经被访问过，那么 <code>from[i] &lt; top</code> 且 <code>to[from[i]] = i</code> 。访问过的如下图：
+</p>
+
+<img src="http://shishougang.github.com/images/blog/2014/programmingpearls/column1_9.jpg" title="'column1_9'" />
+<p>
+代码如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">if</span> (from[i] &lt; top &amp;&amp; to[from[i]] = i) {
+  <span style="color: #ff7f24;">//</span><span style="color: #ff7f24;">has been accessed</span>
+} <span style="color: #00ffff;">else</span> {
+  from[i] = top;
+  to[top] = i;
+  data[i] = 0;
+  top++;
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> 10</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+open hashing with collision resolution by sequential search.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="section-number-3">2.8</span> 11</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+扫描图纸，通过信鸽载送35nm的影片到测试站，在那里图纸得到重新放大和打印。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9"><span class="section-number-3">2.9</span> 12</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+用铅笔。
+</p>
+</div>
+</div>
+</div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[设计模式基本原则]]></title>
@@ -4128,540 +4380,6 @@ Adaptee对象任意使用的地方去使用了。 <b>双向适配器</b> 能提�
 </li>
 </ol>
 </div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[浅谈设计模式六: 单例模式(Singleton)]]></title>
-    <link href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/"/>
-    <updated>2014-05-03T00:00:00+08:00</updated>
-    <id>http://shishougang.github.com/blog/2014/05/03/浅谈设计模式6</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-对于一些类来说只有一个实例是很重要的。如，仅有一个文件系统，一个窗口管理者。一个数字滤波器只有一个模数转换器。
-</p>
-
-<p>
-那么我们如何确保一个类只有一个实例，而且这个实例能容易的访问？
-</p>
-
-<ol class="org-ol">
-<li>全局变量。一个全局变量能使对象任意访问，但是它并不能防止你实例化多个对象。
-</li>
-<li>单例模式。更好方法是让类自己负责保存它唯一的实例。这个类能保证没有其他实例被创建（通过截断创建新对象的请求），而且它提供获取这个实例的方法。
-</li>
-</ol>
-
-<!-- more -->
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 单例模式(Singleton)</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 传统方式</h3>
-<div class="outline-text-3" id="text-2-1">
-<div class="org-src-container">
-
-<pre class="src src-c++"><span class="linenr"> 1: </span><span style="color: #ff7f24;">//</span><span style="color: #ff7f24;">header file</span>
-<span class="linenr"> 2: </span><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Singleton</span> {
-<span class="linenr"> 3: </span> <span style="color: #00ffff;">public</span>:
-<span class="linenr"> 4: </span>  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #87cefa;">instance</span>();
-<span class="linenr"> 5: </span> <span style="color: #00ffff;">private</span>:
-<span class="linenr"> 6: </span>  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #eedd82;">pInstance</span>;
-<span class="linenr"> 7: </span>  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Singleton</span>();
-<span class="linenr"> 8: </span>};
-<span class="linenr"> 9: </span>
-<span class="linenr">10: </span><span style="color: #ff7f24;">//</span><span style="color: #ff7f24;">cc file</span>
-<span class="linenr">11: </span><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #eedd82;">pInstance</span> = <span style="color: #7fffd4;">NULL</span>;
-<span class="linenr">12: </span>
-<span class="linenr">13: </span><span style="color: #7fffd4;">Singleton</span>::~<span style="color: #87cefa;">Singleton</span>() {
-<span class="linenr">14: </span>}
-<span class="linenr">15: </span>
-<span class="linenr">16: </span><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-<span class="linenr">17: </span>  <span style="color: #00ffff;">if</span>(pInstance == <span style="color: #7fffd4;">NULL</span>) {
-<span class="linenr">18: </span>    pInstance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>();
-<span class="linenr">19: </span>  }
-<span class="linenr">20: </span>  <span style="color: #00ffff;">return</span> pInstance;
-<span class="linenr">21: </span>}
-</pre>
-</div>
-
-<p>
-在单线程环境中，除了中断会有问题，其他基本没问题。
-</p>
-
-<p>
-但是，这个实现在多线程环境下是不可靠的。
-</p>
-<ol class="org-ol">
-<li>假如线程A进入 <code>instance</code> 函数，执行到 <code>17行</code> ，然后被挂起。在这个挂起点，它刚刚判断出 <code>pInstance</code> 是 <code>null</code> 的。
-</li>
-<li>线程B现在进入 <code>instance</code> 然后执行 <code>17行</code> ，它发现 <code>pInstance</code> 是
-<code>null</code> 的，所以它运行 <code>18行</code> 来创建 <code>pInstance</code> 指向的 <code>Singleton</code>
-。然后它把 <code>pInstance</code> 返回给 <code>instance</code> 的调用者。
-</li>
-<li>不久后，线程A被允许继续运行，它立即运行 <code>18行</code> ，创建另外一个
-   <code>Singleton</code> 并使 <code>pInstance</code> 指向它。
-</li>
-</ol>
-<p>
-明显这违背了单例的概念，因为现在有两个 <code>Singleton</code> 的对象。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 线程安全的传统方式</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-使得传统方式线程安全，只要在判断 <code>pInstance</code> 前获取锁就行。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;    <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">acquire lock (params omitted for simplicity)</span>
-  <span style="color: #00ffff;">if</span>(pInstance == <span style="color: #7fffd4;">NULL</span>) {
-    pInstance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>();
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}  <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">release lock (via Lock destructor)</span>
-</pre>
-</div>
-
-<p>
-但是这个方法开销比较大。每次获取 <code>Singleton</code> 都要获取一个锁，但是实际上，我们只有当初始化 <code>pInstance</code> 时才需要一个锁。也就是只发生在第一次调用 <code>instance</code> 时。如果在一个程序运行时， <code>instance</code> 被调用了n次，我们只需要锁在第一次调用时。当我们知道那n-1次锁是没必要的，那为什么要负担那n次去获取锁？DCLP被设计出来防止这。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> The Double-Checked Locking Pattern<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup></h3>
-<div class="outline-text-3" id="text-2-3">
-</div><div id="outline-container-sec-2-3-1" class="outline-4">
-<h4 id="sec-2-3-1"><span class="section-number-4">2.3.1</span> DCLP</h4>
-<div class="outline-text-4" id="text-2-3-1">
-<p>
-DCLP的关键点是发现，大多数 <code>instance</code> 的调用将看到 <code>pInstance</code> 是非空的，因此根本没必要去尝试初始化它。因此，DCLP判断 <code>pInstance</code> 是否为空在尝试获取锁前。只有当判断成功（ <code>pInstance</code> 还没有被初始化）才去获取锁，然后之后这个判断在此进行一次确保 <code>pInstance</code> 是仍然空的。（所以名字叫双重检查锁）。第二个检查是有必要的，因为从上可以看到，另外的线程可能碰巧初始化了  <code>pInstance</code> 在 <code>pInstance</code> 被第一次判断和获取锁之间。
-</p>
-
-<p>
-DCLP的实现：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  <span style="color: #00ffff;">if</span>(pInstance == 0) { <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">1st test</span>
-    <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-    <span style="color: #00ffff;">if</span>(pInstance == 0) { <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">2nd test</span>
-      pInstance =newSingleton;
-    }
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}
-</pre>
-</div>
-
-<p>
-《Double-Checked Locking》<sup><a id="fnr.1.100" name="fnr.1.100" class="footref" href="#fn.1">1</a></sup>文章还进一步讨论了很多其他一些实现问题（ <code>volatile</code> 的重要性，多线程系统中的缓存问题等），但是没有提到更基础的问题，就是确保DCLP的机器指令以一定的顺序执行。《C++ and the Perils
-of Double-Checked Locking》<sup><a id="fnr.2" name="fnr.2" class="footref" href="#fn.2">2</a></sup> 详细的讲述了这个问题，在以下引用它的内容来说明。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-3-2" class="outline-4">
-<h4 id="sec-2-3-2"><span class="section-number-4">2.3.2</span> 指令顺序</h4>
-<div class="outline-text-4" id="text-2-3-2">
-<p>
-考虑 <code>pInstance</code> 初始化行：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++">pInstance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>;
-</pre>
-</div>
-
-<p>
-这句话导致3件事情发生：
-</p>
-
-<p>
-Step 1：分配内存为 <code>Singleton</code> 对象
-</p>
-
-<p>
-Step 2：在分配的内存里创建 <code>Singleton</code> 的对象
-</p>
-
-<p>
-Step 3：使 <code>pInstance</code> 指向分配的内存
-</p>
-
-<p>
-最重要的关键发现是编译器并不限制要按这样的顺序执行。特别，编译器时常允许交换Step 2和3。现在先看如果这样交换后发生什么。
-</p>
-
-<p>
-看如下代码，扩展 <code>pInstance</code> 的初始化行成3个连续的上面提到的任务，也就是step 1（内存分配）和3（ <code>pInstance</code> 赋值）在step 2（ <code>Singleton</code> 创建）之前。这是编译器会把上面DCLP的代码转换成如下的代码。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  <span style="color: #00ffff;">if</span>(pInstance == 0) {
-    <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-    <span style="color: #00ffff;">if</span>(pInstance == 0) {
-      pInstance = <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">Step 3</span>
-          <span style="color: #00ffff;">operator</span> <span style="color: #00ffff;">new</span>(<span style="color: #00ffff;">sizeof</span>(Singleton));<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">Step 1</span>
-      <span style="color: #00ffff;">new</span>(pInstance) <span style="color: #98fb98;">Singleton</span>; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">Step 2</span>
-    }
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}
-</pre>
-</div>
-
-<p>
-考虑如上的顺序，考虑如下顺序的事件：
-</p>
-<ul class="org-ul">
-<li>线程A进入 <code>instance</code> ，进行 <code>pInstance</code> 的第一次判断，获得锁，执行
-step 1和3。然后它被挂起。在这点 <code>pInstance</code> 是非空的，但是在内存中并没有创建 <code>pInstance</code> 指向的 <code>Singleton</code> 的对象。
-</li>
-<li>线程B进入 <code>instance</code> ，得出 <code>pInstance</code> 是非空的，把它返回给
-  <code>instance</code> 的调用者。然后调用者解指针来访问 未创建的 <code>Singleton</code> 。
-</li>
-</ul>
-
-<p>
-DCLP能用仅当step1和2在step 3之前完成，但是没有办法表达这一约束在C或C++
-中。C或C++语言没有线程概念，所以编译器不用担心破坏线程类程序当它们被优化时。那么如何用C或C++写多线程的程序呢？使用系统级为了这目的而定义的库，如Posix threads (pthreads)<sup><a id="fnr.3" name="fnr.3" class="footref" href="#fn.3">3</a></sup>。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-3-3" class="outline-4">
-<h4 id="sec-2-3-3"><span class="section-number-4">2.3.3</span> 关键字 <code>volatile</code></h4>
-<div class="outline-text-4" id="text-2-3-3">
-<p>
-想要特殊的指令顺序使得许多人想关键字 <code>volatile</code> 是否能起到帮助多线程，特别是DCLP。
-</p>
-
-<p>
-<code>pInstance</code> 需要被声明为 <code>volatile</code> 的，而且对象 <code>Singleton</code> 自己也必须是 <code>volatile</code> 。
-</p>
-
-<p>
-接下来看仅仅 <code>pInstance</code> 被声明为 <code>volatile</code> 是不够的。考虑如下代码：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Singleton</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #87cefa;">instance</span>();
-  ...
-  <span style="color: #00ffff;">private</span>:
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #eedd82;">pInstance</span>;<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">volatile added</span>
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>;
-  <span style="color: #87cefa;">Singleton</span>() : x(5) {}
-};
-<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">from the implementation file</span>
-<span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #eedd82;">pInstance</span> = 0;
-<span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  <span style="color: #00ffff;">if</span> (pInstance == 0) {
-    <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-    <span style="color: #00ffff;">if</span> (pInstance == 0) {
-      <span style="color: #98fb98;">Singleton</span>* <span style="color: #eedd82;">temp</span> = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>;<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">volatile added</span>
-      pInstance = temp;
-    }
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}
-</pre>
-</div>
-<p>
-构造函数内嵌后，代码如下：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">if</span> (pInstance == 0) {
-  <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-  <span style="color: #00ffff;">if</span> (pInstance == 0) {
-    <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">temp</span> =
-        <span style="color: #00ffff;">static_cast</span>&lt;Singleton*&gt;(<span style="color: #00ffff;">operator</span> <span style="color: #00ffff;">new</span>(<span style="color: #00ffff;">sizeof</span>(Singleton)));
-    temp-&gt;x = 5; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">inlined Singleton constructor</span>
-    pInstance = temp;
-  }
-}
-</pre>
-</div>
-
-<p>
-尽管 <code>temp</code> 是 <code>volatile</code> 的，但是 <code>*temp</code> 不是，也就是意味着
-<code>temp-&gt;x</code> 也不是。因为我们已经明白赋值给一个 <code>non-volatile</code> 的数据可能被重新排序，所以很容易的得出编译器能重新排序 <code>temp-&gt;x</code> 的赋值和赋值给
-<code>pInstance</code> 。如果编译器这么做了，那么 <code>pInstance</code> 就会在数据初始化前就得到赋值，再次导致另外一个线程可能读取到一个未被初始化的 <code>x</code> 。
-</p>
-
-<p>
-针对这一症结，把 <code>*pInstance</code> 和 <code>pInstance</code> 自身一样也 <code>volatile</code> 化。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Singleton</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">static</span> <span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #87cefa;">instance</span>();
-  ...
-  <span style="color: #00ffff;">private</span>:
-  <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">one more volatile added</span>
-<span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">pInstance</span>;
-};
-<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">from the implementation file</span>
-<span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #7fffd4;">Singleton</span>::<span style="color: #eedd82;">pInstance</span> = 0;
-<span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  <span style="color: #00ffff;">if</span> (pInstance == 0) {
-    <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-    <span style="color: #00ffff;">if</span> (pInstance == 0) {
-      <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">one more volatile added</span>
-      <span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">temp</span> =
-          <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>;
-      pInstance = temp;
-    }
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}
-</pre>
-</div>
-
-<p>
-我们希望上面布满 <code>volatile</code> 化的代码能被语言的标准保证正确的运行在多线程的环境下，但是它可能如下两种原因失败。
-</p>
-
-<ol class="org-ol">
-<li>C++的在可观察行为的标准规范仅仅只针对标准定义的抽象机器，这台抽象机器并没有多个线程运行的概念。所以，尽管标准防止编译器去乱序在一个线程内的对 <code>volatile</code> 数据的读写，但是它并没有规范针对在线程间的乱序。所以，实际上，许多编译器可能从上面的代码生成线程不安全的代码。
-</li>
-<li>就如 <code>const</code> 定义的对象直到构造函数运行结束才成为 <code>const</code> ，
-<code>volatile</code> 声明的对象成为 <code>volatile</code> 只当从它们的构造函数返回。如下代码中：
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">temp</span> = <span style="color: #00ffff;">new</span> <span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">Singleton</span>;
-</pre>
-</div>
-<p>
-这个被创建的对象成为 <code>volatile</code> 仅当这句表达式 <code>new volatile
-   Singleton;</code> 运行完成，也就意味着，我们回到上面的情景，内存分配和对象赋值可能被调换运行顺序。
-</p>
-</li>
-</ol>
-
-<p>
-第二个问题可以被笨拙地解决。只要在 <code>Singleton</code> 的构造函数中，我们强制把每个 <code>Singleton</code> 的数据成员都暂时 <code>volatile</code> 化，从而防止指令来完成这一系列的初始化。如下的例子：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #87cefa;">Singleton</span>()
-{
-  <span style="color: #00ffff;">static_cast</span>&lt;<span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">int</span>&amp;&gt;(x) = 5;<span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">note cast to volatile</span>
-}
-
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Singleton</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #87cefa;">instance</span>();
-  ...
-  <span style="color: #00ffff;">private</span>:
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">pInstance</span>;
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>;
-  ...
-};
-<span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>()
-{
-  <span style="color: #00ffff;">if</span> (pInstance == 0) {
-    <span style="color: #98fb98;">Lock</span> <span style="color: #eedd82;">lock</span>;
-    <span style="color: #00ffff;">if</span> (pInstance == 0) {
-      <span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">volatile</span> <span style="color: #eedd82;">temp</span> =
-          <span style="color: #00ffff;">static_cast</span>&lt;Singleton*&gt;(<span style="color: #00ffff;">operator</span> <span style="color: #00ffff;">new</span>(<span style="color: #00ffff;">sizeof</span>(Singleton)));
-      <span style="color: #00ffff;">static_cast</span>&lt;<span style="color: #00ffff;">volatile</span> <span style="color: #98fb98;">int</span>&amp;&gt;(temp-&gt;x) = 5;
-      pInstance = temp;
-    }
-  }
-}
-</pre>
-</div>
-
-<p>
-但是，还是没有解决第一个问题。
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 实际的使用</h3>
-<div class="outline-text-3" id="text-2-4">
-</div><div id="outline-container-sec-2-4-1" class="outline-4">
-<h4 id="sec-2-4-1"><span class="section-number-4">2.4.1</span> 回到线程安全的传统方式</h4>
-<div class="outline-text-4" id="text-2-4-1">
-<p>
-使用之前的线程安全的传统方式，使用来自线程库的锁来确保线程安全的
-Singleton初始化，然后做时间开销的统计看是否需要担心。
-</p>
-
-<p>
-这里用 <code>pthread</code> 库，写出完整的代码，<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/singleton">代码实例在这里</a>。
-</p>
-
-<ol class="org-ol">
-<li>首先封装 <code>pthread_mutex_t</code>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">PThreadMutex</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">PThreadMutex</span>(<span style="color: #7fffd4;">base</span>::LinkerInitialized) {
-    pthread_mutex_init(&amp;mutex_, <span style="color: #7fffd4;">NULL</span>);
-  }
-  <span style="color: #87cefa;">PThreadMutex</span>() { pthread_mutex_init(&amp;mutex_, <span style="color: #7fffd4;">NULL</span>); }
-  ~<span style="color: #87cefa;">PThreadMutex</span>() { pthread_mutex_destroy(&amp;mutex_); }
-
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">Lock</span>() {
-    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">rc</span> = pthread_mutex_lock(&amp;mutex_);
-    assert(rc == 0);
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">Unlock</span>() {
-    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">rc</span> = pthread_mutex_unlock(&amp;mutex_);
-    assert(rc == 0);
-  }
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">pthread_mutex_t</span> <span style="color: #eedd82;">mutex_</span>;
-  DISALLOW_COPY_AND_ASSIGN(<span style="color: #98fb98;">PThreadMutex</span>);
-};
-
-<span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">PThreadMutex</span> <span style="color: #98fb98;">Mutex</span>;
-</pre>
-</div>
-</li>
-
-<li>继承封装成一个 <code>MutexLock</code> 
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">MutexLock</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">MutexLock</span>(<span style="color: #98fb98;">Mutex</span>* <span style="color: #eedd82;">mutex</span>) : mutex_(mutex) { mutex-&gt;Lock(); }
-  ~<span style="color: #87cefa;">MutexLock</span>() { mutex_-&gt;Unlock(); }
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">Mutex</span>* <span style="color: #eedd82;">mutex_</span>;
-  DISALLOW_COPY_AND_ASSIGN(<span style="color: #98fb98;">MutexLock</span>);
-};
-</pre>
-</div>
-</li>
-
-<li>线程安全 <code>Singleton</code> 主函数
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">Singleton</span>* <span style="color: #7fffd4;">Singleton</span>::<span style="color: #87cefa;">instance</span>() {
-  cout &lt;&lt; <span style="color: #ffa07a;">"call the singleton instance"</span> &lt;&lt; endl;
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Mutex</span> <span style="color: #eedd82;">mutex_</span>(<span style="color: #7fffd4;">base</span>::LINKER_INITIALIZED);
-  MutexLock <span style="color: #98fb98;">l</span>(&amp;<span style="color: #eedd82;">mutex_</span>);
-  <span style="color: #00ffff;">if</span> (pInstance == <span style="color: #7fffd4;">NULL</span>) {
-    cout &lt;&lt; <span style="color: #ffa07a;">"In the Lock"</span> &lt;&lt; endl;
-    pInstance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Singleton</span>();
-  }
-  <span style="color: #00ffff;">return</span> pInstance;
-}  <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">release MutexLock (via MutexLock destructor)</span>
-</pre>
-</div>
-</li>
-</ol>
-
-<p>
-然后在每个需要要到访问这个单例对象的线程开始，调用 <code>instance</code> ，在本地线程内存缓存返回的指针，如下：
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">Singleton</span>* <span style="color: #00ffff;">const</span> <span style="color: #eedd82;">instance</span> =
-<span style="color: #7fffd4;">Singleton</span>::instance(); <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">cache instance pointer</span>
-instance-&gt;transmogrify();
-instance-&gt;metamorphose();
-instance-&gt;transmute();
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-4-2" class="outline-4">
-<h4 id="sec-2-4-2"><span class="section-number-4">2.4.2</span> 提前初始化</h4>
-<div class="outline-text-4" id="text-2-4-2">
-<p>
-另一种安全的做法是提前初始化，也就是初始化单例资源在程序最开始运行时。因为多线程程序基本以单线程开始，这个方法可以把一些对象初始化放到单线程的那部分代码，来达到消除需要担心在初始化时的线程问题。
-</p>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 单例模式(Singleton)结构</h3>
-<div class="outline-text-3" id="text-3-1">
-<img src="http://shishougang.github.com/images/blog/2014/singleton/singleton_structure.jpeg" />
-</div>
-</div>
-
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
-<div class="outline-text-3" id="text-3-2">
-<ul class="org-ul">
-<li>单例
-<ol class="org-ol">
-<li>定义一个实例化的操作来让客户能访问它唯一的实例。实例化就是一个函数操作（静态函数在C++里）。
-</li>
-<li>对创建自己唯一的实例负责。
-</li>
-</ol>
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 目的</h3>
-<div class="outline-text-3" id="text-3-3">
-<p>
-确保一个类只有一个实例，并且提供一个访问它的全局点。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 应用场景</h3>
-<div class="outline-text-3" id="text-3-4">
-<ul class="org-ul">
-<li>必须仅有一个类的实例，而且它需要从一个明了的地方被客户访问到。
-</li>
-<li>当这个唯一的实例应该能被子类扩展，而且客户应该无需更改它们的代码直接使用扩展的实例。
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
-
-<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
-<a href="http://www.cs.wustl.edu/~schmidt/PDF/DC-Locking.pdf">http://www.cs.wustl.edu/~schmidt/PDF/DC-Locking.pdf</a>
-</p></div>
-
-<div class="footdef"><sup><a id="fn.2" name="fn.2" class="footnum" href="#fnr.2">2</a></sup> <p class="footpara">
-<a href="http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf">http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf</a>
-</p></div>
-
-<div class="footdef"><sup><a id="fn.3" name="fn.3" class="footnum" href="#fnr.3">3</a></sup> <p class="footpara">
-<a href="http://en.wikipedia.org/wiki/POSIX">http://en.wikipedia.org/wiki/POSIX</a>
-</p></div>
-
-
 </div>
 </div>
 ]]></content>
