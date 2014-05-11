@@ -6,7 +6,7 @@ title: "Programming Pearls: Column2"
 date: 2014-05-11
 comments: true
 categories: [Programming Pearls]
-tags: [Design Pattern, C++, Programming Pearls]
+tags: [Programming Pearls]
 ---
 #+end_html
 #+OPTIONS: toc:nil num:nil
@@ -25,7 +25,10 @@ tags: [Design Pattern, C++, Programming Pearls]
 利用Column1的比特映射技能，
 1. 把所有的数一一映射到内存中的比特位;
 2. 扫描比特位，是0的就是确实的数所在位置。
-两次扫描，复杂度$\mathcal{O}(N)$
+
+#+begin_html
+两次扫描，复杂度 $\mathcal{O}(N)$。
+#+end_html
 *** 有限的内存
 Ed Reingold 的方法：
 1. 扫描数字文件，以第一个比特位是否为0,分成两组：是0的一组为组0，是1的
@@ -305,8 +308,10 @@ bitmap映射法：
 3. 回到Step 1, 扫描文件为Step 2所选取的，扫描比特位的位置+1。
 
 *** 若总数并不大于范围数
+#+begin_html
 一个大小为n的数组，里面的数范围[0,n-1],有不确定的重复元素，找到至少一
 个重复元素，要求 $\mathcal{O}(1)$ 空间和 $\mathcal{O}(N)$ 时间。
+#+end_html
 
 利用Radix排序的思想实现：
 #+begin_src c++
@@ -420,7 +425,10 @@ void TransposeMatrix(const vector<vector<int> > &matrix,
 1. 建立一个k大小的最大堆;
 2. 遍历n个实数，与最大堆比较
 3. 最大堆k个元素即k个最小值，相加所有与t比较。
-算法复杂度：  $\mathcal{O}(n*logk)$ 。
+
+#+begin_html
+算法复杂度：  $\mathcal{O}(n*logk)$。
+#+end_html
 *** Random Selection
 1. 随机选定一个值作为pivot，然后通过swap，使得最终pivot左边的数都小于
    pivot，pivot右边的数都大于pivot。
@@ -461,7 +469,7 @@ void RandomSelectionK(int *array, int l, int u, int k) {
   }
 }
 #+end_src
-
+#+begin_html
 算法平均时间复杂度： $\mathcal{O}(n)$ 。
-
+#+end_html
 
