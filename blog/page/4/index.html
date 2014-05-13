@@ -9,8 +9,16 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="简介
-Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括C++的版本和python的版本。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http:// &hellip;">
+  <meta name="description" content="Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。 测试 整段LaTex公式 1
+2
+3
+4
+5
+6
+7
+$$
+\begin{align}
+\mbox{Union: } &amp; A\cup B = \{x\mid x\in A \mbox{ or } x\ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +107,90 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T19:41:06+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
+
+<h2 id="section">测试</h2>
+
+<h3 id="latex">整段LaTex公式</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="latex"><span class="line"><span class="sb">$$</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\begin</span><span class="nb">{align}</span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Union: } &amp; A</span><span class="nv">\cup</span><span class="nb"> B </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ or } x</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Concatenation: } &amp; A</span><span class="nv">\circ</span><span class="nb"> B  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">xy</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ and } y</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Star: } &amp; A^</span><span class="nv">\star</span><span class="nb">  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x_</span><span class="m">1</span><span class="nb">x_</span><span class="m">2</span><span class="nv">\ldots</span><span class="nb"> x_k </span><span class="nv">\mid</span><span class="nb">  k</span><span class="nv">\geq</span><span class="nb"> </span><span class="m">0</span><span class="nb"> </span><span class="nv">\mbox</span><span class="nb">{ and each } x_i</span><span class="nv">\in</span><span class="nb"> A</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
+</span><span class="line"><span class="nv">\end</span><span class="nb">{align}</span>
+</span><span class="line"><span class="s">$$</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<script type="math/tex; mode=display">% <![CDATA[
+
+\begin{align}
+\mbox{Union: } & A\cup B = \{x\mid x\in A \mbox{ or } x\in B\} \\
+\mbox{Concatenation: } & A\circ B  = \{xy\mid x\in A \mbox{ and } y\in B\} \\
+\mbox{Star: } & A^\star  = \{x_1x_2\ldots x_k \mid  k\geq 0 \mbox{ and each } x_i\in A\} \\
+\end{align}
+ %]]></script>
+
+<h3 id="latex-1">内嵌LaTex公式</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="latex"><span class="line">If <span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="o">=</span><span class="nb">b</span><span class="s">$</span> and <span class="s">$</span><span class="nb">b</span><span class="o">=</span><span class="m">2</span><span class="s">$</span>, then the solution must be
+</span><span class="line">either <span class="s">$</span><span class="nb">a</span><span class="o">=+</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span> or <span class="s">$</span><span class="nb">a</span><span class="o">=-</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span>.
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>If $a^2=b$ and $b=2$, then the solution must be
+either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -437,6 +529,10 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/13/column3/">Programming Pearls: Column3</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/11/octopresszhong-tian-jia-mu-lu/">Octopress中添加目录</a>
       </li>
     
@@ -452,15 +548,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
         <a href="/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">设计模式基本原则</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/05/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%99%84%E5%BD%95%E4%B8%80/">浅谈设计模式附录一: 标识</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 104.61538461538461%'>Programming Pearls(2)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 106.92307692307692%'>Programming Pearls(3)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
