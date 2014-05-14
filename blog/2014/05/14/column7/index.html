@@ -5,12 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>浅谈设计模式 - (learn&think)</title>
+  <title>Programming Pearls: Column7 - (learn&think)</title>
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="读完GOF的Design Patterns: Elements of Reusable Object-Oriented
-Software和图文并茂的Head First Design Patterns，一时并不是那么快消化和理解，所以试着用自己的语言总结一下。 《Design Patterns》 &hellip;">
+  <meta name="description" content="Book notes Overview 一天中密西西比河的流量是多少？ 作者估算：河口宽度大约1 mile，大约1/250英里深，他猜测流速是5mile每小时或
+120mile每天。 1mile * 1/250mile * 120 miles/day = 1/2 mile3/day 基本技巧 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +19,7 @@ Software和图文并茂的Head First Design Patterns，一时并不是那么快�
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F">
+  <link rel="canonical" href="http://shishougang.github.com/blog/2014/05/14/column7">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
@@ -102,7 +102,7 @@ MathJax.Hub.Config({
   
   <header>
     
-      <h1 class="entry-title">浅谈设计模式</h1>
+      <h1 class="entry-title">Programming Pearls: Column7</h1>
     
     
       <p class="meta">
@@ -118,7 +118,7 @@ MathJax.Hub.Config({
   
 
 
-<time datetime="2014-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2014</time>
+<time datetime="2014-05-14T00:00:00+08:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
         
            | <a href="#disqus_thread"
              data-disqus-identifier="http://shishougang.github.com">Comments</a>
@@ -128,111 +128,255 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p>
-读完GOF的<a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?ie=UTF8&amp;qid=1394635442&amp;sr=8-1&amp;keywords=Design+Patterns">Design Patterns: Elements of Reusable Object-Oriented
-Software</a>和图文并茂的<a href="http://www.amazon.com/First-Design-Patterns-Elisabeth-Freeman/dp/0596007124/ref=sr_1_2?ie=UTF8&amp;qid=1394635442&amp;sr=8-2&amp;keywords=Design+Patterns">Head First Design Patterns</a>，一时并不是那么快消化和理解，所以试着用自己的语言总结一下。
+<div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Book notes</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Overview</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+一天中密西西比河的流量是多少？
 </p>
 
 <p>
-《Design Patterns》在Introduction章中&#8221;如何选一种模式设计&#8221;一节中给出了一张表格，5个创建模式（Abstract Factory; Builder; Factory Method;
-Prototype; Singleton)，7个结构模式(Adapter; Bridge; Compose;
-Decorator; Facade; Flyweight; Proxy)和11个行为模式（Chain of
-Responsibility; Command; Interpreter; Iterator; Mediator; Memento;
-Observer; State; Strategy; Template Method; Visitor)。
+作者估算：河口宽度大约1 mile，大约1/250英里深，他猜测流速是5mile每小时或
+120mile每天。
+</p>
+
+<p>
+1mile * 1/250mile * 120 miles/day = 1/2 mile<sup>3</sup>/day
 </p>
 
 <!-- more -->
+</div>
+</div>
 
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">基本技巧</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">两个答案好于一个</h4>
+<div class="outline-text-4" id="text-1-2-1">
 <p>
-设计模式提倡：
+估算中密西西比河的流域是 1000 × 1000 miles， 一年雨量大约1英尺，（1/5000英里每年）。
+1000miles * 1000miles * 1/5000 mile/year = 200 mile<sup>3</sup>/year
+200mile<sup>3</sup>/year/400days/year = 1/2 mile<sup>3</sup>/day
 </p>
-<ol class="org-ol">
-<li>面向接口编程而不是实现；
-</li>
-<li>使用组合优于继承;
-</li>
-<li>程序模块低耦合,高内聚
-</li>
-<li>独立出变化部分，适应后期变化
-</li>
-</ol>
+</div>
+</div>
 
-<p>
-设计模式并不是只局限OO中，主要理解设计模式的思想，但它也引入了一定的复杂度，不要烂用设计模式，宗旨是写简单而清晰的代码。
-</p>
-
-<p>
-The best way to learn to write simple code is to write simple code!
-Patterns, like all forms of compexity, should be avoided until they
-are absolutely necessary. That&#8217;s the first thing beginners need to
-learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="#fn.1">1</a></sup>
-</p>
-
-<p>
-所有例子的代码在<a href="https://github.com/shishougang/DesignPattern-CPP">这里</a>。
-</p>
-
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2">快速检查</h4>
+<div class="outline-text-4" id="text-1-2-2">
 <ul class="org-ul">
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/">浅谈设计模式一: 策略模式(Strategy)</a>
+<li>Rule1： 相加的单位与原来一样。
 </li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F2/">浅谈设计模式二: 观察者模式(Observer)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/">浅谈设计模式三: 装饰器模式(Decorator)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F4/">浅谈设计模式四: 工厂模式(Factory Method)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/">浅谈设计模式五: 抽象工厂模式(Abstract Factory)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">浅谈设计模式六: 单例模式(Singleton)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F7/">浅谈设计模式七: 命令模式(Command)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F8/">浅谈设计模式八: 适配器模式(Adapter)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F9/">浅谈设计模式九: 外观模式(Facade)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F10/">浅谈设计模式十: 模板方法模式(Template Method)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F11/">浅谈设计模式十一: 迭代器模式(Iterator)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F12/">浅谈设计模式十二: 组合模式(Composite)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F13/">浅谈设计模式十三：状态模式(State)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F14/">浅谈设计模式十四: 代理模式(Proxy)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F15/">浅谈设计模式十五: 生成器模式(Builder)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F16/">浅谈设计模式十六: 原型模式(Prototype)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F17/">浅谈设计模式十七: 桥接模式(Bridge)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F18/">浅谈设计模式十八: 享元模式(Flyweight)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F19/">浅谈设计模式十九: 责任链模式(Chain of Responsibility)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F20/">浅谈设计模式二十: 解释器模式(Interpreter)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/">浅谈设计模式二十一: 中介者模式(Mediator)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F22/">浅谈设计模式二十二: 备忘录模式(Memento)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F23/">浅谈设计模式二十三: 访问者模式(Visitor)</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/05/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%99%84%E5%BD%95%E4%B8%80/">浅谈设计模式附录一: 标识</a>
-</li>
-<li><a href="http://dreamrunner.org/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">设计模式基本原则</a>
+<li>Rule2： 相乘的单位是单位的相乘。
 </li>
 </ul>
-<div id="footnotes">
-<h2 class="footnotes">Footnotes: </h2>
-<div id="text-footnotes">
+</div>
+</div>
 
-<div class="footdef"><sup><a id="fn.1" name="fn.1" class="footnum" href="#fnr.1">1</a></sup> <p class="footpara">
-<a href="http://blog.codinghorror.com/head-first-design-patterns/">http://blog.codinghorror.com/head-first-design-patterns/</a>
-</p></div>
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3">经验法则</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+72法则。
+</p>
 
+<p>
+假如一笔钱以年利率百分比r存y年。如果r×y=72,那么钱将成2倍。这个估算大体正确，存1000以6%的年利率存12年之后为2012.
+</p>
 
+<p>
+72法则对估算指数增长非常实用。双倍对于程序员来说很熟悉：2<sup>10</sup>=1024，10
+倍双倍就是1thousand，20个双倍就是1million。
+</p>
+
+<p>
+假如一个指数型复杂度的程序花10秒解决一个n=40的问题，每把n增加1就增加
+12%的运行时间。72法则告诉我们，运行时间成2倍当n增加6，也就是1000倍（2<sup>10）当n增加60</sup>(6*10)。所以当n=100时，程序花10,000秒，也就几小时。当n
+增加到160,时间成为10<sup>7</sup> 秒,那这时间大约是多少呢？
+</p>
+
+<p>
+很难记住一年的时间是3.155×10<sup>7</sup> 秒，另一方面，很难忘记Tom Duff的实用经验准则，1%多的误差：
+</p>
+
+<p>
+<b>\(\pi\) 秒是1纳世纪。</b> (\(\pi\) seconds is a nanocentury.)
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4">练习</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+不断练习提高自己的估算技巧。
+</p>
+
+<p>
+书中估算密西西比河的流量并不是特别技巧好，比如直接估测出流速是5mile每小时，很难直观想出这个数字。
+</p>
+
+<p>
+推荐<a href="http://book.douban.com/subject/4904724/">《这也能想到?——巧妙解答无厘头问题》</a> 这本书，全书都是估算题目，
+</p>
+<ol class="org-ol">
+<li>明白估算的目标精确度只需要达到一个数量级，和真实数据不超过10倍就是比较好的估算。
+</li>
+<li>估算一个东西的范围的关键是几何平均数。比如这里流量最小1mile每小时，最大10mile每小时，那么估算它为3mile每小时（几何平均）。比如地球的密度，比水大，比铁小，取它们的几何平均。
+</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">利特尔法则(Little&#8217;s law)</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+在一个稳定系统中长期平均存在的用户数是平均用户离开系统的速率与用户平均在系统的时间的乘积。
+</p>
+
+<p>
+例如：一个地方能容纳60个人，你准备呆在那大约3小时，所以人们进入这个地方的速率是20个每小时。现在队伍中有20个人，那么意味着你将等1小时左右。
+</p>
+
+<p>
+或多用户系统的回复时间公式：假定用户连接到回复时间是r的系统中的平均思考时间是z，每个用户或思考或等待系统回复，系统中的任务数大约固定在n，可以测得系统的吞吐量是x（每时间单位的任务数），由Little&#8217;s law得，
+n=x*(z+r)。可以算得r=n/x - z。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Problems</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">1</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+密西西比河的流速大概是5mile每小时或120mile每天，Passaic River应该是
+200miles每天。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">3</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+软盘有1.44Mbytes，
+</p>
+
+<p>
+一秒中最少可以打1byte，最多10bytes，也就是每分钟最少60bytes和最多600bytes，它们的几何平均是200byte，认为大约每分钟打字200byte，
+1.44*10<sup>6</sup>/200=7200 minutes。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">5</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+证明72法则。
+</p>
+
+<p>
+若（1+x%）<sup>N</sup> = 2，证明x*N约等于72
+</p>
+
+<p>
+(1+x%)<sup>N</sup>=2 ==&gt; N*ln(1+x%)=ln2
+</p>
+
+<p>
+对ln(1+x)泰勒展开是ln(1+x) = x-(x<sup>2</sup>)/2 + (x<sup>3</sup>)/3 + &#x2026;
+</p>
+
+<p>
+N*ln(1+x%)=ln2 ==&gt; N*x = ln2 * 100 = 69.3
+</p>
+
+<p>
+因为忽略了-(x<sup>2</sup>)/2这个项，所以N*x约等于72。
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">6</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+72/1.33=54, 所以到2052年人口是2倍，就是5.9×2=11.8 billion。那么2050年大约就是11.5 billion。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">10</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+估算城市的死亡率。
+</p>
+
+<p>
+假定大家平均生命是70年，根据Little&#8217;s law，那么每年的死亡率就是1/70=1.4%的城市人口。
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">11</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+证明利特尔法则(Little&#8217;s law)。
+</p>
+
+<img src="/images/blog/2014/programmingpearls/column7_11.jpg" title="'column7_11'" />
+
+<p>
+时间T进入个数为N(T)，那么到达速率 &lambda;(T) = N(T)/T;
+</p>
+
+<p>
+时间T离开个数为C(T)，那么离开速率 X = C(T)/T;
+</p>
+
+<p>
+系统中，时间T中堆积的个数平均为阴影部分A(T),那么平均等待的个数为L(T) =
+A(T)/T;
+</p>
+
+<p>
+时间T离开个数为C(T)，时间T中堆积的个数A(T)，那么每个的等待时间是
+W(T)=A(T)/C(T)。
+</p>
+
+<p>
+可以得到L(T)=C(T)W(T),均衡系统&lambda;(T)=C(T),即L(T)=&lambda;(T)W(T)。
+</p>
+
+<p>
+完善的数学证明这里：
+<a href="http://www.columbia.edu/~ks20/stochastic-I/stochastic-I-LL.pdf">http://www.columbia.edu/~ks20/stochastic-I/stochastic-I-LL.pdf</a>
+</p>
+</div>
+</div>
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">12</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+美国报纸说25美分的硬币平均寿命是30年。你如何检测这个声明？
+</p>
+
+<p>
+硬币制造厂每年平均最小为每个人制造1枚25美分的硬币，最多不会超过100枚，那么几何平均就是10枚，加入它的平均寿命是30年，那么平均每人就有300枚25
+美分的硬币在手里，算上手头，家里抽屉，公司抽屉所有的25美分，应该不会超过300枚，所以这个声明的数字有点偏高。
+</p>
+</div>
 </div>
 </div>
 </div>
@@ -257,12 +401,12 @@ learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="
   
 
 
-<time datetime="2014-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2014</time>
+<time datetime="2014-05-14T00:00:00+08:00" pubdate data-updated="true">May 14<span>th</span>, 2014</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/design-pattern/'>Design Pattern</a>
+    <a class='category' href='/blog/categories/programming-pearls/'>Programming Pearls</a>
   
 </span>
 
@@ -271,7 +415,7 @@ learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" data-via="" data-counturl="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://shishougang.github.com/blog/2014/05/14/column7/" data-via="" data-counturl="http://shishougang.github.com/blog/2014/05/14/column7/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -299,10 +443,8 @@ learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/" title="Previous Post: Octopress中使用Latex写数学公式">&laquo; Octopress中使用Latex写数学公式</a>
+        <a class="basic-alignment left" href="/blog/2014/05/13/column3/" title="Previous Post: Programming Pearls: Column3">&laquo; Programming Pearls: Column3</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/" title="Next Post: 浅谈设计模式一: 策略模式(Strategy)">浅谈设计模式一: 策略模式(Strategy) &raquo;</a>
       
     </p>
   </footer>
@@ -402,8 +544,8 @@ learn. Not the last thing.<sup><a id="fnr.1" name="fnr.1" class="footref" href="
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/';
-        var disqus_url = 'http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/';
+        var disqus_identifier = 'http://shishougang.github.com/blog/2014/05/14/column7/';
+        var disqus_url = 'http://shishougang.github.com/blog/2014/05/14/column7/';
         var disqus_script = 'embed.js';
       
     (function () {
