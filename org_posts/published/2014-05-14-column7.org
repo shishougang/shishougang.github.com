@@ -49,7 +49,9 @@ tags: [Programming Pearls]
 很难记住一年的时间是3.155×10^7 秒，另一方面，很难忘记Tom Duff的实用经
 验准则，1%多的误差：
 
-       *$\pi$ 秒是1纳世纪。* ($\pi$ seconds is a nanocentury.)
+#+begin_html
+      <strong> $\pi$ 秒是1纳世纪。</strong> ($\pi$ seconds is a nanocentury.)
+#+end_html
 *** 练习
 不断练习提高自己的估算技巧。
 
