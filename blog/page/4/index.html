@@ -9,8 +9,7 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="读完GOF的Design Patterns: Elements of Reusable Object-Oriented
-Software和图文并茂的Head First Design Patterns，一时并不是那么快消化和理解，所以试着用自己的语言总结一下。 《Design Patterns》 &hellip;">
+  <meta name="description" content="1 实例 有一个模拟鸭子的应用完成。这个应用可以仿真鸭子的各种活动，比如游泳，鸣叫，飞等等。能马上想到的模式设计如下： 一个基类 Duck 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。 然后想让 Duck 具有有 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +98,83 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/">浅谈设计模式一: 策略模式(Strategy)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+有一个模拟鸭子的应用完成。这个应用可以仿真鸭子的各种活动，比如游泳，鸣叫，飞等等。能马上想到的模式设计如下：
+</p>
+
+<img src="/images/blog/2014/strategy/duck1.jpeg" />
+
+<p>
+一个基类 <code>Duck</code> 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
+</p>
+
+<p>
+然后想让 <code>Duck</code> 具有有 <code>fly()</code> 的特性，把它加到父类中，相应的不同
+duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的特性,那么就去覆盖父类相应的特性。
+</p>
+
+<img src="/images/blog/2014/strategy/duck2.jpeg" />
+<img src="/images/blog/2014/strategy/duck3.jpeg" />
+<img src="/images/blog/2014/strategy/duck4.jpeg" />
+
+<p class="info">
+每增加一个不同的子类 duck，如果没有父类相应的特性都要去覆盖它，很冗余。
+</p>
+
+<p>
+那么如果把不变的特性继续放在基类 <code>Duck</code> 里，而把变化的特性拿出来做成独立的接口呢？
+</p>
+<img src="/images/blog/2014/strategy/duck5.jpeg" />
+
+<p class="info">
+1. 增加代码的冗余性，每个子类duck都要去实现部分相同的特性;2. 想更改一个相同的 fly() 特性，要在相应的所有子类都修改
+</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -576,6 +652,10 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/17/column8/">Programming Pearls: Column8</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/14/column7/">Programming Pearls: Column7</a>
       </li>
     
@@ -591,15 +671,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
         <a href="/blog/2014/05/11/column2/">Programming Pearls: Column2</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/10/column1/">Programming Pearls: Column1</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 109.23076923076923%'>Programming Pearls(4)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 111.53846153846153%'>Programming Pearls(5)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>

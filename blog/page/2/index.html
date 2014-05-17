@@ -9,8 +9,7 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="
-1 实例 以简单计算器为实例,计算器做加减乘除有一套自己的语言(堆栈形式),可以直接计算,那么用语法树来解释并计算计算器语言如何设计呢? ">
+  <meta name="description" content="1 实例 在公司里，有不同的职位，比如销售人员，开发人员，系统维护人员，主管等等，经常不同的人会发出不同广播消息，比如主管通知大家会议室在何时被占用，系统维护人员通知大家系统将升级win7,因为xp将不再得到维护。并且公司内有不同类型的广播消息，比如公司销售会议只应该通知主管级别的人物。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +98,65 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/">浅谈设计模式二十一: 中介者模式(Mediator)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-04T00:00:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在公司里，有不同的职位，比如销售人员，开发人员，系统维护人员，主管等等，经常不同的人会发出不同广播消息，比如主管通知大家会议室在何时被占用，系统维护人员通知大家系统将升级win7,因为xp将不再得到维护。并且公司内有不同类型的广播消息，比如公司销售会议只应该通知主管级别的人物。
+</p>
+
+<p>
+有不同类型的广播消息，不同职位接收和发送不同类型的消息给相应职位的人，整个公司的交互相对复杂，如何做到以下呢？
+</p>
+<ol class="org-ol">
+<li>理清和维护好现有的人员交互;
+</li>
+<li>灵活的扩展不同类型广播和不同消息群组。
+</li>
+</ol>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -600,102 +658,6 @@ MathJax.Hub.Config({
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F11/">浅谈设计模式十一: 迭代器模式(Iterator)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-04T00:00:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F11/#disqus_thread"
-             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F11/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-为了提高市场竞争力，早餐店(Pancake House)和午餐店（Diner）合并了。如下整合他们的菜单让服务员使用。
-</p>
-
-<p>
-<code>PancakeHouseMenu</code> 类使用 <code>vector</code> 来维护它的菜单，它认为使用 <code>vector</code>
-可以很容易的扩展自己的菜单。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">PancakeHouseMenu</span> {
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">MenuItem</span>*&gt; *<span style="color: #eedd82;">menu_items_</span>;
-};
-</pre>
-</div>
-
-<p>
-<code>DinerMenu</code> 类使用数组来维护它的菜单，它认为使用数组能控制菜单数目和更快速的添加菜单。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">DinerMenu</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">enum</span> { <span style="color: #eedd82;">kMaxItems</span> = 6 };
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">number_of_items_</span>;
-  MenuItem *menu_items_[kMaxItems];
-};
-</pre>
-</div>
-
-<p>
-那么 <code>Waitress</code> 类需要使用两个循环分别访问它们的菜单来打印整个菜单。但问题是：
-</p>
-<ul class="org-ul">
-<li>面向菜单的具体实现来编码而不是接口。
-</li>
-<li>如果增加一个新的餐厅类，就需要另外一个循环，代码冗余，不易扩展。
-</li>
-<li><code>Waitress</code> 需要知道每个餐厅类是如何内部表示它的菜单，破坏了它们的封装。
-</li>
-<li>如果餐厅类改变存储菜单的方式，比如由数组变成Hashtable，那么
-  <code>Waitress</code> 需要很大的改动。
-</li>
-</ul>
-
-<p>
-如何设计使得避免这些问题呢？
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F11/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -713,6 +675,10 @@ MathJax.Hub.Config({
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/17/column8/">Programming Pearls: Column8</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/14/column7/">Programming Pearls: Column7</a>
       </li>
     
@@ -728,15 +694,11 @@ MathJax.Hub.Config({
         <a href="/blog/2014/05/11/column2/">Programming Pearls: Column2</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/10/column1/">Programming Pearls: Column1</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 109.23076923076923%'>Programming Pearls(4)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 111.53846153846153%'>Programming Pearls(5)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
