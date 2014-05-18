@@ -100,7 +100,6 @@ Divide-and-Conquer算法。
 #+begin_html
 {% img /images/blog/2014/programmingpearls/column8_3_2.jpg  'column8_3_2' %}
 #+end_html
-[[./images/column8_3_2.jpg]
 
 3. 求出两部分中间连着的子数组最大和
 #+begin_html
