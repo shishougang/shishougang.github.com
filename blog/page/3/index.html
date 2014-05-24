@@ -9,8 +9,7 @@
   <meta name="author" content="DreamRunner">
 
   
-  <meta name="description" content="1 实例 上节使用迭代器模式可以很方便访问各个菜单目录下的菜单，易易于菜单目录的扩展。但现在菜单目录下新增加了子菜单，比如 DinerMenu 下有
-DessertMenu 的子菜单，那么如何更进一步改进我们的设计，新设计至少需要： 一种树状结构来包含菜单目录，子目录和菜单项。 &hellip;">
+  <meta name="description" content="1 实例 实现如上运行的糖果机，基本的做法就是定义好每个状态，然后把每个状态转换的行为定义为一个函数方法来实现状态间的转换。 class GumballMachine { public: explicit GumballMachine(int cout); void insertQuarter &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +98,94 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F13/">浅谈设计模式十三：状态模式(State)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-04T00:00:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F13/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F13/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<img src="/images/blog/2014/state/machine_state_diagram.jpeg" />
+
+<p>
+实现如上运行的糖果机，基本的做法就是定义好每个状态，然后把每个状态转换的行为定义为一个函数方法来实现状态间的转换。
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">GumballMachine</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">GumballMachine</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">cout</span>);
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">insertQuarter</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">ejectQuarter</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">turnCrank</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">dispense</span>();
+ <span style="color: #00ffff;">private</span>:
+  <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">SOLD_OUT</span> = 0;
+  <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">NO_QUARTER</span> = 1;
+  <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">HAS_QUARTER</span> = 2;
+  <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">SOLD</span> = 3;
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">state</span>;
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">count</span>;
+};
+</pre>
+</div>
+
+<p>
+现在糖果机生产商想新添加一个幸运机制，添加一个 <code>winner</code> 状态，有1/10的概率成为Winner，免费获得一个糖果，状态机图如下：
+</p>
+
+<img src="/images/blog/2014/state/machine_winner_state_diagram.jpeg" />
+
+<p>
+在原有的代码上新添加这个状态，需要在每个转换函数里修改，以致很多处修改，容易产生错误。分析这个设计的缺陷：
+</p>
+<ul class="org-ul">
+<li>状态转换不明显，一堆判断语句在每个转换函数里;
+</li>
+<li>没有封装好变化部分和不变化部分，使得两者纠缠在一起;
+</li>
+<li>进一步添加与修改容易产生bugs。
+</li>
+</ul>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F13/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -707,71 +794,6 @@ MathJax.Hub.Config({
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/">浅谈设计模式三: 装饰器模式(Decorator)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/#disqus_thread"
-             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-星巴克以咖啡文明，现在为它设计它的咖啡订餐系统。
-</p>
-<ol class="org-ol">
-<li>先定义一类饮料的基类 <code>Beverage</code> ，为不同咖啡做好一个接口。
-</li>
-<li>每种不同的咖啡继承这个基类，覆盖各自的特性，比如描述，价格等。
-</li>
-</ol>
-
-<p>
-每种咖啡都有很多中附加，比如拿铁咖啡就有，加糖拿铁，加奶拿铁，加奶加糖拿铁等等。所以按照上面的设计来设计咖啡订餐系统，那么整个系统类结构如下：
-</p>
-
-<img src="/images/blog/2014/decorator/beverage_structure.jpeg" />
-
-<p class="info">
-每种咖啡不同的附加组合导致太多类。
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -789,6 +811,10 @@ MathJax.Hub.Config({
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/24/column14_15/">Programming Pearls: Column14-15</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/18/column11_12/">Programming Pearls: Column11-12</a>
       </li>
     
@@ -804,15 +830,11 @@ MathJax.Hub.Config({
         <a href="/blog/2014/05/13/column3/">Programming Pearls: Column3</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/11/octopresszhong-tian-jia-mu-lu/">Octopress中添加目录</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 113.84615384615384%'>Programming Pearls(6)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/c-' style='font-size: 104.61538461538461%'>C++(2)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
