@@ -10,7 +10,7 @@
 
   
   <meta name="description" content="
-1 实例 在酒吧，有不同的酒和喝酒者对象，一开始，喝酒者都能喝酒，没有任何限制。之后，规定年纪小于16岁的不应该喝酒。那么如何在不改动众多的酒类的情况下，限制喝酒的年纪呢？ ">
+1 实例 批萨店有不同种类的批萨，每种批萨的制作流程类似，如果每个批萨都创建一个类，并且在各自类中完成各自的制作，那么制作流程的代码就会重复，并且制作过程与对象本身融合在一起，那么如何把所有批萨类似的制作流程分离出来，并消除代码冗余呢？ ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -99,6 +99,55 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F15/">浅谈设计模式十五: 生成器模式(Builder)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-04T00:00:00+08:00" pubdate data-updated="true">May 4<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F15/#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F15/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+批萨店有不同种类的批萨，每种批萨的制作流程类似，如果每个批萨都创建一个类，并且在各自类中完成各自的制作，那么制作流程的代码就会重复，并且制作过程与对象本身融合在一起，那么如何把所有批萨类似的制作流程分离出来，并消除代码冗余呢？
+</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F15/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -709,67 +758,6 @@ MathJax.Hub.Config({
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/">浅谈设计模式五: 抽象工厂模式(Abstract Factory)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-03T00:00:00+08:00" pubdate data-updated="true">May 3<span>rd</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/#disqus_thread"
-             data-disqus-identifier="http://shishougang.github.com/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-继续扩展模式四中的批萨店实例，加入批萨配料对象。不同的地区的批萨店有一组共同的产品(如生面，酱汁，芝士等等），但是根据不同地区的口味有不同的实现。整个系统变得有点复杂了，
-</p>
-<ol class="org-ol">
-<li>有不同的批萨原料，同样的批萨原料在不同的地区有不同的作法；
-</li>
-<li>每个店有不同种类的批萨（即各种原料搭配不同）；
-</li>
-<li>整个批萨连锁在不同地区有不同的店。
-</li>
-</ol>
-
-<p>
-如何清晰而易维护的设计整个批萨连锁店系统呢？
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F5/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/4/">&larr; Older</a>
@@ -787,6 +775,10 @@ MathJax.Hub.Config({
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/05/26/The+Algorithm+Design+Manual1/">The Algorithm Design Manual1</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/05/24/programming-pearls-overview/">Programming Pearls Overview</a>
       </li>
     
@@ -800,10 +792,6 @@ MathJax.Hub.Config({
     
       <li class="post">
         <a href="/blog/2014/05/17/column8/">Programming Pearls: Column8</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/05/14/column7/">Programming Pearls: Column7</a>
       </li>
     
   </ul>
