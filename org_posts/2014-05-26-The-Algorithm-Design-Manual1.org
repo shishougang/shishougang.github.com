@@ -2,7 +2,7 @@
 #+begin_html
 ---
 layout: post
-title: "The Algorithm Design Manual: Chapter 1"
+title: "Algorithm Design Manual Chapter 1"
 date: 2014-05-26
 comments: true
 categories: [Algorithm]
