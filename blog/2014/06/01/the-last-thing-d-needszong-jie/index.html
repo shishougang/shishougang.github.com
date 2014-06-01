@@ -1,0 +1,793 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>The Last Thing D Needs总结 - (learn&think)</title>
+  <meta name="author" content="DreamRunner">
+
+  
+  <meta name="description" content="Initialization Type Deduction Inheritance Computational Complexity APIs Specifications Essential and Accidental Complexity Effective C++
+系列的作者Scott &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://shishougang.github.com/blog/2014/06/01/the-last-thing-d-needszong-jie">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32977383-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">(learn&think)</a></h1>
+  
+    <h2>不浮躁，不自傲，学习，思考，总结</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:shishougang.github.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/tag-cloud">Tag Cloud</a></li>
+  <li><a href="/my-wiki">My Wiki</a></li>
+  <li><a href="/friends-links">Friends' Links</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">The Last Thing D Needs总结</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-01T16:24:47+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://shishougang.github.com">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><ul id="markdown-toc">
+  <li><a href="#initialization">Initialization</a></li>
+  <li><a href="#type-deduction">Type Deduction</a></li>
+  <li><a href="#inheritance">Inheritance</a></li>
+  <li><a href="#computational-complexity">Computational Complexity</a></li>
+  <li><a href="#apis">APIs</a></li>
+  <li><a href="#specifications">Specifications</a></li>
+  <li><a href="#essential-and-accidental-complexity">Essential and Accidental Complexity</a></li>
+</ul>
+
+<p><a href="http://www.amazon.com/gp/product/0321334876?ie=UTF8&amp;tag=aristeia.com-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0321334876">Effective C++</a>
+系列的作者<a href="http://www.aristeia.com/">Scott Meyers</a>在Dconf中<a href="http://www.ustream.tv/recorded/47947981">The Last Thing D Needs</a>聊了些C++的
+特性，稍微总结一下。</p>
+
+<h2 id="initialization">Initialization</h2>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Initialization</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">x1</span><span class="p">;</span>         <span class="c1">// unknown, initial(pay for it)</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x2</span><span class="p">;</span>         <span class="c1">// (at global scope) 0, no run time cost</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">x3</span><span class="p">;</span>  <span class="c1">// 0, static initialization</span>
+</span><span class="line"><span class="kt">int</span> <span class="o">*</span><span class="n">px</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>  <span class="c1">// heap memory, unknown, has run time cost</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">x4</span><span class="p">;</span>    <span class="c1">// unknown, has run time cost </span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">a1</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>   <span class="c1">// unknown</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">a2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>   <span class="c1">// (at global scope) 0</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">a3</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>  <span class="c1">// 0</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  <span class="c1">// 0, use run time cost</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<!-- more -->
+
+<h2 id="type-deduction">Type Deduction</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Type Deduction</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">my_cx1</span> <span class="o">=</span> <span class="n">cx</span><span class="p">;</span>          <span class="c1">// int, new independent value</span>
+</span><span class="line"><span class="n">decltype</span><span class="p">(</span><span class="n">cx</span><span class="p">)</span> <span class="n">my_cx2</span> <span class="o">=</span> <span class="n">cx</span><span class="p">;</span>  <span class="c1">// const int, standard said</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span><span class="o">&lt;</span><span class="n">typname</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">f1</span><span class="p">(</span><span class="n">T</span> <span class="n">param</span><span class="p">);</span>
+</span><span class="line"><span class="n">f1</span><span class="p">(</span><span class="n">cx</span><span class="p">);</span>                    <span class="c1">// T&#39;s type, int, same rules with auto</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">f2</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;</span> <span class="n">param</span><span class="p">);</span>
+</span><span class="line"><span class="n">f2</span><span class="p">(</span><span class="n">cx</span><span class="p">);</span>                   <span class="c1">//T&#39;s type, const int, reference a chunk of memory, preserve the const</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">f3</span><span class="p">(</span><span class="n">T</span><span class="o">&amp;&amp;</span> <span class="n">param</span><span class="p">);</span>
+</span><span class="line"><span class="n">f3</span><span class="p">(</span><span class="n">cx</span><span class="p">);</span>                  <span class="c1">//T&#39;s type, const int&amp;, perfect argument forwarding, a special rule</span>
+</span><span class="line">
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">lam</span><span class="o">=</span> <span class="p">[</span><span class="n">cx</span><span class="p">]</span> <span class="p">{</span><span class="n">cx</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;};</span>       <span class="c1">//error!</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">UpToTheCompiler</span> <span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="o">???</span> <span class="n">cx</span><span class="p">;</span>                      <span class="c1">//const int</span>
+</span><span class="line">  <span class="p">...</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">lam</span><span class="o">=</span> <span class="p">[</span><span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span><span class="p">]</span> <span class="p">{</span><span class="n">cx</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;};</span>     <span class="c1">//error!</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">UpToTheCompiler</span> <span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="o">???</span> <span class="n">cx</span><span class="p">;</span>                          <span class="c1">//int (but acts like const int)</span>
+</span><span class="line">  <span class="p">...</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="k">operator</span><span class="p">()</span> <span class="k">const</span>
+</span><span class="line">  <span class="p">{</span><span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">cx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">lam1</span><span class="o">=</span> <span class="p">[</span><span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span><span class="p">]</span> <span class="k">mutable</span> <span class="p">{</span><span class="n">cx</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;};</span>     <span class="c1">//error!</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">lam2</span><span class="o">=</span> <span class="p">[</span><span class="n">cx</span> <span class="o">=</span> <span class="n">cx</span><span class="p">]()</span> <span class="k">mutable</span> <span class="p">{</span><span class="n">cx</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;};</span>     <span class="c1">//correct</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">UpToTheCompiler</span> <span class="p">{</span>
+</span><span class="line"><span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="o">???</span> <span class="n">cx</span><span class="p">;</span>                          <span class="c1">//int (but acts like int)</span>
+</span><span class="line">  <span class="p">...</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>For</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+</pre></td><td class="code"><pre><code class=""><span class="line">const int cx = 0;</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>type deduction for cx yields:</p>
+
+<style>
+table,th,td
+{
+border:1px solid black;
+}
+</style>
+
+<table border="1" style="width:500px">
+<tr>
+<th> Context </th>
+<th> Type </th>
+</tr>
+
+<tr>
+<td> auto </td>
+<td> int </td>
+</tr>
+
+<tr>
+<td> decltype </td>
+<td>  const int</td>
+</tr>
+
+<tr>
+<td> template(T parameter)  </td>
+<td> int </td>
+</tr>
+
+<tr>
+<td> template(T&amp; parameter)  </td>
+<td> const int </td>
+</tr>
+
+<tr>
+<td> template(T&amp;&amp; parameter)  </td>
+<td> const int&amp; </td>
+</tr>
+
+<tr>
+<td> lambda (by-value capture) </td>
+<td> const int  </td>
+</tr>
+
+<tr>
+<td> lambda (int capture) </td>
+<td>  int</td>
+</tr>
+</table>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Type Deduction</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="c1">//all do the same thing</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x2</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x3</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x4</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="k">auto</span> <span class="n">x1</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>  <span class="c1">// int</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">x2</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>   <span class="c1">// int</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">x3</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span><span class="c1">// initializer_list&lt;int&gt;</span>
+</span><span class="line"><span class="k">auto</span> <span class="n">x4</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>  <span class="c1">// initializer_list&lt;int&gt;</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span> <span class="o">&lt;</span><span class="n">typname</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">f</span><span class="p">(</span><span class="n">T</span> <span class="n">param</span><span class="p">);</span>
+</span><span class="line"><span class="n">f</span><span class="p">({</span><span class="mi">0</span><span class="p">});</span>       <span class="c1">// error! &quot;{0}&quot; has no type</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="inheritance">Inheritance</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>inheritance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doBaseWork</span><span class="p">();</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doDerivedWord</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">doBaseWord</span><span class="p">();</span>               <span class="c1">//ok</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doBaseWork</span><span class="p">();</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doDerivedWord</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">doBaseWord</span><span class="p">();</span>               <span class="c1">//no compile, later specialized version</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line">
+</span><span class="line"><span class="k">template</span> <span class="o">&lt;&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Base</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">();</span>  <span class="c1">// no doBasework</span>
+</span><span class="line">
+</span><span class="line"><span class="n">Derived</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">d</span><span class="p">;</span>
+</span><span class="line"><span class="n">d</span><span class="p">.</span><span class="n">doDerivedWord</span><span class="p">();</span>  <span class="c1">// fail</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>In essence, the <strong>One Definition Rule</strong> states that the same entity should have the exact same definition throughout an application, otherwise the effects are undefined.</p>
+
+<p>The fundamental problem is that the code that doesn’t see the specialized version of your class template member function might still compile, is likely to link, and sometimes might even run. This is because in the absence of (a forward declaration of) the explicit specialization, the non-specialized version kicks in, likely implementing a generic functionality that works for your specialized type as well.</p>
+
+<h2 id="computational-complexity">Computational Complexity</h2>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>computational Complexity</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">;</span>
+</span><span class="line"><span class="p">...</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>   <span class="c1">// O(nlogn)</span>
+</span><span class="line">
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">list</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">li</span><span class="p">;</span>
+</span><span class="line"><span class="p">...</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">sort</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">li</span><span class="p">.</span><span class="n">end</span><span class="p">());</span>  <span class="c1">// not compile, list doesnot have random access iterator</span>
+</span><span class="line">
+</span><span class="line"><span class="k">auto</span> <span class="n">it1</span> <span class="o">=</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">binary_search</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">v</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">10</span><span class="p">);</span>  <span class="c1">// O(logn)</span>
+</span><span class="line">
+</span><span class="line"><span class="k">auto</span> <span class="n">it2</span> <span class="o">=</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">binary_search</span><span class="p">(</span><span class="n">li</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span> <span class="n">li</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span> <span class="mi">10</span><span class="p">);</span>  <span class="c1">// O(n), officially(number of compares): O(logn)</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="apis">APIs</h2>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>example</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">set</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">si</span><span class="p">;</span>
+</span><span class="line"><span class="p">...</span>
+</span><span class="line"><span class="n">si</span><span class="p">.</span><span class="n">erase</span><span class="p">(</span><span class="mi">14</span><span class="p">);</span>    <span class="c1">// eliminate all 14s from si</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<ul>
+  <li>set             –&gt;  erase</li>
+  <li>multiset        –&gt;     erase</li>
+  <li>map             –&gt;     erase</li>
+  <li>multimap        –&gt;     erase</li>
+  <li>unordered_set   –&gt;     erase</li>
+  <li>unordered_multiset –&gt;  erase</li>
+  <li>unordered_map      –&gt;  erase</li>
+  <li>unordered_multimap –&gt;  erase</li>
+  <li>list               –&gt;  remove</li>
+  <li>forward_list       –&gt;  remove</li>
+</ul>
+
+<p>Sorts can be stable or unstable. Which are guaranteed to be stable?
+* sort –&gt; not guaranteed
+* stable_sort  –&gt; guaranteed
+* list::sort –&gt; guaranteed</p>
+
+<h2 id="specifications">Specifications</h2>
+<p>Five sequence containers:</p>
+
+<ul>
+  <li>array –&gt; No</li>
+  <li>deque –&gt; Yes</li>
+  <li>forward_list  –&gt; No(fulfill of 1 of 16)</li>
+  <li>list  –&gt; Yes</li>
+  <li>vector – &gt; Yes</li>
+</ul>
+
+<h2 id="essential-and-accidental-complexity">Essential and Accidental Complexity</h2>
+<p>Essential Complexity: due to inherent design tensions.</p>
+
+<ul>
+  <li>Simplicity and regularity vs expressiveness.</li>
+  <li>Abstraction and portability vs efficiency.</li>
+  <li>New approaches vs compatibility with legacy systems.</li>
+  <li>Expressiveness vs ability to issue good diagnostics.</li>
+</ul>
+
+<p><em>Essential Complexity</em></p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Point</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">struct</span> <span class="n">Point</span> <span class="p">{</span>
+</span><span class="line">  <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>What is the type of Point::x?</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Point</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">Point</span> <span class="n">p</span><span class="p">;</span>
+</span><span class="line"><span class="k">const</span> <span class="n">Point</span> <span class="o">&amp;</span><span class="n">cp</span> <span class="o">=</span> <span class="n">p</span><span class="p">;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+<p>What is the type of cp.x?</p>
+
+<p>C++ soluction:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">decltype</span><span class="p">(</span><span class="n">cp</span><span class="p">.</span><span class="n">x</span><span class="p">)</span> <span class="o">=</span> <span class="kt">int</span>
+</span><span class="line"><span class="n">decltype</span><span class="p">((</span><span class="n">cp</span><span class="p">.</span><span class="n">x</span><span class="p">))</span> <span class="o">=</span> <span class="k">const</span> <span class="kt">int</span><span class="o">&amp;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>inheritance</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Base</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doBaseWork</span><span class="p">();</span>
+</span><span class="line"><span class="p">};</span>
+</span><span class="line"><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="o">&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Derived</span> <span class="o">:</span> <span class="k">public</span> <span class="n">Base</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span> <span class="p">{</span>
+</span><span class="line"><span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">doDerivedWord</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">doBaseWrd</span><span class="p">();</span>               <span class="c1">//okay?</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>Assume typo and diagnose now?</p>
+
+<ul>
+  <li>Wrong if later specialization offers doBaseWrk.</li>
+</ul>
+
+<p>Assume later specialization and defer lookup until instantiation?</p>
+
+<ul>
+  <li>If typo, imposes diagnostics for library errors on clients.</li>
+</ul>
+
+<p>C++ solution:</p>
+
+<ul>
+  <li>Template author has control
+    <ul>
+      <li>doBaseWrk() -&gt; lookup name when parsing template.</li>
+      <li>this-&gt;doBaseWrk() -&gt; lookup name when instantiating template.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>Accidental Complexity</em></p>
+
+<ul>
+  <li>ints are sometimes initialized to 0.</li>
+  <li>By-value lambda capture somtimes retains the constness of what’s captured.</li>
+  <li>mutable lambdas must declare a parameter list, but non-mutable lambdas don’t</li>
+  <li>Braced initializers (e.g.”{0}”) sometimes have a type.</li>
+  <li>Computation complexity guarantees usually meaningful.</li>
+  <li>Elimination all container elements with a given value usually means
+calling <code>erase</code>.</li>
+  <li><code>sort</code> is sometimes stable.</li>
+  <li>Container “requirements” are sometimes required.</li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">DreamRunner</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-01T16:24:47+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/c-plus-plus/'>C++</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://shishougang.github.com/blog/2014/06/01/the-last-thing-d-needszong-jie/" data-via="" data-counturl="http://shishougang.github.com/blog/2014/06/01/the-last-thing-d-needszong-jie/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+    <div class="fb-like" data-send="true" data-width="450" data-show-faces="false"></div>
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div id="ckepop">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_qzone">QQ空间</a>
+	<a class="jiathis_button_tsina">新浪微博</a>
+	<a class="jiathis_button_tqq">腾讯微博</a>
+	<a class="jiathis_button_renren">人人网</a>
+	<a href="http://www.jiathis.com/share?uid=1658718" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">var jiathis_config = {data_track_clickback:true};</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1342523038679945" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/05/29/The-Algorithm-Design-Manual2/" title="Previous Post: Algorithm Design Manual Chapter 2">&laquo; Algorithm Design Manual Chapter 2</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/01/the-last-thing-d-needszong-jie/">The Last Thing D Needs总结</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/29/The-Algorithm-Design-Manual2/">Algorithm Design Manual Chapter 2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Algorithm Design Manual Chapter 1</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/24/programming-pearls-overview/">Programming Pearls Overview</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/05/24/column14_15/">Programming Pearls: Column14-15</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Category Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 104.61538461538461%'>Algorithm(2)</a> <a href='/blog/categories/c-' style='font-size: 106.92307692307692%'>C++(3)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shishougang">@shishougang</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shishougang',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - DreamRunner -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'dreamrunner';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://shishougang.github.com/blog/2014/06/01/the-last-thing-d-needszong-jie/';
+        var disqus_url = 'http://shishougang.github.com/blog/2014/06/01/the-last-thing-d-needszong-jie/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id; js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js#appId=212934732101925&xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
