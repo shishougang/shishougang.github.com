@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithm | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-04T22:59:20+08:00</updated>
+  <updated>2014-06-04T23:23:15+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -836,24 +836,25 @@ faster than O(n<sup>2</sup>).)
 对数组X扫描2次计算出如下2组数组：
 </p>
 
-\begin{equation}
+$$
 \begin{align}
 P_{0} = 1; P_{k}=X_{k}P_{k-1}=\prod_{i=1}^{k}X_{i} \newline
 Q_{n+1} = 1; Q_{k}=X_{k}Q_{k+1}=\prod_{i=k}^{n}X_{i}
 \end{align}
-\end{equation}
+$$
+
 
 <p>
 所以得到M：
 </p>
-\begin{equation}
+
+$$
 \begin{align}
 M_{i} = P_{i-1} Q_{i+1}, i\in[1,n]
 \end{align}
-\end{equation}
+$$
 </div>
 </div>
-
 <div id="outline-container-sec-2-26" class="outline-3">
 <h3 id="sec-2-26">29</h3>
 <div class="outline-text-3" id="text-2-26">

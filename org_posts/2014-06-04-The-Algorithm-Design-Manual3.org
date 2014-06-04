@@ -528,19 +528,26 @@ faster than O(n^2).)
 
 对数组X扫描2次计算出如下2组数组：
 
-\begin{equation}
+#+begin_html
+$$
 \begin{align}
 P_{0} = 1; P_{k}=X_{k}P_{k-1}=\prod_{i=1}^{k}X_{i} \newline
 Q_{n+1} = 1; Q_{k}=X_{k}Q_{k+1}=\prod_{i=k}^{n}X_{i}
 \end{align}
-\end{equation}
+$$
+#+end_html
+
 
 所以得到M：
-\begin{equation}
+
+#+begin_html
+$$
 \begin{align}
 M_{i} = P_{i-1} Q_{i+1}, i\in[1,n]
 \end{align}
-\end{equation}
+$$
+#+end_html
+
 ** 29
 Give an algorithm for finding an ordered word pair (e.g., “New
 York”) occurring with the greatest frequency in a given webpage.
