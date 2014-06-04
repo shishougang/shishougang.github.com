@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://shishougang.github.com/sitemap.xml 
+Sitemap: http://dreamrunner.org/sitemap.xml 
