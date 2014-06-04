@@ -2,12 +2,12 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://shishougang.github.com
+url: http://dreamrunner.org
 title: (learn&think)
 subtitle: 不浮躁，不自傲，学习，思考，总结
 author: DreamRunner
 simple_search: http://google.com/search
-description: programming, algorithm and linux kernel
+description: programming, algorithm, C++, linux
 weibo_share: true
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
@@ -101,4 +101,4 @@ disqus_show_comment_count: true
 google_analytics_tracking_id: UA-32977383-1
 
 # Facebook Like
-facebook_like: true
+facebook_like: false
