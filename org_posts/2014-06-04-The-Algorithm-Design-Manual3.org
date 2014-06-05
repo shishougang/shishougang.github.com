@@ -7,6 +7,8 @@ date: 2014-06-04
 comments: true
 categories: [Algorithm]
 tags: [Algorithm]
+description: "The Algorithm Design Manual Chapter 3 Notes and Answers"
+keywords: "algorithm"
 ---
 #+end_html
 #+OPTIONS: toc:nil num:nil
