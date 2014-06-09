@@ -104,6 +104,75 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F9/">浅谈设计模式九: 外观模式(Facade)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-05-03T00:00:00+08:00"  class="updated" >May 3<span>rd</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F9/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F9/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+在家组建了一个家庭影院，基本配置如下图。每次看电影都要进行如下一系列准备工作：
+</p>
+<ol class="org-ol">
+<li>打开爆米花机
+</li>
+<li>爆米花机制作爆米花
+</li>
+<li>调暗灯光
+</li>
+<li>投影幕布降下来
+</li>
+<li>打开投影机
+</li>
+</ol>
+<p>
+。。。等等
+</p>
+
+<p>
+至少在10项的准备工作，如果每次一一去调用，非常的繁琐，那么如何让用户方便而简洁的准备看电影，并看完电影善后等活动呢？
+</p>
+<img src="/images/blog/2014/facade/home_theater.jpeg" />
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F9/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F8/">浅谈设计模式八: 适配器模式(Adapter)</a></h1>
     
     
@@ -668,90 +737,6 @@ Observer; State; Strategy; Template Method; Visitor)。
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Octopress中使用Latex写数学公式</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-03-09T19:41:06+08:00"  class="updated" >Mar 9<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
-
-<h2 id="section">测试</h2>
-
-<h3 id="latex">整段LaTex公式</h3>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-<span class="line-number">5</span>
-<span class="line-number">6</span>
-<span class="line-number">7</span>
-</pre></td><td class="code"><pre><code class="latex"><span class="line"><span class="sb">$$</span><span class="nb"></span>
-</span><span class="line"><span class="nv">\begin</span><span class="nb">{align}</span>
-</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Union: } &amp; A</span><span class="nv">\cup</span><span class="nb"> B </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ or } x</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
-</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Concatenation: } &amp; A</span><span class="nv">\circ</span><span class="nb"> B  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">xy</span><span class="nv">\mid</span><span class="nb"> x</span><span class="nv">\in</span><span class="nb"> A </span><span class="nv">\mbox</span><span class="nb">{ and } y</span><span class="nv">\in</span><span class="nb"> B</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
-</span><span class="line"><span class="nv">\mbox</span><span class="nb">{Star: } &amp; A^</span><span class="nv">\star</span><span class="nb">  </span><span class="o">=</span><span class="nb"> </span><span class="nv">\{</span><span class="nb">x_</span><span class="m">1</span><span class="nb">x_</span><span class="m">2</span><span class="nv">\ldots</span><span class="nb"> x_k </span><span class="nv">\mid</span><span class="nb">  k</span><span class="nv">\geq</span><span class="nb"> </span><span class="m">0</span><span class="nb"> </span><span class="nv">\mbox</span><span class="nb">{ and each } x_i</span><span class="nv">\in</span><span class="nb"> A</span><span class="nv">\}</span><span class="nb"> </span><span class="nv">\\</span><span class="nb"></span>
-</span><span class="line"><span class="nv">\end</span><span class="nb">{align}</span>
-</span><span class="line"><span class="s">$$</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<script type="math/tex; mode=display">% <![CDATA[
-
-\begin{align}
-\mbox{Union: } & A\cup B = \{x\mid x\in A \mbox{ or } x\in B\} \\
-\mbox{Concatenation: } & A\circ B  = \{xy\mid x\in A \mbox{ and } y\in B\} \\
-\mbox{Star: } & A^\star  = \{x_1x_2\ldots x_k \mid  k\geq 0 \mbox{ and each } x_i\in A\} \\
-\end{align}
- %]]></script>
-
-<h3 id="latex-1">内嵌LaTex公式</h3>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-</pre></td><td class="code"><pre><code class="latex"><span class="line">If <span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="o">=</span><span class="nb">b</span><span class="s">$</span> and <span class="s">$</span><span class="nb">b</span><span class="o">=</span><span class="m">2</span><span class="s">$</span>, then the solution must be
-</span><span class="line">either <span class="s">$</span><span class="nb">a</span><span class="o">=+</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span> or <span class="s">$</span><span class="nb">a</span><span class="o">=-</span><span class="nv">\sqrt</span><span class="nb">{</span><span class="m">2</span><span class="nb">}</span><span class="s">$</span>.
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p>If $a^2=b$ and $b=2$, then the solution must be
-either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -769,6 +754,10 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Algorithm Design Manual Chapter 4</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/04/The-Algorithm-Design-Manual3/">Algorithm Design Manual Chapter 3</a>
       </li>
     
@@ -784,15 +773,11 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
         <a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Algorithm Design Manual Chapter 1</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/05/24/programming-pearls-overview/">Programming Pearls Overview</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 106.92307692307692%'>Algorithm(3)</a> <a href='/blog/categories/c-' style='font-size: 106.92307692307692%'>C++(3)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 109.23076923076923%'>Algorithm(4)</a> <a href='/blog/categories/c-' style='font-size: 106.92307692307692%'>C++(3)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
