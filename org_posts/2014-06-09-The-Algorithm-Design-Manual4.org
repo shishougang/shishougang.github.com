@@ -142,6 +142,7 @@ estimate becomes sufficiently accurate.
 ** 4.10 Divide-and-Conquer
 divide-and-conquer recurrences of the form T(n)=aT(n/b)+f(n)
 
+#+begin_html
 1. If $f(n) = O(n^{log_{b}^{a-\epsilon}})$ for some constant $\epsilon
    > 0$, then $T(n) = \Theta(n^{log_{b}^a})$.
 2. If $f(n) = O(n^{log_{b}^{a}})$, then $T(n) =
@@ -149,6 +150,7 @@ divide-and-conquer recurrences of the form T(n)=aT(n/b)+f(n)
 3. If $f(n) = O(n^{log_{b}^{a+\epsilon}})$ for some constant $\epsilon
    > 0$ and if $af(n/b) \leq cf(n)$ for some $c<1$, then $T(n) =
    \Theta(f(n))$.
+#+end_html
 
 * Exercises
 ** 1
@@ -534,6 +536,7 @@ void RandomSelectionK(int *array, int l, int u, int k) {
 #+end_src
 
 ** 17
+#+begin_html
 The median of a set of n values is the $\lceil n/2 \rceil$ th smallest
 value.
 1. Suppose quicksort always pivoted on the median of the current
@@ -543,9 +546,9 @@ value.
 2. Suppose quicksort were always to pivot on the $\lceil n/3 \rceil$ th
    smallest value of the current sub-array. How many comparisons would
    be made then in the worst case?
+#+end_html
 
 f(n) = 2*f(n/2) + n ==> f(n) = 2^k * f(n/2^{k}) + kn = (n+2)logn
-
 f(n) = f(n/3) + f(2n/3) + n ==> f(n) = O(nlogn)
 ** 18
 Suppose an array A consists of n elements, each of which is red,
@@ -582,9 +585,10 @@ balanced binary search tree.
  Give an algorithm that sorts A in substantially better than nlogn
  steps.
 
+#+begin_html
 + $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。
 + O(n)去mergesort前半部分和后半部分。
-
+#+end_html
 ** 25
 Assume that the array A[1..n] only has numbers from $\{1,\ldots, n^2\}$
 but that at most loglogn of these numbers ever appear. Devise an
@@ -843,14 +847,3 @@ rest. Identify this coin in just three weighings.
    一组.
 2. 重的那组分4组,每组1个,第一组和第二组称重,谁重就重的那个.
 3. 若step2相等,剩下第三组和第四组称重,谁重就重的那个.
-
-http://rcrezende.blogspot.hk/2010/08/smallest-relevant-text-snippet-for.html
-
-http://stackoverflow.com/questions/2734313/google-search-results-how-to-find-the-minimum-window-that-contains-all-the-sear/2734606#2734606
-
-http://stackoverflow.com/questions/2954626/algorithm-to-find-the-smallest-snippet-from-searching-a-document
-
-
-
-
-
