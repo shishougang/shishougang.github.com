@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-10T20:19:19+08:00</updated>
+  <updated>2014-06-10T20:22:57+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -210,12 +210,12 @@ divide-and-conquer recurrences of the form T(n)=aT(n/b)+f(n)
 </p>
 
 1. If $f(n) = O(n^{log_{b}^{a-\epsilon}})$ for some constant $\epsilon
-   &gt; 0$, then $T(n) = \Theta(n^{log_{b}^a})$.
+   &gt; 0$, then $T(n) = \Theta(n^{log_{b}^a})$. <br /> 
 2. If $f(n) = O(n^{log_{b}^{a}})$, then $T(n) =
-   \Theta(n^{log_{b}^a}lgn)$.
+   \Theta(n^{log_{b}^a}lgn)$.  <br /> 
 3. If $f(n) = O(n^{log_{b}^{a+\epsilon}})$ for some constant $\epsilon
    &gt; 0$ and if $af(n/b) \leq cf(n)$ for some $c&lt;1$, then $T(n) =
-   \Theta(f(n))$.
+   \Theta(f(n))$.  <br /> 
 </div>
 </div>
 </div>

@@ -144,12 +144,12 @@ divide-and-conquer recurrences of the form T(n)=aT(n/b)+f(n)
 
 #+begin_html
 1. If $f(n) = O(n^{log_{b}^{a-\epsilon}})$ for some constant $\epsilon
-   > 0$, then $T(n) = \Theta(n^{log_{b}^a})$.
+   > 0$, then $T(n) = \Theta(n^{log_{b}^a})$. <br> 
 2. If $f(n) = O(n^{log_{b}^{a}})$, then $T(n) =
-   \Theta(n^{log_{b}^a}lgn)$.
+   \Theta(n^{log_{b}^a}lgn)$.  <br> 
 3. If $f(n) = O(n^{log_{b}^{a+\epsilon}})$ for some constant $\epsilon
    > 0$ and if $af(n/b) \leq cf(n)$ for some $c<1$, then $T(n) =
-   \Theta(f(n))$.
+   \Theta(f(n))$.  <br> 
 #+end_html
 
 * Exercises
