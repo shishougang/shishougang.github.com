@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-09T23:19:13+08:00</updated>
+  <updated>2014-06-10T20:19:19+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -777,7 +777,7 @@ the process?
 </ul>
 
 <p>
-<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是n的倍数，最坏时间复杂度可以达到：O(nlogn)。
+<a href="http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是n的倍数，最坏时间复杂度可以达到：O(nlogn)。
 </p>
 
 <p>
@@ -837,14 +837,14 @@ time. (Hint: must you look at both sides of the partition?)
 <h3 id="sec-2-17">17</h3>
 <div class="outline-text-3" id="text-2-17">
 The median of a set of n values is the $\lceil n/2 \rceil$ th smallest
-value.
+value. <br />
 1. Suppose quicksort always pivoted on the median of the current
    sub-array. How many comparisons would Quicksort make then in the
-   worst case?
+   worst case? <br />
 
 2. Suppose quicksort were always to pivot on the $\lceil n/3 \rceil$ th
    smallest value of the current sub-array. How many comparisons would
-   be made then in the worst case?
+   be made then in the worst case? <br />
 
 <p>
 f(n) = 2*f(n/2) + n ==&gt; f(n) = 2<sup>k</sup> * f(n/2<sup>k</sup>) + kn = (n+2)logn
@@ -931,7 +931,7 @@ Give an algorithm that sorts A in substantially better than nlogn
 steps.
 </p>
 
-+ $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。
++ $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。<br />
 + O(n)去mergesort前半部分和后半部分。
 </div>
 </div>
@@ -1353,9 +1353,62 @@ positions where these words occur in the document, such as word1: (1,
 in sorted order, as above.
 </p>
 
+<ol class="org-ol">
+<li>选取每个字母index的首个元素作为起始方案。
+</li>
+<li>如何改进它的长度：a.增加最小的位置，b.减小最大的位置，这里只能增加最小的位置。
+</li>
+<li>用heap来保存位置，每次取出最小的位置为O(logk).
+</li>
+</ol>
+
+<p>
+复杂度：O(nlogk)，n是所有字母的位置个数，k是字母个数。这里k=3,所以O(n)
+</p>
+
 <div class="org-src-container">
 
-<pre class="src src-c++" />
+<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;queue&gt;</span>
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">priority_queue</span>;
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;utility&gt;</span>
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">make_pair</span>;
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">pair</span>;
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;vector&gt;</span>
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">vector</span>;
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;algorithm&gt;</span>
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">max</span>;
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">min</span>;
+<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;limits&gt;</span>
+<span style="color: #00ffff;">using</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">numeric_limits</span>;
+
+
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">FindSmallestSnippet</span>(<span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">int</span>&gt; &gt; &amp;<span style="color: #eedd82;">index_positions</span>) {
+  <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">max-priority, select smallest position, use -index_positions[i][j], (i,j)</span>
+  <span style="color: #98fb98;">priority_queue</span>&lt;<span style="color: #98fb98;">pair</span>&lt;<span style="color: #98fb98;">int</span>, <span style="color: #98fb98;">pair</span>&lt;<span style="color: #98fb98;">int</span> ,<span style="color: #98fb98;">int</span>&gt; &gt; &gt; <span style="color: #eedd82;">queue</span>;
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">max_pos</span> = 0; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">the max pos of  the snippet</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>;
+  <span style="color: #00ffff;">for</span> (i = 0; i &lt; index_positions.size(); ++i) {
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">pos</span> = index_positions[i][0];
+    max_pos = max(max_pos, pos);
+    queue.push(make_pair(-pos, make_pair(i, 0)));
+  }
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">smallest_len</span> = <span style="color: #7fffd4;">numeric_limits</span>&lt;<span style="color: #98fb98;">int</span>&gt;::max();
+  <span style="color: #00ffff;">while</span> (queue.size() == index_positions.size()) {
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">min_pos</span> = -queue.top().first;
+    smallest_len = min(smallest_len, max_pos - min_pos + 1);
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">word_pos</span> = queue.top().second.first;
+    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">index</span> = queue.top().second.second;
+    queue.pop();
+    ++index;
+    <span style="color: #00ffff;">if</span> (index &lt; index_positions[word_pos].size()) {
+      <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">next_pos</span> = index_positions[word_pos][index];
+      max_pos = max(max_pos, next_pos);
+      queue.push(make_pair(-next_pos, make_pair(word_pos, index)));
+    }
+  }
+  <span style="color: #00ffff;">return</span> smallest_len;
+}
+</pre>
 </div>
 </div>
 </div>

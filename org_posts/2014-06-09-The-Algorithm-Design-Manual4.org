@@ -490,7 +490,7 @@ the process?
   共比较2(n-2)+1=2n-3，找出第二大元素。
 + 找第三大元素：同样已大小为3的数组，最后比较数3(n-3)+2=3n-7。
 
-[[http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4][Random Selection]]可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数
+[[http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4][Random Selection]]可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数
 将是n的倍数，最坏时间复杂度可以达到：O(nlogn)。
 
 [[http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-6][Tournament Algorithm]]找第二大元素比较次数O(n+logn);找第k个最大元素，比
@@ -538,14 +538,14 @@ void RandomSelectionK(int *array, int l, int u, int k) {
 ** 17
 #+begin_html
 The median of a set of n values is the $\lceil n/2 \rceil$ th smallest
-value.
+value. <br>
 1. Suppose quicksort always pivoted on the median of the current
    sub-array. How many comparisons would Quicksort make then in the
-   worst case?
+   worst case? <br>
 
 2. Suppose quicksort were always to pivot on the $\lceil n/3 \rceil$ th
    smallest value of the current sub-array. How many comparisons would
-   be made then in the worst case?
+   be made then in the worst case? <br>
 #+end_html
 
 f(n) = 2*f(n/2) + n ==> f(n) = 2^k * f(n/2^{k}) + kn = (n+2)logn
@@ -586,7 +586,7 @@ balanced binary search tree.
  steps.
 
 #+begin_html
-+ $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。
++ $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。<br>
 + O(n)去mergesort前半部分和后半部分。
 #+end_html
 ** 25
@@ -836,8 +836,54 @@ positions where these words occur in the document, such as word1: (1,
 4, 5), word2: (3, 9, 10), and word3: (2, 6, 15). Each of the lists are
 in sorted order, as above.
 
-#+begin_src c++
+1. 选取每个字母index的首个元素作为起始方案。
+2. 如何改进它的长度：a.增加最小的位置，b.减小最大的位置，这里只能增加
+   最小的位置。
+3. 用heap来保存位置，每次取出最小的位置为O(logk).
 
+复杂度：O(nlogk)，n是所有字母的位置个数，k是字母个数。这里k=3,所以O(n)
+
+#+begin_src c++
+#include <queue>
+using std::priority_queue;
+#include <utility>
+using std::make_pair;
+using std::pair;
+#include <vector>
+using std::vector;
+#include <algorithm>
+using std::max;
+using std::min;
+#include <limits>
+using std::numeric_limits;
+
+
+int FindSmallestSnippet(vector<vector<int> > &index_positions) {
+  // max-priority, select smallest position, use -index_positions[i][j], (i,j)
+  priority_queue<pair<int, pair<int ,int> > > queue;
+  int max_pos = 0; // the max pos of  the snippet
+  int i;
+  for (i = 0; i < index_positions.size(); ++i) {
+    int pos = index_positions[i][0];
+    max_pos = max(max_pos, pos);
+    queue.push(make_pair(-pos, make_pair(i, 0)));
+  }
+  int smallest_len = numeric_limits<int>::max();
+  while (queue.size() == index_positions.size()) {
+    int min_pos = -queue.top().first;
+    smallest_len = min(smallest_len, max_pos - min_pos + 1);
+    int word_pos = queue.top().second.first;
+    int index = queue.top().second.second;
+    queue.pop();
+    ++index;
+    if (index < index_positions[word_pos].size()) {
+      int next_pos = index_positions[word_pos][index];
+      max_pos = max(max_pos, next_pos);
+      queue.push(make_pair(-next_pos, make_pair(word_pos, index)));
+    }
+  }
+  return smallest_len;
+}
 #+end_src
 ** 46
 You are given 12 coins. One of them is heavier or lighter than the
