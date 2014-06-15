@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Algorithm | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/algorithm/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-12T20:55:30+08:00</updated>
+  <updated>2014-06-15T15:10:26+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,964 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Algorithm Design Manual Chapter 6]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/15/The-Algorithm-Design-Manual6/"/>
+    <updated>2014-06-15T00:00:00+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/15/The-Algorithm-Design-Manual6</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Book Notes</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">6.1 Minimum Spanning Trees</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">6.1.1 Prim’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+A greedy algorithm suffices for correctness: we always add the
+lowest-weight edge linking a vertex in the tree to a vertex on the
+outside. （选取相邻最近的不在树内的点。）
+</p>
+
+<!-- more -->
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">prim</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">intree</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">is the vertex in the tree yet? */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">distance</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">cost of adding to tree */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">current vertex to process */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">w</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">candidate next vertex */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge weight */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">dist</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">best current distance from start */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++) {
+    intree[i] = FALSE;
+    distance[i] = MAXINT;
+    parent[i] = -1;
+  }
+  distance[start] = 0;
+  v = start;
+  <span style="color: #00ffff;">while</span> (intree[v] == FALSE) {
+    intree[v] = TRUE;
+    p = g-&gt;edges[v];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      w = p-&gt;y;
+      weight = p-&gt;weight;
+      <span style="color: #00ffff;">if</span> ((distance[w] &gt; weight) &amp;&amp; (intree[w] == FALSE)) {
+        distance[w] = weight;
+        parent[w] = v;
+      }
+      p = p-&gt;next;
+    }
+    v = 1;
+    dist = MAXINT;
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">if</span> ((intree[i] == FALSE) &amp;&amp; (dist &gt; distance[i])) {
+        dist = distance[i];
+        v=i;
+      }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2">6.1.2 Kruskal’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+The algorithm repeatedly considers the lightest remaining edge and
+tests whether its two endpoints lie within the same connected
+component. (最短边）
+</p>
+
+<p>
+a clever data structure calledunion-find,can support such queries
+in O(lgn) time. With this data structure, Kruskal’s algorithm runs in
+O(mlgm) time.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">kruskal</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">set_union</span> <span style="color: #eedd82;">s</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">set union data structure */</span>
+  <span style="color: #98fb98;">edge_pair</span> <span style="color: #eedd82;">e</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">array of edges data structure */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">weight_compare</span>();
+  set_union_init(&amp;s, g-&gt;nvertices);
+  to_edge_array(g, e); <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">sort edges by increasing cost */</span>
+  qsort(&amp;e,g-&gt;nedges,<span style="color: #00ffff;">sizeof</span>(edge_pair),weight_compare);
+  <span style="color: #00ffff;">for</span> (i=0; i&lt;(g-&gt;nedges); i++) {
+    <span style="color: #00ffff;">if</span> (!same_component(s,e[i].x,e[i].y)) {
+      printf(<span style="color: #ffa07a;">"edge (%d,%d) in MST\n"</span>,e[i].x,e[i].y);
+      union_sets(&amp;s,e[i].x,e[i].y);
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3">6.1.3 The Union-Find Data Structure</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<ul class="org-ul">
+<li>Find(i)– Find the root of tree containing elementi, by walking up
+the parent pointers until there is nowhere to go. Return the label
+of the root.
+</li>
+
+<li>Union(i,j)– Link the root of one of the trees (say
+containingi)to the root of the tree containing the other
+(say j) so <code>find(i)</code> now equals <code>find(j)</code>.
+</li>
+</ul>
+
+<p>
+We must double the number of nodes in the tree to get an
+extra unit of height. How many doublings can we do before we use up allnnodes?
+At most, lg2ndoublings can be performed. Thus, we can do both unions and finds
+in O(logn), good enough for Kruskal’s algorithm. In fact, union-find
+can be done even faster, as discussed in Section 12.5.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">parent element */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">size</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in subtree i */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in set */</span>
+} <span style="color: #98fb98;">set_union</span>;
+
+<span style="color: #87cefa;">set_union_init</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=n; i++) {
+    s-&gt;p[i] = i;
+    s-&gt;size[i] = 1;
+  }
+  s-&gt;n = n;
+}
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">find</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>)
+{
+  <span style="color: #00ffff;">if</span> (s-&gt;p[x] == x)
+    <span style="color: #00ffff;">return</span>(x);
+  <span style="color: #00ffff;">else</span>
+    <span style="color: #00ffff;">return</span>( find(s,s-&gt;p[x]) );
+}
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">union_sets</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s1</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s2</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">r1</span>, <span style="color: #eedd82;">r2</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">roots of sets */</span>
+  r1 = find(s,s1);
+  r2 = find(s,s2);
+  <span style="color: #00ffff;">if</span> (r1 == r2) <span style="color: #00ffff;">return</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">already in same set */</span>
+  <span style="color: #00ffff;">if</span> (s-&gt;size[r1] &gt;= s-&gt;size[r2]) {
+    s-&gt;size[r1] = s-&gt;size[r1] + s-&gt;size[r2];
+    s-&gt;p[ r2 ] = r1;
+  }
+  <span style="color: #00ffff;">else</span> {
+    s-&gt;size[r2] = s-&gt;size[r1] + s-&gt;size[r2];
+    s-&gt;p[ r1 ] = r2;
+  }
+}
+<span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">same_component</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s1</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s2</span>)
+{
+  <span style="color: #00ffff;">return</span> ( find(s,s1) == find(s,s2) );
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4">More MST</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+<a href="http://www.seas.gwu.edu/~simhaweb/champalg/mst/mst.html">http://www.seas.gwu.edu/~simhaweb/champalg/mst/mst.html</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">6.3 Shortest Paths</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">6.3.1 Dijkstra’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+Given a particular start vertexs, it finds the shortest path from s to
+every other vertex in the graph, including your desired destination t.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">dijkstra</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>) <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">WAS prim(g,start) */</span>
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">intree</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">is the vertex in the tree yet? */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">distance</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">distance vertex is from start */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">current vertex to process */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">w</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">candidate next vertex */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge weight */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">dist</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">best current distance from start */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++) {
+    intree[i] = FALSE;
+    distance[i] = MAXINT;
+    parent[i] = -1;
+  }
+  distance[start] = 0;
+  v = start;
+  <span style="color: #00ffff;">while</span> (intree[v] == FALSE) {
+    intree[v] = TRUE;
+    p = g-&gt;edges[v];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      w = p-&gt;y;
+      weight = p-&gt;weight;
+      <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> <span style="color: #00ffff;">if</span> (distance[w] &gt; (distance[v]+weight)) {
+        <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> distance[w] = distance[v]+weight;
+        <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> parent[w] = v;
+      }
+      p = p-&gt;next;
+    }
+    v=1;
+    dist = MAXINT;
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">if</span> ((intree[i] == FALSE) &amp;&amp; (dist &gt; distance[i])) {
+        dist = distance[i];
+        v=i;
+      }
+  }
+}
+</pre>
+</div>
+<p>
+As implemented here, the complexity is O(n<sup>2</sup>). 
+</p>
+
+<p>
+Dijkstra works correctly only on graphs without negative-cost edges. The reason
+is that midway through the execution we may encounter an edge with weight so
+negative that it changes the cheapest way to get froms to some other vertex
+already in the tree.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2">6.3.2 All-Pairs Shortest Path</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>[MAXV+1][MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">adjacency/weight info */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">nvertices</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of vertices in graph */</span>
+} <span style="color: #98fb98;">adjacency_matrix</span>;
+</pre>
+</div>
+
+<p>
+The critical issue in an adjacency matrix implementation is how we denote the
+edges absent from the graph. A common convention for unweighted graphs denotes
+graph edges by 1 and non-edges by 0. This gives exactly the wrong interpretation
+if the numbers denote edge weights, for the non-edges get interpreted
+as a free ride between vertices. Instead, we should initialize each
+non-edge to MAXINT. 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">floyd</span>(<span style="color: #98fb98;">adjacency_matrix</span> *<span style="color: #eedd82;">g</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>,<span style="color: #eedd82;">j</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">dimension counters */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">k</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">intermediate vertex counter */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">through_k</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">distance through vertex k */</span>
+  <span style="color: #00ffff;">for</span> (k=1; k&lt;=g-&gt;nvertices; k++)
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">for</span> (j=1; j&lt;=g-&gt;nvertices; j++) {
+        through_k = g-&gt;weight[i][k]+g-&gt;weight[k][j];
+        <span style="color: #00ffff;">if</span> (through_k &lt; g-&gt;weight[i][j])
+          g-&gt;weight[i][j] = through_k;
+      }
+}
+</pre>
+</div>
+
+<p>
+The Floyd-Warshall all-pairs shortest path runs in O(n<sup>3</sup>) time, which
+is asymptotically no better thanncalls to Dijkstra’s algorithm.
+However, the loops are so tight and the program so short that it runs
+better in practice.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">6.4 War Story: Dialing for Documents</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+“We can get good word-use frequencies and grammatical information
+from a big text database called the Brown Corpus. It contains
+thousands of typical English sentences, each parsed according to parts
+of speech. But how do we factor it all in?” Harald asked.
+</p>
+
+<p>
+Each possible sentence interpretation can be thought of as a path in a
+graph. The vertices of this graph are the complete set of possible
+word choices. There will be an edge from each possible choice for the
+ith word to each possible choice for the (i + 1)st word. The cheapest
+path across this graph defines the best interpretation of the
+sentence.
+</p>
+
+<p>
+Perhaps we can count how often that pair of words occurred together in
+previous texts. Or we can weigh them by the part of speech of each
+word. Maybe nouns don’t like to be next to nouns as much as they like
+being next to verbs.
+</p>
+
+<p>
+We can pay a cost for walking through a particular vertex that depends
+upon the frequency of the word. Our best sentence will be given by the
+shortest path across the graph.
+</p>
+
+<p>
+The constraints for many pattern recognition problems can be naturally
+formulated as shortest path problems in graphs. In fact, there is a
+particularly convenient dynamic programming solution for these
+problems (the Viterbi algorithm). Despite the fancy name, the Viterbi
+algorithm is basically solving a shortest path problem on a DAG.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">6.5 Network Flows and Bipartite Matching</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+The <i>network flow problem</i> asks for the maximum amount of flow which can
+be sent from vertices s to t in a given weighted graph G while
+respecting the maximum capacities of each pipe.
+</p>
+</div>
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1">6.5.1 Bipartite Matching</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+The largest bipartite matching can be readily found using network
+flow. Create a source nodes that is connected to every vertex in L by
+an edge of weight 1. Create a sink node t and connect it to every
+vertex in R by an edge of weight 1. Finally, assign each edge in the
+bipartite graph G a weight of 1. Now, the maximum possible flow
+fromstotdefines the largest matching in G.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2">6.5.2 Computing Network Flows</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+The key structure is the residual flow graph, denoted as R(G, f), where Gis
+the input graph andfis the current flow through G. 
+</p>
+
+<p>
+The maximum flow fromstotalways equals the weight of the minimums-t
+cut. Thus, flow algorithms can be used to solve general edge and
+vertex connectivity problems in graphs.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">        <span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">neighboring vertex */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">capacity</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">capacity of edge */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">flow</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">flow through edge */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">residual</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">residual capacity of edge */</span>
+          <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">next</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">next edge in list */</span>
+        } <span style="color: #98fb98;">edgenode</span>;
+
+      <span style="color: #87cefa;">netflow</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">sink</span>)
+      {
+        <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">volume</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">weight of the augmenting path */</span>
+        add_residual_edges(g);
+        initialize_search(g);
+        bfs(g,source);
+        volume = path_volume(g, source, sink, parent);
+        <span style="color: #00ffff;">while</span> (volume &gt; 0) {
+          augment_path(g,source,sink,parent,volume);
+          initialize_search(g);
+          bfs(g,source);
+          volume = path_volume(g, source, sink, parent);
+        }
+      }
+
+    <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">valid_edge</span>(<span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>)
+    {
+      <span style="color: #00ffff;">if</span> (e-&gt;residual &gt; 0) <span style="color: #00ffff;">return</span> (TRUE);
+      <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">return</span>(FALSE);
+    }
+
+  <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">path_volume</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">end</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">parents</span>[])
+  {
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge in question */</span>
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">find_edge</span>();
+    <span style="color: #00ffff;">if</span> (parents[end] == -1) <span style="color: #00ffff;">return</span>(0);
+    e = find_edge(g,parents[end],end);
+    <span style="color: #00ffff;">if</span> (start == parents[end])
+      <span style="color: #00ffff;">return</span>(e-&gt;residual);
+    <span style="color: #00ffff;">else</span>
+      <span style="color: #00ffff;">return</span>( min(path_volume(g,start,parents[end],parents),
+                  e-&gt;residual) );
+  }
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #87cefa;">find_edge</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">y</span>)
+  {
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+    p = g-&gt;edges[x];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      <span style="color: #00ffff;">if</span> (p-&gt;v == y) <span style="color: #00ffff;">return</span>(p);
+      p = p-&gt;next;
+    }
+    <span style="color: #00ffff;">return</span>(<span style="color: #7fffd4;">NULL</span>);
+  }
+
+<span style="color: #87cefa;">augment_path</span>(<span style="color: #98fb98;">flow_graph</span>*<span style="color: #eedd82;">g</span>,intstart,intend,<span style="color: #98fb98;">intparents</span>[],intvolume)
+{
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge in question */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">find_edge</span>();
+  <span style="color: #00ffff;">if</span> (start == end) <span style="color: #00ffff;">return</span>;
+  e = find_edge(g,parents[end],end);
+  e-&gt;flow += volume;
+  e-&gt;residual -= volume;
+  e = find_edge(g,end,parents[end]);
+  e-&gt;residual += volume;
+  augment_path(g,start,parents[end],parents,volume);
+}
+</pre>
+</div>
+
+<p>
+Edmonds and Karp [EK72] proved that always selecting ashortest
+unweighted augmenting path guarantees that O(n<sup>3</sup>) augmentations
+suffice for optimization.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">6.6 Design Graphs, Not Algorithms</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+The secret is learning to design graphs, not algorithms. We have
+already seen a few instances of this idea:
+</p>
+
+<ul class="org-ul">
+<li>The maximum spanning tree can be found by negating the edge weights
+of the input graph G and using aminimumspanning tree algorithm on
+the result. The most negative weight spanning tree will define the
+maximum weight tree in G.
+</li>
+<li>To solve bipartite matching, we constructed a special network flow
+graph such that the maximum flow corresponds to a maximum
+cardinality matching.
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1">Bucketing Rectangles</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+Problem: “In my graphics work I need to solve the following problem.
+Given an arbitrary set of rectangles in the plane, how can I
+distribute them into a minimum number of buckets such that no subset
+of rectangles in any given bucket intersects another? In other words,
+there can not be any overlapping area between two rectangles in the same bucket.”
+</p>
+
+<p>
+Solution: We formulate a graph where each vertex is a rectangle, and
+there is an edge if two rectangles intersect. Each bucket corresponds
+to anindependent set of rectangles, so there is no overlap between any
+two. Avertex coloringof a graph is a partition of the vertices into
+independent sets, so minimizing the number of colors is exactly what
+you want.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-2" class="outline-4">
+<h4 id="sec-1-5-2">Names in Collision</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+Problem:“In porting code from UNIX to DOS, I have to shorten several
+hundred file names down to at most 8 characters each. I can’t just
+use the first eight characters from each name, because “filename1”
+and “filename2” would be assigned the exact same name. How can I
+meaningfully shorten the names while ensuring that they do not
+collide?”
+</p>
+
+<p>
+Solution: Construct a bipartite graph with vertices corresponding to
+each original file namefi for 1≤i≤n, as well as a collection of
+acceptable shortenings for each name f<sub>i1</sub>,&#x2026;,f<sub>ik</sub>. Add an edge
+between each original and shortened name. We now seek a set of n edges
+that have no vertices in common, so each file name is mapped to a
+distinct acceptable substitute. Bipartite matching, discussed in
+Section 15.6 (page 498), is exactly this problem of finding an
+independent set of edges in a graph.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-3" class="outline-4">
+<h4 id="sec-1-5-3">Separate the Text</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+Problem: “We need a way to separate the lines of text in the optical
+characterrecognition system that we are building. Although there is
+some white space between the lines, problems like noise and the tilt
+of the page makes it hard to find. How can we do line segmentation?
+</p>
+
+<p>
+Solution: Consider the following graph formulation. Treat each pixel
+in the image as a vertex in the graph, with an edge between two
+neighboring pixels. The weight of this edge should be proportional to
+how dark the pixels are. A segmentation between two lines is a path in
+this graph from the left to right side of the page. We seek a
+relatively straight path that avoids as much blackness as possible.
+This suggests that theshortest pathin the pixel graph will likely find
+a good line segmentation.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Exercises</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">2-3</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Is the path between two vertices in a minimum spanning tree necessarily a
+shortest path between the two vertices in the full graph? Give a proof
+or a counterexample.
+</p>
+
+<p>
+Assume that all edges in the graph have distinct edge weights (i.e. ,
+no pair of edges have the same weight). Is the path between a pair of
+vertices in a minimum spanning tree necessarily a shortest path
+between the two vertices in the full graph? Give a proof or a
+counterexample.
+</p>
+
+<p>
+不必要. 如下图,若a是6的话,minimum spanning tree不会选择a,但A和C间的最短路径会选择a.
+</p>
+
+<img src="/images/blog/2014/AlgorithmDesignManual/6_4.jpg">
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">4</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Can Prim’s and Kruskal’s algorithm yield different minimum spanning
+trees? Explain why or why not.
+</p>
+
+<p>
+能.当有相同weight的边.
+</p>
+
+<p>
+当所有边的weight不同时,图存在唯一的minimum spanning trees,两者生成同样的树.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">5</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Does either Prim's and Kruskal's algorithm work if there are negative
+edge weights? Explain why or why not. 
+</p>
+
+<p>
+可以.Prim每次选相邻最近的不在树内的点,有负weight的边并不影响它. 而
+Kruskal每次选最短的边,同样不受影响.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">6</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Suppose we are given the minimum spanning tree T of a given graph G
+(with n vertices and m edges) and a new edge e = (u,v) of weight w
+that we will add to G. Give an efficient algorithm to find the
+minimum spanning tree of the graph G + e. Your algorithm should run
+in O(n) time to receive full credit.
+</p>
+
+<p>
+新添加的e在顶点u和v中间,原本的MST中u和v通过u-&gt;a1-&gt;ai-&gt;v,把此路径的边与
+e比较,用Prim算法选最临近点.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">7</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+(a) Let T be a minimum spanning tree of a weighted graph G. Construct
+a new graph G′ by adding a weight of k to every edge of G. Do the
+edges of T form a minimum spanning tree of G′? Prove the statement or
+give a counterexample.
+</p>
+
+<p>
+(b) Let P = {s, . . . , t} describe a shortest weighted path between
+vertices s and t of a weighted graph G. Construct a new graph G′ by
+adding a weight of k to every edge of G. Does P describe a shortest
+path from s to t in G′? Prove the statement or give a counterexample.
+</p>
+
+<p>
+(a)和(b)都对,并没有改变边之间的比较关系.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">8</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Devise and analyze an algorithm that takes a weighted graph G and
+finds the smallest change in the cost to a non-MST edge that would
+cause a change in the minimum spanning tree of G. Your algorithm must
+be correct and run in polynomial time. 
+</p>
+
+<ol class="org-ol">
+<li>遍历图的边,掠过MST中的边,当遇到non-MST的边E(i,j).
+</li>
+<li>利用MST中的parent遍历出顶点i到j的所有MST边,并得到其中最大weight的边
+mst<sub>e</sub><sub>max</sub>.
+</li>
+<li>计算E(i,j)与mst<sub>e</sub><sub>max的差值</sub>.
+</li>
+<li>遍历所有的non-MST的边,得到最小差值就是改变的最小值.
+</li>
+</ol>
+
+<p>
+总共边数m,算法复杂度O(m<sup>2</sup>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">9</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+Consider the problem of finding a minimum weight connected subset T of
+edges from a weighted connected graph G. The weight of T is the sum of
+all the edge weights in T.
+</p>
+
+<ol class="org-ol">
+<li>Why is this problem not just the minimum spanning tree problem?
+Hint: think negative weight edges.
+</li>
+<li>Give an efficient algorithm to compute the minimum weight connected
+subset T. 
+</li>
+</ol>
+
+<p>
+MST不能有环路,minimum weight connected subset T可以有环路,所以如果一条负数weight的边,不在MST中,但却包含在T中,因为它能使T的总权值减小.
+</p>
+
+<ol class="org-ol">
+<li>把所有负数weight的边加入T中,若剩下1个连通图,结束.
+</li>
+<li>若剩下C(&gt;1)个连通图,对C个连通图使用Kruskal,直到剩下一个连通图T.
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #87cefa;">sort</span>(edges);
+c := n;
+<span style="color: #00ffff;">for</span> edge<span style="color: #00ffff;"> in</span> edges:
+    <span style="color: #00ffff;">if</span> edge.weight &lt; 0:
+        <span style="color: #00ffff;">if</span> find(edge.firstEnd) != find(edge.secondEnd):
+            --c;
+        unite(edge.firstEnd, edge.secondEnd);
+    <span style="color: #00ffff;">else</span>:
+        <span style="color: #00ffff;">if</span> <span style="color: #eedd82;">c</span> == 1: break;
+        <span style="color: #00ffff;">if</span> find(edge.firstEnd) != find(edge.secondEnd):
+            unite(edge.firstEnd, edge.secondEnd);
+            --c;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">10</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+Let G=(V,E) be an undirected graph. A set F⊆E of edges is called a
+feedback-edge set if every cycle of G has at least one edge in F.
+</p>
+
+<ol class="org-ol">
+<li>Suppose that Gis unweighted. Design an efficient algorithm to find
+a minimum-size feedback-edge set.
+</li>
+
+<li>Suppose that Gis a weighted undirected graph with positive edge
+weights. Design an efficient algorithm to find a minimum-weight
+feedback-edge set.
+</li>
+
+<li><b>Minimum size feedback edge set:</b> 使用DFS,从任意点开始,遇到回归边,
+把它加入结果set中,当DFS完成,结果set就是答案.
+</li>
+<li><b>minimum-weight feedback-edge set:</b> 对所有weight值取反,用Kruskal算法,当遇到边E的顶点在同一个集合中,把E加入到结果set中,当Kruskal遍历完所有边后,结果set就是答案.
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">11</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+Modify Prim's algorithm so that it runs in time O(nlogk) on a
+graph that has only k different edges costs. 
+</p>
+
+<ul class="org-ul">
+<li>k个不同的边值,使用一个k个元素的min-heap,heap的节点是相同距离的顶点链表.
+</li>
+<li>Prim每次选择和更新顶点的距离在min-heap完成,做到O(nlogk).
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10">12</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+Devise an efficient data structure to handle the following operations
+on a weighted directed graph:
+</p>
+
+<ol class="org-ol">
+<li>Merge two given components.
+</li>
+<li>Locate which component contains a given vertex v.
+</li>
+<li>Retrieve a minimum edge from a given component. 
+</li>
+</ol>
+
+<p>
+使用Union-Find并添加minimum edge.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">parent element */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">size</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in subtree i */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">minedge</span>[SET_SIZE+1];
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in set */</span>
+} <span style="color: #98fb98;">set_union</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11">14</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+The single-destination shortest path problem for a directed graph
+seeks the shortest path from every vertex to a specified vertex v. Give
+an efficient algorithm to solve the single-destination shortest paths
+problem.
+</p>
+
+<p>
+用Floyd-Warshall对于顶点v反向更新距离值.得到最终shortest paths.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-12" class="outline-3">
+<h3 id="sec-2-12">19</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+Let G be a weighted directed graph with n vertices and m edges, where
+all edges have positive weight. A directed cycle is a directed path
+that starts and ends at the same vertex and contains at least one
+edge. Give an O(n<sup>3</sup>) algorithm to find a directed cycle in G of minimum
+total weight. Partial credit will be given for an O(n<sup>2</sup>m) algorithm. 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++">run Floyd Warshall on the <span style="color: #98fb98;">graph</span>
+<span style="color: #eedd82;">min</span> &lt;- MAX_INT
+vertex &lt;- None
+<span style="color: #00ffff;">for</span> each pair of vertices u,<span style="color: #87cefa;">v</span>
+    <span style="color: #00ffff;">if</span> (dist(u,v) + dist(v,u) &lt; min):
+           min &lt;- dist(u,v) + dist(v,u)
+           pair &lt;- (u,v)
+<span style="color: #00ffff;">return</span> path(u,v) + path(v,u)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-13" class="outline-3">
+<h3 id="sec-2-13">20</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+Can we modify Dijkstra’s algorithm to solve the single-source longest
+path problem by changing minimum to maximum? If so, then prove your
+algorithm correct. If not, then provide a counterexample.
+</p>
+
+<p>
+没有负weight的边,可以.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-14" class="outline-3">
+<h3 id="sec-2-14">21</h3>
+<div class="outline-text-3" id="text-2-14">
+<p>
+LetG=(V,E) be a weighted acyclic directed graph with possibly negative
+edge weights. Design a linear-time algorithm to solve the
+single-source shortest-path problem from a given source v.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #00ffff;">for</span> each vertex y<span style="color: #00ffff;"> in</span> a topological ordering of G
+    choose edge (x,y) minimizing d(s,x)+length(x,y)
+    path(s,y) = path(s,x) + edge (x,y)
+    d(s,y) = d(s,x) + length(x,y)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-15" class="outline-3">
+<h3 id="sec-2-15">22</h3>
+<div class="outline-text-3" id="text-2-15">
+<p>
+Let G=(V,E) be a directed weighted graph such that all the weights are
+positive. Let v and w be two vertices in G and k≤|V| be an integer. Design
+an algorithm to find the shortest path from v to w that contains
+exactly k edges. Note that the path need not be simple.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">create the table D[V,k];
+<span style="color: #eedd82;">D</span>[v,1] = 0;
+<span style="color: #00ffff;">for</span> i<span style="color: #00ffff;"> in</span> other vertex except v:
+         <span style="color: #eedd82;">D</span>[i,1] = MAX_INT;
+<span style="color: #00ffff;">for</span> <span style="color: #eedd82;">m</span>=2 to k:
+    <span style="color: #00ffff;">for</span> every edge(i,j):
+        <span style="color: #eedd82;">D</span>[j,m] = D[i,m-1] + D[i,j]
+        <span style="color: #eedd82;">P</span>[i,m] = i
+<span style="color: #eedd82;">Path</span> = emtpy list
+<span style="color: #eedd82;">i</span> = w
+<span style="color: #00ffff;">for</span> <span style="color: #eedd82;">m</span>=k down to 1:
+    Path.append(m);
+    <span style="color: #eedd82;">i</span> = P[m,k]
+ Path.append(V);
+ Path.reverse();
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-16" class="outline-3">
+<h3 id="sec-2-16">23</h3>
+<div class="outline-text-3" id="text-2-16">
+<p>
+Arbitrage is the use of discrepancies in currency-exchange rates to
+make a profit. For example, there may be a small window of time during
+which 1 U.S. dollar buys 0.75 British pounds, 1 British pound buys 2
+Australian dollars, and 1 Australian dollar buys 0.70 U.S. dollars. At
+such a time, a smart trader can trade one U.S. dollar and end up with
+0.75 × 2 × 0.7 = 1.05 U.S. dollars—a profit of 5%. Suppose that
+there are n currencies c1 , …, cn and an n × n table R of exchange
+rates, such that one unit of currency ci buys R[i,j] units of currency
+cj. Devise and analyze an algorithm to determine the maximum value of
+R[c1, ci1] · R[ci1, ci2] · · · R[cik−1, cik] · R[cik, c1]
+</p>
+
+<p>
+log(a*b*c) = loga + lgob + log.所以求最长路径.
+</p>
+
+<ol class="org-ol">
+<li>用Floyd-Warshall算法算出i,j的最长路径;
+</li>
+<li>计算所有C<sub>(1i)</sub>*C<sub>(i1)</sub>的值,得出最大值.
+</li>
+</ol>
+</div>
+</div>
+</div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Algorithm Design Manual Chapter 5]]></title>
@@ -3706,304 +4664,6 @@ is to be divided. Who gets the dollar and how many are killed?
 <p>
 要至少一半的同意，间隔要有一半的人会死去才会同意之前那个人，所以之后每
 2+2<sup>K</sup> (K&gt;=1)的海盗才能活。
-</p>
-</div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Algorithm Design Manual Chapter 1]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/26/The-Algorithm-Design-Manual1/"/>
-    <updated>2014-05-26T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/26/The-Algorithm-Design-Manual1</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book Notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Combinatorial Objects</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>Permutations - arrangements, or orderings, of items ("arrangement"
-"tour" "ordering" or "sequence" )
-</li>
-<li>Subsets - selections from a set of items ("cluster" "collection"
-"committee" "group" "packaging" or "selection")
-</li>
-<li>Trees - hierarchical relationships between items ("hierarchy"
-"dominance relationship" "ancestor/descendant relationship" or
-"taxonomy")
-</li>
-<li>Graphs - relationships between arbitrary pairs of objects ("network"
-"circuit" "web" or "relationship")
-</li>
-<li>Points - locations in some geometric space ("sites" "positions" or
-"locations.)
-</li>
-<li>Polygons - regions in some geometric spaces ("shapes" "regions" or
-"boundaries")
-</li>
-<li>Strings - sequences of characters or patterns. ("text" "characters"
-"patterns" or "labels")
-</li>
-</ul>
-
-<!-- more -->
-</div>
-</div>
-
-<div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">Recursive Objects</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-Big things that are made from smaller things of exactly the same type
-as the big thing. A decomposition rule describes how to get smaller
-things from big things.
-</p>
-
-<p>
-As all combinatorial objects above are recursive objects here are a
-few possible decompositon rules for them:
-</p>
-
-<ul class="org-ul">
-<li>Permutations - Deleting the first/last element of a permutation
-</li>
-<li>Subsets - Deleting an element n if present
-</li>
-<li>Trees - Deleting the root (results in a set of subtrees), deleting a
-leaf (a smaller tree)
-</li>
-<li>Graphs - Deleting a vertex, dividing vertices to groups
-</li>
-<li>Point - divide them to groups
-</li>
-<li>Polygons - Inserting any internal chord between two nonadjacent vertices
-</li>
-<li>Strings - Deleting a character (first or last)
-</li>
-</ul>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2">Exercises</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1">1-28.</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-Write a function to perform integer division without using either
-the / or * operators. Find a fast way to do it.
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">void</span> <span style="color: #87cefa;">DivideCore</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">quot</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">rem</span>) {
-  rem = m;
-  quot = 0;
-  <span style="color: #00ffff;">while</span> (rem &gt;= n) {
-    rem -= n;
-    quot++;
-  }
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">Divide</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">quot</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">rem</span>) {
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">mult_n</span> = 0;
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">last_n</span>;
-  <span style="color: #00ffff;">while</span> (m % n == 0) {
-    last_n = n;
-    n = n + n;
-    mult_n++;
-  }
-  DivideCore(m, n, quot, rem);
-  <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; mult_n; ++i) {
-    quot = quot + quot;
-  }
-}
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2">1-29.</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-There are 25 horses. At most, 5 horses can race together at a time.
-You must determine the fastest, second fastest, and third fastest
-horses. Find the minimum number of races in which this can be done.
-</p>
-
-<p>
-7次。
-</p>
-
-<ol class="org-ol">
-<li>5次：25匹分成5组，比赛5次，得到前5名。
-</li>
-<li>6次：前5名比赛一次。因为只要得到前3名，这里剔除5名中的2名，剩下的3
-匹按比赛排名所在组为G1，G2，G3。
-</li>
-<li>7次：G3组只能去角逐第3名，派第一名G31,G2组只能去角逐第2,3名，派第一，二名，G21和G22。G1组G11已经是第一名，去角逐第2,3名，派G12,G13。最后
-G12,G13，G21，G22和G31，得到第二，三名。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3">1-30.</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-How many piano tuners are there in the entire world?
-</p>
-
-<p>
-需要把问题分解：1.世界有多少架钢琴;2.每位钢琴调音师能调多少台钢琴。
-</p>
-
-<p>
-估算世界有多少架钢琴，需要知道：
-</p>
-<ol class="org-ol">
-<li>世界的人口。
-</li>
-<li>拥有钢琴的人口比例。
-</li>
-<li>拥有钢琴的学校，教堂等场所的数量。
-</li>
-</ol>
-
-<p>
-估算每位钢琴调音师能调多少台钢琴，需要知道：
-</p>
-<ol class="org-ol">
-<li>每架钢琴平均多久需要调音一次。
-</li>
-<li>对钢琴调音需要多长时间。
-</li>
-<li>调音师的工作时间。
-</li>
-
-<li>世界人口70亿，70×10<sup>9</sup> 。
-</li>
-<li>人口中弹奏乐器的人约占10%（肯定大于1%,小于100%），其中最多10%的人弹奏钢琴，而其中拥有钢琴的比例为2%-3%，约人口总数2×10<sup>-3</sup> 。每
-5000-10000个人有一座教堂，每座教堂有一架钢琴，每500-1000个学生有一所学校，每所学校有一架钢琴，每人大约拥有3×10<sup>-3</sup> 架钢琴，所以钢琴数
-70×10<sup>9</sup> × 3×10<sup>-3</sup> = 2.1 * 10<sup>8</sup> 。
-</li>
-<li>钢琴调音的频率低于每月一次但多于10年一次，估计为一年一次。
-</li>
-<li>调音所需时间多余30分钟，少于1天，估计为2小时。或钢琴有88个键，如果每个键花1分钟，需要1.5小时，若需2分钟，则需要3小时。
-</li>
-<li>每天工作8小时，每周5天，每年工作50周，得出8×5×50=2000小时。2000小时能调音大学1000架钢琴。
-</li>
-<li>2.1 * 10<sup>8</sup> / 1000 = 2.1 × 10<sup>5</sup> 个调音师。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4">1-31.</h3>
-<div class="outline-text-3" id="text-2-4">
-<p>
-How many gas stations are there in the United States?
-</p>
-
-<p>
-分解问题成：
-</p>
-<ol class="org-ol">
-<li>每天大约有多少辆汽车去加油。
-</li>
-<li>每天一个加油站能给多少辆汽车加油。
-</li>
-
-<li>美国人口总数约300×10<sup>6</sup> , 一家平均有2辆车左右，所以一共有车辆
-150×10<sup>6</sup> ，每辆汽车每5天加油一次，一天有30×10<sup>6</sup> 辆车去加油。
-</li>
-<li>一个加油站平均每小时最少为1辆，最多100多辆汽车加油，取平均20-30辆每小时，一个加油站工作时间大概14小时（7am-9am），每个加油站每天平均大约为280辆车加油。
-</li>
-<li>30×10<sup>6</sup> / 280 = 1.07 × 10<sup>5</sup> 个加油站。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-2-5" class="outline-3">
-<h3 id="sec-2-5">1-32.</h3>
-<div class="outline-text-3" id="text-2-5">
-<p>
-How much does the ice in a hockey rink weigh?
-</p>
-
-<p>
-分解成：
-</p>
-<ol class="org-ol">
-<li>冰的体积。
-</li>
-<li>冰的密度。
-</li>
-</ol>
-
-<p>
-做如下估算：
-1.冰场的长度：70m;
-2.冰场的宽度：30m;
-3.冰的厚度：10cm=0.1;
-4.冰的密度与水相当，估算1000kg/m<sup>3</sup> .
-</p>
-
-<p>
-V = 70 * 30 * 0.1 = 210 m<sup>3</sup>
-W = 210 *1000 = 210，000kg
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-6" class="outline-3">
-<h3 id="sec-2-6">1-33.</h3>
-<div class="outline-text-3" id="text-2-6">
-<p>
-How many miles of road are there in the United States?
-</p>
-
-<p>
-美国近似是一个矩形，高1000mile和长3000mile。美国大部分地区是乡村，道路比较稀疏，平均下来可以把美国想成一个网状的道路结构，每隔1mile一条道路，最后如下网格，1000条3000mile和3000条1000mile的路，总的6,000,000mile的路。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-7" class="outline-3">
-<h3 id="sec-2-7">1-34.</h3>
-<div class="outline-text-3" id="text-2-7">
-<p>
-On average, how many times would you have to flip open the Manhattan
-phone book at random in order to find a specific name?
-</p>
-
-
-<p>
-假设电话本有1000页，也就是500个翻面。
-</p>
-
-<p>
-简单答案：翻到正确页的概率是1/500。
-</p>
-
-<p>
-复杂点答案：上面没有考虑不断翻页，会翻到相同的页面。翻到错误页面的概率是499/500，N次后的错误概率是（499/500）<sup>N</sup> ,所以N次后的正确页面概率是P=1-
-（499/500）<sup>N</sup> 。
-</p>
-
-<p>
-那么：
-N=1  P = 0.002
-N=2  P = 0.004
-&#x2026;
-N=1150 P = 0.89999
-</p>
-
-<p>
-达到90%的概率，所以需要1150翻页。
 </p>
 </div>
 </div>

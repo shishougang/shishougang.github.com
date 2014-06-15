@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-12T20:55:30+08:00</updated>
+  <updated>2014-06-15T15:10:26+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,964 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Algorithm Design Manual Chapter 6]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/15/The-Algorithm-Design-Manual6/"/>
+    <updated>2014-06-15T00:00:00+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/15/The-Algorithm-Design-Manual6</id>
+    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Book Notes</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">6.1 Minimum Spanning Trees</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-sec-1-1-1" class="outline-4">
+<h4 id="sec-1-1-1">6.1.1 Prim’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+A greedy algorithm suffices for correctness: we always add the
+lowest-weight edge linking a vertex in the tree to a vertex on the
+outside. （选取相邻最近的不在树内的点。）
+</p>
+
+<!-- more -->
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">prim</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">intree</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">is the vertex in the tree yet? */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">distance</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">cost of adding to tree */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">current vertex to process */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">w</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">candidate next vertex */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge weight */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">dist</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">best current distance from start */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++) {
+    intree[i] = FALSE;
+    distance[i] = MAXINT;
+    parent[i] = -1;
+  }
+  distance[start] = 0;
+  v = start;
+  <span style="color: #00ffff;">while</span> (intree[v] == FALSE) {
+    intree[v] = TRUE;
+    p = g-&gt;edges[v];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      w = p-&gt;y;
+      weight = p-&gt;weight;
+      <span style="color: #00ffff;">if</span> ((distance[w] &gt; weight) &amp;&amp; (intree[w] == FALSE)) {
+        distance[w] = weight;
+        parent[w] = v;
+      }
+      p = p-&gt;next;
+    }
+    v = 1;
+    dist = MAXINT;
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">if</span> ((intree[i] == FALSE) &amp;&amp; (dist &gt; distance[i])) {
+        dist = distance[i];
+        v=i;
+      }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-2" class="outline-4">
+<h4 id="sec-1-1-2">6.1.2 Kruskal’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+The algorithm repeatedly considers the lightest remaining edge and
+tests whether its two endpoints lie within the same connected
+component. (最短边）
+</p>
+
+<p>
+a clever data structure calledunion-find,can support such queries
+in O(lgn) time. With this data structure, Kruskal’s algorithm runs in
+O(mlgm) time.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">kruskal</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">set_union</span> <span style="color: #eedd82;">s</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">set union data structure */</span>
+  <span style="color: #98fb98;">edge_pair</span> <span style="color: #eedd82;">e</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">array of edges data structure */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">weight_compare</span>();
+  set_union_init(&amp;s, g-&gt;nvertices);
+  to_edge_array(g, e); <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">sort edges by increasing cost */</span>
+  qsort(&amp;e,g-&gt;nedges,<span style="color: #00ffff;">sizeof</span>(edge_pair),weight_compare);
+  <span style="color: #00ffff;">for</span> (i=0; i&lt;(g-&gt;nedges); i++) {
+    <span style="color: #00ffff;">if</span> (!same_component(s,e[i].x,e[i].y)) {
+      printf(<span style="color: #ffa07a;">"edge (%d,%d) in MST\n"</span>,e[i].x,e[i].y);
+      union_sets(&amp;s,e[i].x,e[i].y);
+    }
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-3" class="outline-4">
+<h4 id="sec-1-1-3">6.1.3 The Union-Find Data Structure</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<ul class="org-ul">
+<li>Find(i)– Find the root of tree containing elementi, by walking up
+the parent pointers until there is nowhere to go. Return the label
+of the root.
+</li>
+
+<li>Union(i,j)– Link the root of one of the trees (say
+containingi)to the root of the tree containing the other
+(say j) so <code>find(i)</code> now equals <code>find(j)</code>.
+</li>
+</ul>
+
+<p>
+We must double the number of nodes in the tree to get an
+extra unit of height. How many doublings can we do before we use up allnnodes?
+At most, lg2ndoublings can be performed. Thus, we can do both unions and finds
+in O(logn), good enough for Kruskal’s algorithm. In fact, union-find
+can be done even faster, as discussed in Section 12.5.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">parent element */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">size</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in subtree i */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in set */</span>
+} <span style="color: #98fb98;">set_union</span>;
+
+<span style="color: #87cefa;">set_union_init</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=n; i++) {
+    s-&gt;p[i] = i;
+    s-&gt;size[i] = 1;
+  }
+  s-&gt;n = n;
+}
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">find</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>)
+{
+  <span style="color: #00ffff;">if</span> (s-&gt;p[x] == x)
+    <span style="color: #00ffff;">return</span>(x);
+  <span style="color: #00ffff;">else</span>
+    <span style="color: #00ffff;">return</span>( find(s,s-&gt;p[x]) );
+}
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">union_sets</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s1</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s2</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">r1</span>, <span style="color: #eedd82;">r2</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">roots of sets */</span>
+  r1 = find(s,s1);
+  r2 = find(s,s2);
+  <span style="color: #00ffff;">if</span> (r1 == r2) <span style="color: #00ffff;">return</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">already in same set */</span>
+  <span style="color: #00ffff;">if</span> (s-&gt;size[r1] &gt;= s-&gt;size[r2]) {
+    s-&gt;size[r1] = s-&gt;size[r1] + s-&gt;size[r2];
+    s-&gt;p[ r2 ] = r1;
+  }
+  <span style="color: #00ffff;">else</span> {
+    s-&gt;size[r2] = s-&gt;size[r1] + s-&gt;size[r2];
+    s-&gt;p[ r1 ] = r2;
+  }
+}
+<span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">same_component</span>(<span style="color: #98fb98;">set_union</span> *<span style="color: #eedd82;">s</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s1</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">s2</span>)
+{
+  <span style="color: #00ffff;">return</span> ( find(s,s1) == find(s,s2) );
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-1-4" class="outline-4">
+<h4 id="sec-1-1-4">More MST</h4>
+<div class="outline-text-4" id="text-1-1-4">
+<p>
+<a href="http://www.seas.gwu.edu/~simhaweb/champalg/mst/mst.html">http://www.seas.gwu.edu/~simhaweb/champalg/mst/mst.html</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2">6.3 Shortest Paths</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1">6.3.1 Dijkstra’s Algorithm</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+Given a particular start vertexs, it finds the shortest path from s to
+every other vertex in the graph, including your desired destination t.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">dijkstra</span>(<span style="color: #98fb98;">graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>) <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">WAS prim(g,start) */</span>
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">counter */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+  <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">intree</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">is the vertex in the tree yet? */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">distance</span>[MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">distance vertex is from start */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">current vertex to process */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">w</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">candidate next vertex */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge weight */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">dist</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">best current distance from start */</span>
+  <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++) {
+    intree[i] = FALSE;
+    distance[i] = MAXINT;
+    parent[i] = -1;
+  }
+  distance[start] = 0;
+  v = start;
+  <span style="color: #00ffff;">while</span> (intree[v] == FALSE) {
+    intree[v] = TRUE;
+    p = g-&gt;edges[v];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      w = p-&gt;y;
+      weight = p-&gt;weight;
+      <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> <span style="color: #00ffff;">if</span> (distance[w] &gt; (distance[v]+weight)) {
+        <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> distance[w] = distance[v]+weight;
+        <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">CHANGED */</span> parent[w] = v;
+      }
+      p = p-&gt;next;
+    }
+    v=1;
+    dist = MAXINT;
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">if</span> ((intree[i] == FALSE) &amp;&amp; (dist &gt; distance[i])) {
+        dist = distance[i];
+        v=i;
+      }
+  }
+}
+</pre>
+</div>
+<p>
+As implemented here, the complexity is O(n<sup>2</sup>). 
+</p>
+
+<p>
+Dijkstra works correctly only on graphs without negative-cost edges. The reason
+is that midway through the execution we may encounter an edge with weight so
+negative that it changes the cheapest way to get froms to some other vertex
+already in the tree.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2">6.3.2 All-Pairs Shortest Path</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">weight</span>[MAXV+1][MAXV+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">adjacency/weight info */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">nvertices</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of vertices in graph */</span>
+} <span style="color: #98fb98;">adjacency_matrix</span>;
+</pre>
+</div>
+
+<p>
+The critical issue in an adjacency matrix implementation is how we denote the
+edges absent from the graph. A common convention for unweighted graphs denotes
+graph edges by 1 and non-edges by 0. This gives exactly the wrong interpretation
+if the numbers denote edge weights, for the non-edges get interpreted
+as a free ride between vertices. Instead, we should initialize each
+non-edge to MAXINT. 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #87cefa;">floyd</span>(<span style="color: #98fb98;">adjacency_matrix</span> *<span style="color: #eedd82;">g</span>)
+{
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>,<span style="color: #eedd82;">j</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">dimension counters */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">k</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">intermediate vertex counter */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">through_k</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">distance through vertex k */</span>
+  <span style="color: #00ffff;">for</span> (k=1; k&lt;=g-&gt;nvertices; k++)
+    <span style="color: #00ffff;">for</span> (i=1; i&lt;=g-&gt;nvertices; i++)
+      <span style="color: #00ffff;">for</span> (j=1; j&lt;=g-&gt;nvertices; j++) {
+        through_k = g-&gt;weight[i][k]+g-&gt;weight[k][j];
+        <span style="color: #00ffff;">if</span> (through_k &lt; g-&gt;weight[i][j])
+          g-&gt;weight[i][j] = through_k;
+      }
+}
+</pre>
+</div>
+
+<p>
+The Floyd-Warshall all-pairs shortest path runs in O(n<sup>3</sup>) time, which
+is asymptotically no better thanncalls to Dijkstra’s algorithm.
+However, the loops are so tight and the program so short that it runs
+better in practice.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3">6.4 War Story: Dialing for Documents</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+“We can get good word-use frequencies and grammatical information
+from a big text database called the Brown Corpus. It contains
+thousands of typical English sentences, each parsed according to parts
+of speech. But how do we factor it all in?” Harald asked.
+</p>
+
+<p>
+Each possible sentence interpretation can be thought of as a path in a
+graph. The vertices of this graph are the complete set of possible
+word choices. There will be an edge from each possible choice for the
+ith word to each possible choice for the (i + 1)st word. The cheapest
+path across this graph defines the best interpretation of the
+sentence.
+</p>
+
+<p>
+Perhaps we can count how often that pair of words occurred together in
+previous texts. Or we can weigh them by the part of speech of each
+word. Maybe nouns don’t like to be next to nouns as much as they like
+being next to verbs.
+</p>
+
+<p>
+We can pay a cost for walking through a particular vertex that depends
+upon the frequency of the word. Our best sentence will be given by the
+shortest path across the graph.
+</p>
+
+<p>
+The constraints for many pattern recognition problems can be naturally
+formulated as shortest path problems in graphs. In fact, there is a
+particularly convenient dynamic programming solution for these
+problems (the Viterbi algorithm). Despite the fancy name, the Viterbi
+algorithm is basically solving a shortest path problem on a DAG.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4">6.5 Network Flows and Bipartite Matching</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+The <i>network flow problem</i> asks for the maximum amount of flow which can
+be sent from vertices s to t in a given weighted graph G while
+respecting the maximum capacities of each pipe.
+</p>
+</div>
+<div id="outline-container-sec-1-4-1" class="outline-4">
+<h4 id="sec-1-4-1">6.5.1 Bipartite Matching</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+The largest bipartite matching can be readily found using network
+flow. Create a source nodes that is connected to every vertex in L by
+an edge of weight 1. Create a sink node t and connect it to every
+vertex in R by an edge of weight 1. Finally, assign each edge in the
+bipartite graph G a weight of 1. Now, the maximum possible flow
+fromstotdefines the largest matching in G.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4-2" class="outline-4">
+<h4 id="sec-1-4-2">6.5.2 Computing Network Flows</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+The key structure is the residual flow graph, denoted as R(G, f), where Gis
+the input graph andfis the current flow through G. 
+</p>
+
+<p>
+The maximum flow fromstotalways equals the weight of the minimums-t
+cut. Thus, flow algorithms can be used to solve general edge and
+vertex connectivity problems in graphs.
+</p>
+
+<p>
+<b>Implementation</b>
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++">        <span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">v</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">neighboring vertex */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">capacity</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">capacity of edge */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">flow</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">flow through edge */</span>
+          <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">residual</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">residual capacity of edge */</span>
+          <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">next</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">next edge in list */</span>
+        } <span style="color: #98fb98;">edgenode</span>;
+
+      <span style="color: #87cefa;">netflow</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">sink</span>)
+      {
+        <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">volume</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">weight of the augmenting path */</span>
+        add_residual_edges(g);
+        initialize_search(g);
+        bfs(g,source);
+        volume = path_volume(g, source, sink, parent);
+        <span style="color: #00ffff;">while</span> (volume &gt; 0) {
+          augment_path(g,source,sink,parent,volume);
+          initialize_search(g);
+          bfs(g,source);
+          volume = path_volume(g, source, sink, parent);
+        }
+      }
+
+    <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">valid_edge</span>(<span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>)
+    {
+      <span style="color: #00ffff;">if</span> (e-&gt;residual &gt; 0) <span style="color: #00ffff;">return</span> (TRUE);
+      <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">return</span>(FALSE);
+    }
+
+  <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">path_volume</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">start</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">end</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">parents</span>[])
+  {
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge in question */</span>
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">find_edge</span>();
+    <span style="color: #00ffff;">if</span> (parents[end] == -1) <span style="color: #00ffff;">return</span>(0);
+    e = find_edge(g,parents[end],end);
+    <span style="color: #00ffff;">if</span> (start == parents[end])
+      <span style="color: #00ffff;">return</span>(e-&gt;residual);
+    <span style="color: #00ffff;">else</span>
+      <span style="color: #00ffff;">return</span>( min(path_volume(g,start,parents[end],parents),
+                  e-&gt;residual) );
+  }
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #87cefa;">find_edge</span>(<span style="color: #98fb98;">flow_graph</span> *<span style="color: #eedd82;">g</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">x</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">y</span>)
+  {
+    <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">p</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">temporary pointer */</span>
+    p = g-&gt;edges[x];
+    <span style="color: #00ffff;">while</span> (p != <span style="color: #7fffd4;">NULL</span>) {
+      <span style="color: #00ffff;">if</span> (p-&gt;v == y) <span style="color: #00ffff;">return</span>(p);
+      p = p-&gt;next;
+    }
+    <span style="color: #00ffff;">return</span>(<span style="color: #7fffd4;">NULL</span>);
+  }
+
+<span style="color: #87cefa;">augment_path</span>(<span style="color: #98fb98;">flow_graph</span>*<span style="color: #eedd82;">g</span>,intstart,intend,<span style="color: #98fb98;">intparents</span>[],intvolume)
+{
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">e</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">edge in question */</span>
+  <span style="color: #98fb98;">edgenode</span> *<span style="color: #eedd82;">find_edge</span>();
+  <span style="color: #00ffff;">if</span> (start == end) <span style="color: #00ffff;">return</span>;
+  e = find_edge(g,parents[end],end);
+  e-&gt;flow += volume;
+  e-&gt;residual -= volume;
+  e = find_edge(g,end,parents[end]);
+  e-&gt;residual += volume;
+  augment_path(g,start,parents[end],parents,volume);
+}
+</pre>
+</div>
+
+<p>
+Edmonds and Karp [EK72] proved that always selecting ashortest
+unweighted augmenting path guarantees that O(n<sup>3</sup>) augmentations
+suffice for optimization.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5">6.6 Design Graphs, Not Algorithms</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+The secret is learning to design graphs, not algorithms. We have
+already seen a few instances of this idea:
+</p>
+
+<ul class="org-ul">
+<li>The maximum spanning tree can be found by negating the edge weights
+of the input graph G and using aminimumspanning tree algorithm on
+the result. The most negative weight spanning tree will define the
+maximum weight tree in G.
+</li>
+<li>To solve bipartite matching, we constructed a special network flow
+graph such that the maximum flow corresponds to a maximum
+cardinality matching.
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-1-5-1" class="outline-4">
+<h4 id="sec-1-5-1">Bucketing Rectangles</h4>
+<div class="outline-text-4" id="text-1-5-1">
+<p>
+Problem: “In my graphics work I need to solve the following problem.
+Given an arbitrary set of rectangles in the plane, how can I
+distribute them into a minimum number of buckets such that no subset
+of rectangles in any given bucket intersects another? In other words,
+there can not be any overlapping area between two rectangles in the same bucket.”
+</p>
+
+<p>
+Solution: We formulate a graph where each vertex is a rectangle, and
+there is an edge if two rectangles intersect. Each bucket corresponds
+to anindependent set of rectangles, so there is no overlap between any
+two. Avertex coloringof a graph is a partition of the vertices into
+independent sets, so minimizing the number of colors is exactly what
+you want.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-2" class="outline-4">
+<h4 id="sec-1-5-2">Names in Collision</h4>
+<div class="outline-text-4" id="text-1-5-2">
+<p>
+Problem:“In porting code from UNIX to DOS, I have to shorten several
+hundred file names down to at most 8 characters each. I can’t just
+use the first eight characters from each name, because “filename1”
+and “filename2” would be assigned the exact same name. How can I
+meaningfully shorten the names while ensuring that they do not
+collide?”
+</p>
+
+<p>
+Solution: Construct a bipartite graph with vertices corresponding to
+each original file namefi for 1≤i≤n, as well as a collection of
+acceptable shortenings for each name f<sub>i1</sub>,&#x2026;,f<sub>ik</sub>. Add an edge
+between each original and shortened name. We now seek a set of n edges
+that have no vertices in common, so each file name is mapped to a
+distinct acceptable substitute. Bipartite matching, discussed in
+Section 15.6 (page 498), is exactly this problem of finding an
+independent set of edges in a graph.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-5-3" class="outline-4">
+<h4 id="sec-1-5-3">Separate the Text</h4>
+<div class="outline-text-4" id="text-1-5-3">
+<p>
+Problem: “We need a way to separate the lines of text in the optical
+characterrecognition system that we are building. Although there is
+some white space between the lines, problems like noise and the tilt
+of the page makes it hard to find. How can we do line segmentation?
+</p>
+
+<p>
+Solution: Consider the following graph formulation. Treat each pixel
+in the image as a vertex in the graph, with an edge between two
+neighboring pixels. The weight of this edge should be proportional to
+how dark the pixels are. A segmentation between two lines is a path in
+this graph from the left to right side of the page. We seek a
+relatively straight path that avoids as much blackness as possible.
+This suggests that theshortest pathin the pixel graph will likely find
+a good line segmentation.
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">Exercises</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1">2-3</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Is the path between two vertices in a minimum spanning tree necessarily a
+shortest path between the two vertices in the full graph? Give a proof
+or a counterexample.
+</p>
+
+<p>
+Assume that all edges in the graph have distinct edge weights (i.e. ,
+no pair of edges have the same weight). Is the path between a pair of
+vertices in a minimum spanning tree necessarily a shortest path
+between the two vertices in the full graph? Give a proof or a
+counterexample.
+</p>
+
+<p>
+不必要. 如下图,若a是6的话,minimum spanning tree不会选择a,但A和C间的最短路径会选择a.
+</p>
+
+<img src="http://dreamrunner.org/images/blog/2014/AlgorithmDesignManual/6_4.jpg" />
+</div>
+</div>
+
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2">4</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+Can Prim’s and Kruskal’s algorithm yield different minimum spanning
+trees? Explain why or why not.
+</p>
+
+<p>
+能.当有相同weight的边.
+</p>
+
+<p>
+当所有边的weight不同时,图存在唯一的minimum spanning trees,两者生成同样的树.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-3" class="outline-3">
+<h3 id="sec-2-3">5</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+Does either Prim&#8217;s and Kruskal&#8217;s algorithm work if there are negative
+edge weights? Explain why or why not. 
+</p>
+
+<p>
+可以.Prim每次选相邻最近的不在树内的点,有负weight的边并不影响它. 而
+Kruskal每次选最短的边,同样不受影响.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-4" class="outline-3">
+<h3 id="sec-2-4">6</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Suppose we are given the minimum spanning tree T of a given graph G
+(with n vertices and m edges) and a new edge e = (u,v) of weight w
+that we will add to G. Give an efficient algorithm to find the
+minimum spanning tree of the graph G + e. Your algorithm should run
+in O(n) time to receive full credit.
+</p>
+
+<p>
+新添加的e在顶点u和v中间,原本的MST中u和v通过u-&gt;a1-&gt;ai-&gt;v,把此路径的边与
+e比较,用Prim算法选最临近点.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-5" class="outline-3">
+<h3 id="sec-2-5">7</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+(a) Let T be a minimum spanning tree of a weighted graph G. Construct
+a new graph G′ by adding a weight of k to every edge of G. Do the
+edges of T form a minimum spanning tree of G′? Prove the statement or
+give a counterexample.
+</p>
+
+<p>
+(b) Let P = {s, &#8230; , t} describe a shortest weighted path between
+vertices s and t of a weighted graph G. Construct a new graph G′ by
+adding a weight of k to every edge of G. Does P describe a shortest
+path from s to t in G′? Prove the statement or give a counterexample.
+</p>
+
+<p>
+(a)和(b)都对,并没有改变边之间的比较关系.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-6" class="outline-3">
+<h3 id="sec-2-6">8</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+Devise and analyze an algorithm that takes a weighted graph G and
+finds the smallest change in the cost to a non-MST edge that would
+cause a change in the minimum spanning tree of G. Your algorithm must
+be correct and run in polynomial time. 
+</p>
+
+<ol class="org-ol">
+<li>遍历图的边,掠过MST中的边,当遇到non-MST的边E(i,j).
+</li>
+<li>利用MST中的parent遍历出顶点i到j的所有MST边,并得到其中最大weight的边
+mst<sub>e</sub><sub>max</sub>.
+</li>
+<li>计算E(i,j)与mst<sub>e</sub><sub>max的差值</sub>.
+</li>
+<li>遍历所有的non-MST的边,得到最小差值就是改变的最小值.
+</li>
+</ol>
+
+<p>
+总共边数m,算法复杂度O(m<sup>2</sup>).
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-7" class="outline-3">
+<h3 id="sec-2-7">9</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+Consider the problem of finding a minimum weight connected subset T of
+edges from a weighted connected graph G. The weight of T is the sum of
+all the edge weights in T.
+</p>
+
+<ol class="org-ol">
+<li>Why is this problem not just the minimum spanning tree problem?
+Hint: think negative weight edges.
+</li>
+<li>Give an efficient algorithm to compute the minimum weight connected
+subset T. 
+</li>
+</ol>
+
+<p>
+MST不能有环路,minimum weight connected subset T可以有环路,所以如果一条负数weight的边,不在MST中,但却包含在T中,因为它能使T的总权值减小.
+</p>
+
+<ol class="org-ol">
+<li>把所有负数weight的边加入T中,若剩下1个连通图,结束.
+</li>
+<li>若剩下C(&gt;1)个连通图,对C个连通图使用Kruskal,直到剩下一个连通图T.
+</li>
+</ol>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #87cefa;">sort</span>(edges);
+c := n;
+<span style="color: #00ffff;">for</span> edge<span style="color: #00ffff;"> in</span> edges:
+    <span style="color: #00ffff;">if</span> edge.weight &lt; 0:
+        <span style="color: #00ffff;">if</span> find(edge.firstEnd) != find(edge.secondEnd):
+            --c;
+        unite(edge.firstEnd, edge.secondEnd);
+    <span style="color: #00ffff;">else</span>:
+        <span style="color: #00ffff;">if</span> <span style="color: #eedd82;">c</span> == 1: break;
+        <span style="color: #00ffff;">if</span> find(edge.firstEnd) != find(edge.secondEnd):
+            unite(edge.firstEnd, edge.secondEnd);
+            --c;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-8" class="outline-3">
+<h3 id="sec-2-8">10</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+Let G=(V,E) be an undirected graph. A set F⊆E of edges is called a
+feedback-edge set if every cycle of G has at least one edge in F.
+</p>
+
+<ol class="org-ol">
+<li>Suppose that Gis unweighted. Design an efficient algorithm to find
+a minimum-size feedback-edge set.
+</li>
+
+<li>Suppose that Gis a weighted undirected graph with positive edge
+weights. Design an efficient algorithm to find a minimum-weight
+feedback-edge set.
+</li>
+
+<li><b>Minimum size feedback edge set:</b> 使用DFS,从任意点开始,遇到回归边,
+把它加入结果set中,当DFS完成,结果set就是答案.
+</li>
+<li><b>minimum-weight feedback-edge set:</b> 对所有weight值取反,用Kruskal算法,当遇到边E的顶点在同一个集合中,把E加入到结果set中,当Kruskal遍历完所有边后,结果set就是答案.
+</li>
+</ol>
+</div>
+</div>
+
+<div id="outline-container-sec-2-9" class="outline-3">
+<h3 id="sec-2-9">11</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+Modify Prim&#8217;s algorithm so that it runs in time O(nlogk) on a
+graph that has only k different edges costs. 
+</p>
+
+<ul class="org-ul">
+<li>k个不同的边值,使用一个k个元素的min-heap,heap的节点是相同距离的顶点链表.
+</li>
+<li>Prim每次选择和更新顶点的距离在min-heap完成,做到O(nlogk).
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-sec-2-10" class="outline-3">
+<h3 id="sec-2-10">12</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+Devise an efficient data structure to handle the following operations
+on a weighted directed graph:
+</p>
+
+<ol class="org-ol">
+<li>Merge two given components.
+</li>
+<li>Locate which component contains a given vertex v.
+</li>
+<li>Retrieve a minimum edge from a given component. 
+</li>
+</ol>
+
+<p>
+使用Union-Find并添加minimum edge.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">typedef</span> <span style="color: #00ffff;">struct</span> {
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">parent element */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">size</span>[SET_SIZE+1]; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in subtree i */</span>
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">minedge</span>[SET_SIZE+1];
+  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>; <span style="color: #ff7f24;">/* </span><span style="color: #ff7f24;">number of elements in set */</span>
+} <span style="color: #98fb98;">set_union</span>;
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-11" class="outline-3">
+<h3 id="sec-2-11">14</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+The single-destination shortest path problem for a directed graph
+seeks the shortest path from every vertex to a specified vertex v. Give
+an efficient algorithm to solve the single-destination shortest paths
+problem.
+</p>
+
+<p>
+用Floyd-Warshall对于顶点v反向更新距离值.得到最终shortest paths.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-12" class="outline-3">
+<h3 id="sec-2-12">19</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+Let G be a weighted directed graph with n vertices and m edges, where
+all edges have positive weight. A directed cycle is a directed path
+that starts and ends at the same vertex and contains at least one
+edge. Give an O(n<sup>3</sup>) algorithm to find a directed cycle in G of minimum
+total weight. Partial credit will be given for an O(n<sup>2</sup>m) algorithm. 
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c++">run Floyd Warshall on the <span style="color: #98fb98;">graph</span>
+<span style="color: #eedd82;">min</span> &lt;- MAX_INT
+vertex &lt;- None
+<span style="color: #00ffff;">for</span> each pair of vertices u,<span style="color: #87cefa;">v</span>
+    <span style="color: #00ffff;">if</span> (dist(u,v) + dist(v,u) &lt; min):
+           min &lt;- dist(u,v) + dist(v,u)
+           pair &lt;- (u,v)
+<span style="color: #00ffff;">return</span> path(u,v) + path(v,u)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-13" class="outline-3">
+<h3 id="sec-2-13">20</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+Can we modify Dijkstra’s algorithm to solve the single-source longest
+path problem by changing minimum to maximum? If so, then prove your
+algorithm correct. If not, then provide a counterexample.
+</p>
+
+<p>
+没有负weight的边,可以.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-2-14" class="outline-3">
+<h3 id="sec-2-14">21</h3>
+<div class="outline-text-3" id="text-2-14">
+<p>
+LetG=(V,E) be a weighted acyclic directed graph with possibly negative
+edge weights. Design a linear-time algorithm to solve the
+single-source shortest-path problem from a given source v.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh"><span style="color: #00ffff;">for</span> each vertex y<span style="color: #00ffff;"> in</span> a topological ordering of G
+    choose edge (x,y) minimizing d(s,x)+length(x,y)
+    path(s,y) = path(s,x) + edge (x,y)
+    d(s,y) = d(s,x) + length(x,y)
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-15" class="outline-3">
+<h3 id="sec-2-15">22</h3>
+<div class="outline-text-3" id="text-2-15">
+<p>
+Let G=(V,E) be a directed weighted graph such that all the weights are
+positive. Let v and w be two vertices in G and k≤|V| be an integer. Design
+an algorithm to find the shortest path from v to w that contains
+exactly k edges. Note that the path need not be simple.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">create the table D[V,k];
+<span style="color: #eedd82;">D</span>[v,1] = 0;
+<span style="color: #00ffff;">for</span> i<span style="color: #00ffff;"> in</span> other vertex except v:
+         <span style="color: #eedd82;">D</span>[i,1] = MAX_INT;
+<span style="color: #00ffff;">for</span> <span style="color: #eedd82;">m</span>=2 to k:
+    <span style="color: #00ffff;">for</span> every edge(i,j):
+        <span style="color: #eedd82;">D</span>[j,m] = D[i,m-1] + D[i,j]
+        <span style="color: #eedd82;">P</span>[i,m] = i
+<span style="color: #eedd82;">Path</span> = emtpy list
+<span style="color: #eedd82;">i</span> = w
+<span style="color: #00ffff;">for</span> <span style="color: #eedd82;">m</span>=k down to 1:
+    Path.append(m);
+    <span style="color: #eedd82;">i</span> = P[m,k]
+ Path.append(V);
+ Path.reverse();
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2-16" class="outline-3">
+<h3 id="sec-2-16">23</h3>
+<div class="outline-text-3" id="text-2-16">
+<p>
+Arbitrage is the use of discrepancies in currency-exchange rates to
+make a profit. For example, there may be a small window of time during
+which 1 U.S. dollar buys 0.75 British pounds, 1 British pound buys 2
+Australian dollars, and 1 Australian dollar buys 0.70 U.S. dollars. At
+such a time, a smart trader can trade one U.S. dollar and end up with
+0.75 × 2 × 0.7 = 1.05 U.S. dollars—a profit of 5%. Suppose that
+there are n currencies c1 , …, cn and an n × n table R of exchange
+rates, such that one unit of currency ci buys R[i,j] units of currency
+cj. Devise and analyze an algorithm to determine the maximum value of
+R[c1, ci1] · R[ci1, ci2] · · · R[cik−1, cik] · R[cik, c1]
+</p>
+
+<p>
+log(a*b*c) = loga + lgob + log.所以求最长路径.
+</p>
+
+<ol class="org-ol">
+<li>用Floyd-Warshall算法算出i,j的最长路径;
+</li>
+<li>计算所有C<sub>(1i)</sub>*C<sub>(i1)</sub>的值,得出最大值.
+</li>
+</ol>
+</div>
+</div>
+</div>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Algorithm Design Manual Chapter 5]]></title>
@@ -7969,437 +8927,6 @@ CreateTool创建LineShape对象。
 <li>管理备忘录类的隐藏开销。一个管理者（caretaker）负责删除它管理的备忘录类。然而，这个管理者不清楚到底有多少的状态存储在备忘录里。因此一个轻量级管理者反而会引起大的存储开销当它存储备忘录时。
 </li>
 </ul>
-</div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[浅谈设计模式二十一: 中介者模式(Mediator)]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F21/"/>
-    <updated>2014-05-04T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/04/浅谈设计模式21</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-在公司里，有不同的职位，比如销售人员，开发人员，系统维护人员，主管等等，经常不同的人会发出不同广播消息，比如主管通知大家会议室在何时被占用，系统维护人员通知大家系统将升级win7,因为xp将不再得到维护。并且公司内有不同类型的广播消息，比如公司销售会议只应该通知主管级别的人物。
-</p>
-
-<p>
-有不同类型的广播消息，不同职位接收和发送不同类型的消息给相应职位的人，整个公司的交互相对复杂，如何做到以下呢？
-</p>
-<ol class="org-ol">
-<li>理清和维护好现有的人员交互;
-</li>
-<li>灵活的扩展不同类型广播和不同消息群组。
-</li>
-</ol>
-
-<!-- more -->
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 中介者模式(Mediator)</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-定义一个对象来封装一组对象如何交互。中介者模式使各个对象不显示的互相引用，并让你独立的改变它们的交互，从而达到提高松耦合的效果。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-引入中介者模式集中式控制。由中介者模式来减少交互的复杂度，由它集中理清交互的关系。<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/mediator">代码实例在这里</a>。
-</p>
-</div>
-<div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 中介者类</h4>
-<div class="outline-text-4" id="text-2-2-1">
-<p>
-中介者类实现同事间的消息广播：
-</p>
-<ol class="org-ol">
-<li>模板类提供不同类型消息的复用;
-</li>
-<li>提供同事的注册和脱离不同消息的广播群组： <code>RegisterColleague</code> 和
-   <code>UnregisterColleague</code> ;
-</li>
-<li>发送消息广播事件： <code>FireEvent</code> ;
-</li>
-<li>用 <code>vector</code> 维护一个同事消息队列来对注册入队列的同事发生广播事件。
-</li>
-</ol>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">EventArgType</span>&gt;
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mediator</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;* &gt; <span style="color: #98fb98;">EventList</span>;
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Mediator</span>() {}
-
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">EventList</span> <span style="color: #eedd82;">colleagues</span>;
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">instance</span>;
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;&amp; <span style="color: #87cefa;">GetInstance</span>() {
-    <span style="color: #00ffff;">if</span> (!instance) {
-      instance = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Mediator</span>();
-    }
-    <span style="color: #00ffff;">return</span> *instance;
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">RegisterColleague</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">col_event</span>) {
-    colleagues.push_back(col_event);
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">FireEvent</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>) {
-    <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; colleagues.size(); ++i) {
-      <span style="color: #00ffff;">if</span> (colleagues[i] != source) {
-        colleagues[i]-&gt;handlerProc(source-&gt;event_context, event_arg,
-                                   <span style="color: #98fb98;">colleagues</span>[i]-&gt;event_context);
-      }
-    }
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">UnregisterColleague</span>(<span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt; *<span style="color: #eedd82;">col_event</span>) {
-    <span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">EventList</span>::<span style="color: #98fb98;">iterator</span> <span style="color: #eedd82;">it</span> = find(colleagues.begin(), colleagues.end(),
-                                  col_event);
-    <span style="color: #00ffff;">if</span> (it != colleagues.end()) {
-      colleagues.erase(it);
-    }
-  }
-  <span style="color: #00ffff;">friend</span> <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;;
-};
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 同事消息事件类</h4>
-<div class="outline-text-4" id="text-2-2-2">
-<p>
-同事消息事件类封装消息事件：
-</p>
-<ol class="org-ol">
-<li>模板类提供不同类型消息的复用;
-</li>
-<li>消息的注册同事;
-</li>
-<li>消息的处理函数，不同同事实现各自的处理函数，当由消息到来时，中介者类调用各个同事的消息处理函数来操作;
-</li>
-<li>用中介者类注册和脱离消息群组;
-</li>
-<li>用中介着类出发消息事件;
-</li>
-</ol>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">EventArgType</span>&gt;
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">ColleagueEvent</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">void</span> (*<span style="color: #98fb98;">ColleagueEventHandler</span>) (<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>,
-                                         <span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>,
-                                         <span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">context</span>);
-  <span style="color: #87cefa;">ColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">ColleagueEventHandler</span> <span style="color: #eedd82;">event_proc</span>)
-      : event_context(source), <span style="color: #98fb98;">handlerProc</span>(<span style="color: #eedd82;">event_proc</span>) {
-    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().RegisterColleague(<span style="color: #00ffff;">this</span>);
-  }
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">ColleagueEvent</span>() {
-    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().UnregisterColleague(<span style="color: #00ffff;">this</span>);
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">FireEvent</span>(<span style="color: #98fb98;">EventArgType</span> <span style="color: #eedd82;">event_arg</span>) {
-    <span style="color: #7fffd4;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;::GetInstance().FireEvent(<span style="color: #00ffff;">this</span>, event_arg);
-  }
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">event_context</span>;
-  <span style="color: #98fb98;">ColleagueEventHandler</span> <span style="color: #eedd82;">handlerProc</span>;
-  <span style="color: #00ffff;">friend</span> <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mediator</span>&lt;<span style="color: #98fb98;">EventArgType</span>&gt;;
-};
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 公司人员抽象类</h4>
-<div class="outline-text-4" id="text-2-2-3">
-<p>
-为同事定义接口。暂时是空的。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Colleague</span> {
- <span style="color: #00ffff;">protected</span>:
-  <span style="color: #87cefa;">Colleague</span>() {}
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Colleague</span>() {}
-};
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-4" class="outline-4">
-<h4 id="sec-2-2-4"><span class="section-number-4">2.2.4</span> 普通员工消息类型类</h4>
-<div class="outline-text-4" id="text-2-2-4">
-<p>
-消息有很多不同类型，如普通员工消息类型，主管级消息等等，这里以普通员工消息为例。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">StaffMsg</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">StaffMsg</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">data</span>) : msg_name_(name), <span style="color: #98fb98;">msg_data_</span>(<span style="color: #eedd82;">data</span>) {
-  }
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">StaffMsg</span>() {}
-  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">msg_name</span>() {<span style="color: #00ffff;">return</span> msg_name_;}
-  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">msg_data</span>() {<span style="color: #00ffff;">return</span> msg_data_;}
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">msg_name_</span>;
-  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">msg_data_</span>;
-};
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-5" class="outline-4">
-<h4 id="sec-2-2-5"><span class="section-number-4">2.2.5</span> 雇员基类</h4>
-<div class="outline-text-4" id="text-2-2-5">
-<p>
-有雇主和雇员之分，这里以雇员为例。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Employee</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Colleague</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">Employee</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : title_(title), name_(name) {
-  }
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Employee</span>() {}
-  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">title</span>() {<span style="color: #00ffff;">return</span> title_;}
-  <span style="color: #98fb98;">string</span> <span style="color: #87cefa;">name</span>() {<span style="color: #00ffff;">return</span> name_;}
- <span style="color: #00ffff;">protected</span>:
-  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title_</span>;
-  <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name_</span>;
-};
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-6" class="outline-4">
-<h4 id="sec-2-2-6"><span class="section-number-4">2.2.6</span> 普通员工类</h4>
-<div class="outline-text-4" id="text-2-2-6">
-<p>
-普通员工基于雇员类。维护普通员工消息事件实例，负责把自己注册到相应的中介者消息队列，实现普通员工如何处理接收到的消息。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">GeneralStaff</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">Employee</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">GeneralStaff</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">GeneralStaff</span>();
-  <span style="color: #00ffff;">static</span> <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">OnColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">StaffMsg</span> <span style="color: #eedd82;">data</span>,
-                               <span style="color: #98fb98;">Colleague</span>* <span style="color: #eedd82;">context</span>);
- <span style="color: #00ffff;">protected</span>:
-  <span style="color: #98fb98;">ColleagueEvent</span>&lt;<span style="color: #98fb98;">StaffMsg</span>&gt; <span style="color: #eedd82;">general_staff_event_</span>;
-};
-
-<span style="color: #7fffd4;">GeneralStaff</span>::<span style="color: #87cefa;">GeneralStaff</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">title</span>, <span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>)
-    : Employee(title, name), general_staff_event_(<span style="color: #00ffff;">this</span>, OnColleagueEvent) {
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">GeneralStaff</span>::<span style="color: #87cefa;">OnColleagueEvent</span>(<span style="color: #98fb98;">Colleague</span> *<span style="color: #eedd82;">source</span>, <span style="color: #98fb98;">StaffMsg</span> <span style="color: #eedd82;">data</span>,
-                                           <span style="color: #98fb98;">Colleague</span>* <span style="color: #eedd82;">context</span>) {
-  <span style="color: #98fb98;">Employee</span> *<span style="color: #eedd82;">src_colleague</span> = <span style="color: #00ffff;">static_cast</span>&lt;Employee *&gt; (source);
-  <span style="color: #98fb98;">Employee</span> *<span style="color: #eedd82;">ctx_colleague</span> = <span style="color: #00ffff;">static_cast</span>&lt;Employee *&gt; (context);
-  cout &lt;&lt; endl &lt;&lt; ctx_colleague-&gt;title()
-       &lt;&lt; <span style="color: #ffa07a;">" - "</span> &lt;&lt; ctx_colleague-&gt;name()
-       &lt;&lt; <span style="color: #ffa07a;">" is notified by "</span>
-       &lt;&lt; src_colleague-&gt;title() &lt;&lt; <span style="color: #ffa07a;">" - "</span>
-       &lt;&lt; src_colleague-&gt;name()
-       &lt;&lt; <span style="color: #ffa07a;">" of STAFF Event "</span> &lt;&lt; data.msg_name()
-       &lt;&lt; <span style="color: #ffa07a;">" with "</span> &lt;&lt; data.msg_data();
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2-7" class="outline-4">
-<h4 id="sec-2-2-7"><span class="section-number-4">2.2.7</span> 销售人员类</h4>
-<div class="outline-text-4" id="text-2-2-7">
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">SalesMen</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">SalesMen</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) :
-      GeneralStaff(<span style="color: #ffa07a;">"Sales Man"</span>, name) {
-  }
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">SalesMen</span>() {}
-};
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-8" class="outline-4">
-<h4 id="sec-2-2-8"><span class="section-number-4">2.2.8</span> 系统维护人员类</h4>
-<div class="outline-text-4" id="text-2-2-8">
-<p>
-系统维护人员类注册普通员工消息队列，并有发起软件升级通知的权利。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">SysAdmin</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">SysAdmin</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">SysAdmin</span>();
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">AdviceForSoftwareUpdate</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">sw_name</span>);
-};
-
-<span style="color: #7fffd4;">SysAdmin</span>::<span style="color: #87cefa;">SysAdmin</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : GeneralStaff(<span style="color: #ffa07a;">"Sys Admin"</span>, name) {
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">SysAdmin</span>::<span style="color: #87cefa;">AdviceForSoftwareUpdate</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">sw_name</span>) {
-  general_staff_event_.FireEvent(StaffMsg(<span style="color: #ffa07a;">"Software Update Advice"</span>, sw_name));
-}
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-9" class="outline-4">
-<h4 id="sec-2-2-9"><span class="section-number-4">2.2.9</span> 主管人员类</h4>
-<div class="outline-text-4" id="text-2-2-9">
-<p>
-系统维护人员类注册普通员工消息队列，并有发起预订会议室通知的权利。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Manager</span> : <span style="color: #00ffff;">public</span> <span style="color: #98fb98;">GeneralStaff</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">Manager</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>);
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Manager</span>();
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">BookMeetingRoom</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">meeting_room_name</span>);
-};
-
-<span style="color: #7fffd4;">Manager</span>::<span style="color: #87cefa;">Manager</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">name</span>) : GeneralStaff(<span style="color: #ffa07a;">"Manager"</span>, name) {
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #7fffd4;">Manager</span>::<span style="color: #87cefa;">BookMeetingRoom</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">meeting_room_name</span>) {
-  general_staff_event_.FireEvent(StaffMsg(<span style="color: #ffa07a;">"Meeting Room Booking"</span>,
-                                          meeting_room_name));
-}
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-10" class="outline-4">
-<h4 id="sec-2-2-10"><span class="section-number-4">2.2.10</span> 总的测试</h4>
-<div class="outline-text-4" id="text-2-2-10">
-<ol class="org-ol">
-<li>建立各个员工;
-</li>
-<li>发起不同类型消息测试。
-</li>
-</ol>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
-  <span style="color: #98fb98;">Manager</span> <span style="color: #eedd82;">mng1</span>(<span style="color: #ffa07a;">"Vivek"</span>), <span style="color: #eedd82;">mng2</span>(<span style="color: #ffa07a;">"Pradeep"</span>);
-  <span style="color: #98fb98;">SysAdmin</span> <span style="color: #eedd82;">sys_admin</span>(<span style="color: #ffa07a;">"Sony"</span>);
-  <span style="color: #98fb98;">SalesMen</span> <span style="color: #eedd82;">sl1</span>(<span style="color: #ffa07a;">"Dave"</span>), <span style="color: #eedd82;">s12</span>(<span style="color: #ffa07a;">"Mike"</span>), <span style="color: #eedd82;">s13</span>(<span style="color: #ffa07a;">"Allen"</span>);
-
-  mng1.BookMeetingRoom(<span style="color: #ffa07a;">"Big Room"</span>);
-  cout &lt;&lt; endl;
-  sys_admin.AdviceForSoftwareUpdate(<span style="color: #ffa07a;">"Win7"</span>);
-  cout &lt;&lt; endl;
-  <span style="color: #00ffff;">return</span> 0;
-}
-</pre>
-</div>
-
-<p>
-结果：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++">Manager - Pradeep is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
-Sys Admin - Sony is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
-Sales Man - Dave is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
-Sales Man - Mike is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
-Sales Man - Allen is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
-
-Manager - Vivek is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
-Manager - Pradeep is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
-Sales Man - Dave is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
-Sales Man - Mike is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
-Sales Man - Allen is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 中介者模式(Mediator)结构</h3>
-<div class="outline-text-3" id="text-3-1">
-<img src="http://dreamrunner.org/images/blog/2014/mediator/mediator_structure.jpeg" />
-</div>
-</div>
-
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
-<div class="outline-text-3" id="text-3-2">
-<ul class="org-ul">
-<li>抽象中介者（Mediator）为与同事（Colleague）对象交流定义一个接口。
-</li>
-<li>具体中介者（ConcreteMediator）
-<ol class="org-ol">
-<li>实现与同事（Colleague）对象协作的合作行为。
-</li>
-<li>知道和维护它的同事类。
-</li>
-</ol>
-</li>
-<li>同事类（Colleague classes）
-<ol class="org-ol">
-<li>每个同事类知道它的中介者对象。
-</li>
-<li>每个同事类任何它应该时与它的中介者交流，否则就与其他同事类交流。
-</li>
-</ol>
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
-<div class="outline-text-3" id="text-3-3">
-<ul class="org-ul">
-<li>一组对象交流在很好定义的却复杂的方式上。导致的互相依赖性并没有好的组织而且难理解时。
-</li>
-<li>复用一个对象是困难的，因为它引用并交流与许多其他对象。
-</li>
-<li>分布在很多类中的一个行为需要被定制但不能进行太多子类化。
-</li>
-</ul>
-</div>
-</div>
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 缺点</h3>
-<div class="outline-text-3" id="text-3-4">
-<p>
-中介者模式集中式控制。中介者模式以减少交互的复杂度而增加中介者的复杂度。因为一个中介者类封装了协议，它会变得比任何同事类都复杂。这会导致中介者类自身是个难维护的庞然大物。
-</p>
 </div>
 </div>
 </div>
