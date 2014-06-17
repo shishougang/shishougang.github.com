@@ -1,0 +1,290 @@
+
+#+begin_html
+---
+layout: post
+title: "浅谈设计模式二十一: 中介者模式(Mediator)"
+date: 2014-05-04
+comments: true
+categories: [Design Pattern]
+tags: [Design Pattern, C++, Mediator]
+---
+#+end_html
+#+OPTIONS: toc:nil
+
+
+* 实例
+在公司里，有不同的职位，比如销售人员，开发人员，系统维护人员，主管等等，
+经常不同的人会发出不同广播消息，比如主管通知大家会议室在何时被占用，系
+统维护人员通知大家系统将升级win7,因为xp将不再得到维护。并且公司内有不
+同类型的广播消息，比如公司销售会议只应该通知主管级别的人物。
+
+有不同类型的广播消息，不同职位接收和发送不同类型的消息给相应职位的人，
+整个公司的交互相对复杂，如何做到以下呢？
+1. 理清和维护好现有的人员交互;
+2. 灵活的扩展不同类型广播和不同消息群组。
+
+#+begin_html
+<!-- more -->
+#+end_html
+
+* 中介者模式(Mediator)
+** 目的
+定义一个对象来封装一组对象如何交互。中介者模式使各个对象不显示的互相引
+用，并让你独立的改变它们的交互，从而达到提高松耦合的效果。
+** 实现
+引入中介者模式集中式控制。由中介者模式来减少交互的复杂度，由它集中理清
+交互的关系。[[https://github.com/shishougang/DesignPattern-CPP/tree/master/src/mediator][代码实例在这里]]。
+*** 中介者类
+中介者类实现同事间的消息广播：
+1. 模板类提供不同类型消息的复用;
+2. 提供同事的注册和脱离不同消息的广播群组： =RegisterColleague= 和
+   =UnregisterColleague= ;
+3. 发送消息广播事件： =FireEvent= ;
+4. 用 =vector= 维护一个同事消息队列来对注册入队列的同事发生广播事件。
+
+#+begin_src c++
+template<typename EventArgType>
+class Mediator {
+ public:
+  typedef vector<ColleagueEvent<EventArgType>* > EventList;
+  virtual ~Mediator() {}
+
+ private:
+  EventList colleagues;
+  static Mediator<EventArgType> *instance;
+  static Mediator<EventArgType>& GetInstance() {
+    if (!instance) {
+      instance = new Mediator();
+    }
+    return *instance;
+  }
+  void RegisterColleague(ColleagueEvent<EventArgType> *col_event) {
+    colleagues.push_back(col_event);
+  }
+  void FireEvent(ColleagueEvent<EventArgType> *source, EventArgType event_arg) {
+    for (unsigned int i = 0; i < colleagues.size(); ++i) {
+      if (colleagues[i] != source) {
+        colleagues[i]->handlerProc(source->event_context, event_arg,
+                                   colleagues[i]->event_context);
+      }
+    }
+  }
+  void UnregisterColleague(ColleagueEvent<EventArgType> *col_event) {
+    typename EventList::iterator it = find(colleagues.begin(), colleagues.end(),
+                                  col_event);
+    if (it != colleagues.end()) {
+      colleagues.erase(it);
+    }
+  }
+  friend class ColleagueEvent<EventArgType>;
+};
+#+end_src
+
+*** 同事消息事件类
+同事消息事件类封装消息事件：
+1. 模板类提供不同类型消息的复用;
+2. 消息的注册同事;
+3. 消息的处理函数，不同同事实现各自的处理函数，当由消息到来时，中介者
+   类调用各个同事的消息处理函数来操作;
+4. 用中介者类注册和脱离消息群组;
+5. 用中介着类出发消息事件;
+
+#+begin_src c++
+template<typename EventArgType>
+class ColleagueEvent {
+ public:
+  typedef void (*ColleagueEventHandler) (Colleague *source,
+                                         EventArgType event_arg,
+                                         Colleague *context);
+  ColleagueEvent(Colleague *source, ColleagueEventHandler event_proc)
+      : event_context(source), handlerProc(event_proc) {
+    Mediator<EventArgType>::GetInstance().RegisterColleague(this);
+  }
+  virtual ~ColleagueEvent() {
+    Mediator<EventArgType>::GetInstance().UnregisterColleague(this);
+  }
+  void FireEvent(EventArgType event_arg) {
+    Mediator<EventArgType>::GetInstance().FireEvent(this, event_arg);
+  }
+ private:
+  Colleague *event_context;
+  ColleagueEventHandler handlerProc;
+  friend class Mediator<EventArgType>;
+};
+#+end_src
+*** 公司人员抽象类
+为同事定义接口。暂时是空的。
+#+begin_src c++
+class Colleague {
+ protected:
+  Colleague() {}
+  virtual ~Colleague() {}
+};
+#+end_src
+*** 普通员工消息类型类
+消息有很多不同类型，如普通员工消息类型，主管级消息等等，这里以普通员工
+消息为例。
+#+begin_src c++
+class StaffMsg {
+ public:
+  StaffMsg(string name, string data) : msg_name_(name), msg_data_(data) {
+  }
+  virtual ~StaffMsg() {}
+  string msg_name() {return msg_name_;}
+  string msg_data() {return msg_data_;}
+ private:
+  string msg_name_;
+  string msg_data_;
+};
+#+end_src
+*** 雇员基类
+有雇主和雇员之分，这里以雇员为例。
+#+begin_src c++
+class Employee : public Colleague {
+ public:
+  Employee(string title, string name) : title_(title), name_(name) {
+  }
+  virtual ~Employee() {}
+  string title() {return title_;}
+  string name() {return name_;}
+ protected:
+  string title_;
+  string name_;
+};
+#+end_src
+*** 普通员工类
+普通员工基于雇员类。维护普通员工消息事件实例，负责把自己注册到相应的中
+介者消息队列，实现普通员工如何处理接收到的消息。
+#+begin_src c++
+class GeneralStaff : public Employee {
+ public:
+  GeneralStaff(string title, string name);
+  virtual ~GeneralStaff();
+  static void OnColleagueEvent(Colleague *source, StaffMsg data,
+                               Colleague* context);
+ protected:
+  ColleagueEvent<StaffMsg> general_staff_event_;
+};
+
+GeneralStaff::GeneralStaff(string title, string name)
+    : Employee(title, name), general_staff_event_(this, OnColleagueEvent) {
+}
+
+void GeneralStaff::OnColleagueEvent(Colleague *source, StaffMsg data,
+                                           Colleague* context) {
+  Employee *src_colleague = static_cast<Employee *> (source);
+  Employee *ctx_colleague = static_cast<Employee *> (context);
+  cout << endl << ctx_colleague->title()
+       << " - " << ctx_colleague->name()
+       << " is notified by "
+       << src_colleague->title() << " - "
+       << src_colleague->name()
+       << " of STAFF Event " << data.msg_name()
+       << " with " << data.msg_data();
+}
+#+end_src
+*** 销售人员类
+#+begin_src c++
+class SalesMen : public GeneralStaff {
+ public:
+  explicit SalesMen(string name) :
+      GeneralStaff("Sales Man", name) {
+  }
+  virtual ~SalesMen() {}
+};
+#+end_src
+
+*** 系统维护人员类
+系统维护人员类注册普通员工消息队列，并有发起软件升级通知的权利。
+#+begin_src c++
+class SysAdmin : public GeneralStaff {
+ public:
+  explicit SysAdmin(string name);
+  virtual ~SysAdmin();
+  void AdviceForSoftwareUpdate(string sw_name);
+};
+
+SysAdmin::SysAdmin(string name) : GeneralStaff("Sys Admin", name) {
+}
+
+void SysAdmin::AdviceForSoftwareUpdate(string sw_name) {
+  general_staff_event_.FireEvent(StaffMsg("Software Update Advice", sw_name));
+}
+#+end_src
+
+*** 主管人员类
+系统维护人员类注册普通员工消息队列，并有发起预订会议室通知的权利。
+#+begin_src c++
+class Manager : public GeneralStaff {
+ public:
+  explicit Manager(string name);
+  virtual ~Manager();
+  void BookMeetingRoom(string meeting_room_name);
+};
+
+Manager::Manager(string name) : GeneralStaff("Manager", name) {
+}
+
+void Manager::BookMeetingRoom(string meeting_room_name) {
+  general_staff_event_.FireEvent(StaffMsg("Meeting Room Booking",
+                                          meeting_room_name));
+}
+#+end_src
+
+*** 总的测试
+1. 建立各个员工;
+2. 发起不同类型消息测试。
+
+#+begin_src c++
+int main(int argc, char *argv[]) {
+  Manager mng1("Vivek"), mng2("Pradeep");
+  SysAdmin sys_admin("Sony");
+  SalesMen sl1("Dave"), s12("Mike"), s13("Allen");
+
+  mng1.BookMeetingRoom("Big Room");
+  cout << endl;
+  sys_admin.AdviceForSoftwareUpdate("Win7");
+  cout << endl;
+  return 0;
+}
+#+end_src
+
+结果：
+#+begin_src c++
+Manager - Pradeep is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sys Admin - Sony is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Dave is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Mike is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+Sales Man - Allen is notified by Manager - Vivek of STAFF Event Meeting Room Booking with Big Room
+
+Manager - Vivek is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Manager - Pradeep is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Dave is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Mike is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+Sales Man - Allen is notified by Sys Admin - Sony of STAFF Event Software Update Advice with Win7
+#+end_src
+* 总结
+** 中介者模式(Mediator)结构
+#+begin_html
+{% img /images/blog/2014/mediator/mediator_structure.jpeg %}
+#+end_html
+** 组成
++ 抽象中介者（Mediator）
+  为与同事（Colleague）对象交流定义一个接口。
++ 具体中介者（ConcreteMediator）
+  1. 实现与同事（Colleague）对象协作的合作行为。
+  2. 知道和维护它的同事类。
++ 同事类（Colleague classes）
+  1. 每个同事类知道它的中介者对象。
+  2. 每个同事类任何它应该时与它的中介者交流，否则就与其他同事类交流。
+
+** 应用场景
++ 一组对象交流在很好定义的却复杂的方式上。导致的互相依赖性并没有好的组
+  织而且难理解时。
++ 复用一个对象是困难的，因为它引用并交流与许多其他对象。
++ 分布在很多类中的一个行为需要被定制但不能进行太多子类化。
+
+** 缺点
+中介者模式集中式控制。中介者模式以减少交互的复杂度而增加中介者的复杂度。
+因为一个中介者类封装了协议，它会变得比任何同事类都复杂。这会导致中介者
+类自身是个难维护的庞然大物。
