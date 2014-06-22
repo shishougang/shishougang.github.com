@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: C++ | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/c-/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-15T15:10:26+08:00</updated>
+  <updated>2014-06-22T20:25:32+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,180 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Double-Checked Locking Works In C++11]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/"/>
+    <updated>2014-06-22T14:07:01+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11</id>
+    <content type="html"><![CDATA[<p>在
+<a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">浅谈设计模式六: 单例模式(Singleton)</a>
+中提到double-checked locking pattern(DCLP)来实现Singleton设计模式，但是
+在C++11之前，没有安全方法在可移植的C++中去实现它．具体原因可见
+<a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
+或Scott Meyers和Andrei Alexandrescu发布的原文
+<a href="http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf">“C++ and the Perils of Double-Checked Locking”</a>
+．</p>
+
+<p>C++11引入了新的内存模型和线程库，使得能在C++中实现可移植的DCLP．本文说
+明如何实现它．</p>
+
+<h2 id="double-checked-locking">什么是Double-Checked Locking</h2>
+<p>在
+<a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
+很好的介绍什么是DCLP,这里稍作回顾.</p>
+
+<p>线程安全的方式实现Signleton模式如下:</p>
+
+<p><code>c++ singleton.cc
+Singleton* Singleton::instance() {
+  Lock lock;    // acquire lock (params omitted for simplicity)
+  if(pInstance == NULL) {
+    pInstance = new Singleton();
+  }
+  return pInstance;
+  }  // release lock (via Lock destructor)
+</code></p>
+
+<p>每次获取 Singleton 都要获取一个锁，但是实际上，我们只有当初始化 pInstance 时才需要一个锁。也就是只发生在第一次调用 instance 时。如果在一个程序运行时， instance 被调用了n次，我们只需要锁在第一次调用时。当我们知道那n-1次锁是没必要的.</p>
+
+<p>DCLP的关键点是发现，大多数 instance 的调用将看到 pInstance 是非空的，因此根本没必要去尝试初始化它。因此，DCLP判断 pInstance 是否为空在尝试获取锁前。只有当判断成功（ pInstance 还没有被初始化）才去获取锁，然后之后这个判断在此进行一次确保 pInstance 是仍然空的。（所以名字叫双重检查锁）。第二个检查是有必要的，因为从上可以看到，另外的线程可能碰巧初始化了 pInstance 在 pInstance 被第一次判断和获取锁之间。</p>
+
+<p><code>c++ singleton-dclp.cc
+Singleton* Singleton::instance() {
+  Singleton *tmp = pInstance;
+  ...  // need memory barrier
+  if(tmp == 0) { // 1st test
+  Lock lock;
+  tmp = pInstance;
+  if(tmp == 0) { // 2nd test
+    tmp  = new Singleton;
+  ...  // need memory barrier
+    pInstance = tmp;
+  }
+  }
+return pInstance;
+}
+</code></p>
+
+<p><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
+说明了各种不安全实现的缺陷,主要原因是1) 编译器的乱序编译 和2) CPU的乱
+序执行指令.所以安全的实现依靠memory barrier,防止它们的乱序,使得在多线
+程中得到同步,C++11之前没有可移植的C/C++函数,但现在,C++11有了.</p>
+
+<h2 id="c11acqurerelease-fence">使用C++11的Acqure和Release Fence</h2>
+<p>使用Acqure和Release Fence来实现它,并且保证对实例<code>pInstance</code>进行原子操
+作,把它定义为<code>atomic</code>类型,并用<code>memory_order_relaxed</code>操作.(Relaxed
+ordering: there are no synchronization or ordering constraints, only
+atomicity is required of this operation.)如下实现代码.</p>
+
+<p>``` c++
+std::atomic&lt;Singleton *&gt; Singleton::m_pInstance;
+std::mutex Singleton::m_mutex;</p>
+
+<p>Singleton* Singleton::instance() {
+  Singleton *tmp = m_pInstance.load(std::memory_order_relaxed);
+  std::atomic_thread_fence(std::memory_order_acquire);
+  if(tmp == nullptr) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    tmp = m_pInstance.load(std::memory_order_relaxed);
+    if(tmp == nullptr) {
+      tmp  = new Singleton;
+      std::atomic_thread_fence(std::memory_order_release);
+      m_pInstance.store(tmp, std::memory_order_relaxed);
+    }
+  }
+  return m_pInstance;
+}
+```</std::mutex></p>
+
+<p>在多核系统中,这整个代码也是稳健的,因为memory fences在多个线程间建立了
+同步的关系.<code>Singleton::m_pInstance</code>作为guard variable,singleton变
+量自身成为payload.</p>
+
+<p>如果没有这层同步关系的话,就不能保证第一个线程的所有写操作(这里就是
+singleton实力的创建)被第二个线程读取到,即使<code>m_pInstance</code>已经被第二个线
+程能看到.</p>
+
+<h2 id="c11">使用C++11的底层的内存顺序约束</h2>
+<p>在C++11中也可以在单元操作时附加底层的内存顺序约束来达到同样的目的.一个
+write-release能同步于一个read-release.</p>
+
+<ol>
+  <li>
+    <p><code>memory_order_acquire</code>: A load operation with this memory order performs the acquire operation on the affected memory location: prior writes made to other memory locations by the thread that did the release become visible in this thread.</p>
+  </li>
+  <li>
+    <p><code>memory_order_release</code>: A store operation with this memory order performs the release operation: prior writes to other memory locations become visible to the threads that do a consume or an acquire on the same location.</p>
+  </li>
+</ol>
+
+<p>``` c++
+std::atomic&lt;Singleton *&gt; Singleton::m_pInstance;
+std::mutex Singleton::m_mutex;</p>
+
+<p>Singleton* Singleton::instance() {
+  Singleton *tmp = m_pInstance.load(std::memory_order_acquire);
+  if(tmp == nullptr) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    tmp = m_pInstance.load(std::memory_order_relaxed);
+    if(tmp == nullptr) {
+      tmp  = new Singleton;
+      m_pInstance.store(tmp, std::memory_order_release);
+    }
+  }
+  return m_pInstance;
+}
+```</std::mutex></p>
+
+<p>从深层分析来看,这种形式的免锁机制的同步比上面单独memory fences来的约束
+更小.这种形式的操作只意味在这个操作周围防止内存乱序,而memory fences意
+味着在一块区域内防止内存乱序.更多细节参考preshing的
+<a href="http://preshing.com/20131125/acquire-and-release-fences-dont-work-the-way-youd-expect/">Acquire and Release Fences Don’t Work the Way You’d Expect</a>
+的分析.
+## 使用C++11的Sequentially-consistent ordering
+C++11还提供了其他的方法来写lock-free的代码.当在atomic操作函数中忽略
+<code>std::memory_order</code>参数项,那么默认值是<code>std::memory_order_seq_cst</code>,使得
+所有原子参数成为
+<a href="http://en.wikipedia.org/wiki/Sequential_consistency">sequentically consistent(SC)</a>
+原子.通过SC原子性,整个算法保证sequentically consistent只要没有<a href="http://www.devx.com/cplus/Article/42725">data races</a>.</p>
+
+<p>``` c++
+std::atomic&lt;Singleton *&gt; Singleton::m_pInstance;
+std::mutex Singleton::m_mutex;</p>
+
+<p>Singleton* Singleton::instance() {
+  Singleton *tmp = m_pInstance.load();
+  std::atomic_thread_fence(std::memory_order_acquire);
+  if(tmp == nullptr) {
+    std::lock_guard<std::mutex> lock(m_mutex);
+    tmp = m_pInstance.load(std::memory_order_relaxed);
+    if(tmp == nullptr) {
+      tmp  = new Singleton;
+      std::atomic_thread_fence(std::memory_order_release);
+      m_pInstance.store(tmp);
+    }
+  }
+  return m_pInstance;
+}
+```</std::mutex></p>
+
+<p>SC的原子性可能更容易理解.权衡点就是它产生的机器代码没有之前做法的高效.比
+如如下是Gcc 4.8.2 intle X64对上面代码产生的机器代码,通过<code>g++ -O2 -std=c++11 -S</code>.
+<img src="/images/blog/2014/multithreading/sc.png" title="sc’" ></p>
+
+<p>因为使用了SC原子性,对<code>m_pInstance</code>的存储实现使用了<code>mfence</code>指令,起到一
+个在X64上的full memory fence.这是个更严格的指令想对于DCLP在X64上的实际
+需求.一个普通的<code>mov</code>足以胜任.但也无关紧要,因为<code>mfence</code>指令也仅仅执行一
+次而已,就在创建singleton的实例的代码路径上.</p>
+
+<h2 id="more">More</h2>
+<p>使用<a href="http://preshing.com">Preshing</a>的小型可移植的lock-free库,在没有C++11
+的支持下,使用它的<a href="http://preshing.com/20130930/double-checked-locking-is-fixed-in-cpp11/#using-mintomic-fences">Mintomic Fences实现DCLP</a>.</p>
+
+<p>更多关于C++11的multithreading库的详解见之后的文章.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Last Thing D Needs总结]]></title>
@@ -808,193 +982,6 @@ CreateTool创建LineShape对象。
 <li>增加新的元素很困难。每增加一个新的元素将在抽象访问者类（Visitor)中增加一个新的抽象操作，并在每个具体访问类（ConcreteVisitor）中增加相应的操作。
 </li>
 <li>破坏封装性。访问者的方法假定具体元素类（ConcreteElement）接口足够强大让访问者对它元素进行操作。因而，这个模式强迫你提供能访问元素内部状态的公开操作，从而导致破坏了它的封装性。
-</li>
-</ul>
-</div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[浅谈设计模式二十二: 备忘录模式(Memento)]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F22/"/>
-    <updated>2014-05-04T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/04/浅谈设计模式22</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-一个对象的状态必须被存储下来以便它之后能恢复到那个状态，并且一个直接获取状态的接口将暴露实现的细节并破坏对象的封装。 那么如何不用直接获取状态的情况下，实现状态的存储和恢复呢？
-</p>
-
-<!-- more -->
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 备忘录模式(Memento)</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 目的</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-不破坏封装的前提下，采集和外部化对象的内部状态，以便这个对象能被恢复到这状态之后。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-只有一个状态标识需要保存和恢复的简单发起类演示备忘录模式。<a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/memento">代码实例在这里</a>。
-</p>
-</div>
-
-<div id="outline-container-sec-2-2-1" class="outline-4">
-<h4 id="sec-2-2-1"><span class="section-number-4">2.2.1</span> 需要保存和恢复状态的发起类</h4>
-<div class="outline-text-4" id="text-2-2-1">
-<ol class="org-ol">
-<li><code>CreateMemento</code> ：创建一个包含它当前内部状态快照的备忘录类。
-</li>
-<li><code>SetMemento</code> ：使用备忘录类恢复它的内部状态。
-</li>
-</ol>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">T</span>&gt;
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Originator</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Originator</span>() {}
-  <span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt;* <span style="color: #87cefa;">CreateMemento</span>() {
-    <span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt; *<span style="color: #eedd82;">m</span> = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">Memento</span>&lt;T&gt;();
-    m-&gt;set_state(state_);
-    <span style="color: #00ffff;">return</span> m;
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">SetMemento</span>(<span style="color: #98fb98;">Memento</span>&lt;<span style="color: #98fb98;">T</span>&gt; *<span style="color: #eedd82;">m</span>) {
-    state_ = m-&gt;state();
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_state</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">T</span> &amp;<span style="color: #eedd82;">state</span>) {state_ = state;}
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">ShowState</span>() <span style="color: #00ffff;">const</span> {
-    cout &lt;&lt; state_ &lt;&lt; endl;
-  }
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state_</span>;
-};
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-2" class="outline-4">
-<h4 id="sec-2-2-2"><span class="section-number-4">2.2.2</span> 备忘录类</h4>
-<div class="outline-text-4" id="text-2-2-2">
-<p>
-保存和返回状态。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #98fb98;">T</span>&gt;
-<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Memento</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Memento</span>() {}
-  <span style="color: #98fb98;">T</span> <span style="color: #87cefa;">state</span>() <span style="color: #00ffff;">const</span> {<span style="color: #00ffff;">return</span> state_;}
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_state</span>(<span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state</span>) {state_ = state;}
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">T</span> <span style="color: #eedd82;">state_</span>;
-};
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-2-2-3" class="outline-4">
-<h4 id="sec-2-2-3"><span class="section-number-4">2.2.3</span> 管理者</h4>
-<div class="outline-text-4" id="text-2-2-3">
-<p>
-负责备忘录的保护。用 <code>vector</code> 存储备忘录类以便发起者恢复状态。
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Caretaker</span> {
- <span style="color: #00ffff;">public</span>:
-  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Caretaker</span>() {}
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">SaveState</span>(<span style="color: #98fb98;">Originator</span>&lt;T&gt; *<span style="color: #eedd82;">orig</span>) {
-    memento_array_.push_back(orig-&gt;CreateMemento());
-  }
-  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">RestoreState</span>(<span style="color: #98fb98;">Originator</span>&lt;T&gt; *<span style="color: #eedd82;">orig</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">state_number</span>) {
-    orig-&gt;SetMemento(<span style="color: #98fb98;">memento_array_</span>[state_number]);
-  }
- <span style="color: #00ffff;">private</span>:
-  <span style="color: #98fb98;">vector</span>&lt;<span style="color: #98fb98;">Memento</span>&lt;T&gt; *&gt; <span style="color: #eedd82;">memento_array_</span>;
-};
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 总结</h2>
-<div class="outline-text-2" id="text-3">
-</div><div id="outline-container-sec-3-1" class="outline-3">
-<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 备忘录模式(Memento)结构</h3>
-<div class="outline-text-3" id="text-3-1">
-<img src="/images/blog/2014/memento/memento_structure.jpeg">
-</div>
-</div>
-
-<div id="outline-container-sec-3-2" class="outline-3">
-<h3 id="sec-3-2"><span class="section-number-3">3.2</span> 组成</h3>
-<div class="outline-text-3" id="text-3-2">
-<ul class="org-ul">
-<li>备忘录类（Memento）
-<ol class="org-ol">
-<li>存储发起者（Originator）对象的内部状态。根据它的发起者的判定，备忘录存储尽量多或尽量少的发起者的内部状态。
-</li>
-<li>防止发起者以外的对象访问。备忘录类实际有两个接口。管理者（Caretaker）拥有备忘录的窄接口——它只能把备忘录类传递给其他对象。发起者（Originator）相反拥有宽接口，让它访问所有必须的数据来自我恢复到之前状态。理想情况下，只有创建备忘录类的那个发起者才允许访问备忘录类的内部状态。
-</li>
-</ol>
-</li>
-<li>发起者（Originator）
-<ol class="org-ol">
-<li>创建一个包含它当前内部状态快照的备忘录类。
-</li>
-<li>使用备忘录类恢复它的内部状态。
-</li>
-</ol>
-</li>
-<li>管理者（Caretaker）
-<ol class="org-ol">
-<li>负责备忘录的保护。
-</li>
-<li>从不操作或检查备忘录类的内容。
-</li>
-</ol>
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-3-3" class="outline-3">
-<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
-<div class="outline-text-3" id="text-3-3">
-<ul class="org-ul">
-<li>一个对象的（或部分）状态快照必须被存储下来以便它之后能恢复到那个状态，并且
-</li>
-<li>一个直接获取状态的接口将暴露实现的细节并且破坏对象的封装。
-</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-sec-3-4" class="outline-3">
-<h3 id="sec-3-4"><span class="section-number-3">3.4</span> 缺点</h3>
-<div class="outline-text-3" id="text-3-4">
-<ul class="org-ul">
-<li>使用备忘录模式可能会开销很大。备忘录模式会导致很大的开销如果发起类必须在备忘录类你拷贝很大量的信息来恢复或如果客户过多的创建和返回备忘录给创建者。除非封装和恢复发起类状态的开销比较小，否则这个模式可能并不适合。
-</li>
-<li>定义窄和宽接口。在一些编程语言里确保只有发起类能访问备忘录类的状态可能比较困难。
-</li>
-<li>管理备忘录类的隐藏开销。一个管理者（caretaker）负责删除它管理的备忘录类。然而，这个管理者不清楚到底有多少的状态存储在备忘录里。因此一个轻量级管理者反而会引起大的存储开销当它存储备忘录时。
 </li>
 </ul>
 </div>
