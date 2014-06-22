@@ -354,7 +354,9 @@ Singleton初始化，然后做时间开销的统计看是否需要担心。
 另一种安全的做法是提前初始化，也就是初始化单例资源在程序最开始运行时。
 因为多线程程序基本以单线程开始，这个方法可以把一些对象初始化放到单线程
 的那部分代码，来达到消除需要担心在初始化时的线程问题。
-
+*** DCLP在C++11中得到修复
+[[http://dreamrunner.org/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/][Double-Checked Locking Works in C++11]]详细分析了如何用C++11来实现可移植
+性的安全DCLP.
 * 总结
 ** 单例模式(Singleton)结构
 #+begin_html

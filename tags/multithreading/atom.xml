@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-22T20:25:32+08:00</updated>
+  <updated>2014-06-22T20:29:37+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -29,6 +29,8 @@
 
 <p>C++11引入了新的内存模型和线程库，使得能在C++中实现可移植的DCLP．本文说
 明如何实现它．</p>
+
+<!-- more -->
 
 <h2 id="double-checked-locking">什么是Double-Checked Locking</h2>
 <p>在
