@@ -104,6 +104,69 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-24T20:19:36+08:00"  class="updated" >Jun 24<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/06/24/high-resolution-time/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在不同的平台有繁多的Time API，如何选用精准的高精度Time函数来做
+performance benchmarking呢？</p>
+
+<h2 id="wall-clock-time-vs-cpu-time">Wall-clock time VS CPU time</h2>
+<p>先理解一些时间的概念。明白不同时间API测量的是什么时间。</p>
+
+<p><a href="http://en.wikipedia.org/wiki/Wall-clock_time">Wall-clock time</a>,顾名思
+义，墙上的钟，代表一个任务从开始到完成所经历的时间。它包含3部分：CPU的
+时间，I/O的时间和通信延迟的时间。但wall-clock很少是正确的时钟来使用，
+因为它随着时区，和daylightsaving改变，或与NTP同步。而这些特性没有一个
+是有益的，如果你用它来调度任务或做performance benchmarking。它仅仅如名
+字所言，墙上的一个时钟。</p>
+
+<p><a href="http://en.wikipedia.org/wiki/CPU_time">CPU time</a>仅仅统计一个任务从开
+始到完成在CPU上所花的时间。CPU time主要包括User time（在user space所花
+时间）和System time（在kernel space所花时间）。</p>
+
+<p>以并行程序为例，CPU time就是所有CPU在这个程序所花的时间总和，
+Wall-clock time在这种情况可能时间相对短，它只统计任务开始到结束所花时
+间。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/24/high-resolution-time/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/">Double-Checked Locking Works in C++11</a></h1>
     
     
@@ -676,54 +739,6 @@ computation and (2) the asymptotic analysis of worst-case complexity.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/24/column14_15/">Programming Pearls: Column14-15</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-24T00:00:00+08:00"  class="updated" >May 24<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/24/column14_15/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/24/column14_15/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Hash存储word次数</h3>
-<div class="outline-text-3" id="text-1-1">
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/24/column14_15/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -737,6 +752,10 @@ computation and (2) the asymptotic analysis of worst-case complexity.
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/">Double-Checked Locking Works in C++11</a>
@@ -754,15 +773,11 @@ computation and (2) the asymptotic analysis of worst-case complexity.
         <a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Algorithm Design Manual Chapter 4</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/04/The-Algorithm-Design-Manual3/">Algorithm Design Manual Chapter 3</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 106.92307692307692%'>C++(3)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 102.3076923076923%'>Multithreading(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 102.3076923076923%'>Multithreading(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
