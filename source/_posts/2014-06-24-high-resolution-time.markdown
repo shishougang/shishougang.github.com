@@ -34,6 +34,7 @@ Wall-clock time在这种情况可能时间相对短，它只统计任务开始�
 
 ## 不同时钟API对比[^f1]
 对于不同的时钟API,主要分析如下特性：
+
 1. API测试的是什么时间？（real, user, system，CPU or wall-clock)
 2. API的精度？(s, ms, µs, or faster?)
 3. 多久时间这个时钟数字会返转？或有什么策略避免它？
