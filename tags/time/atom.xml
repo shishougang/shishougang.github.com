@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Time | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/time/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-24T20:35:30+08:00</updated>
+  <updated>2014-06-25T20:34:36+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -42,12 +42,15 @@ Wall-clock time在这种情况可能时间相对短，它只统计任务开始�
 <!-- more -->
 
 <h2 id="apif1">不同时钟API对比<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup></h2>
-<p>对于不同的时钟API,主要分析如下特性：
-1. API测试的是什么时间？（real, user, system，CPU or wall-clock)
-2. API的精度？(s, ms, µs, or faster?)
-3. 多久时间这个时钟数字会返转？或有什么策略避免它？
-4. 时钟是monotonic的，还是它会随着系统时间改变（比如NTP，time zone，
-daylight saving time, by the user, etc)?</p>
+<p>对于不同的时钟API,主要分析如下特性：</p>
+
+<ol>
+  <li>API测试的是什么时间？（real, user, system，CPU or wall-clock)</li>
+  <li>API的精度？(s, ms, µs, or faster?)</li>
+  <li>多久时间这个时钟数字会返转？或有什么策略避免它？</li>
+  <li>时钟是monotonic的，还是它会随着系统时间改变（比如NTP，time zone，
+daylight saving time, by the user, etc)?</li>
+</ol>
 
 <p>Linux和OS X的主要时钟API：</p>
 
