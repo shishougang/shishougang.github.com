@@ -143,7 +143,7 @@ MathJax.Hub.Config({
 </ol>
 
 <p>
-现在气候收集这3个数据：温度，湿度和气压。有3种不同的显示：现在的天气情况，天气统计信息和天气预测信息。
+现在气候收集这 3 个数据：温度，湿度和气压。有 3 种不同的显示：现在的天气情况，天气统计信息和天气预测信息。
 </p>
 
 <p>
@@ -159,7 +159,7 @@ forecastDisplay.update(temp_, humdity_, pressure_);
 </div>
 
 <p class="info">
-1. WeatherData和Display比较紧的耦合。在函数内直接使用实例，每次增加或较少Display都要在这个函数内修改。<br />
+1. WeatherData 和 Display 比较紧的耦合。在函数内直接使用实例，每次增加或较少 Display 都要在这个函数内修改。<br />
 2. 以具体实例来编码，使得不能动态的添加和减少显示元素，唯有修改这段代码
 </p>
 
@@ -184,7 +184,7 @@ forecastDisplay.update(temp_, humdity_, pressure_);
 <h3 id="sec-2-2"><span class="section-number-3">2.2</span> 实现</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-这里一对多的依赖关系，我们把这单一的对象称为目标对象(Subject)，而所有依赖于它的称为观察者对象(Observer)。分别定义Subject和Observer的对象。
+这里一对多的依赖关系，我们把这单一的对象称为目标对象(Subject)，而所有依赖于它的称为观察者对象(Observer)。分别定义 Subject 和 Observer 的对象。
 <a href="https://github.com/shishougang/DesignPattern-CPP/tree/master/src/observer">代码实例在这里</a>。
 </p>
 </div>
@@ -313,7 +313,7 @@ weather_data-&gt;setMeasurements(82, 70, 29.2f);
 <h3 id="sec-3-3"><span class="section-number-3">3.3</span> 应用场景</h3>
 <div class="outline-text-3" id="text-3-3">
 <ul class="org-ul">
-<li>当一个抽象类有2个方面，一个依赖另外一个。把这些不同的方面封装成独立的对象来让你独立的改变和复用他们。
+<li>当一个抽象类有 2 个方面，一个依赖另外一个。把这些不同的方面封装成独立的对象来让你独立的改变和复用他们。
 </li>
 <li>当改变一个对象需要改变其他的对象们，而且你不知道有多少对象需要改变
 </li>

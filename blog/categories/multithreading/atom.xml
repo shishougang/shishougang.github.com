@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-25T20:34:36+08:00</updated>
+  <updated>2014-06-26T23:22:23+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -20,24 +20,24 @@
     <id>http://dreamrunner.org/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11</id>
     <content type="html"><![CDATA[<p>在
 <a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">浅谈设计模式六: 单例模式(Singleton)</a>
-中提到double-checked locking pattern(DCLP)来实现Singleton设计模式，但是
-在C++11之前，没有安全方法在可移植的C++中去实现它．具体原因可见
+中提到 double-checked locking pattern(DCLP)来实现 Singleton 设计模式，但是
+在 C++11 之前，没有安全方法在可移植的 C++中去实现它．具体原因可见
 <a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
-或Scott Meyers和Andrei Alexandrescu发布的原文
+或 Scott Meyers 和 Andrei Alexandrescu 发布的原文
 <a href="http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf">“C++ and the Perils of Double-Checked Locking”</a>
 ．</p>
 
-<p>C++11引入了新的内存模型和线程库，使得能在C++中实现可移植的DCLP．本文说
+<p>C++11 引入了新的内存模型和线程库，使得能在 C++中实现可移植的 DCLP．本文说
 明如何实现它．</p>
 
 <!-- more -->
 
-<h2 id="double-checked-locking">什么是Double-Checked Locking</h2>
+<h2 id="double-checked-locking">什么是 Double-Checked Locking</h2>
 <p>在
 <a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
-很好的介绍什么是DCLP,这里稍作回顾.</p>
+很好的介绍什么是 DCLP,这里稍作回顾.</p>
 
-<p>线程安全的方式实现Signleton模式如下:</p>
+<p>线程安全的方式实现 Signleton 模式如下:</p>
 
 <p><code>c++ singleton.cc
 Singleton* Singleton::instance() {
@@ -49,9 +49,9 @@ Singleton* Singleton::instance() {
   }  // release lock (via Lock destructor)
 </code></p>
 
-<p>每次获取 Singleton 都要获取一个锁，但是实际上，我们只有当初始化 pInstance 时才需要一个锁。也就是只发生在第一次调用 instance 时。如果在一个程序运行时， instance 被调用了n次，我们只需要锁在第一次调用时。当我们知道那n-1次锁是没必要的.</p>
+<p>每次获取 Singleton 都要获取一个锁，但是实际上，我们只有当初始化 pInstance 时才需要一个锁。也就是只发生在第一次调用 instance 时。如果在一个程序运行时， instance 被调用了 n 次，我们只需要锁在第一次调用时。当我们知道那 n-1 次锁是没必要的.</p>
 
-<p>DCLP的关键点是发现，大多数 instance 的调用将看到 pInstance 是非空的，因此根本没必要去尝试初始化它。因此，DCLP判断 pInstance 是否为空在尝试获取锁前。只有当判断成功（ pInstance 还没有被初始化）才去获取锁，然后之后这个判断在此进行一次确保 pInstance 是仍然空的。（所以名字叫双重检查锁）。第二个检查是有必要的，因为从上可以看到，另外的线程可能碰巧初始化了 pInstance 在 pInstance 被第一次判断和获取锁之间。</p>
+<p>DCLP 的关键点是发现，大多数 instance 的调用将看到 pInstance 是非空的，因此根本没必要去尝试初始化它。因此，DCLP 判断 pInstance 是否为空在尝试获取锁前。只有当判断成功（ pInstance 还没有被初始化）才去获取锁，然后之后这个判断在此进行一次确保 pInstance 是仍然空的。（所以名字叫双重检查锁）。第二个检查是有必要的，因为从上可以看到，另外的线程可能碰巧初始化了 pInstance 在 pInstance 被第一次判断和获取锁之间。</p>
 
 <p><code>c++ singleton-dclp.cc
 Singleton* Singleton::instance() {
@@ -71,12 +71,12 @@ return pInstance;
 </code></p>
 
 <p><a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
-说明了各种不安全实现的缺陷,主要原因是1) 编译器的乱序编译 和2) CPU的乱
-序执行指令.所以安全的实现依靠memory barrier,防止它们的乱序,使得在多线
-程中得到同步,C++11之前没有可移植的C/C++函数,但现在,C++11有了.</p>
+说明了各种不安全实现的缺陷,主要原因是 1) 编译器的乱序编译 和 2) CPU 的乱
+序执行指令.所以安全的实现依靠 memory barrier,防止它们的乱序,使得在多线
+程中得到同步,C++11 之前没有可移植的 C/C++函数,但现在,C++11 有了.</p>
 
-<h2 id="c11acqurerelease-fence">使用C++11的Acqure和Release Fence</h2>
-<p>使用Acqure和Release Fence来实现它,并且保证对实例<code>pInstance</code>进行原子操
+<h2 id="c11--acqure--release-fence">使用 C++11 的 Acqure 和 Release Fence</h2>
+<p>使用 Acqure 和 Release Fence 来实现它,并且保证对实例<code>pInstance</code>进行原子操
 作,把它定义为<code>atomic</code>类型,并用<code>memory_order_relaxed</code>操作.(Relaxed
 ordering: there are no synchronization or ordering constraints, only
 atomicity is required of this operation.)如下实现代码.</p>
@@ -101,17 +101,17 @@ std::mutex Singleton::m_mutex;</p>
 }
 ```</std::mutex></p>
 
-<p>在多核系统中,这整个代码也是稳健的,因为memory fences在多个线程间建立了
-同步的关系.<code>Singleton::m_pInstance</code>作为guard variable,singleton变
-量自身成为payload.</p>
+<p>在多核系统中,这整个代码也是稳健的,因为 memory fences 在多个线程间建立了
+同步的关系.<code>Singleton::m_pInstance</code>作为 guard variable,singleton 变
+量自身成为 payload.</p>
 
 <p>如果没有这层同步关系的话,就不能保证第一个线程的所有写操作(这里就是
-singleton实力的创建)被第二个线程读取到,即使<code>m_pInstance</code>已经被第二个线
+singleton 实力的创建)被第二个线程读取到,即使<code>m_pInstance</code>已经被第二个线
 程能看到.</p>
 
-<h2 id="c11">使用C++11的底层的内存顺序约束</h2>
-<p>在C++11中也可以在单元操作时附加底层的内存顺序约束来达到同样的目的.一个
-write-release能同步于一个read-release.</p>
+<h2 id="c11-">使用 C++11 的底层的内存顺序约束</h2>
+<p>在 C++11 中也可以在单元操作时附加底层的内存顺序约束来达到同样的目的.一个
+write-release 能同步于一个 read-release.</p>
 
 <ol>
   <li>
@@ -140,17 +140,17 @@ std::mutex Singleton::m_mutex;</p>
 }
 ```</std::mutex></p>
 
-<p>从深层分析来看,这种形式的免锁机制的同步比上面单独memory fences来的约束
-更小.这种形式的操作只意味在这个操作周围防止内存乱序,而memory fences意
-味着在一块区域内防止内存乱序.更多细节参考preshing的
+<p>从深层分析来看,这种形式的免锁机制的同步比上面单独 memory fences 来的约束
+更小.这种形式的操作只意味在这个操作周围防止内存乱序,而 memory fences 意
+味着在一块区域内防止内存乱序.更多细节参考 preshing 的
 <a href="http://preshing.com/20131125/acquire-and-release-fences-dont-work-the-way-youd-expect/">Acquire and Release Fences Don’t Work the Way You’d Expect</a>
 的分析.
-## 使用C++11的Sequentially-consistent ordering
-C++11还提供了其他的方法来写lock-free的代码.当在atomic操作函数中忽略
+## 使用 C++11 的 Sequentially-consistent ordering
+C++11 还提供了其他的方法来写 lock-free 的代码.当在 atomic 操作函数中忽略
 <code>std::memory_order</code>参数项,那么默认值是<code>std::memory_order_seq_cst</code>,使得
 所有原子参数成为
 <a href="http://en.wikipedia.org/wiki/Sequential_consistency">sequentically consistent(SC)</a>
-原子.通过SC原子性,整个算法保证sequentically consistent只要没有<a href="http://www.devx.com/cplus/Article/42725">data races</a>.</p>
+原子.通过 SC 原子性,整个算法保证 sequentically consistent 只要没有 <a href="http://www.devx.com/cplus/Article/42725">data races</a>.</p>
 
 <p>``` c++
 std::atomic&lt;Singleton *&gt; Singleton::m_pInstance;
@@ -172,21 +172,22 @@ std::mutex Singleton::m_mutex;</p>
 }
 ```</std::mutex></p>
 
-<p>SC的原子性可能更容易理解.权衡点就是它产生的机器代码没有之前做法的高效.比
-如如下是Gcc 4.8.2 intle X64对上面代码产生的机器代码,通过<code>g++ -O2 -std=c++11 -S</code>.
+<p>SC 的原子性可能更容易理解.权衡点就是它产生的机器代码没有之前做法的高效.比
+如如下是 Gcc 4.8.2 intle X64 对上面代码产生的机器代码,通过<code>g++ -O2 -std=c++11 -S</code>.
 <img src="/images/blog/2014/multithreading/sc.png" title="sc’" ></p>
 
-<p>因为使用了SC原子性,对<code>m_pInstance</code>的存储实现使用了<code>mfence</code>指令,起到一
-个在X64上的full memory fence.这是个更严格的指令想对于DCLP在X64上的实际
+<p>因为使用了 SC 原子性,对<code>m_pInstance</code>的存储实现使用了<code>mfence</code>指令,起到一
+个在 X64 上的 full memory fence.这是个更严格的指令想对于 DCLP 在 X64 上的实际
 需求.一个普通的<code>mov</code>足以胜任.但也无关紧要,因为<code>mfence</code>指令也仅仅执行一
-次而已,就在创建singleton的实例的代码路径上.</p>
+次而已,就在创建 singleton 的实例的代码路径上.</p>
 
 <h2 id="more">More</h2>
-<p>使用<a href="http://preshing.com">Preshing</a>的小型可移植的lock-free库,在没有C++11
-的支持下,使用它的<a href="http://preshing.com/20130930/double-checked-locking-is-fixed-in-cpp11/#using-mintomic-fences">Mintomic Fences实现DCLP</a>.</p>
+<p>使用 <a href="http://preshing.com">Preshing</a> 的小型可移植的 lock-free 库,在没有 C++11
+的支持下,使用它的 <a href="http://preshing.com/20130930/double-checked-locking-is-fixed-in-cpp11/#using-mintomic-fences">Mintomic Fences 实现 DCLP</a>.</p>
 
-<p>更多关于C++11的multithreading库的详解见之后的文章.</p>
+<p>更多关于 C++11 的 multithreading 库的详解见之后的文章.</p>
 ]]></content>
+  
   </entry>
   
 </feed>

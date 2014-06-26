@@ -761,15 +761,15 @@ where each vertex has degree at most 2. Must such graphs be bipartite?
 </p>
 
 <p>
-这样的图不必要是bipartite的.反例是:3个顶点,两两相连.
+这样的图不必要是 bipartite 的.反例是:3 个顶点,两两相连.
 </p>
 
 <p>
-因为每个顶点最多2度,使用DFS遍历,对子顶点着色与父顶点相反的颜色.当遇到一个回归的边,那么对当前定点着色与父顶点不同,并且与回归边上的祖先定点不同.
+因为每个顶点最多 2 度,使用 DFS 遍历,对子顶点着色与父顶点相反的颜色.当遇到一个回归的边,那么对当前定点着色与父顶点不同,并且与回归边上的祖先定点不同.
 </p>
 
 <p>
-只有一次遍历,复杂度O(m+n) (m edges, n vertices).
+只有一次遍历,复杂度 O(m+n) (m edges, n vertices).
 </p>
 </div>
 </div>
@@ -785,7 +785,7 @@ pre-order and post-order traversals.
 </p>
 
 <p>
-没有相同元素,给予pre-order and in-order traversals能重构binary search
+没有相同元素,给予 pre-order and in-order traversals 能重构 binary search
 tree.代码如下.若有相同元素,给予:
 </p>
 
@@ -807,15 +807,15 @@ tree.代码如下.若有相同元素,给予:
 </div>
 
 <p>
-每次preorder的数都要去搜索在inoder所在位置,若书是平衡的,那么n个元素每次搜索后总的算法复杂度O(nlogn),但不是平衡的,一下就变成O(n<sup>2</sup>).
+每次 preorder 的数都要去搜索在 inoder 所在位置,若书是平衡的,那么 n 个元素每次搜索后总的算法复杂度 O(nlogn),但不是平衡的,一下就变成 O(n<sup>2</sup>).
 </p>
 
 <p>
-所以利用hash table,先把inorder的元素和位置hash起来,那么总的算法时间:O(n).
+所以利用 hash table,先把 inorder 的元素和位置 hash 起来,那么总的算法时间:O(n).
 </p>
 
 <p>
-以下假设元素都小于255,简单的利用数组映射来模拟hash table.
+以下假设元素都小于 255,简单的利用数组映射来模拟 hash table.
 </p>
 <div class="org-src-container">
 
@@ -854,7 +854,7 @@ tree.代码如下.若有相同元素,给予:
 </div>
 
 <ul class="org-ul">
-<li>给予pre-order and post-order traversals, 不能重构binary search tree.
+<li>给予 pre-order and post-order traversals, 不能重构 binary search tree.
 </li>
 </ul>
 </div>
@@ -907,13 +907,13 @@ Design an efficient algorithm to find such a schedule if one exists.
 </p>
 
 <p>
-把问题转换成图问题解决。建立无向图，顶点是每部电影，边E(1,2)表示有个客户想看M1和M2.如下图实例，有电影M1-M4,3个客户，1个客户想看M1和M3,一个客户想看M1和M4，一个客户想看M2和M4.那么把图分成（M1，M2）和（M3,M4），周六日各放一组,满足所有客户要求。
+把问题转换成图问题解决。建立无向图，顶点是每部电影，边 E(1,2)表示有个客户想看 M1 和 M2.如下图实例，有电影 M1-M4,3 个客户，1 个客户想看 M1 和 M3,一个客户想看 M1 和 M4，一个客户想看 M2 和 M4.那么把图分成（M1，M2）和（M3,M4），周六日各放一组,满足所有客户要求。
 </p>
 
 <img src="/images/blog/2014/AlgorithmDesignManual/movie1.jpg" />
 
 <p>
-若多一个客户想看M3和M4,如下图，无论怎么分图，都有2部电影相连，所以不能满足所有客户的要求。可以得出：若原本的图是bipartite graph，那么能找到满足客户的放映安排。若不是，就不能满足客户要求。
+若多一个客户想看 M3 和 M4,如下图，无论怎么分图，都有 2 部电影相连，所以不能满足所有客户的要求。可以得出：若原本的图是 bipartite graph，那么能找到满足客户的放映安排。若不是，就不能满足客户要求。
 </p>
 
 <img src="/images/blog/2014/AlgorithmDesignManual/movie2.jpg" />
@@ -941,15 +941,15 @@ an efficient algorithm to find the minimum number of rows needed,
 if it is possible.
 </li>
 
-<li>创建一幅有向图,顶点代表孩子,有向边E(i,j)代表孩子i hates 孩子j;
+<li>创建一幅有向图,顶点代表孩子,有向边 E(i,j)代表孩子 i hates 孩子 j;
 </li>
-<li>topological sort得到队列，或BFS时发现环，证明不可能。只BFS遍历一次，
+<li>topological sort 得到队列，或 BFS 时发现环，证明不可能。只 BFS 遍历一次，
 O(m + n)。
 </li>
 
-<li>如题1创建有向图;
+<li>如题 1 创建有向图;
 </li>
-<li>作DFS遍历，用遍历的level作为行号。
+<li>作 DFS 遍历，用遍历的 level 作为行号。
 </li>
 </ol>
 </div>
@@ -962,9 +962,9 @@ O(m + n)。
 Which data structures are used in depth-first and breath-first search?
 </p>
 <ol class="org-ol">
-<li>BFS:使用queue
+<li>BFS:使用 queue
 </li>
-<li>DFS:使用stack,通常使用递归代替stack.
+<li>DFS:使用 stack,通常使用递归代替 stack.
 </li>
 </ol>
 </div>

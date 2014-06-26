@@ -344,7 +344,7 @@ job in O(nlogn) time.
 </p>
 
 <p>
-用个O(nlogn)的排序算法对2n个队根据实力排序，前n个作为一队，后n个作为一队。
+用个 O(nlogn)的排序算法对 2n 个队根据实力排序，前 n 个作为一队，后 n 个作为一队。
 </p>
 </div>
 </div>
@@ -387,13 +387,13 @@ worst-case time.
 
 
 <ul class="org-ul">
-<li>(a) 扫描S一次获得最小和最大值.
+<li>(a) 扫描 S 一次获得最小和最大值.
 </li>
 <li>(b) 取首尾数。
 </li>
-<li>(c) O(nlogn)的算法排序，扫描排序好的S，获得最小差的相邻元素对。
+<li>(c) O(nlogn)的算法排序，扫描排序好的 S，获得最小差的相邻元素对。
 </li>
-<li>(d) 扫描排序好的S，获得最小差的相邻元素对。
+<li>(d) 扫描排序好的 S，获得最小差的相邻元素对。
 </li>
 </ul>
 </div>
@@ -443,11 +443,11 @@ should become (3,red), (9,red), (1,blue), (4,blue), (6,yellow).
 </p>
 
 <ol class="org-ol">
-<li>创建3个分别存储red，blue，yellow的数组;
+<li>创建 3 个分别存储 red，blue，yellow 的数组;
 </li>
-<li>扫描input，依次按颜色装入不同的数组;
+<li>扫描 input，依次按颜色装入不同的数组;
 </li>
-<li>分别从red，blue，yellow的数组中输出结果。
+<li>分别从 red，blue，yellow 的数组中输出结果。
 </li>
 </ol>
 </div>
@@ -462,9 +462,9 @@ and correct algorithm to compute the mode of a set of n numbers.
 </p>
 
 <ul class="org-ul">
-<li>O(nlogn): O(nlogn)排序，扫描Set一遍得到频率最大的数。
+<li>O(nlogn): O(nlogn)排序，扫描 Set 一遍得到频率最大的数。
 </li>
-<li>O(n): 使用hash map扫描一遍存储数字频率，扫描hash map得到频率最大数。
+<li>O(n): 使用 hash map 扫描一遍存储数字频率，扫描 hash map 得到频率最大数。
 </li>
 </ul>
 </div>
@@ -480,7 +480,7 @@ credit, give a Θ(n<sup>2</sup>) algorithm for this problem.)
 </p>
 
 <ol class="org-ol">
-<li>从S1中减去n，O(nlogn)排序S1和S2,然后能否找出相同的元素（binary search或扫描比较）。
+<li>从 S1 中减去 n，O(nlogn)排序 S1 和 S2,然后能否找出相同的元素（binary search 或扫描比较）。
 </li>
 <li>Sort and Scan
 <div class="org-src-container">
@@ -505,9 +505,9 @@ sort S2<span style="color: #00ffff;"> in</span> O(nlogn)
 </li>
 <li>Binary Search
 <ul class="org-ul">
-<li>O(nlogn)排序S1
+<li>O(nlogn)排序 S1
 </li>
-<li>X-S2[i]去binary search排序好的S1，是否找到元素。
+<li>X-S2[i]去 binary search 排序好的 S1，是否找到元素。
 </li>
 </ul>
 </li>
@@ -541,7 +541,7 @@ people checked out at least one book.
 </ol>
 
 <p>
-都使用Hash Table，O(n)
+都使用 Hash Table，O(n)
 </p>
 </div>
 </div>
@@ -633,7 +633,7 @@ problem.
 <li>Assume that A and B are sorted. Give an O(n) algorithm for the problem.
 </li>
 
-<li>O(nlogn)对Ａ和Ｂ排序，然后用2的O(n)的方法。
+<li>O(nlogn)对Ａ和Ｂ排序，然后用 2 的 O(n)的方法。
 </li>
 <li>若Ａ和Ｂ以升序排序
 <div class="org-src-container">
@@ -683,9 +683,9 @@ algorithm to test whether k of the integers in S add up to T.
 <ol class="org-ol">
 <li>O(nlogn）对数组排序
 </li>
-<li>(k-1)个数的组合有n<sup>k-1</sup>，并计算k-1个数的和sum
+<li>(k-1)个数的组合有 n<sup>k-1</sup>，并计算 k-1 个数的和 sum
 </li>
-<li>用binary search在数组中搜索T-sum
+<li>用 binary search 在数组中搜索 T-sum
 </li>
 </ol>
 </div>
@@ -710,14 +710,14 @@ Hash Table 可以解决。或
 <h4 id="sec-2-11-1">Find the elements that appear more than n / 2 times</h4>
 <div class="outline-text-4" id="text-2-11-1">
 <p>
-数组中最多有一个数超过重复n/2次，并且排序后的第ceiling(n/2)个数必定是这个数。
+数组中最多有一个数超过重复 n/2 次，并且排序后的第 ceiling(n/2)个数必定是这个数。
 </p>
 <ol class="org-ol">
 <li>method1
 <ul class="org-ul">
-<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以O(n)的复杂度找到第ceiling(n/2)个小数;
+<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以 O(n)的复杂度找到第 ceiling(n/2)个小数;
 </li>
-<li>扫描数组，计数这个数的重复数是否大于n/2.
+<li>扫描数组，计数这个数的重复数是否大于 n/2.
 </li>
 </ul>
 </li>
@@ -770,26 +770,26 @@ Hash Table 可以解决。或
 <ul class="org-ul">
 <li>method1
 <ol class="org-ol">
-<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以O(n)的复杂度找到中间数，验证中中间数是否重复
+<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以 O(n)的复杂度找到中间数，验证中中间数是否重复
 n/4(O(n));
 </li>
 <li>以中间元素划分数组为两部分(O(n));
 </li>
-<li>在上下半部分n/2中重复n/4次数的元素，同第一个问题一样找(O(n));
+<li>在上下半部分 n/2 中重复 n/4 次数的元素，同第一个问题一样找(O(n));
 </li>
 </ol>
 </li>
 <li>method2
 <ol class="org-ol">
-<li>初始3个空的槽，想对应的槽的3个计数为0;
+<li>初始 3 个空的槽，想对应的槽的 3 个计数为 0;
 </li>
 <li>对于数组中每个元素：
 <ul class="org-ul">
 <li>若等于其中任何一个槽中数，增加计数;
 </li>
-<li>若有槽空，放入这个槽，并计数为1;
+<li>若有槽空，放入这个槽，并计数为 1;
 </li>
-<li>否则，对所有槽内数的计数减1
+<li>否则，对所有槽内数的计数减 1
 </li>
 </ul>
 </li>
@@ -812,7 +812,7 @@ set of n integers in O(n + klogn).
 <ol class="org-ol">
 <li>O(n)的复杂度建立一个最小堆;
 </li>
-<li>连续k次取出最小值，最后得到第k个最小值。
+<li>连续 k 次取出最小值，最后得到第 k 个最小值。
 </li>
 </ol>
 </div>
@@ -836,14 +836,14 @@ better, or if it does not matter. Explain your answers.
 <li>Want to find the minimum element quickly.
 </li>
 
-<li>都开销O(1)。
+<li>都开销 O(1)。
 </li>
-<li>若知道删除的地方，max-heap花费O(logn)，sorted array花费O(n)。若不知道删除的地方，max-heap花费O(n)查找，删除花费O(logn); sorted
-array binary search花费O(logn)，删除花费O(n)。
+<li>若知道删除的地方，max-heap 花费 O(logn)，sorted array 花费 O(n)。若不知道删除的地方，max-heap 花费 O(n)查找，删除花费 O(logn); sorted
+array binary search 花费 O(logn)，删除花费 O(n)。
 </li>
-<li>max-heap花费O(n);sorted array花费O(logn)。
+<li>max-heap 花费 O(n);sorted array 花费 O(logn)。
 </li>
-<li>max-heap花费O(n);sorted array花费O(1)。
+<li>max-heap 花费 O(n);sorted array 花费 O(1)。
 </li>
 </ol>
 </div>
@@ -858,9 +858,9 @@ up the elementary O(kn)-time algorithm).
 </p>
 
 <ol class="org-ol">
-<li>扫描k组sorted lists组成一个大小k的min-heap;
+<li>扫描 k 组 sorted lists 组成一个大小 k 的 min-heap;
 </li>
-<li>从min-heap中取出最小值放入结果list。
+<li>从 min-heap 中取出最小值放入结果 list。
 </li>
 </ol>
 </div>
@@ -879,18 +879,18 @@ the process?
 </p>
 
 <ul class="org-ul">
-<li>找第二大元素：大小为2个的数组初始化为第一二个元素，之后每个元素与这数组对比，剔除最小的，最后数组内2个元组对比得到最大和第二大元素，一共比较2(n-2)+1=2n-3，找出第二大元素。
+<li>找第二大元素：大小为 2 个的数组初始化为第一二个元素，之后每个元素与这数组对比，剔除最小的，最后数组内 2 个元组对比得到最大和第二大元素，一共比较 2(n-2)+1=2n-3，找出第二大元素。
 </li>
-<li>找第三大元素：同样已大小为3的数组，最后比较数3(n-3)+2=3n-7。
+<li>找第三大元素：同样已大小为 3 的数组，最后比较数 3(n-3)+2=3n-7。
 </li>
 </ul>
 
 <p>
-<a href="http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是n的倍数，最坏时间复杂度可以达到：O(nlogn)。
+<a href="http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是 n 的倍数，最坏时间复杂度可以达到：O(nlogn)。
 </p>
 
 <p>
-<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-6">Tournament Algorithm</a>找第二大元素比较次数O(n+logn);找第k个最大元素，比较次数为O(n+klogn)。
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-6">Tournament Algorithm</a>找第二大元素比较次数 O(n+logn);找第 k 个最大元素，比较次数为 O(n+klogn)。
 </p>
 </div>
 </div>
@@ -984,12 +984,12 @@ There is a linear-time solution.
 </p>
 
 <p>
-2次扫描。
+2 次扫描。
 </p>
 <ul class="org-ul">
-<li>第一次：把red和white当成一样，用quick的partition分开与blue。
+<li>第一次：把 red 和 white 当成一样，用 quick 的 partition 分开与 blue。
 </li>
-<li>第二次：只区分red和white的子区间。   
+<li>第二次：只区分 red 和 white 的子区间。   
 </li>
 </ul>
 </div>
@@ -1005,7 +1005,7 @@ ensure that mergesort is a stable sorting algorithm.
 </p>
 
 <p>
-在合并时元素相等时选index小的元素在前。
+在合并时元素相等时选 index 小的元素在前。
 </p>
 </div>
 </div>
@@ -1041,7 +1041,7 @@ steps.
 </p>
 
 + $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。<br />
-+ O(n)去mergesort前半部分和后半部分。
++ O(n)去 mergesort 前半部分和后半部分。
 </div>
 </div>
 
@@ -1055,7 +1055,7 @@ algorithm that sorts A in substantially less than O(nlogn).
 </p>
 
 <p>
-和23一样，用balanced binary search tree，树的高度不超过loglogn,最后的复杂度O(n*logloglogn)。
+和 23 一样，用 balanced binary search tree，树的高度不超过 loglogn,最后的复杂度 O(n*logloglogn)。
 </p>
 </div>
 </div>
@@ -1076,9 +1076,9 @@ for only one wall. An O(nlogn) algorithm is possible.
 <li>以ｑ为中心点，顺时针旋转，Ｐ中所有边随着顺时针旋转都有一个起始点
 (head)和结束点（end），计算它们的极角（polar angle）; O(n)
 </li>
-<li>对所有head和end按照angle大小排序，若相等，head在前; O(nlogn)
+<li>对所有 head 和 end 按照 angle 大小排序，若相等，head 在前; O(nlogn)
 </li>
-<li>扫描这个排序好的队列，遇到head加1,遇到end减1,最后算出这个区间的最大值。O(n)
+<li>扫描这个排序好的队列，遇到 head 加 1,遇到 end 减 1,最后算出这个区间的最大值。O(n)
 </li>
 </ol>
 </div>
@@ -1207,7 +1207,7 @@ Assume that nobody cheats.
 <ol class="org-ol">
 <li>binary search.
 </li>
-<li>2<sup>i</sup>随机选一个i，若数小，增加到2<sup>i+1</sup>,若大就二分搜索。
+<li>2<sup>i</sup>随机选一个 i，若数小，增加到 2<sup>i+1</sup>,若大就二分搜索。
 </li>
 </ol>
 </div>
@@ -1350,11 +1350,11 @@ use to sort them? How much time and memory would that consume?
 </p>
 
 <ol class="org-ol">
-<li>一个整数４字节，10<sup>9</sup>*4=4G,需要4G的内存，可以用快排等O(nlogn)的排序算法．
+<li>一个整数４字节，10<sup>9</sup>*4=4G,需要 4G 的内存，可以用快排等 O(nlogn)的排序算法．
 </li>
-<li>用bitmap,需要10<sup>9</sup>/8=128M的内存.
+<li>用 bitmap,需要 10<sup>9</sup>/8=128M 的内存.
 </li>
-<li>若内存有限,就external merge sort,利用外部存储多进行几次.
+<li>若内存有限,就 external merge sort,利用外部存储多进行几次.
 </li>
 </ol>
 </div>
@@ -1394,7 +1394,7 @@ algorithms.
 <ul class="org-ul">
 <li>优点:不需要递归,适合大数据.
 </li>
-<li>缺点:时常慢于merge sort和quick sort.
+<li>缺点:时常慢于 merge sort 和 quick sort.
 </li>
 </ul>
 
@@ -1445,7 +1445,7 @@ element in constant time. Can you do this?
 </p>
 
 <p>
-只有一个stack办不到.如果两个stack,可以利用另外一个stack存储最小值.
+只有一个 stack 办不到.如果两个 stack,可以利用另外一个 stack 存储最小值.
 </p>
 </div>
 </div>
@@ -1463,16 +1463,16 @@ in sorted order, as above.
 </p>
 
 <ol class="org-ol">
-<li>选取每个字母index的首个元素作为起始方案。
+<li>选取每个字母 index 的首个元素作为起始方案。
 </li>
 <li>如何改进它的长度：a.增加最小的位置，b.减小最大的位置，这里只能增加最小的位置。
 </li>
-<li>用heap来保存位置，每次取出最小的位置为O(logk).
+<li>用 heap 来保存位置，每次取出最小的位置为 O(logk).
 </li>
 </ol>
 
 <p>
-复杂度：O(nlogk)，n是所有字母的位置个数，k是字母个数。这里k=3,所以O(n)
+复杂度：O(nlogk)，n 是所有字母的位置个数，k 是字母个数。这里 k=3,所以 O(n)
 </p>
 
 <div class="org-src-container">
@@ -1531,11 +1531,11 @@ rest. Identify this coin in just three weighings.
 </p>
 
 <ol class="org-ol">
-<li>分3组,每组4个,其中两组称重,若相等,重的在第三组.若不等,重的在重的那一组.
+<li>分 3 组,每组 4 个,其中两组称重,若相等,重的在第三组.若不等,重的在重的那一组.
 </li>
-<li>重的那组分4组,每组1个,第一组和第二组称重,谁重就重的那个.
+<li>重的那组分 4 组,每组 1 个,第一组和第二组称重,谁重就重的那个.
 </li>
-<li>若step2相等,剩下第三组和第四组称重,谁重就重的那个.
+<li>若 step2 相等,剩下第三组和第四组称重,谁重就重的那个.
 </li>
 </ol>
 </div>

@@ -177,7 +177,7 @@ MathJax.Hub.Config({
 <h5 id="sec-1-1-2-1">2.1</h5>
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
-因为x[i..j]直接的和可以基于x[i..j-1]的和算出，不用重头开始算。算法复杂度 O(n<sup>2</sup>)。
+因为 x[i..j]直接的和可以基于 x[i..j-1]的和算出，不用重头开始算。算法复杂度 O(n<sup>2</sup>)。
 </p>
 
 <div class="org-src-container">
@@ -205,7 +205,7 @@ MathJax.Hub.Config({
 <h5 id="sec-1-1-2-2">2.2</h5>
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
-先算出x[0..i]区间的和为 <code>cum_vector[i]</code> ，那么x[i..j]区间的和就是
+先算出 x[0..i]区间的和为 <code>cum_vector[i]</code> ，那么 x[i..j]区间的和就是
 <code>cum_vector[j] - cum-vector[i-1]</code>
 </p>
 <div class="org-src-container">
@@ -239,7 +239,7 @@ MathJax.Hub.Config({
 <h4 id="sec-1-1-3">3</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
-Divide-and-Conquer算法。
+Divide-and-Conquer 算法。
 </p>
 <ol class="org-ol">
 <li>求整个数组的子数组和，可以分成前面一半和后面一半
@@ -260,7 +260,7 @@ Divide-and-Conquer算法。
 <img src="/images/blog/2014/programmingpearls/column8_3_3.jpg" title="'column8_3_3'" />
 
 <ol class="org-ol">
-<li>最后比较这3部分和就能得出整个个数组的子数组最大和
+<li>最后比较这 3 部分和就能得出整个个数组的子数组最大和
 </li>
 </ol>
 
@@ -305,26 +305,26 @@ Divide-and-Conquer算法。
 <h4 id="sec-1-1-4">4</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
-假定已经解决了x[0..i-1]的情况，那么如何扩展到x[0..i]的情况，只多了x[i]
+假定已经解决了 x[0..i-1]的情况，那么如何扩展到 x[0..i]的情况，只多了 x[i]
 元素？
 </p>
 
 <ol class="org-ol">
-<li>解决了x[0..i-1]的情况，有这区间的最大子数组和 <code>max_sofar</code> ，和必须以
+<li>解决了 x[0..i-1]的情况，有这区间的最大子数组和 <code>max_sofar</code> ，和必须以
 x[i-1]结尾的子数组最大和;
 </li>
-<li>到x[0..i]的情况，就要把必须以x[i-1]结尾的子数组最大和与x[i]相加，如果以x[i-1]结尾的子数组为负数的话，加了反而减少总和。所以此种情况以
-x[i]的和就是x[i];
+<li>到 x[0..i]的情况，就要把必须以 x[i-1]结尾的子数组最大和与 x[i]相加，如果以 x[i-1]结尾的子数组为负数的话，加了反而减少总和。所以此种情况以
+x[i]的和就是 x[i];
 </li>
-<li>最后把以x[i]与在区间x[0..i-1]的最大子数组和 <code>max_sofar</code> 比较，就能解决
+<li>最后把以 x[i]与在区间 x[0..i-1]的最大子数组和 <code>max_sofar</code> 比较，就能解决
 x[0..i]的情况;
 </li>
-<li>如此一直扩展到x[0..n]算出整个数组的最大子数组和。
+<li>如此一直扩展到 x[0..n]算出整个数组的最大子数组和。
 </li>
 </ol>
 
 <p>
-只扫描一遍，算法复杂度O(n)。
+只扫描一遍，算法复杂度 O(n)。
 </p>
 
 <div class="org-src-container">
@@ -359,7 +359,7 @@ x[0..i]的情况;
 </li>
 <li>分而治之，把大问题分成类似的小问题解决。
 </li>
-<li>扫描算法。比如解出了x[0..i-1]如何扩展到x[0..i].
+<li>扫描算法。比如解出了 x[0..i-1]如何扩展到 x[0..i].
 </li>
 <li>累积。
 </li>
@@ -376,12 +376,12 @@ x[0..i]的情况;
 <h3 id="sec-2-1">10</h3>
 <div class="outline-text-3" id="text-2-1">
 <ol class="org-ol">
-<li>初始化累积和数组cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code> ， 那么要x[l..u]
-区间的和为0的话，cum[l-1] = cum[u]
+<li>初始化累积和数组 cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code> ， 那么要 x[l..u]
+区间的和为 0 的话，cum[l-1] = cum[u]
 </li>
-<li>排序cum数组;
+<li>排序 cum 数组;
 </li>
-<li>扫描排序好的数组cum，找出最相近的相邻数组元素即得到结果。
+<li>扫描排序好的数组 cum，找出最相近的相邻数组元素即得到结果。
 </li>
 </ol>
 
@@ -390,7 +390,7 @@ x[0..i]的情况;
 </p>
 
 <p>
-找出子数组和与一个特定值r最相近，算法类似，只是step3找出与r最相近的相邻数组元素。
+找出子数组和与一个特定值 r 最相近，算法类似，只是 step3 找出与 r 最相近的相邻数组元素。
 </p>
 </div>
 </div>
@@ -398,9 +398,9 @@ x[0..i]的情况;
 <h3 id="sec-2-2">11</h3>
 <div class="outline-text-3" id="text-2-2">
 <ol class="org-ol">
-<li>累积收费和数组cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code>
+<li>累积收费和数组 cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code>
 </li>
-<li>计算l和u关卡之间的收费 cum[u]-cum[l]
+<li>计算 l 和 u 关卡之间的收费 cum[u]-cum[l]
 </li>
 </ol>
 </div>

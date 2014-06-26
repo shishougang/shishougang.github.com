@@ -328,9 +328,9 @@ achieves constant amortized cost per deletion.
 </p>
 
 <ol class="org-ol">
-<li>容量是6的数组，当有3个元素是，insertion，然后delete。它不断收缩和扩展容量。
+<li>容量是 6 的数组，当有 3 个元素是，insertion，然后 delete。它不断收缩和扩展容量。
 </li>
-<li>当元素个数是总个数的1/4时，把容量收缩成1/2。
+<li>当元素个数是总个数的 1/4 时，把容量收缩成 1/2。
 </li>
 </ol>
 </div>
@@ -346,7 +346,7 @@ can take O(n)time.
 </p>
 
 <p>
-因为元素个数是有限集合中的数，用bit array 表示每个数。
+因为元素个数是有限集合中的数，用 bit array 表示每个数。
 </p>
 </div>
 </div>
@@ -372,7 +372,7 @@ field requires four bytes and each pointer requires two bytes.
 <ol class="org-ol">
 <li>所有点都一样： 4/(4+4*3) = 1/4
 </li>
-<li>满树中，若页节点个数是n，那么内部节点个数是n-1,
+<li>满树中，若页节点个数是 n，那么内部节点个数是 n-1,
 4*n/(4*n + 4*(n-1)) = n/(2n-1)
 </li>
 </ol>
@@ -389,8 +389,8 @@ to support this?
 </p>
 
 <p>
-在树节点中添加指向successor和predecessor的指针。不影响操作search,
-minimum, 和 maximum。只需在insert和delete操作相应更新指向successor和predecessor的指针。
+在树节点中添加指向 successor 和 predecessor 的指针。不影响操作 search,
+minimum, 和 maximum。只需在 insert 和 delete 操作相应更新指向 successor 和 predecessor 的指针。
 </p>
 </div>
 </div>
@@ -408,13 +408,13 @@ pointers and the like.)
 </p>
 
 <p>
-存储max和min这两个数。
+存储 max 和 min 这两个数。
 </p>
 <ul class="org-ul">
-<li>insert时，新元素与这个两数对比并相应更新。
+<li>insert 时，新元素与这个两数对比并相应更新。
 </li>
-<li>delete时，若是min元素被delete，用它的successor更新；若是max元素被
-delete，用它的predecessor更新。
+<li>delete 时，若是 min 元素被 delete，用它的 successor 更新；若是 max 元素被
+delete，用它的 predecessor 更新。
 </li>
 </ul>
 </div>
@@ -454,7 +454,7 @@ maximal height of the two trees.
 </p>
 
 <p>
-S1中的所有元素小于S2,用O（logn）的时间找出S2的最小元素，然后S1成为它的左子树，S2成为它的右子树，组成新的搜索树。
+S1 中的所有元素小于 S2,用 O（logn）的时间找出 S2 的最小元素，然后 S1 成为它的左子树，S2 成为它的右子树，组成新的搜索树。
 </p>
 </div>
 </div>
@@ -485,7 +485,7 @@ room after the object is inserted.
 </ul>
 
 <p>
-使用BST。主要找到能容纳这个元素的最小bin，若所有bin都小于这个元素大小，就插入一个新的。
+使用 BST。主要找到能容纳这个元素的最小 bin，若所有 bin 都小于这个元素大小，就插入一个新的。
 </p>
 <div class="org-src-container">
 
@@ -510,7 +510,7 @@ room after the object is inserted.
 </div>
 
 <p>
-最大堆使用。每次选最大容量的bin。若最大bin小于这个元素大小，就插入一个新的。
+最大堆使用。每次选最大容量的 bin。若最大 bin 小于这个元素大小，就插入一个新的。
 </p>
 </div>
 </div>
@@ -536,7 +536,7 @@ use O(nlogn) space and have O(logn) query time.
 </p>
 
 <ol class="org-ol">
-<li>n*n的矩阵，i,j中存的就是i-j的最小元素。
+<li>n*n 的矩阵，i,j 中存的就是 i-j 的最小元素。
 </li>
 
 <li>使用<a href="http://en.wikipedia.org/wiki/Cartesian_tree">Cartesian tree</a>或<a href="http://en.wikipedia.org/wiki/Treap">Treap</a>。
@@ -588,12 +588,12 @@ one additional array of size n as a work space.
 </p>
 
 <p>
-建立叶节点数ｎ的balanced binary tree，ｎ个叶节点依次存储A[1..n]，书的内节点存储子树的和。
+建立叶节点数ｎ的 balanced binary tree，ｎ个叶节点依次存储 A[1..n]，书的内节点存储子树的和。
 </p>
 <ol class="org-ol">
-<li>Add(i,y)，比较ｉ与n/2，决定左子树还是右子树，依次遍历到叶节点，并增加相应子树和，最后找到第ｉ个元素相加。
+<li>Add(i,y)，比较ｉ与 n/2，决定左子树还是右子树，依次遍历到叶节点，并增加相应子树和，最后找到第ｉ个元素相加。
 </li>
-<li>Partial-sum(i)，比较ｉ与n/2，决定左子树还是右子树，每当遍历右子树，加上左子树的和，最后到叶节点，得到总的和。
+<li>Partial-sum(i)，比较ｉ与 n/2，决定左子树还是右子树，每当遍历右子树，加上左子树的和，最后到叶节点，得到总的和。
 </li>
 </ol>
 </div>
@@ -627,17 +627,17 @@ of O(n) operations.
 </p>
 
 <p>
-建立以key排序的平衡搜索二叉树，并每个节点中添加一个左子树和的值。
+建立以 key 排序的平衡搜索二叉树，并每个节点中添加一个左子树和的值。
 </p>
 
 <ul class="org-ul">
-<li>Add(k,y)：随着搜索key k，依次加左子树和，最后key k加上y。
+<li>Add(k,y)：随着搜索 key k，依次加左子树和，最后 key k 加上 y。
 </li>
-<li>Insert(k,y)：随着搜索key k插入位置，依次加左子树和，最后插入key k的元素。
+<li>Insert(k,y)：随着搜索 key k 插入位置，依次加左子树和，最后插入 key k 的元素。
 </li>
-<li>Delete(k)：：随着搜索key k，依次减少左子树和，最后删除key k元素。
+<li>Delete(k)：：随着搜索 key k，依次减少左子树和，最后删除 key k 元素。
 </li>
-<li>Partial-sum(k)：随着搜索key k，依次加上左子树的和（因为左边的元素是小于的元素）。
+<li>Partial-sum(k)：随着搜索 key k，依次加上左子树的和（因为左边的元素是小于的元素）。
 </li>
 </ul>
 </div>
@@ -658,11 +658,11 @@ very careful.
 </p>
 
 <p>
-与<a href="http://dreamrunner.org/blog/2014/05/10/column1/">Programming Pearls</a>的Column课后题一样。
+与<a href="http://dreamrunner.org/blog/2014/05/10/column1/">Programming Pearls</a>的 Column 课后题一样。
 </p>
 
 <p>
-建立两个数组A[1..n]，B[1..m]和一个表示元素个数的变量k。
+建立两个数组 A[1..n]，B[1..m]和一个表示元素个数的变量 k。
 </p>
 
 <ol class="org-ol">
@@ -670,7 +670,7 @@ very careful.
 </li>
 <li>search X: return (A[X] &lt;= k) &amp;&amp; B[A[X]] == X;
 </li>
-<li>delete X: 把A[X]与末端A[B[k]]交换，A[B[k]] = A[X], B[A[X]] = B[k];
+<li>delete X: 把 A[X]与末端 A[B[k]]交换，A[B[k]] = A[X], B[A[X]] = B[k];
 k = k - 1;
 </li>
 </ol>
@@ -917,16 +917,16 @@ loop.
 </p>
 
 <p>
-利用两个指针，一个快指针和一个慢指针，快的每次都比慢的多前进一个节点，如果存在loop,快的总会与慢的相重叠。
+利用两个指针，一个快指针和一个慢指针，快的每次都比慢的多前进一个节点，如果存在 loop,快的总会与慢的相重叠。
 </p>
 
 <p>
-loop的起始点：
+loop 的起始点：
 </p>
 <ol class="org-ol">
-<li>当快的与慢的指针相重叠时，验证有loop，之后慢的指针不动，通过快的指针计算出loop的长度
+<li>当快的与慢的指针相重叠时，验证有 loop，之后慢的指针不动，通过快的指针计算出 loop 的长度
 </li>
-<li>重新从链表头开始，快指针比慢指针先前进loop的长度距离，提增慢和快指针，直到第一次相遇，相遇点就是loop的起始点。
+<li>重新从链表头开始，快指针比慢指针先前进 loop 的长度距离，提增慢和快指针，直到第一次相遇，相遇点就是 loop 的起始点。
 </li>
 </ol>
 </div>
@@ -942,7 +942,7 @@ faster than O(n<sup>2</sup>).)
 </p>
 
 <p>
-对数组X扫描2次计算出如下2组数组：
+对数组 X 扫描 2 次计算出如下 2 组数组：
 </p>
 
 $$
@@ -954,7 +954,7 @@ $$
 
 
 <p>
-所以得到M：
+所以得到 M：
 </p>
 
 $$

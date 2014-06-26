@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithm | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-25T20:34:36+08:00</updated>
+  <updated>2014-06-26T23:22:23+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -597,7 +597,7 @@ counterexample.
 </p>
 
 <p>
-不必要. 如下图,若a是6的话,minimum spanning tree不会选择a,但A和C间的最短路径会选择a.
+不必要. 如下图,若 a 是 6 的话,minimum spanning tree 不会选择 a,但 A 和 C 间的最短路径会选择 a.
 </p>
 
 <img src="/images/blog/2014/AlgorithmDesignManual/6_4.jpg">
@@ -613,11 +613,11 @@ trees? Explain why or why not.
 </p>
 
 <p>
-能.当有相同weight的边.
+能.当有相同 weight 的边.
 </p>
 
 <p>
-当所有边的weight不同时,图存在唯一的minimum spanning trees,两者生成同样的树.
+当所有边的 weight 不同时,图存在唯一的 minimum spanning trees,两者生成同样的树.
 </p>
 </div>
 </div>
@@ -631,8 +631,8 @@ edge weights? Explain why or why not.
 </p>
 
 <p>
-可以.Prim每次选相邻最近的不在树内的点,有负weight的边并不影响它. 而
-Kruskal每次选最短的边,同样不受影响.
+可以.Prim 每次选相邻最近的不在树内的点,有负 weight 的边并不影响它. 而
+Kruskal 每次选最短的边,同样不受影响.
 </p>
 </div>
 </div>
@@ -649,8 +649,8 @@ in O(n) time to receive full credit.
 </p>
 
 <p>
-新添加的e在顶点u和v中间,原本的MST中u和v通过u-&gt;a1-&gt;ai-&gt;v,把此路径的边与
-e比较,用Prim算法选最临近点.
+新添加的 e 在顶点 u 和 v 中间,原本的 MST 中 u 和 v 通过 u-&gt;a1-&gt;ai-&gt;v,把此路径的边与
+e 比较,用 Prim 算法选最临近点.
 </p>
 </div>
 </div>
@@ -689,19 +689,19 @@ be correct and run in polynomial time.
 </p>
 
 <ol class="org-ol">
-<li>遍历图的边,掠过MST中的边,当遇到non-MST的边E(i,j).
+<li>遍历图的边,掠过 MST 中的边,当遇到 non-MST 的边 E(i,j).
 </li>
-<li>利用MST中的parent遍历出顶点i到j的所有MST边,并得到其中最大weight的边
+<li>利用 MST 中的 parent 遍历出顶点 i 到 j 的所有 MST 边,并得到其中最大 weight 的边
 mst<sub>e</sub><sub>max</sub>.
 </li>
-<li>计算E(i,j)与mst<sub>e</sub><sub>max的差值</sub>.
+<li>计算 E(i,j)与 mst<sub>e</sub><sub>max 的差值</sub>.
 </li>
-<li>遍历所有的non-MST的边,得到最小差值就是改变的最小值.
+<li>遍历所有的 non-MST 的边,得到最小差值就是改变的最小值.
 </li>
 </ol>
 
 <p>
-总共边数m,算法复杂度O(m<sup>2</sup>).
+总共边数 m,算法复杂度 O(m<sup>2</sup>).
 </p>
 </div>
 </div>
@@ -725,13 +725,13 @@ subset T.
 </ol>
 
 <p>
-MST不能有环路,minimum weight connected subset T可以有环路,所以如果一条负数weight的边,不在MST中,但却包含在T中,因为它能使T的总权值减小.
+MST 不能有环路,minimum weight connected subset T 可以有环路,所以如果一条负数 weight 的边,不在 MST 中,但却包含在 T 中,因为它能使 T 的总权值减小.
 </p>
 
 <ol class="org-ol">
-<li>把所有负数weight的边加入T中,若剩下1个连通图,结束.
+<li>把所有负数 weight 的边加入 T 中,若剩下 1 个连通图,结束.
 </li>
-<li>若剩下C(&gt;1)个连通图,对C个连通图使用Kruskal,直到剩下一个连通图T.
+<li>若剩下 C(&gt;1)个连通图,对 C 个连通图使用 Kruskal,直到剩下一个连通图 T.
 </li>
 </ol>
 
@@ -772,10 +772,10 @@ weights. Design an efficient algorithm to find a minimum-weight
 feedback-edge set.
 </li>
 
-<li><b>Minimum size feedback edge set:</b> 使用DFS,从任意点开始,遇到回归边,
-把它加入结果set中,当DFS完成,结果set就是答案.
+<li><b>Minimum size feedback edge set:</b> 使用 DFS,从任意点开始,遇到回归边,
+把它加入结果 set 中,当 DFS 完成,结果 set 就是答案.
 </li>
-<li><b>minimum-weight feedback-edge set:</b> 对所有weight值取反,用Kruskal算法,当遇到边E的顶点在同一个集合中,把E加入到结果set中,当Kruskal遍历完所有边后,结果set就是答案.
+<li><b>minimum-weight feedback-edge set:</b> 对所有 weight 值取反,用 Kruskal 算法,当遇到边 E 的顶点在同一个集合中,把 E 加入到结果 set 中,当 Kruskal 遍历完所有边后,结果 set 就是答案.
 </li>
 </ol>
 </div>
@@ -790,9 +790,9 @@ graph that has only k different edges costs.
 </p>
 
 <ul class="org-ul">
-<li>k个不同的边值,使用一个k个元素的min-heap,heap的节点是相同距离的顶点链表.
+<li>k 个不同的边值,使用一个 k 个元素的 min-heap,heap 的节点是相同距离的顶点链表.
 </li>
-<li>Prim每次选择和更新顶点的距离在min-heap完成,做到O(nlogk).
+<li>Prim 每次选择和更新顶点的距离在 min-heap 完成,做到 O(nlogk).
 </li>
 </ul>
 </div>
@@ -815,7 +815,7 @@ on a weighted directed graph:
 </ol>
 
 <p>
-使用Union-Find并添加minimum edge.
+使用 Union-Find 并添加 minimum edge.
 </p>
 <div class="org-src-container">
 
@@ -841,7 +841,7 @@ problem.
 </p>
 
 <p>
-用Floyd-Warshall对于顶点v反向更新距离值.得到最终shortest paths.
+用 Floyd-Warshall 对于顶点 v 反向更新距离值.得到最终 shortest paths.
 </p>
 </div>
 </div>
@@ -882,7 +882,7 @@ algorithm correct. If not, then provide a counterexample.
 </p>
 
 <p>
-没有负weight的边,可以.
+没有负 weight 的边,可以.
 </p>
 </div>
 </div>
@@ -960,15 +960,16 @@ log(a*b*c) = loga + lgob + log.所以求最长路径.
 </p>
 
 <ol class="org-ol">
-<li>用Floyd-Warshall算法算出i,j的最长路径;
+<li>用 Floyd-Warshall 算法算出 i,j 的最长路径;
 </li>
-<li>计算所有C<sub>(1i)</sub>*C<sub>(i1)</sub>的值,得出最大值.
+<li>计算所有 C<sub>(1i)</sub>*C<sub>(i1)</sub>的值,得出最大值.
 </li>
 </ol>
 </div>
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -1610,15 +1611,15 @@ where each vertex has degree at most 2. Must such graphs be bipartite?
 </p>
 
 <p>
-这样的图不必要是bipartite的.反例是:3个顶点,两两相连.
+这样的图不必要是 bipartite 的.反例是:3 个顶点,两两相连.
 </p>
 
 <p>
-因为每个顶点最多2度,使用DFS遍历,对子顶点着色与父顶点相反的颜色.当遇到一个回归的边,那么对当前定点着色与父顶点不同,并且与回归边上的祖先定点不同.
+因为每个顶点最多 2 度,使用 DFS 遍历,对子顶点着色与父顶点相反的颜色.当遇到一个回归的边,那么对当前定点着色与父顶点不同,并且与回归边上的祖先定点不同.
 </p>
 
 <p>
-只有一次遍历,复杂度O(m+n) (m edges, n vertices).
+只有一次遍历,复杂度 O(m+n) (m edges, n vertices).
 </p>
 </div>
 </div>
@@ -1634,7 +1635,7 @@ pre-order and post-order traversals.
 </p>
 
 <p>
-没有相同元素,给予pre-order and in-order traversals能重构binary search
+没有相同元素,给予 pre-order and in-order traversals 能重构 binary search
 tree.代码如下.若有相同元素,给予:
 </p>
 
@@ -1656,15 +1657,15 @@ tree.代码如下.若有相同元素,给予:
 </div>
 
 <p>
-每次preorder的数都要去搜索在inoder所在位置,若书是平衡的,那么n个元素每次搜索后总的算法复杂度O(nlogn),但不是平衡的,一下就变成O(n<sup>2</sup>).
+每次 preorder 的数都要去搜索在 inoder 所在位置,若书是平衡的,那么 n 个元素每次搜索后总的算法复杂度 O(nlogn),但不是平衡的,一下就变成 O(n<sup>2</sup>).
 </p>
 
 <p>
-所以利用hash table,先把inorder的元素和位置hash起来,那么总的算法时间:O(n).
+所以利用 hash table,先把 inorder 的元素和位置 hash 起来,那么总的算法时间:O(n).
 </p>
 
 <p>
-以下假设元素都小于255,简单的利用数组映射来模拟hash table.
+以下假设元素都小于 255,简单的利用数组映射来模拟 hash table.
 </p>
 <div class="org-src-container">
 
@@ -1703,7 +1704,7 @@ tree.代码如下.若有相同元素,给予:
 </div>
 
 <ul class="org-ul">
-<li>给予pre-order and post-order traversals, 不能重构binary search tree.
+<li>给予 pre-order and post-order traversals, 不能重构 binary search tree.
 </li>
 </ul>
 </div>
@@ -1756,13 +1757,13 @@ Design an efficient algorithm to find such a schedule if one exists.
 </p>
 
 <p>
-把问题转换成图问题解决。建立无向图，顶点是每部电影，边E(1,2)表示有个客户想看M1和M2.如下图实例，有电影M1-M4,3个客户，1个客户想看M1和M3,一个客户想看M1和M4，一个客户想看M2和M4.那么把图分成（M1，M2）和（M3,M4），周六日各放一组,满足所有客户要求。
+把问题转换成图问题解决。建立无向图，顶点是每部电影，边 E(1,2)表示有个客户想看 M1 和 M2.如下图实例，有电影 M1-M4,3 个客户，1 个客户想看 M1 和 M3,一个客户想看 M1 和 M4，一个客户想看 M2 和 M4.那么把图分成（M1，M2）和（M3,M4），周六日各放一组,满足所有客户要求。
 </p>
 
 <img src="/images/blog/2014/AlgorithmDesignManual/movie1.jpg">
 
 <p>
-若多一个客户想看M3和M4,如下图，无论怎么分图，都有2部电影相连，所以不能满足所有客户的要求。可以得出：若原本的图是bipartite graph，那么能找到满足客户的放映安排。若不是，就不能满足客户要求。
+若多一个客户想看 M3 和 M4,如下图，无论怎么分图，都有 2 部电影相连，所以不能满足所有客户的要求。可以得出：若原本的图是 bipartite graph，那么能找到满足客户的放映安排。若不是，就不能满足客户要求。
 </p>
 
 <img src="/images/blog/2014/AlgorithmDesignManual/movie2.jpg">
@@ -1790,15 +1791,15 @@ an efficient algorithm to find the minimum number of rows needed,
 if it is possible.
 </li>
 
-<li>创建一幅有向图,顶点代表孩子,有向边E(i,j)代表孩子i hates 孩子j;
+<li>创建一幅有向图,顶点代表孩子,有向边 E(i,j)代表孩子 i hates 孩子 j;
 </li>
-<li>topological sort得到队列，或BFS时发现环，证明不可能。只BFS遍历一次，
+<li>topological sort 得到队列，或 BFS 时发现环，证明不可能。只 BFS 遍历一次，
 O(m + n)。
 </li>
 
-<li>如题1创建有向图;
+<li>如题 1 创建有向图;
 </li>
-<li>作DFS遍历，用遍历的level作为行号。
+<li>作 DFS 遍历，用遍历的 level 作为行号。
 </li>
 </ol>
 </div>
@@ -1811,9 +1812,9 @@ O(m + n)。
 Which data structures are used in depth-first and breath-first search?
 </p>
 <ol class="org-ol">
-<li>BFS:使用queue
+<li>BFS:使用 queue
 </li>
-<li>DFS:使用stack,通常使用递归代替stack.
+<li>DFS:使用 stack,通常使用递归代替 stack.
 </li>
 </ol>
 </div>
@@ -1869,6 +1870,7 @@ node in sorted order.
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -2093,7 +2095,7 @@ job in O(nlogn) time.
 </p>
 
 <p>
-用个O(nlogn)的排序算法对2n个队根据实力排序，前n个作为一队，后n个作为一队。
+用个 O(nlogn)的排序算法对 2n 个队根据实力排序，前 n 个作为一队，后 n 个作为一队。
 </p>
 </div>
 </div>
@@ -2136,13 +2138,13 @@ worst-case time.
 
 
 <ul class="org-ul">
-<li>(a) 扫描S一次获得最小和最大值.
+<li>(a) 扫描 S 一次获得最小和最大值.
 </li>
 <li>(b) 取首尾数。
 </li>
-<li>(c) O(nlogn)的算法排序，扫描排序好的S，获得最小差的相邻元素对。
+<li>(c) O(nlogn)的算法排序，扫描排序好的 S，获得最小差的相邻元素对。
 </li>
-<li>(d) 扫描排序好的S，获得最小差的相邻元素对。
+<li>(d) 扫描排序好的 S，获得最小差的相邻元素对。
 </li>
 </ul>
 </div>
@@ -2192,11 +2194,11 @@ should become (3,red), (9,red), (1,blue), (4,blue), (6,yellow).
 </p>
 
 <ol class="org-ol">
-<li>创建3个分别存储red，blue，yellow的数组;
+<li>创建 3 个分别存储 red，blue，yellow 的数组;
 </li>
-<li>扫描input，依次按颜色装入不同的数组;
+<li>扫描 input，依次按颜色装入不同的数组;
 </li>
-<li>分别从red，blue，yellow的数组中输出结果。
+<li>分别从 red，blue，yellow 的数组中输出结果。
 </li>
 </ol>
 </div>
@@ -2211,9 +2213,9 @@ and correct algorithm to compute the mode of a set of n numbers.
 </p>
 
 <ul class="org-ul">
-<li>O(nlogn): O(nlogn)排序，扫描Set一遍得到频率最大的数。
+<li>O(nlogn): O(nlogn)排序，扫描 Set 一遍得到频率最大的数。
 </li>
-<li>O(n): 使用hash map扫描一遍存储数字频率，扫描hash map得到频率最大数。
+<li>O(n): 使用 hash map 扫描一遍存储数字频率，扫描 hash map 得到频率最大数。
 </li>
 </ul>
 </div>
@@ -2229,7 +2231,7 @@ credit, give a Θ(n<sup>2</sup>) algorithm for this problem.)
 </p>
 
 <ol class="org-ol">
-<li>从S1中减去n，O(nlogn)排序S1和S2,然后能否找出相同的元素（binary search或扫描比较）。
+<li>从 S1 中减去 n，O(nlogn)排序 S1 和 S2,然后能否找出相同的元素（binary search 或扫描比较）。
 </li>
 <li>Sort and Scan
 <div class="org-src-container">
@@ -2254,9 +2256,9 @@ sort S2<span style="color: #00ffff;"> in</span> O(nlogn)
 </li>
 <li>Binary Search
 <ul class="org-ul">
-<li>O(nlogn)排序S1
+<li>O(nlogn)排序 S1
 </li>
-<li>X-S2[i]去binary search排序好的S1，是否找到元素。
+<li>X-S2[i]去 binary search 排序好的 S1，是否找到元素。
 </li>
 </ul>
 </li>
@@ -2290,7 +2292,7 @@ people checked out at least one book.
 </ol>
 
 <p>
-都使用Hash Table，O(n)
+都使用 Hash Table，O(n)
 </p>
 </div>
 </div>
@@ -2382,7 +2384,7 @@ problem.
 <li>Assume that A and B are sorted. Give an O(n) algorithm for the problem.
 </li>
 
-<li>O(nlogn)对Ａ和Ｂ排序，然后用2的O(n)的方法。
+<li>O(nlogn)对Ａ和Ｂ排序，然后用 2 的 O(n)的方法。
 </li>
 <li>若Ａ和Ｂ以升序排序
 <div class="org-src-container">
@@ -2432,9 +2434,9 @@ algorithm to test whether k of the integers in S add up to T.
 <ol class="org-ol">
 <li>O(nlogn）对数组排序
 </li>
-<li>(k-1)个数的组合有n<sup>k-1</sup>，并计算k-1个数的和sum
+<li>(k-1)个数的组合有 n<sup>k-1</sup>，并计算 k-1 个数的和 sum
 </li>
-<li>用binary search在数组中搜索T-sum
+<li>用 binary search 在数组中搜索 T-sum
 </li>
 </ol>
 </div>
@@ -2459,14 +2461,14 @@ Hash Table 可以解决。或
 <h4 id="sec-2-11-1">Find the elements that appear more than n / 2 times</h4>
 <div class="outline-text-4" id="text-2-11-1">
 <p>
-数组中最多有一个数超过重复n/2次，并且排序后的第ceiling(n/2)个数必定是这个数。
+数组中最多有一个数超过重复 n/2 次，并且排序后的第 ceiling(n/2)个数必定是这个数。
 </p>
 <ol class="org-ol">
 <li>method1
 <ul class="org-ul">
-<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以O(n)的复杂度找到第ceiling(n/2)个小数;
+<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以 O(n)的复杂度找到第 ceiling(n/2)个小数;
 </li>
-<li>扫描数组，计数这个数的重复数是否大于n/2.
+<li>扫描数组，计数这个数的重复数是否大于 n/2.
 </li>
 </ul>
 </li>
@@ -2519,26 +2521,26 @@ Hash Table 可以解决。或
 <ul class="org-ul">
 <li>method1
 <ol class="org-ol">
-<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以O(n)的复杂度找到中间数，验证中中间数是否重复
+<li>利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Median%20Problem.html#sec-5">BFPRT</a> 以 O(n)的复杂度找到中间数，验证中中间数是否重复
 n/4(O(n));
 </li>
 <li>以中间元素划分数组为两部分(O(n));
 </li>
-<li>在上下半部分n/2中重复n/4次数的元素，同第一个问题一样找(O(n));
+<li>在上下半部分 n/2 中重复 n/4 次数的元素，同第一个问题一样找(O(n));
 </li>
 </ol>
 </li>
 <li>method2
 <ol class="org-ol">
-<li>初始3个空的槽，想对应的槽的3个计数为0;
+<li>初始 3 个空的槽，想对应的槽的 3 个计数为 0;
 </li>
 <li>对于数组中每个元素：
 <ul class="org-ul">
 <li>若等于其中任何一个槽中数，增加计数;
 </li>
-<li>若有槽空，放入这个槽，并计数为1;
+<li>若有槽空，放入这个槽，并计数为 1;
 </li>
-<li>否则，对所有槽内数的计数减1
+<li>否则，对所有槽内数的计数减 1
 </li>
 </ul>
 </li>
@@ -2561,7 +2563,7 @@ set of n integers in O(n + klogn).
 <ol class="org-ol">
 <li>O(n)的复杂度建立一个最小堆;
 </li>
-<li>连续k次取出最小值，最后得到第k个最小值。
+<li>连续 k 次取出最小值，最后得到第 k 个最小值。
 </li>
 </ol>
 </div>
@@ -2585,14 +2587,14 @@ better, or if it does not matter. Explain your answers.
 <li>Want to find the minimum element quickly.
 </li>
 
-<li>都开销O(1)。
+<li>都开销 O(1)。
 </li>
-<li>若知道删除的地方，max-heap花费O(logn)，sorted array花费O(n)。若不知道删除的地方，max-heap花费O(n)查找，删除花费O(logn); sorted
-array binary search花费O(logn)，删除花费O(n)。
+<li>若知道删除的地方，max-heap 花费 O(logn)，sorted array 花费 O(n)。若不知道删除的地方，max-heap 花费 O(n)查找，删除花费 O(logn); sorted
+array binary search 花费 O(logn)，删除花费 O(n)。
 </li>
-<li>max-heap花费O(n);sorted array花费O(logn)。
+<li>max-heap 花费 O(n);sorted array 花费 O(logn)。
 </li>
-<li>max-heap花费O(n);sorted array花费O(1)。
+<li>max-heap 花费 O(n);sorted array 花费 O(1)。
 </li>
 </ol>
 </div>
@@ -2607,9 +2609,9 @@ up the elementary O(kn)-time algorithm).
 </p>
 
 <ol class="org-ol">
-<li>扫描k组sorted lists组成一个大小k的min-heap;
+<li>扫描 k 组 sorted lists 组成一个大小 k 的 min-heap;
 </li>
-<li>从min-heap中取出最小值放入结果list。
+<li>从 min-heap 中取出最小值放入结果 list。
 </li>
 </ol>
 </div>
@@ -2628,18 +2630,18 @@ the process?
 </p>
 
 <ul class="org-ul">
-<li>找第二大元素：大小为2个的数组初始化为第一二个元素，之后每个元素与这数组对比，剔除最小的，最后数组内2个元组对比得到最大和第二大元素，一共比较2(n-2)+1=2n-3，找出第二大元素。
+<li>找第二大元素：大小为 2 个的数组初始化为第一二个元素，之后每个元素与这数组对比，剔除最小的，最后数组内 2 个元组对比得到最大和第二大元素，一共比较 2(n-2)+1=2n-3，找出第二大元素。
 </li>
-<li>找第三大元素：同样已大小为3的数组，最后比较数3(n-3)+2=3n-7。
+<li>找第三大元素：同样已大小为 3 的数组，最后比较数 3(n-3)+2=3n-7。
 </li>
 </ul>
 
 <p>
-<a href="http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是n的倍数，最坏时间复杂度可以达到：O(nlogn)。
+<a href="http://wiki.dreamrunner.org/public_htmlAlgorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-4">Random Selection</a>可以找出任意的第几大值，平均时间复杂度：O(n)，比较次数将是 n 的倍数，最坏时间复杂度可以达到：O(nlogn)。
 </p>
 
 <p>
-<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-6">Tournament Algorithm</a>找第二大元素比较次数O(n+logn);找第k个最大元素，比较次数为O(n+klogn)。
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Selection%20Problem.html#sec-6">Tournament Algorithm</a>找第二大元素比较次数 O(n+logn);找第 k 个最大元素，比较次数为 O(n+klogn)。
 </p>
 </div>
 </div>
@@ -2733,12 +2735,12 @@ There is a linear-time solution.
 </p>
 
 <p>
-2次扫描。
+2 次扫描。
 </p>
 <ul class="org-ul">
-<li>第一次：把red和white当成一样，用quick的partition分开与blue。
+<li>第一次：把 red 和 white 当成一样，用 quick 的 partition 分开与 blue。
 </li>
-<li>第二次：只区分red和white的子区间。   
+<li>第二次：只区分 red 和 white 的子区间。   
 </li>
 </ul>
 </div>
@@ -2754,7 +2756,7 @@ ensure that mergesort is a stable sorting algorithm.
 </p>
 
 <p>
-在合并时元素相等时选index小的元素在前。
+在合并时元素相等时选 index 小的元素在前。
 </p>
 </div>
 </div>
@@ -2790,7 +2792,7 @@ steps.
 </p>
 
 + $O(\sqrt{n}log(\sqrt{n})$ 排序后面的 $\sqrt{n}$ 个元素。<br />
-+ O(n)去mergesort前半部分和后半部分。
++ O(n)去 mergesort 前半部分和后半部分。
 </div>
 </div>
 
@@ -2804,7 +2806,7 @@ algorithm that sorts A in substantially less than O(nlogn).
 </p>
 
 <p>
-和23一样，用balanced binary search tree，树的高度不超过loglogn,最后的复杂度O(n*logloglogn)。
+和 23 一样，用 balanced binary search tree，树的高度不超过 loglogn,最后的复杂度 O(n*logloglogn)。
 </p>
 </div>
 </div>
@@ -2825,9 +2827,9 @@ for only one wall. An O(nlogn) algorithm is possible.
 <li>以ｑ为中心点，顺时针旋转，Ｐ中所有边随着顺时针旋转都有一个起始点
 (head)和结束点（end），计算它们的极角（polar angle）; O(n)
 </li>
-<li>对所有head和end按照angle大小排序，若相等，head在前; O(nlogn)
+<li>对所有 head 和 end 按照 angle 大小排序，若相等，head 在前; O(nlogn)
 </li>
-<li>扫描这个排序好的队列，遇到head加1,遇到end减1,最后算出这个区间的最大值。O(n)
+<li>扫描这个排序好的队列，遇到 head 加 1,遇到 end 减 1,最后算出这个区间的最大值。O(n)
 </li>
 </ol>
 </div>
@@ -2956,7 +2958,7 @@ Assume that nobody cheats.
 <ol class="org-ol">
 <li>binary search.
 </li>
-<li>2<sup>i</sup>随机选一个i，若数小，增加到2<sup>i+1</sup>,若大就二分搜索。
+<li>2<sup>i</sup>随机选一个 i，若数小，增加到 2<sup>i+1</sup>,若大就二分搜索。
 </li>
 </ol>
 </div>
@@ -3099,11 +3101,11 @@ use to sort them? How much time and memory would that consume?
 </p>
 
 <ol class="org-ol">
-<li>一个整数４字节，10<sup>9</sup>*4=4G,需要4G的内存，可以用快排等O(nlogn)的排序算法．
+<li>一个整数４字节，10<sup>9</sup>*4=4G,需要 4G 的内存，可以用快排等 O(nlogn)的排序算法．
 </li>
-<li>用bitmap,需要10<sup>9</sup>/8=128M的内存.
+<li>用 bitmap,需要 10<sup>9</sup>/8=128M 的内存.
 </li>
-<li>若内存有限,就external merge sort,利用外部存储多进行几次.
+<li>若内存有限,就 external merge sort,利用外部存储多进行几次.
 </li>
 </ol>
 </div>
@@ -3143,7 +3145,7 @@ algorithms.
 <ul class="org-ul">
 <li>优点:不需要递归,适合大数据.
 </li>
-<li>缺点:时常慢于merge sort和quick sort.
+<li>缺点:时常慢于 merge sort 和 quick sort.
 </li>
 </ul>
 
@@ -3194,7 +3196,7 @@ element in constant time. Can you do this?
 </p>
 
 <p>
-只有一个stack办不到.如果两个stack,可以利用另外一个stack存储最小值.
+只有一个 stack 办不到.如果两个 stack,可以利用另外一个 stack 存储最小值.
 </p>
 </div>
 </div>
@@ -3212,16 +3214,16 @@ in sorted order, as above.
 </p>
 
 <ol class="org-ol">
-<li>选取每个字母index的首个元素作为起始方案。
+<li>选取每个字母 index 的首个元素作为起始方案。
 </li>
 <li>如何改进它的长度：a.增加最小的位置，b.减小最大的位置，这里只能增加最小的位置。
 </li>
-<li>用heap来保存位置，每次取出最小的位置为O(logk).
+<li>用 heap 来保存位置，每次取出最小的位置为 O(logk).
 </li>
 </ol>
 
 <p>
-复杂度：O(nlogk)，n是所有字母的位置个数，k是字母个数。这里k=3,所以O(n)
+复杂度：O(nlogk)，n 是所有字母的位置个数，k 是字母个数。这里 k=3,所以 O(n)
 </p>
 
 <div class="org-src-container">
@@ -3280,17 +3282,18 @@ rest. Identify this coin in just three weighings.
 </p>
 
 <ol class="org-ol">
-<li>分3组,每组4个,其中两组称重,若相等,重的在第三组.若不等,重的在重的那一组.
+<li>分 3 组,每组 4 个,其中两组称重,若相等,重的在第三组.若不等,重的在重的那一组.
 </li>
-<li>重的那组分4组,每组1个,第一组和第二组称重,谁重就重的那个.
+<li>重的那组分 4 组,每组 1 个,第一组和第二组称重,谁重就重的那个.
 </li>
-<li>若step2相等,剩下第三组和第四组称重,谁重就重的那个.
+<li>若 step2 相等,剩下第三组和第四组称重,谁重就重的那个.
 </li>
 </ol>
 </div>
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -3499,9 +3502,9 @@ achieves constant amortized cost per deletion.
 </p>
 
 <ol class="org-ol">
-<li>容量是6的数组，当有3个元素是，insertion，然后delete。它不断收缩和扩展容量。
+<li>容量是 6 的数组，当有 3 个元素是，insertion，然后 delete。它不断收缩和扩展容量。
 </li>
-<li>当元素个数是总个数的1/4时，把容量收缩成1/2。
+<li>当元素个数是总个数的 1/4 时，把容量收缩成 1/2。
 </li>
 </ol>
 </div>
@@ -3517,7 +3520,7 @@ can take O(n)time.
 </p>
 
 <p>
-因为元素个数是有限集合中的数，用bit array 表示每个数。
+因为元素个数是有限集合中的数，用 bit array 表示每个数。
 </p>
 </div>
 </div>
@@ -3543,7 +3546,7 @@ field requires four bytes and each pointer requires two bytes.
 <ol class="org-ol">
 <li>所有点都一样： 4/(4+4*3) = 1/4
 </li>
-<li>满树中，若页节点个数是n，那么内部节点个数是n-1,
+<li>满树中，若页节点个数是 n，那么内部节点个数是 n-1,
 4*n/(4*n + 4*(n-1)) = n/(2n-1)
 </li>
 </ol>
@@ -3560,8 +3563,8 @@ to support this?
 </p>
 
 <p>
-在树节点中添加指向successor和predecessor的指针。不影响操作search,
-minimum, 和 maximum。只需在insert和delete操作相应更新指向successor和predecessor的指针。
+在树节点中添加指向 successor 和 predecessor 的指针。不影响操作 search,
+minimum, 和 maximum。只需在 insert 和 delete 操作相应更新指向 successor 和 predecessor 的指针。
 </p>
 </div>
 </div>
@@ -3579,13 +3582,13 @@ pointers and the like.)
 </p>
 
 <p>
-存储max和min这两个数。
+存储 max 和 min 这两个数。
 </p>
 <ul class="org-ul">
-<li>insert时，新元素与这个两数对比并相应更新。
+<li>insert 时，新元素与这个两数对比并相应更新。
 </li>
-<li>delete时，若是min元素被delete，用它的successor更新；若是max元素被
-delete，用它的predecessor更新。
+<li>delete 时，若是 min 元素被 delete，用它的 successor 更新；若是 max 元素被
+delete，用它的 predecessor 更新。
 </li>
 </ul>
 </div>
@@ -3625,7 +3628,7 @@ maximal height of the two trees.
 </p>
 
 <p>
-S1中的所有元素小于S2,用O（logn）的时间找出S2的最小元素，然后S1成为它的左子树，S2成为它的右子树，组成新的搜索树。
+S1 中的所有元素小于 S2,用 O（logn）的时间找出 S2 的最小元素，然后 S1 成为它的左子树，S2 成为它的右子树，组成新的搜索树。
 </p>
 </div>
 </div>
@@ -3656,7 +3659,7 @@ room after the object is inserted.
 </ul>
 
 <p>
-使用BST。主要找到能容纳这个元素的最小bin，若所有bin都小于这个元素大小，就插入一个新的。
+使用 BST。主要找到能容纳这个元素的最小 bin，若所有 bin 都小于这个元素大小，就插入一个新的。
 </p>
 <div class="org-src-container">
 
@@ -3681,7 +3684,7 @@ room after the object is inserted.
 </div>
 
 <p>
-最大堆使用。每次选最大容量的bin。若最大bin小于这个元素大小，就插入一个新的。
+最大堆使用。每次选最大容量的 bin。若最大 bin 小于这个元素大小，就插入一个新的。
 </p>
 </div>
 </div>
@@ -3707,7 +3710,7 @@ use O(nlogn) space and have O(logn) query time.
 </p>
 
 <ol class="org-ol">
-<li>n*n的矩阵，i,j中存的就是i-j的最小元素。
+<li>n*n 的矩阵，i,j 中存的就是 i-j 的最小元素。
 </li>
 
 <li>使用<a href="http://en.wikipedia.org/wiki/Cartesian_tree">Cartesian tree</a>或<a href="http://en.wikipedia.org/wiki/Treap">Treap</a>。
@@ -3759,12 +3762,12 @@ one additional array of size n as a work space.
 </p>
 
 <p>
-建立叶节点数ｎ的balanced binary tree，ｎ个叶节点依次存储A[1..n]，书的内节点存储子树的和。
+建立叶节点数ｎ的 balanced binary tree，ｎ个叶节点依次存储 A[1..n]，书的内节点存储子树的和。
 </p>
 <ol class="org-ol">
-<li>Add(i,y)，比较ｉ与n/2，决定左子树还是右子树，依次遍历到叶节点，并增加相应子树和，最后找到第ｉ个元素相加。
+<li>Add(i,y)，比较ｉ与 n/2，决定左子树还是右子树，依次遍历到叶节点，并增加相应子树和，最后找到第ｉ个元素相加。
 </li>
-<li>Partial-sum(i)，比较ｉ与n/2，决定左子树还是右子树，每当遍历右子树，加上左子树的和，最后到叶节点，得到总的和。
+<li>Partial-sum(i)，比较ｉ与 n/2，决定左子树还是右子树，每当遍历右子树，加上左子树的和，最后到叶节点，得到总的和。
 </li>
 </ol>
 </div>
@@ -3798,17 +3801,17 @@ of O(n) operations.
 </p>
 
 <p>
-建立以key排序的平衡搜索二叉树，并每个节点中添加一个左子树和的值。
+建立以 key 排序的平衡搜索二叉树，并每个节点中添加一个左子树和的值。
 </p>
 
 <ul class="org-ul">
-<li>Add(k,y)：随着搜索key k，依次加左子树和，最后key k加上y。
+<li>Add(k,y)：随着搜索 key k，依次加左子树和，最后 key k 加上 y。
 </li>
-<li>Insert(k,y)：随着搜索key k插入位置，依次加左子树和，最后插入key k的元素。
+<li>Insert(k,y)：随着搜索 key k 插入位置，依次加左子树和，最后插入 key k 的元素。
 </li>
-<li>Delete(k)：：随着搜索key k，依次减少左子树和，最后删除key k元素。
+<li>Delete(k)：：随着搜索 key k，依次减少左子树和，最后删除 key k 元素。
 </li>
-<li>Partial-sum(k)：随着搜索key k，依次加上左子树的和（因为左边的元素是小于的元素）。
+<li>Partial-sum(k)：随着搜索 key k，依次加上左子树的和（因为左边的元素是小于的元素）。
 </li>
 </ul>
 </div>
@@ -3829,11 +3832,11 @@ very careful.
 </p>
 
 <p>
-与<a href="http://dreamrunner.org/blog/2014/05/10/column1/">Programming Pearls</a>的Column课后题一样。
+与<a href="http://dreamrunner.org/blog/2014/05/10/column1/">Programming Pearls</a>的 Column 课后题一样。
 </p>
 
 <p>
-建立两个数组A[1..n]，B[1..m]和一个表示元素个数的变量k。
+建立两个数组 A[1..n]，B[1..m]和一个表示元素个数的变量 k。
 </p>
 
 <ol class="org-ol">
@@ -3841,7 +3844,7 @@ very careful.
 </li>
 <li>search X: return (A[X] &lt;= k) &amp;&amp; B[A[X]] == X;
 </li>
-<li>delete X: 把A[X]与末端A[B[k]]交换，A[B[k]] = A[X], B[A[X]] = B[k];
+<li>delete X: 把 A[X]与末端 A[B[k]]交换，A[B[k]] = A[X], B[A[X]] = B[k];
 k = k - 1;
 </li>
 </ol>
@@ -4088,16 +4091,16 @@ loop.
 </p>
 
 <p>
-利用两个指针，一个快指针和一个慢指针，快的每次都比慢的多前进一个节点，如果存在loop,快的总会与慢的相重叠。
+利用两个指针，一个快指针和一个慢指针，快的每次都比慢的多前进一个节点，如果存在 loop,快的总会与慢的相重叠。
 </p>
 
 <p>
-loop的起始点：
+loop 的起始点：
 </p>
 <ol class="org-ol">
-<li>当快的与慢的指针相重叠时，验证有loop，之后慢的指针不动，通过快的指针计算出loop的长度
+<li>当快的与慢的指针相重叠时，验证有 loop，之后慢的指针不动，通过快的指针计算出 loop 的长度
 </li>
-<li>重新从链表头开始，快指针比慢指针先前进loop的长度距离，提增慢和快指针，直到第一次相遇，相遇点就是loop的起始点。
+<li>重新从链表头开始，快指针比慢指针先前进 loop 的长度距离，提增慢和快指针，直到第一次相遇，相遇点就是 loop 的起始点。
 </li>
 </ol>
 </div>
@@ -4113,7 +4116,7 @@ faster than O(n<sup>2</sup>).)
 </p>
 
 <p>
-对数组X扫描2次计算出如下2组数组：
+对数组 X 扫描 2 次计算出如下 2 组数组：
 </p>
 
 $$
@@ -4125,7 +4128,7 @@ $$
 
 
 <p>
-所以得到M：
+所以得到 M：
 </p>
 
 $$
@@ -4151,6 +4154,7 @@ Hash Table.
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -4297,7 +4301,7 @@ question.)
 </p>
 
 <p>
-假设一共有ｎ天，每i天收到的礼物数是： 
+假设一共有ｎ天，每 i 天收到的礼物数是： 
 </p>
 
 \begin{align}
@@ -4341,19 +4345,19 @@ data entries that get lost when three random nodes fail?
 </p>
 
 <p>
-不考虑RAID的XOR做法这里。
+不考虑 RAID 的 XOR 做法这里。
 </p>
 
 <p>
-1000个数据做3份拷贝，如何做3份拷贝呢？
+1000 个数据做 3 份拷贝，如何做 3 份拷贝呢？
 </p>
 
 <ol class="org-ol">
-<li>随机的3个点失败只损失一个数据
+<li>随机的 3 个点失败只损失一个数据
 </li>
 </ol>
 <p>
-3份拷贝以相邻一格的方式存储，如下
+3 份拷贝以相邻一格的方式存储，如下
 </p>
 <div class="org-src-container">
 
@@ -4364,16 +4368,16 @@ copy3:   data999  data1000 data1 ..  data998
 </pre>
 </div>
 
-随机选取3个点的组合个数： $\binom{1000}{3}$ 
+随机选取 3 个点的组合个数： $\binom{1000}{3}$ 
 其中丢失数据点的组合个数： 1000, 每种组合丢失一个数据
 所以丢失数据期望 $1000 / \binom{1000}{3} = 6.01804e-06$ 
 
 <ol class="org-ol">
-<li>随机的3个点失败损失3个数据
+<li>随机的 3 个点失败损失 3 个数据
 </li>
 </ol>
 <p>
-每3个点共享3个拷贝点，如下
+每 3 个点共享 3 个拷贝点，如下
 </p>
 <div class="org-src-container">
 
@@ -4384,8 +4388,8 @@ copy3:   data2    data3    data1 ..  data998
 </pre>
 </div>
 
-随机选取3个点的组合个数： $\binom{1000}{3}$ 
-其中丢失数据点的组合个数： 1000/3, 每种组合丢失3个数据，
+随机选取 3 个点的组合个数： $\binom{1000}{3}$ 
+其中丢失数据点的组合个数： 1000/3, 每种组合丢失 3 个数据，
 所以丢失数据期望 $1000/3×3 / \binom{1000}{3} = 6.01804e-06$ 
 </div>
 </div>
@@ -4402,7 +4406,7 @@ performed?
 </p>
 
 <p>
-期望的次数是第ｎ个元素是最小值的概率的总和。ｎ个元素平均分布，任意元素是最小值的概率是1/ｎ。
+期望的次数是第ｎ个元素是最小值的概率的总和。ｎ个元素平均分布，任意元素是最小值的概率是 1/ｎ。
 </p>
 
 <p>
@@ -4427,17 +4431,17 @@ infinite supply of marbles? What if you have only two marbles?
 </p>
 
 <ol class="org-ol">
-<li>无限个玻璃球，采用二分搜索法，celing(log100) = 7. 最快7次。
+<li>无限个玻璃球，采用二分搜索法，celing(log100) = 7. 最快 7 次。
 </li>
-<li>如果只有2个玻璃球
+<li>如果只有 2 个玻璃球
 </li>
 </ol>
 <p>
-n个球时在总楼层r中某个楼层x抛，两种情况： 1.破碎，剩下的总楼层x-1用剩下的n-1个球; 2.没破碎，剩下的总楼层r-x用n个球
+n 个球时在总楼层 r 中某个楼层 x 抛，两种情况： 1.破碎，剩下的总楼层 x-1 用剩下的 n-1 个球; 2.没破碎，剩下的总楼层 r-x 用 n 个球
 </p>
 
 <p>
-如此把问题分解成小问题。如下代码求得最快的次数为14。其中一条最坏情况：
+如此把问题分解成小问题。如下代码求得最快的次数为 14。其中一条最坏情况：
 9&#x2013;&gt;22&#x2013;&gt;34&#x2013;&gt;45&#x2013;&gt;55&#x2013;&gt;64&#x2013;&gt;72&#x2013;&gt;79&#x2013;&gt;85&#x2013;&gt;90&#x2013;&gt;94&#x2013;&gt;97&#x2013;&gt;99
 </p>
 
@@ -4493,8 +4497,8 @@ digital balance that reports the weight of what is placed on it.
 </p>
 
 <p>
-一共10袋bag1-10, 分别从bag1中取1个金币，bag2中取2个金币……bag10中取10
-个金币，称重总的重量W。如果每个金币都是10grams的话，所以金币总重量是550。N=550-W。得到缺失的重量，也是bag的号数，所以bagN中含有错误金币。
+一共 10 袋 bag1-10, 分别从 bag1 中取 1 个金币，bag2 中取 2 个金币……bag10 中取 10
+个金币，称重总的重量 W。如果每个金币都是 10grams 的话，所以金币总重量是 550。N=550-W。得到缺失的重量，也是 bag 的号数，所以 bagN 中含有错误金币。
 </p>
 </div>
 </div>
@@ -4512,11 +4516,11 @@ that is heavier by using a balance and only two weighings?
 </p>
 
 <ol class="org-ol">
-<li>称重3和3两组
+<li>称重 3 和 3 两组
 </li>
-<li>若不同，选出重的一组，3==&gt; 1,1,1 称重1和1,不同，那么重的就是，相同，另外个是。
+<li>若不同，选出重的一组，3==&gt; 1,1,1 称重 1 和 1,不同，那么重的就是，相同，另外个是。
 </li>
-<li>若相同，2==&gt;1,1，称重1和1,重的就是
+<li>若相同，2==&gt;1,1，称重 1 和 1,重的就是
 </li>
 </ol>
 </div>
@@ -4530,11 +4534,11 @@ Suppose we start with n companies that eventually merge into one big
 company. How many different ways are there for them to merge?
 </p>
 
-1. 2个公司(a,b)时，合并只有一种方法[ab]
-2. 当有n个公司时，如何把它用n-1个公司表示，f(n)=f(n-1)g(n)
-3. n个公司第一步从中选择两个公司合并，连带合并后的新公司一共n-1个公司，
-   化简到n-1个公司表示。
-4. n个选2个的组合个数是： $\binom{1000}{2}=n(n-1)/2$
+1. 2 个公司(a,b)时，合并只有一种方法 [ab]
+2. 当有 n 个公司时，如何把它用 n-1 个公司表示，f(n)=f(n-1)g(n)
+3. n 个公司第一步从中选择两个公司合并，连带合并后的新公司一共 n-1 个公司，
+   化简到 n-1 个公司表示。
+4. n 个选 2 个的组合个数是： $\binom{1000}{2}=n(n-1)/2$
 
 <p>
 所以
@@ -4628,15 +4632,15 @@ priority is to get as much money as possible.
 从后往前推
 </p>
 <ul class="org-ul">
-<li>2个海盗，(1, 2) &#x2014;&gt; (0, 300)
+<li>2 个海盗，(1, 2) &#x2014;&gt; (0, 300)
 </li>
-<li>3个海盗，(1, 2, 3) &#x2014;&gt; (1, 0, 299)
+<li>3 个海盗，(1, 2, 3) &#x2014;&gt; (1, 0, 299)
 </li>
-<li>4个海盗，(1, 2, 3, 4) &#x2014;&gt; (0, 1, 0, 299)
+<li>4 个海盗，(1, 2, 3, 4) &#x2014;&gt; (0, 1, 0, 299)
 </li>
-<li>5个海盗，(1, 2, 3, 4, 5) &#x2014;&gt; (1, 0, 1, 0, 298)
+<li>5 个海盗，(1, 2, 3, 4, 5) &#x2014;&gt; (1, 0, 1, 0, 298)
 </li>
-<li>6个海盗，(1, 2, 3, 4, 5, 6) &#x2014;&gt; (0, 1, 0, 1, 298)
+<li>6 个海盗，(1, 2, 3, 4, 5, 6) &#x2014;&gt; (0, 1, 0, 1, 298)
 </li>
 </ul>
 </div>
@@ -4669,6 +4673,7 @@ is to be divided. Who gets the dollar and how many are killed?
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
 </feed>

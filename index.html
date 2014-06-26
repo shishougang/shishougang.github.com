@@ -130,26 +130,18 @@ MathJax.Hub.Config({
   </header>
 
 
-  <div class="entry-content"><p>在不同的平台有繁多的Time API，如何选用精准的高精度Time函数来做
-performance benchmarking呢？</p>
+  <div class="entry-content"><p>在不同的平台有繁多的 Time API，如何选用精准的高精度 Time 函数来做
+performance benchmarking 呢？</p>
 
 <h2 id="wall-clock-time-vs-cpu-time">Wall-clock time VS CPU time</h2>
-<p>先理解一些时间的概念。明白不同时间API测量的是什么时间。</p>
+<p>先理解一些时间的概念。明白不同时间 API 测量的是什么时间。</p>
 
-<p><a href="http://en.wikipedia.org/wiki/Wall-clock_time">Wall-clock time</a>,顾名思
-义，墙上的钟，代表一个任务从开始到完成所经历的时间。它包含3部分：CPU的
-时间，I/O的时间和通信延迟的时间。但wall-clock很少是正确的时钟来使用，
-因为它随着时区，和daylightsaving改变，或与NTP同步。而这些特性没有一个
-是有益的，如果你用它来调度任务或做performance benchmarking。它仅仅如名
-字所言，墙上的一个时钟。</p>
+<p><a href="http://en.wikipedia.org/wiki/Wall-clock_time">Wall-clock time</a>,顾名思义，墙上的钟，代表一个任务从开始到完成所经历的时间。它包含 3 部分：CPU 的时间，I/O 的时间和通信延迟的时间。但 wall-clock 很少是正确的时钟来使用，因为它随着时区，和 daylightsaving 改变，或与 NTP 同步。而这些特性没有一个是有益的，如果你用它来调度任务或做 performance benchmarking。它仅仅如名字所言，墙上的一个时钟。</p>
 
-<p><a href="http://en.wikipedia.org/wiki/CPU_time">CPU time</a>仅仅统计一个任务从开
-始到完成在CPU上所花的时间。CPU time主要包括User time（在user space所花
-时间）和System time（在kernel space所花时间）。</p>
+<p><a href="http://en.wikipedia.org/wiki/CPU_time">CPU time</a> 仅仅统计一个任务从开始到完成在 CPU 上所花的时间。CPU time 主要包括 User time（在 user space 所花时间）和 System time（在 kernel space 所花时间）。</p>
 
-<p>以并行程序为例，CPU time就是所有CPU在这个程序所花的时间总和，
-Wall-clock time在这种情况可能时间相对短，它只统计任务开始到结束所花时
-间。</p>
+<p>以并行程序为例，CPU time 就是所有 CPU 在这个程序所花的时间总和，
+Wall-clock time 在这种情况可能时间相对短，它只统计任务开始到结束所花时间。</p>
 
 </div>
   
@@ -195,15 +187,13 @@ Wall-clock time在这种情况可能时间相对短，它只统计任务开始�
 
   <div class="entry-content"><p>在
 <a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">浅谈设计模式六: 单例模式(Singleton)</a>
-中提到double-checked locking pattern(DCLP)来实现Singleton设计模式，但是
-在C++11之前，没有安全方法在可移植的C++中去实现它．具体原因可见
+中提到 double-checked locking pattern(DCLP)来实现 Singleton 设计模式，但是在 C++11 之前，没有安全方法在可移植的 C++中去实现它．具体原因可见
 <a href="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F6/">单例模式(Singleton)</a>
-或Scott Meyers和Andrei Alexandrescu发布的原文
+或 Scott Meyers 和 Andrei Alexandrescu 发布的原文
 <a href="http://www.aristeia.com/Papers/DDJ_Jul_Aug_2004_revised.pdf">“C++ and the Perils of Double-Checked Locking”</a>
 ．</p>
 
-<p>C++11引入了新的内存模型和线程库，使得能在C++中实现可移植的DCLP．本文说
-明如何实现它．</p>
+<p>C++11 引入了新的内存模型和线程库，使得能在 C++中实现可移植的 DCLP．本文说明如何实现它．</p>
 
 </div>
   
@@ -527,8 +517,7 @@ adjacency lists.
 </ul>
 
 <p><a href="http://www.amazon.com/gp/product/0321334876?ie=UTF8&amp;tag=aristeia.com-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0321334876">Effective C++</a>
-系列的作者<a href="http://www.aristeia.com/">Scott Meyers</a>在Dconf中<a href="http://www.ustream.tv/recorded/47947981">The Last Thing D Needs</a>聊了些C++的
-特性，稍微总结一下。</p>
+系列的作者 <a href="http://www.aristeia.com/">Scott Meyers</a> 在 Dconf 中 <a href="http://www.ustream.tv/recorded/47947981">The Last Thing D Needs</a> 聊了些 C++的特性，稍微总结一下。</p>
 
 <h2 id="initialization">Initialization</h2>
 
@@ -721,12 +710,11 @@ computation and (2) the asymptotic analysis of worst-case complexity.
   </header>
 
 
-  <div class="entry-content"><p>全书分为3部分：</p>
+  <div class="entry-content"><p>全书分为 3 部分：</p>
 
 <ul>
-  <li>预备知识：总的概括代码涉及的知识点，比如算法和数据结构的重要性和合理
-性，如何写出正确的代码并证明，如何测试代码，性能评估代码，debug等。 </li>
-  <li>性能：先是介绍一些估算的技巧，比如72法则，利特尔法则(Little’s law)
+  <li>预备知识：总的概括代码涉及的知识点，比如算法和数据结构的重要性和合理性，如何写出正确的代码并证明，如何测试代码，性能评估代码，debug 等。 </li>
+  <li>性能：先是介绍一些估算的技巧，比如 72 法则，利特尔法则(Little’s law)
 等，之后展开代码算法的性能，如何调试代码使得性能更好或更省空间。</li>
   <li>产品：讲解具体的算法，如排序，搜索等。</li>
 </ul>

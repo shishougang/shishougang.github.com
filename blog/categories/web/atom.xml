@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Web | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/web/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-25T20:34:36+08:00</updated>
+  <updated>2014-06-26T23:22:23+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -21,7 +21,7 @@
     <content type="html"><![CDATA[<ul id="markdown-toc">
   <li><a href="#section">目的</a></li>
   <li><a href="#section-1">生成文章目录</a>    <ul>
-      <li><a href="#kramdown">使用Kramdown</a></li>
+      <li><a href="#kramdown">使用 Kramdown</a></li>
       <li><a href="#section-2">在博文中开头加入</a></li>
       <li><a href="#section-3">添加样式</a></li>
       <li><a href="#section-4">只在文章里显示</a></li>
@@ -31,19 +31,19 @@
 </ul>
 
 <h2 id="section">目的</h2>
-<p>为Blog加入目录，方便读者快速浏览主题和选择主题。搜索发现
-<a href="http://brizzled.clapper.org/blog/2012/02/04/generating-a-table-of-contents-in-octopress/">文章1</a>
-使用jQuery来实现，比较复杂，和
-<a href="http://blog.riemann.cc/2013/04/10/table-of-contents-in-octopress/#">文章2</a>
-使用kramdown和Octoptress本身的样式来生成目录。</p>
+<p>为 Blog 加入目录，方便读者快速浏览主题和选择主题。搜索发现
+<a href="http://brizzled.clapper.org/blog/2012/02/04/generating-a-table-of-contents-in-octopress/">文章 1</a>
+使用 jQuery 来实现，比较复杂，和
+<a href="http://blog.riemann.cc/2013/04/10/table-of-contents-in-octopress/#">文章 2</a>
+使用 kramdown 和 Octoptress 本身的样式来生成目录。</p>
 
 <!-- more -->
 
 <h2 id="section-1">生成文章目录</h2>
 
-<h3 id="kramdown">使用Kramdown</h3>
-<p>Kramdown能自动为文章生成目录<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup>,所以使用Kramdown作为你的Octopress转
-换程序，并且它支持Latex写公式，<a href="http://dreamrunner.org/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">如何用krramdown替换rdiscount</a>。</p>
+<h3 id="kramdown">使用 Kramdown</h3>
+<p>Kramdown 能自动为文章生成目录<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup>,所以使用 Kramdown 作为你的 Octopress 转
+换程序，并且它支持 Latex 写公式，<a href="http://dreamrunner.org/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/">如何用 krramdown 替换 rdiscount</a>。</p>
 
 <h3 id="section-2">在博文中开头加入</h3>
 
@@ -87,6 +87,7 @@ ul#markdown-toc {
   </ol>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -94,11 +95,11 @@ ul#markdown-toc {
     <link href="http://dreamrunner.org/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi/"/>
     <updated>2014-03-09T19:41:06+08:00</updated>
     <id>http://dreamrunner.org/blog/2014/03/09/octopresszhong-shi-yong-latexxie-shu-xue-gong-shi</id>
-    <content type="html"><![CDATA[<p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
+    <content type="html"><![CDATA[<p>Octopress 默认不支持 LaTex 写数学公式，这里修改 Octopress 使其支持。</p>
 
 <h2 id="section">测试</h2>
 
-<h3 id="latex">整段LaTex公式</h3>
+<h3 id="latex-">整段 LaTex 公式</h3>
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -124,7 +125,7 @@ ul#markdown-toc {
 \end{align}
  %]]&gt;</script>
 
-<h3 id="latex-1">内嵌LaTex公式</h3>
+<h3 id="latex--1">内嵌 LaTex 公式</h3>
 <p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 </pre></td><td class='code'><pre><code class='latex'><span class='line'>If <span class="s">$</span><span class="nb">a^</span><span class="m">2</span><span class="o">=</span><span class="nb">b</span><span class="s">$</span> and <span class="s">$</span><span class="nb">b</span><span class="o">=</span><span class="m">2</span><span class="s">$</span>, then the solution must be
@@ -138,7 +139,7 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
 
 <h2 id="section-1">设置</h2>
 
-<h3 id="kramdownhttpkramdowngettalongorgrdiscount">1.用<a href="http://kramdown.gettalong.org/">kramdown</a>代替rdiscount</h3>
+<h3 id="kramdownhttpkramdowngettalongorg--rdiscount">1.用 <a href="http://kramdown.gettalong.org/">kramdown</a> 代替 rdiscount</h3>
 <ul>
   <li>安装</li>
 </ul>
@@ -187,7 +188,7 @@ index cd8ce57..e1d8d30 100644
    gem 'RedCloth', '~&gt; 4.2.9'
 </code></p>
 
-<h3 id="mathjax">2.添加MathJax配置</h3>
+<h3 id="mathjax-">2.添加 MathJax 配置</h3>
 <p>在<code>/source/_includes/custom/head.html</code>文件里添加<sup id="fnref:fn1"><a href="#fn:fn1" rel="footnote">1</a></sup>：</p>
 
 <p><code>javascript
@@ -208,7 +209,7 @@ MathJax.Hub.Config({
 &lt;script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"&gt;&lt;/script&gt;
 </code></p>
 
-<h3 id="mathjaxbugfn2">3.修复MathJax右击页面空白bug<sup id="fnref:fn2"><a href="#fn:fn2" rel="footnote">2</a></sup></h3>
+<h3 id="mathjax--bugfn2">3.修复 MathJax 右击页面空白 bug<sup id="fnref:fn2"><a href="#fn:fn2" rel="footnote">2</a></sup></h3>
 
 <p><code>diff
 diff --git a/sass/base/_theme.scss b/sass/base/_theme.scss
@@ -229,8 +230,8 @@ index c35136d..3ee3999 100644
 <h2 id="section-2">更多信息</h2>
 
 <ul>
-  <li><a href="http://kramdown.gettalong.org/">kramdown语法</a></li>
-  <li><a href="http://kramdown.gettalong.org/syntax.html#math-blocks">kramdown数学模块</a></li>
+  <li><a href="http://kramdown.gettalong.org/">kramdown 语法</a></li>
+  <li><a href="http://kramdown.gettalong.org/syntax.html#math-blocks">kramdown 数学模块</a></li>
 </ul>
 
 <div class="footnotes">
@@ -244,6 +245,7 @@ index c35136d..3ee3999 100644
   </ol>
 </div>
 ]]></content>
+  
   </entry>
   
 </feed>

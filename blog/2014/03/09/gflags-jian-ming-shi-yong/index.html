@@ -128,14 +128,13 @@ MathJax.Hub.Config({
 
 
 <div class="entry-content"><h2 id="section">简介</h2>
-<p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
+<p>Google 的 gflags 是一套命令行参数处理的开源库。比 getopt 更方便，更功能强大，从 C++的库更好的支持 C++（如 C++的 string 类型）。包括 <a href="https://code.google.com/p/gflags/">C++的版本</a>和 <a href="https://code.google.com/p/python-gflags/">python 的版本</a>。 这里只针对 C++版本，python 版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
 
 <p>你能从<a href="/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
 
 <!-- more -->
 
-<h2 id="example">example源代码</h2>
-<p>先看example源代码，然后逐步介绍。</p>
+<h2 id="example--example-">example 源代码先看 example 源代码，然后逐步介绍。</h2>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>example.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -190,7 +189,7 @@ MathJax.Hub.Config({
 </span><span class="line">  <span class="nv">languages</span><span class="o">=</span>english,french,german
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 <ul>
-  <li>help命令</li>
+  <li>help 命令</li>
 </ul>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>run</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
@@ -248,15 +247,14 @@ MathJax.Hub.Config({
 </pre></td><td class="code"><pre><code class="c++"><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">gflags</span><span class="o">/</span><span class="n">gflags</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<h3 id="gflag">利用gflag提供的宏定义参数</h3>
-<p>该宏的3个参数分别为命令行参数名，参数默认值，参数的帮助信息。</p>
+<h3 id="gflag--3-">利用 gflag 提供的宏定义参数该宏的 3 个参数分别为命令行参数名，参数默认值，参数的帮助信息。</h3>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>define_flags</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 </pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">DEFINE_bool</span><span class="p">(</span><span class="n">big_menu</span><span class="p">,</span> <span class="kc">true</span><span class="p">,</span> <span class="s">&quot;Include &#39;advanced&#39; options in the menu listing&quot;</span><span class="p">);</span>
 </span><span class="line"><span class="n">DEFINE_string</span><span class="p">(</span><span class="n">languages</span><span class="p">,</span> <span class="s">&quot;english,french,german&quot;</span><span class="p">,</span> <span class="s">&quot;comma-separated list of languages to offer in the &#39;lang&#39; menu&quot;</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-<p>gflags暂时支持如下参数的类型：</p>
+<p>gflags 暂时支持如下参数的类型：</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>supported_types</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -274,14 +272,13 @@ MathJax.Hub.Config({
 
 <h2 id="section-3">访问参数</h2>
 
-<p>通过FLAGS_name像正常变量一样访问标志参数。在这个程序中，通过
+<p>通过 FLAGS_name 像正常变量一样访问标志参数。在这个程序中，通过
 <code>FLAGS_big_menu</code>和<code>FLAGS_languages</code>访问它们。</p>
 
 <h2 id="section-4">不同文件访问参数</h2>
 
 <p>如果想再另外一个不是定义这个参数的文件访问这个参数的话，以参数
-<code>FLAGS_big_menu</code>为例，用宏<code>DECLARE_bool(big_menu）</code>来声明引入这个参数。
-这个宏相当于做了<code>extern FLAGS_big_menu</code>.</p>
+<code>FLAGS_big_menu</code>为例，用宏<code>DECLARE_bool(big_menu）</code>来声明引入这个参数。这个宏相当于做了<code>extern FLAGS_big_menu</code>.</p>
 
 <h2 id="section-5">整合一起，初始化所有参数</h2>
 
@@ -293,21 +290,16 @@ MathJax.Hub.Config({
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>set_up_flag</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 </pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">google</span><span class="o">::</span><span class="n">ParseCommandLineFlags</span><span class="p">(</span><span class="o">&amp;</span><span class="n">argc</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">argv</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
-<p><code>argc</code>和<code>argv</code>就是main的入口参数，因为这个函数会改变他们的值，所以都是
-以指针传入。</p>
+<p><code>argc</code>和<code>argv</code>就是 main 的入口参数，因为这个函数会改变他们的值，所以都是以指针传入。</p>
 
-<p>第三个参数被称为<code>remove_flags</code>。如果它是<code>true</code>,<code>ParseCommandLineFlags</code>会
-从<code>argv</code>中移除标识和它们的参数，相应减少<code>argc</code>的值。然后argv只保留命令
-行参数。</p>
+<p>第三个参数被称为<code>remove_flags</code>。如果它是<code>true</code>,<code>ParseCommandLineFlags</code>会从<code>argv</code>中移除标识和它们的参数，相应减少<code>argc</code>的值。然后 argv 只保留命令行参数。</p>
 
-<p>相反，<code>remove_flags</code>是<code>false</code>,<code>ParseCommandLineFlags</code>会保留<code>argc</code>不变，
-但将会重新调整它们的顺序，使得标识再前面。</p>
+<p>相反，<code>remove_flags</code>是<code>false</code>,<code>ParseCommandLineFlags</code>会保留<code>argc</code>不变，但将会重新调整它们的顺序，使得标识再前面。</p>
 
-<p>Note: <code>./sample --big_menu=false arg1</code>中再<code>big_menu</code>是标识，<code>false</code>是
-它的参数，<code>arg1</code>是命令行参数。</p>
+<p>Note: <code>./sample --big_menu=false arg1</code>中再<code>big_menu</code>是标识，<code>false</code>是它的参数，<code>arg1</code>是命令行参数。</p>
 
 <h2 id="section-6">命令行设置参数</h2>
-<p>gflags提供多种命令行设置参数。</p>
+<p>gflags 提供多种命令行设置参数。</p>
 
 <p><code>string</code>和<code>int</code>之类，可以用如下方式：</p>
 
@@ -345,11 +337,11 @@ MathJax.Hub.Config({
 <span class="line-number">6</span>
 <span class="line-number">7</span>
 </pre></td><td class="code"><pre><code class="bash"><span class="line">--help  显示文件中所有标识的完整帮助信息
-</span><span class="line">--helpfull  和-help一样，
+</span><span class="line">--helpfull  和-help 一样，
 </span><span class="line">--helpshort  只显示当前执行文件里的标志
-</span><span class="line">--helpxml  以xml凡是打印，方便处理
-</span><span class="line">--version  打印版本信息，由google::SetVersionString<span class="o">()</span>设定
-</span><span class="line">--flagfile  -flagfile<span class="o">=</span>f从文件f中读取命令行参数
+</span><span class="line">--helpxml  以 xml 凡是打印，方便处理
+</span><span class="line">--version  打印版本信息，由 google::SetVersionString<span class="o">()</span>设定
+</span><span class="line">--flagfile  -flagfile<span class="o">=</span>f 从文件 f 中读取命令行参数
 </span><span class="line">...
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 <p>具体见：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>

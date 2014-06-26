@@ -211,7 +211,7 @@ MathJax.Hub.Config({
 </ol>
 
 <p>
-现在气候收集这3个数据：温度，湿度和气压。有3种不同的显示：现在的天气情况，天气统计信息和天气预测信息。
+现在气候收集这 3 个数据：温度，湿度和气压。有 3 种不同的显示：现在的天气情况，天气统计信息和天气预测信息。
 </p>
 
 <p>
@@ -227,7 +227,7 @@ forecastDisplay.update(temp_, humdity_, pressure_);
 </div>
 
 <p class="info">
-1. WeatherData和Display比较紧的耦合。在函数内直接使用实例，每次增加或较少Display都要在这个函数内修改。<br />
+1. WeatherData 和 Display 比较紧的耦合。在函数内直接使用实例，每次增加或较少 Display 都要在这个函数内修改。<br />
 2. 以具体实例来编码，使得不能动态的添加和减少显示元素，唯有修改这段代码
 </p>
 
@@ -283,7 +283,7 @@ forecastDisplay.update(temp_, humdity_, pressure_);
 <img src="/images/blog/2014/strategy/duck1.jpeg" />
 
 <p>
-一个基类 <code>Duck</code> 定义Duck的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
+一个基类 <code>Duck</code> 定义 Duck 的一些特性，子类继承它的特性，并覆盖它的部分特性。至此没什么问题。子类共同拥有父类的特性，消除了代码的重复性。
 </p>
 
 <p>
@@ -305,7 +305,7 @@ duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的�
 <img src="/images/blog/2014/strategy/duck5.jpeg" />
 
 <p class="info">
-1. 增加代码的冗余性，每个子类duck都要去实现部分相同的特性;2. 想更改一个相同的 fly() 特性，要在相应的所有子类都修改
+1. 增加代码的冗余性，每个子类 duck 都要去实现部分相同的特性;2. 想更改一个相同的 fly() 特性，要在相应的所有子类都修改
 </p>
 
 </div>
@@ -351,14 +351,14 @@ duck(子类）如果不具备 或 <code>fly()</code> 或 <code>quack</code> 的�
 
 
   <div class="entry-content"><p>
-读完GOF的<a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?ie=UTF8&amp;qid=1394635442&amp;sr=8-1&amp;keywords=Design+Patterns">Design Patterns: Elements of Reusable Object-Oriented
+读完 GOF 的<a href="http://www.amazon.com/Design-Patterns-Elements-Reusable-Object-Oriented/dp/0201633612/ref=sr_1_1?ie=UTF8&amp;qid=1394635442&amp;sr=8-1&amp;keywords=Design+Patterns">Design Patterns: Elements of Reusable Object-Oriented
 Software</a>和图文并茂的<a href="http://www.amazon.com/First-Design-Patterns-Elisabeth-Freeman/dp/0596007124/ref=sr_1_2?ie=UTF8&amp;qid=1394635442&amp;sr=8-2&amp;keywords=Design+Patterns">Head First Design Patterns</a>，一时并不是那么快消化和理解，所以试着用自己的语言总结一下。
 </p>
 
 <p>
-《Design Patterns》在Introduction章中&#8221;如何选一种模式设计&#8221;一节中给出了一张表格，5个创建模式（Abstract Factory; Builder; Factory Method;
-Prototype; Singleton)，7个结构模式(Adapter; Bridge; Compose;
-Decorator; Facade; Flyweight; Proxy)和11个行为模式（Chain of
+《Design Patterns》在 Introduction 章中&#8221;如何选一种模式设计&#8221;一节中给出了一张表格，5 个创建模式（Abstract Factory; Builder; Factory Method;
+Prototype; Singleton)，7 个结构模式(Adapter; Bridge; Compose;
+Decorator; Facade; Flyweight; Proxy)和 11 个行为模式（Chain of
 Responsibility; Command; Interpreter; Iterator; Mediator; Memento;
 Observer; State; Strategy; Template Method; Visitor)。
 </p>
@@ -405,11 +405,11 @@ Observer; State; Strategy; Template Method; Visitor)。
   </header>
 
 
-  <div class="entry-content"><p>Octopress默认不支持LaTex写数学公式，这里修改Octopress使其支持。</p>
+  <div class="entry-content"><p>Octopress 默认不支持 LaTex 写数学公式，这里修改 Octopress 使其支持。</p>
 
 <h2 id="section">测试</h2>
 
-<h3 id="latex">整段LaTex公式</h3>
+<h3 id="latex-">整段 LaTex 公式</h3>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -436,7 +436,7 @@ Observer; State; Strategy; Template Method; Visitor)。
 \end{align}
  %]]></script>
 
-<h3 id="latex-1">内嵌LaTex公式</h3>
+<h3 id="latex--1">内嵌 LaTex 公式</h3>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -490,7 +490,7 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
 
 
   <div class="entry-content"><h2 id="section">简介</h2>
-<p>Google的gflags是一套命令行参数处理的开源库。比getopt更方便，更功能强大，从C++的库更好的支持C++（如C++的string类型）。包括<a href="https://code.google.com/p/gflags/">C++的版本</a>和<a href="https://code.google.com/p/python-gflags/">python的版本</a>。 这里只针对C++版本，python版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
+<p>Google 的 gflags 是一套命令行参数处理的开源库。比 getopt 更方便，更功能强大，从 C++的库更好的支持 C++（如 C++的 string 类型）。包括 <a href="https://code.google.com/p/gflags/">C++的版本</a>和 <a href="https://code.google.com/p/python-gflags/">python 的版本</a>。 这里只针对 C++版本，python 版本的使用类似。主要内容参考与翻译自官方文档：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
 
 <p>你能从<a href="/downloads/code/2014/cmake_gflags_example.zip">这里下载</a>本文章的源代码工程。</p>
 
@@ -555,7 +555,7 @@ either $a=+\sqrt{2}$ or $a=-\sqrt{2}$.</p>
 </ol>
 
 <p>
-TDD有它自身的
+TDD 有它自身的
 <a href="http://en.wikipedia.org/wiki/Test-driven_development#Benefits">优点</a>与
 <a href="http://en.wikipedia.org/wiki/Test-driven_development#Vulnerabilities">缺点</a>
 </p>

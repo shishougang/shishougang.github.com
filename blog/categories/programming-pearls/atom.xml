@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming Pearls | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/programming-pearls/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-25T20:34:36+08:00</updated>
+  <updated>2014-06-26T23:22:23+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -22,7 +22,7 @@
 <h2 id="sec-1">Book notes</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Hash存储word次数</h3>
+<h3 id="sec-1-1">Hash 存储 word 次数</h3>
 <div class="outline-text-3" id="text-1-1">
 <!-- more -->
 
@@ -88,10 +88,10 @@
 </div>
 
 <div id="outline-container-sec-1-2" class="outline-3">
-<h3 id="sec-1-2">Markov产生随机词汇</h3>
+<h3 id="sec-1-2">Markov 产生随机词汇</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-利用指针指向不同单词的开头，并按照K个单词对比方式排序，利用二分搜索定位相同K长度的文本，并利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Reservoir%20Sampling.html">Reservoir sampling</a>在不知道长度的情况下，均等的随机选取一个。
+利用指针指向不同单词的开头，并按照 K 个单词对比方式排序，利用二分搜索定位相同 K 长度的文本，并利用<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Reservoir%20Sampling.html">Reservoir sampling</a>在不知道长度的情况下，均等的随机选取一个。
 </p>
 
 <div class="org-src-container">
@@ -188,10 +188,10 @@
 </div>
 
 <div id="outline-container-sec-1-3" class="outline-3">
-<h3 id="sec-1-3">Markov利用Hash产生随机词汇</h3>
+<h3 id="sec-1-3">Markov 利用 Hash 产生随机词汇</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
-利用Hash表加快搜索相同K长度的文本。
+利用 Hash 表加快搜索相同 K 长度的文本。
 </p>
 
 <div class="org-src-container">
@@ -342,11 +342,11 @@
 <h3 id="sec-2-2">Column15-8</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-找出最长重复超过M次的字符串。
+找出最长重复超过 M 次的字符串。
 </p>
 
 <p>
-经过排序后，越是相邻的越是相同的多，至少重复M次，就是计算相邻M个位置的字符所重复的字符长度，即 <code>ComLen(pstr[i], pstr[i + kM])</code>
+经过排序后，越是相邻的越是相同的多，至少重复 M 次，就是计算相邻 M 个位置的字符所重复的字符长度，即 <code>ComLen(pstr[i], pstr[i + kM])</code>
 </p>
 
 <div class="org-src-container">
@@ -405,7 +405,7 @@
 
 <p>
 经典<a href="http://en.wikipedia.org/wiki/Longest_common_substring_problem">Longest common substring problem</a>.
-利用Dynamic Programming解决。复杂度O(mn).
+利用 Dynamic Programming 解决。复杂度 O(mn).
 </p>
 
 <div class="org-src-container">
@@ -455,7 +455,7 @@
 <h3 id="sec-2-4">Column15-11</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
-产生单词层次的Markov文本。
+产生单词层次的 Markov 文本。
 </p>
 
 <div class="org-src-container">
@@ -504,6 +504,7 @@
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -639,7 +640,7 @@
 <h3 id="sec-1-2">生成随机数</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
-从n中生成不重复的m个随机数。
+从 n 中生成不重复的 m 个随机数。
 </p>
 </div>
 
@@ -754,8 +755,8 @@
 </li>
 <li>实现一种解答。我们应该追求以直接清晰的代码来实现选择的设计，使用最强大的能用的操作。
 </li>
-<li>回顾。Polya的<a href="http://www.amazon.com/How-Solve-It-Mathematical-Princeton/dp/069111966X">How to Solve It</a>能帮助任何程序员成为更好的问题解决者。在
-15页他说：”基本存在一些东西去做，随着足够的学习和突破，我们能改善每个解答，并且在任何情况下，我们都能经常改善我们对解答的理解。“
+<li>回顾。Polya 的<a href="http://www.amazon.com/How-Solve-It-Mathematical-Princeton/dp/069111966X">How to Solve It</a>能帮助任何程序员成为更好的问题解决者。在
+15 页他说：”基本存在一些东西去做，随着足够的学习和突破，我们能改善每个解答，并且在任何情况下，我们都能经常改善我们对解答的理解。“
 </li>
 </ul>
 </div>
@@ -768,7 +769,7 @@
 <h3 id="sec-2-1">Column11-9</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-在数组n中以算法复杂度O(n)找出第k个小的元素。
+在数组 n 中以算法复杂度 O(n)找出第 k 个小的元素。
 </p>
 
 <div class="org-src-container">
@@ -865,7 +866,7 @@
 <h3 id="sec-2-4">8</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
-0..n-1中生成m个随机数。
+0..n-1 中生成 m 个随机数。
 </p>
 
 <div class="org-src-container">
@@ -901,7 +902,7 @@
 </div>
 
 <p>
-如果允许有重复的数，如何生成排序的m个随机数。
+如果允许有重复的数，如何生成排序的 m 个随机数。
 </p>
 <div class="org-src-container">
 
@@ -992,7 +993,7 @@
 </div>
 
 <p>
-More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%20Sampling.html#sec-2">选k个</a>
+More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%20Sampling.html#sec-2">选 k 个</a>
 </p>
 </div>
 </div>
@@ -1001,12 +1002,13 @@ More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%2
 <h3 id="sec-2-7">12</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
-生成N&gt;1e6组的m个随机数，计算生成每个随机数出现的概率，是不是符合预期，还是偏差很大而不是随机的。
+生成 N&gt;1e6 组的 m 个随机数，计算生成每个随机数出现的概率，是不是符合预期，还是偏差很大而不是随机的。
 </p>
 </div>
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -1064,7 +1066,7 @@ More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%2
 <h5 id="sec-1-1-2-1">2.1</h5>
 <div class="outline-text-5" id="text-1-1-2-1">
 <p>
-因为x[i..j]直接的和可以基于x[i..j-1]的和算出，不用重头开始算。算法复杂度 O(n<sup>2</sup>)。
+因为 x[i..j]直接的和可以基于 x[i..j-1]的和算出，不用重头开始算。算法复杂度 O(n<sup>2</sup>)。
 </p>
 
 <div class="org-src-container">
@@ -1092,7 +1094,7 @@ More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%2
 <h5 id="sec-1-1-2-2">2.2</h5>
 <div class="outline-text-5" id="text-1-1-2-2">
 <p>
-先算出x[0..i]区间的和为 <code>cum_vector[i]</code> ，那么x[i..j]区间的和就是
+先算出 x[0..i]区间的和为 <code>cum_vector[i]</code> ，那么 x[i..j]区间的和就是
 <code>cum_vector[j] - cum-vector[i-1]</code>
 </p>
 <div class="org-src-container">
@@ -1126,7 +1128,7 @@ More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%2
 <h4 id="sec-1-1-3">3</h4>
 <div class="outline-text-4" id="text-1-1-3">
 <p>
-Divide-and-Conquer算法。
+Divide-and-Conquer 算法。
 </p>
 <ol class="org-ol">
 <li>求整个数组的子数组和，可以分成前面一半和后面一半
@@ -1147,7 +1149,7 @@ Divide-and-Conquer算法。
 <img src="/images/blog/2014/programmingpearls/column8_3_3.jpg" title="'column8_3_3'" >
 
 <ol class="org-ol">
-<li>最后比较这3部分和就能得出整个个数组的子数组最大和
+<li>最后比较这 3 部分和就能得出整个个数组的子数组最大和
 </li>
 </ol>
 
@@ -1192,26 +1194,26 @@ Divide-and-Conquer算法。
 <h4 id="sec-1-1-4">4</h4>
 <div class="outline-text-4" id="text-1-1-4">
 <p>
-假定已经解决了x[0..i-1]的情况，那么如何扩展到x[0..i]的情况，只多了x[i]
+假定已经解决了 x[0..i-1]的情况，那么如何扩展到 x[0..i]的情况，只多了 x[i]
 元素？
 </p>
 
 <ol class="org-ol">
-<li>解决了x[0..i-1]的情况，有这区间的最大子数组和 <code>max_sofar</code> ，和必须以
+<li>解决了 x[0..i-1]的情况，有这区间的最大子数组和 <code>max_sofar</code> ，和必须以
 x[i-1]结尾的子数组最大和;
 </li>
-<li>到x[0..i]的情况，就要把必须以x[i-1]结尾的子数组最大和与x[i]相加，如果以x[i-1]结尾的子数组为负数的话，加了反而减少总和。所以此种情况以
-x[i]的和就是x[i];
+<li>到 x[0..i]的情况，就要把必须以 x[i-1]结尾的子数组最大和与 x[i]相加，如果以 x[i-1]结尾的子数组为负数的话，加了反而减少总和。所以此种情况以
+x[i]的和就是 x[i];
 </li>
-<li>最后把以x[i]与在区间x[0..i-1]的最大子数组和 <code>max_sofar</code> 比较，就能解决
+<li>最后把以 x[i]与在区间 x[0..i-1]的最大子数组和 <code>max_sofar</code> 比较，就能解决
 x[0..i]的情况;
 </li>
-<li>如此一直扩展到x[0..n]算出整个数组的最大子数组和。
+<li>如此一直扩展到 x[0..n]算出整个数组的最大子数组和。
 </li>
 </ol>
 
 <p>
-只扫描一遍，算法复杂度O(n)。
+只扫描一遍，算法复杂度 O(n)。
 </p>
 
 <div class="org-src-container">
@@ -1246,7 +1248,7 @@ x[0..i]的情况;
 </li>
 <li>分而治之，把大问题分成类似的小问题解决。
 </li>
-<li>扫描算法。比如解出了x[0..i-1]如何扩展到x[0..i].
+<li>扫描算法。比如解出了 x[0..i-1]如何扩展到 x[0..i].
 </li>
 <li>累积。
 </li>
@@ -1263,12 +1265,12 @@ x[0..i]的情况;
 <h3 id="sec-2-1">10</h3>
 <div class="outline-text-3" id="text-2-1">
 <ol class="org-ol">
-<li>初始化累积和数组cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code> ， 那么要x[l..u]
-区间的和为0的话，cum[l-1] = cum[u]
+<li>初始化累积和数组 cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code> ， 那么要 x[l..u]
+区间的和为 0 的话，cum[l-1] = cum[u]
 </li>
-<li>排序cum数组;
+<li>排序 cum 数组;
 </li>
-<li>扫描排序好的数组cum，找出最相近的相邻数组元素即得到结果。
+<li>扫描排序好的数组 cum，找出最相近的相邻数组元素即得到结果。
 </li>
 </ol>
 
@@ -1277,7 +1279,7 @@ x[0..i]的情况;
 </p>
 
 <p>
-找出子数组和与一个特定值r最相近，算法类似，只是step3找出与r最相近的相邻数组元素。
+找出子数组和与一个特定值 r 最相近，算法类似，只是 step3 找出与 r 最相近的相邻数组元素。
 </p>
 </div>
 </div>
@@ -1285,15 +1287,16 @@ x[0..i]的情况;
 <h3 id="sec-2-2">11</h3>
 <div class="outline-text-3" id="text-2-2">
 <ol class="org-ol">
-<li>累积收费和数组cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code>
+<li>累积收费和数组 cum，使得 <code>cum[i]=x[0]+x[1]...x[i]</code>
 </li>
-<li>计算l和u关卡之间的收费 cum[u]-cum[l]
+<li>计算 l 和 u 关卡之间的收费 cum[u]-cum[l]
 </li>
 </ol>
 </div>
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -1312,8 +1315,8 @@ x[0..i]的情况;
 </p>
 
 <p>
-作者估算：河口宽度大约1 mile，大约1/250英里深，他猜测流速是5mile每小时或
-120mile每天。
+作者估算：河口宽度大约 1 mile，大约 1/250 英里深，他猜测流速是 5mile 每小时或
+120mile 每天。
 </p>
 
 <p>
@@ -1331,7 +1334,7 @@ x[0..i]的情况;
 <h4 id="sec-1-2-1">两个答案好于一个</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
-估算中密西西比河的流域是 1000 × 1000 miles， 一年雨量大约1英尺，（1/5000英里每年）。
+估算中密西西比河的流域是 1000 × 1000 miles， 一年雨量大约 1 英尺，（1/5000 英里每年）。
 1000miles * 1000miles * 1/5000 mile/year = 200 mile<sup>3</sup>/year
 200mile<sup>3</sup>/year/400days/year = 1/2 mile<sup>3</sup>/day
 </p>
@@ -1354,29 +1357,29 @@ x[0..i]的情况;
 <h4 id="sec-1-2-3">经验法则</h4>
 <div class="outline-text-4" id="text-1-2-3">
 <p>
-72法则。
+72 法则。
 </p>
 
 <p>
-假如一笔钱以年利率百分比r存y年。如果r×y=72,那么钱将成2倍。这个估算大体正确，存1000以6%的年利率存12年之后为2012.
+假如一笔钱以年利率百分比 r 存 y 年。如果 r×y=72,那么钱将成 2 倍。这个估算大体正确，存 1000 以 6%的年利率存 12 年之后为 2012.
 </p>
 
 <p>
-72法则对估算指数增长非常实用。双倍对于程序员来说很熟悉：2<sup>10</sup>=1024，10
-倍双倍就是1thousand，20个双倍就是1million。
+72 法则对估算指数增长非常实用。双倍对于程序员来说很熟悉：2<sup>10</sup>=1024，10
+倍双倍就是 1thousand，20 个双倍就是 1million。
 </p>
 
 <p>
-假如一个指数型复杂度的程序花10秒解决一个n=40的问题，每把n增加1就增加
-12%的运行时间。72法则告诉我们，运行时间成2倍当n增加6，也就是1000倍（2<sup>10）当n增加60</sup>(6*10)。所以当n=100时，程序花10,000秒，也就几小时。当n
-增加到160,时间成为10<sup>7</sup> 秒,那这时间大约是多少呢？
+假如一个指数型复杂度的程序花 10 秒解决一个 n=40 的问题，每把 n 增加 1 就增加
+12%的运行时间。72 法则告诉我们，运行时间成 2 倍当 n 增加 6，也就是 1000 倍（2<sup>10）当 n 增加 60</sup>(6*10)。所以当 n=100 时，程序花 10,000 秒，也就几小时。当 n
+增加到 160,时间成为 10<sup>7</sup> 秒,那这时间大约是多少呢？
 </p>
 
 <p>
-很难记住一年的时间是3.155×10<sup>7</sup> 秒，另一方面，很难忘记Tom Duff的实用经验准则，1%多的误差：
+很难记住一年的时间是 3.155×10<sup>7</sup> 秒，另一方面，很难忘记 Tom Duff 的实用经验准则，1%多的误差：
 </p>
 
-<strong> $\pi$ 秒是1纳世纪。</strong> ($\pi$ seconds is a nanocentury.)
+<strong> $\pi$ 秒是 1 纳世纪。</strong> ($\pi$ seconds is a nanocentury.)
 </div>
 </div>
 
@@ -1388,16 +1391,16 @@ x[0..i]的情况;
 </p>
 
 <p>
-书中估算密西西比河的流量并不是特别技巧好，比如直接估测出流速是5mile每小时，很难直观想出这个数字。
+书中估算密西西比河的流量并不是特别技巧好，比如直接估测出流速是 5mile 每小时，很难直观想出这个数字。
 </p>
 
 <p>
 推荐<a href="http://book.douban.com/subject/4904724/">《这也能想到?——巧妙解答无厘头问题》</a> 这本书，全书都是估算题目，
 </p>
 <ol class="org-ol">
-<li>明白估算的目标精确度只需要达到一个数量级，和真实数据不超过10倍就是比较好的估算。
+<li>明白估算的目标精确度只需要达到一个数量级，和真实数据不超过 10 倍就是比较好的估算。
 </li>
-<li>估算一个东西的范围的关键是几何平均数。比如这里流量最小1mile每小时，最大10mile每小时，那么估算它为3mile每小时（几何平均）。比如地球的密度，比水大，比铁小，取它们的几何平均。
+<li>估算一个东西的范围的关键是几何平均数。比如这里流量最小 1mile 每小时，最大 10mile 每小时，那么估算它为 3mile 每小时（几何平均）。比如地球的密度，比水大，比铁小，取它们的几何平均。
 </li>
 </ol>
 </div>
@@ -1412,12 +1415,12 @@ x[0..i]的情况;
 </p>
 
 <p>
-例如：一个地方能容纳60个人，你准备呆在那大约3小时，所以人们进入这个地方的速率是20个每小时。现在队伍中有20个人，那么意味着你将等1小时左右。
+例如：一个地方能容纳 60 个人，你准备呆在那大约 3 小时，所以人们进入这个地方的速率是 20 个每小时。现在队伍中有 20 个人，那么意味着你将等 1 小时左右。
 </p>
 
 <p>
-或多用户系统的回复时间公式：假定用户连接到回复时间是r的系统中的平均思考时间是z，每个用户或思考或等待系统回复，系统中的任务数大约固定在n，可以测得系统的吞吐量是x（每时间单位的任务数），由Little's law得，
-n=x*(z+r)。可以算得r=n/x - z。
+或多用户系统的回复时间公式：假定用户连接到回复时间是 r 的系统中的平均思考时间是 z，每个用户或思考或等待系统回复，系统中的任务数大约固定在 n，可以测得系统的吞吐量是 x（每时间单位的任务数），由 Little's law 得，
+n=x*(z+r)。可以算得 r=n/x - z。
 </p>
 </div>
 </div>
@@ -1429,8 +1432,8 @@ n=x*(z+r)。可以算得r=n/x - z。
 <h3 id="sec-2-1">1</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
-密西西比河的流速大概是5mile每小时或120mile每天，Passaic River应该是
-200miles每天。
+密西西比河的流速大概是 5mile 每小时或 120mile 每天，Passaic River 应该是
+200miles 每天。
 </p>
 </div>
 </div>
@@ -1439,11 +1442,11 @@ n=x*(z+r)。可以算得r=n/x - z。
 <h3 id="sec-2-2">3</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
-软盘有1.44Mbytes，
+软盘有 1.44Mbytes，
 </p>
 
 <p>
-一秒中最少可以打1byte，最多10bytes，也就是每分钟最少60bytes和最多600bytes，它们的几何平均是200byte，认为大约每分钟打字200byte，
+一秒中最少可以打 1byte，最多 10bytes，也就是每分钟最少 60bytes 和最多 600bytes，它们的几何平均是 200byte，认为大约每分钟打字 200byte，
 1.44*10<sup>6</sup>/200=7200 minutes。
 </p>
 </div>
@@ -1453,11 +1456,11 @@ n=x*(z+r)。可以算得r=n/x - z。
 <h3 id="sec-2-3">5</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
-证明72法则。
+证明 72 法则。
 </p>
 
 <p>
-若（1+x%）<sup>N</sup> = 2，证明x*N约等于72
+若（1+x%）<sup>N</sup> = 2，证明 x*N 约等于 72
 </p>
 
 <p>
@@ -1465,7 +1468,7 @@ n=x*(z+r)。可以算得r=n/x - z。
 </p>
 
 <p>
-对ln(1+x)泰勒展开是ln(1+x) = x-(x<sup>2</sup>)/2 + (x<sup>3</sup>)/3 + &#x2026;
+对 ln(1+x)泰勒展开是 ln(1+x) = x-(x<sup>2</sup>)/2 + (x<sup>3</sup>)/3 + &#x2026;
 </p>
 
 <p>
@@ -1473,7 +1476,7 @@ N*ln(1+x%)=ln2 ==&gt; N*x = ln2 * 100 = 69.3
 </p>
 
 <p>
-因为忽略了-(x<sup>2</sup>)/2这个项，所以N*x约等于72。
+因为忽略了-(x<sup>2</sup>)/2 这个项，所以 N*x 约等于 72。
 </p>
 </div>
 </div>
@@ -1481,7 +1484,7 @@ N*ln(1+x%)=ln2 ==&gt; N*x = ln2 * 100 = 69.3
 <h3 id="sec-2-4">6</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
-72/1.33=54, 所以到2052年人口是2倍，就是5.9×2=11.8 billion。那么2050年大约就是11.5 billion。
+72/1.33=54, 所以到 2052 年人口是 2 倍，就是 5.9×2=11.8 billion。那么 2050 年大约就是 11.5 billion。
 </p>
 </div>
 </div>
@@ -1494,7 +1497,7 @@ N*ln(1+x%)=ln2 ==&gt; N*x = ln2 * 100 = 69.3
 </p>
 
 <p>
-假定大家平均生命是70年，根据Little's law，那么每年的死亡率就是1/70=1.4%的城市人口。
+假定大家平均生命是 70 年，根据 Little's law，那么每年的死亡率就是 1/70=1.4%的城市人口。
 </p>
 </div>
 </div>
@@ -1509,25 +1512,25 @@ N*ln(1+x%)=ln2 ==&gt; N*x = ln2 * 100 = 69.3
 <img src="/images/blog/2014/programmingpearls/column7_11.jpg" title="'column7_11'" >
 
 <p>
-时间T进入个数为N(T)，那么到达速率 &lambda;(T) = N(T)/T;
+时间 T 进入个数为 N(T)，那么到达速率 &lambda;(T) = N(T)/T;
 </p>
 
 <p>
-时间T离开个数为C(T)，那么离开速率 X = C(T)/T;
+时间 T 离开个数为 C(T)，那么离开速率 X = C(T)/T;
 </p>
 
 <p>
-系统中，时间T中堆积的个数平均为阴影部分A(T),那么平均等待的个数为L(T) =
+系统中，时间 T 中堆积的个数平均为阴影部分 A(T),那么平均等待的个数为 L(T) =
 A(T)/T;
 </p>
 
 <p>
-时间T离开个数为C(T)，时间T中堆积的个数A(T)，那么每个的等待时间是
+时间 T 离开个数为 C(T)，时间 T 中堆积的个数 A(T)，那么每个的等待时间是
 W(T)=A(T)/C(T)。
 </p>
 
 <p>
-可以得到L(T)=C(T)W(T),均衡系统&lambda;(T)=C(T),即L(T)=&lambda;(T)W(T)。
+可以得到 L(T)=C(T)W(T),均衡系统&lambda;(T)=C(T),即 L(T)=&lambda;(T)W(T)。
 </p>
 
 <p>
@@ -1540,17 +1543,18 @@ W(T)=A(T)/C(T)。
 <h3 id="sec-2-7">12</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
-美国报纸说25美分的硬币平均寿命是30年。你如何检测这个声明？
+美国报纸说 25 美分的硬币平均寿命是 30 年。你如何检测这个声明？
 </p>
 
 <p>
-硬币制造厂每年平均最小为每个人制造1枚25美分的硬币，最多不会超过100枚，那么几何平均就是10枚，加入它的平均寿命是30年，那么平均每人就有300枚25
-美分的硬币在手里，算上手头，家里抽屉，公司抽屉所有的25美分，应该不会超过300枚，所以这个声明的数字有点偏高。
+硬币制造厂每年平均最小为每个人制造 1 枚 25 美分的硬币，最多不会超过 100 枚，那么几何平均就是 10 枚，加入它的平均寿命是 30 年，那么平均每人就有 300 枚 25
+美分的硬币在手里，算上手头，家里抽屉，公司抽屉所有的 25 美分，应该不会超过 300 枚，所以这个声明的数字有点偏高。
 </p>
 </div>
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
   <entry>
@@ -1589,7 +1593,7 @@ W(T)=A(T)/C(T)。
 <h3 id="sec-2-1">1</h3>
 <div class="outline-text-3" id="text-2-1">
 <ol class="org-ol">
-<li>建立一张税收表格，包括1.这个一行数据范围的最低收入; 2.税收的基本费用; 和3.税收比率。
+<li>建立一张税收表格，包括 1.这个一行数据范围的最低收入; 2.税收的基本费用; 和 3.税收比率。
 </li>
 <li>用给定税收，二分搜索所处范围，也就是表格的哪一栏。用公式算出税收。
 </li>
@@ -1604,16 +1608,16 @@ W(T)=A(T)/C(T)。
 </p>
 
 <ol class="org-ol">
-<li>用一个定义的模板语言为每个字母定义标语的格式，存入一个table中;
+<li>用一个定义的模板语言为每个字母定义标语的格式，存入一个 table 中;
 </li>
 <li>写一个对这个自定义模板语言的解析程序，把它解析成打印标语;
 </li>
-<li>输入一个单词，直接读取table相应的模板格式，用解析程序解析。
+<li>输入一个单词，直接读取 table 相应的模板格式，用解析程序解析。
 </li>
 </ol>
 
 <p>
-如字母I如下，可以把它编码成：
+如字母 I 如下，可以把它编码成：
 </p>
 <div class="org-src-container">
 
@@ -1830,6 +1834,7 @@ x  x  x  x  x  x  x  x  x
 </div>
 </div>
 ]]></content>
+  
   </entry>
   
 </feed>

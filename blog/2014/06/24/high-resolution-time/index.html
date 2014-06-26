@@ -127,71 +127,57 @@ MathJax.Hub.Config({
   </header>
 
 
-<div class="entry-content"><p>在不同的平台有繁多的Time API，如何选用精准的高精度Time函数来做
-performance benchmarking呢？</p>
+<div class="entry-content"><p>在不同的平台有繁多的 Time API，如何选用精准的高精度 Time 函数来做
+performance benchmarking 呢？</p>
 
 <h2 id="wall-clock-time-vs-cpu-time">Wall-clock time VS CPU time</h2>
-<p>先理解一些时间的概念。明白不同时间API测量的是什么时间。</p>
+<p>先理解一些时间的概念。明白不同时间 API 测量的是什么时间。</p>
 
-<p><a href="http://en.wikipedia.org/wiki/Wall-clock_time">Wall-clock time</a>,顾名思
-义，墙上的钟，代表一个任务从开始到完成所经历的时间。它包含3部分：CPU的
-时间，I/O的时间和通信延迟的时间。但wall-clock很少是正确的时钟来使用，
-因为它随着时区，和daylightsaving改变，或与NTP同步。而这些特性没有一个
-是有益的，如果你用它来调度任务或做performance benchmarking。它仅仅如名
-字所言，墙上的一个时钟。</p>
+<p><a href="http://en.wikipedia.org/wiki/Wall-clock_time">Wall-clock time</a>,顾名思义，墙上的钟，代表一个任务从开始到完成所经历的时间。它包含 3 部分：CPU 的时间，I/O 的时间和通信延迟的时间。但 wall-clock 很少是正确的时钟来使用，因为它随着时区，和 daylightsaving 改变，或与 NTP 同步。而这些特性没有一个是有益的，如果你用它来调度任务或做 performance benchmarking。它仅仅如名字所言，墙上的一个时钟。</p>
 
-<p><a href="http://en.wikipedia.org/wiki/CPU_time">CPU time</a>仅仅统计一个任务从开
-始到完成在CPU上所花的时间。CPU time主要包括User time（在user space所花
-时间）和System time（在kernel space所花时间）。</p>
+<p><a href="http://en.wikipedia.org/wiki/CPU_time">CPU time</a> 仅仅统计一个任务从开始到完成在 CPU 上所花的时间。CPU time 主要包括 User time（在 user space 所花时间）和 System time（在 kernel space 所花时间）。</p>
 
-<p>以并行程序为例，CPU time就是所有CPU在这个程序所花的时间总和，
-Wall-clock time在这种情况可能时间相对短，它只统计任务开始到结束所花时
-间。</p>
+<p>以并行程序为例，CPU time 就是所有 CPU 在这个程序所花的时间总和，
+Wall-clock time 在这种情况可能时间相对短，它只统计任务开始到结束所花时间。</p>
 
 <!-- more -->
 
-<h2 id="apif1">不同时钟API对比<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup></h2>
-<p>对于不同的时钟API,主要分析如下特性：</p>
+<h2 id="api-f1">不同时钟 API 对比<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup></h2>
+<p>对于不同的时钟 API,主要分析如下特性：</p>
 
 <ol>
-  <li>API测试的是什么时间？（real, user, system，CPU or wall-clock)</li>
-  <li>API的精度？(s, ms, µs, or faster?)</li>
+  <li>API 测试的是什么时间？（real, user, system，CPU or wall-clock)</li>
+  <li>API 的精度？(s, ms, µs, or faster?)</li>
   <li>多久时间这个时钟数字会返转？或有什么策略避免它？</li>
-  <li>时钟是monotonic的，还是它会随着系统时间改变（比如NTP，time zone，
+  <li>时钟是 monotonic 的，还是它会随着系统时间改变（比如 NTP，time zone，
 daylight saving time, by the user, etc)?</li>
 </ol>
 
-<p>Linux和OS X的主要时钟API：</p>
+<p>Linux 和 OS X 的主要时钟 API：</p>
 
 <ul>
-  <li><a href="http://linux.die.net/man/2/time">time()</a>返回系统的wall-clock，精度
-到秒。</li>
-  <li><a href="http://linux.die.net/man/3/clock">clock()</a>返回user和systime总共的时
-间.现在标准要求<code>CLOCKS_PER_SEC</code>是<code>1000000</code>,使精度最多达到
+  <li><a href="http://linux.die.net/man/2/time">time()</a>返回系统的 wall-clock，精度到秒。</li>
+  <li><a href="http://linux.die.net/man/3/clock">clock()</a>返回 user 和 systime 总共的时间.现在标准要求<code>CLOCKS_PER_SEC</code>是<code>1000000</code>,使精度最多达到
 1µs.<code>clock_t</code>类型平台相关(The range and precision of times
 representable in clock_t and time_t are implementation-defined.) 它
-wrap around一旦达到最大值.(通常是32位的类型,那么~2^32 ticks后,还是比
-较长的时间.)</li>
+wrap around 一旦达到最大值.(通常是 32 位的类型,那么~2^32 ticks 后,还是比较长的时间.)</li>
   <li><a href="http://linux.die.net/man/3/clock_gettime">clock_gettime(CLOCK_MONOTONIC,..)</a>
 提供纳秒级的精确度并且是单调的.它的秒和纳秒是分开存储的,所以,任何的
-wrap around将很多年才发生一次.它是个不错的时钟,但OS X平台上没有.</li>
-  <li><a href="http://linux.die.net/man/2/getrusage">getrusage</a>返回独立的user和
-system时间,并且不会wrap around.精确达到1 µs,</li>
-  <li><a href="http://linux.die.net/man/2/gettimeofday">gettimeofday</a>返回一个
-wall-clock时间并达到µs精度.但是精度不能保证,因为<a href="http://www.lehman.cuny.edu/cgi-bin/man-cgi?gettimeofday+3">依赖于硬件</a>.</li>
+wrap around 将很多年才发生一次.它是个不错的时钟,但 OS X 平台上没有.</li>
+  <li><a href="http://linux.die.net/man/2/getrusage">getrusage</a> 返回独立的 user 和
+system 时间,并且不会 wrap around.精确达到 1 µs,</li>
+  <li><a href="http://linux.die.net/man/2/gettimeofday">gettimeofday</a> 返回一个
+wall-clock 时间并达到µs 精度.但是精度不能保证,因为<a href="http://www.lehman.cuny.edu/cgi-bin/man-cgi?gettimeofday+3">依赖于硬件</a>.</li>
   <li><a href="https://developer.apple.com/library/mac/qa/qa1398/_index.html">mach_absolute_time()</a>
-是OS X平台的高精度(ns)计时的一个选择.ns以64位unsigned integer存储,实
-际使用wrap around不是大问题,移植性是问题.</li>
+是 OS X 平台的高精度(ns)计时的一个选择.ns 以 64 位 unsigned integer 存储,实际使用 wrap around 不是大问题,移植性是问题.</li>
 </ul>
 
-<p>Window的高精度时钟：</p>
+<p>Window 的高精度时钟：</p>
 
 <p><a href="http://msdn.microsoft.com/en-us/library/ms644905(VS.85).aspx">QueryPerformanceFrequency()</a>
 和
 <a href="http://msdn.microsoft.com/en-us/library/ms644904(v=VS.85).aspx">QueryPerformanceCounter()</a>.
-QueryPerformanceFrequency() 返回计数的频率,QueryPerformanceCounter()返
-回当前计数值.和Linux中CLOCK_MONOTONIC一样,它是一个稳定并单调递增计数器,精
-准达到纳秒级,并且不会wrap around.</p>
+QueryPerformanceFrequency() 返回计数的频率,QueryPerformanceCounter()返回当前计数值.和 Linux 中 CLOCK_MONOTONIC 一样,它是一个稳定并单调递增计数器,精准达到纳秒级,并且不会 wrap around.</p>
 
 <p>更多参考:</p>
 
@@ -200,12 +186,12 @@ QueryPerformanceFrequency() 返回计数的频率,QueryPerformanceCounter()返
   <li><a href="http://tdistler.com/2010/06/27/high-performance-timing-on-linux-windows">High-performance Timing on Linux / Windows</a></li>
 </ul>
 
-<h2 id="high-resolution-time">不同平台High Resolution Time</h2>
+<h2 id="high-resolution-time">不同平台 High Resolution Time</h2>
 
 <h3 id="linux">Linux</h3>
 <p>使用
 <a href="http://linux.die.net/man/3/clock_gettime">clock_gettime(CLOCK_MONOTONIC,..)</a>
-作为High Resolution Time,编译需加上参数<code>-lrt</code>,实例代码如下:</p>
+作为 High Resolution Time,编译需加上参数<code>-lrt</code>,实例代码如下:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>clock_gettime.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>

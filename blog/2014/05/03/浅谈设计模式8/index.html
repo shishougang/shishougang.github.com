@@ -247,11 +247,11 @@ turkey</code>
 <b>类适配器:</b>
 </p>
 <ul class="org-ul">
-<li>使用一个具体的Adaptee类来把Adaptee适配到Target。因此，类适配器不能工作当我们想适配一个类或所有的子类时。
+<li>使用一个具体的 Adaptee 类来把 Adaptee 适配到 Target。因此，类适配器不能工作当我们想适配一个类或所有的子类时。
 </li>
-<li>能让Adapter重定义一些Adaptee的行为，因为Adapter是Adaptee的子类。
+<li>能让 Adapter 重定义一些 Adaptee 的行为，因为 Adapter 是 Adaptee 的子类。
 </li>
-<li>只引入一个对象，并不需要多余的指针来间接得到adaptee。
+<li>只引入一个对象，并不需要多余的指针来间接得到 adaptee。
 </li>
 </ul>
 
@@ -259,9 +259,9 @@ turkey</code>
 <b>对象适配器</b>
 </p>
 <ul class="org-ul">
-<li>能让一个Adapter处理多个Adaptee——也就是，Adaptee本身和它的所有子类（如果有的话）。Adapter也可以一次给所有Adpatee添加功能。
+<li>能让一个 Adapter 处理多个 Adaptee——也就是，Adaptee 本身和它的所有子类（如果有的话）。Adapter 也可以一次给所有 Adpatee 添加功能。
 </li>
-<li>使得更难重定义Adaptee行为。它需要子类化Adaptee，且使得Adapter引用这个子类，而不是Adaptee本身。
+<li>使得更难重定义 Adaptee 行为。它需要子类化 Adaptee，且使得 Adapter 引用这个子类，而不是 Adaptee 本身。
 </li>
 </ul>
 
@@ -269,13 +269,13 @@ turkey</code>
 当使用适配器需要考虑的一些其他的因素：
 </p>
 <ol class="org-ol">
-<li>Adapter到底做多少的适配工作？ 把Adaptee匹配到Traget接口的工作量在适配器间不一样。那有一段可能工作量从最简单的接口转换到支持整个不同的操作集合。Adpater的工作量取决于Traget的接口到Adaptee的接口的相似度。
+<li>Adapter 到底做多少的适配工作？ 把 Adaptee 匹配到 Traget 接口的工作量在适配器间不一样。那有一段可能工作量从最简单的接口转换到支持整个不同的操作集合。Adpater 的工作量取决于 Traget 的接口到 Adaptee 的接口的相似度。
 </li>
 
 <li>可插入的适配器。一个类更具复用性是当你减少其他类使用它作的假设条件。通过创建接口适配到一个类中，那么你就消除了其他类看到同样接口的假设。也就是说，接口适配让我们把我们的类整合到可能需要对这些类使用不同接口的现有系统里去。
 </li>
-<li>使用双向适配器提供透明性。适配器一个潜在的问题是它们不能对所有客户透明。一个被适配的对象不在与Adaptee的接口一致时，那么它就不能在
-Adaptee对象任意使用的地方去使用了。 <b>双向适配器</b> 能提供如此的透明性，当两个不同的客户需要不同方式查看同一个对象时，双向适配器非常适用。
+<li>使用双向适配器提供透明性。适配器一个潜在的问题是它们不能对所有客户透明。一个被适配的对象不在与 Adaptee 的接口一致时，那么它就不能在
+Adaptee 对象任意使用的地方去使用了。 <b>双向适配器</b> 能提供如此的透明性，当两个不同的客户需要不同方式查看同一个对象时，双向适配器非常适用。
 </li>
 </ol>
 </div>
