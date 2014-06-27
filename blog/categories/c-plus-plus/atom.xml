@@ -4,7 +4,7 @@
   <title><![CDATA[Category: C++ | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/c-plus-plus/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-26T23:22:23+08:00</updated>
+  <updated>2014-06-27T23:33:05+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -242,7 +242,6 @@ return 0; } ```
   </ol>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -575,7 +574,6 @@ calling <code>erase</code>.</li>
   <li>Container “requirements” are sometimes required.</li>
 </ul>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -746,7 +744,6 @@ app_containing_foo --big_menu=false
 </code>
 具体见：http://gflags.googlecode.com/svn/trunk/doc/gflags.html</p>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1512,7 +1509,6 @@ Running main() from gtest_main.cc
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
 </feed>

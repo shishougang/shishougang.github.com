@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Programming Pearls | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/programming-pearls/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-26T23:22:23+08:00</updated>
+  <updated>2014-06-27T23:33:05+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -504,7 +504,6 @@
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1008,7 +1007,6 @@ More: <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Random%20and%2
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1296,7 +1294,6 @@ x[0..i]的情况;
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1554,7 +1551,6 @@ W(T)=A(T)/C(T)。
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1834,7 +1830,6 @@ x  x  x  x  x  x  x  x  x
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
 </feed>

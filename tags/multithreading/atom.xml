@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Tag: multithreading | (learn&think)]]></title>
+  <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-26T23:22:23+08:00</updated>
+  <updated>2014-06-27T23:33:05+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,246 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈Memory Reordering]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/"/>
+    <updated>2014-06-28T22:55:22+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering</id>
+    <content type="html"><![CDATA[<h2 id="memory-ordering">Memory ordering</h2>
+<p>在我们编写的C/C++代码和它被在CPU上运行,按照一些规则,代码的内存交互会被
+乱序.内存乱序同时由编译器(编译时候)和处理器(运行时)造成,都为了使代码运
+行的更快.</p>
+
+<p><img src="/images/blog/2014/multithreading/memory_model.png" title="‘memory_ordering’" ></p>
+
+<p>被编译开发者和处理器制造商遵循的中心内存排序准则是:
+<blockquote><p>不能改变单线程程序的行为.</p></blockquote></p>
+
+<p>因为这条规则,在写单线程代码时内存乱序被普遍忽略.即使在多线程程序中,它
+也被时常忽略,因为有mutexes,semaphores等来防止它们调用中的内存乱序.仅当
+lock-free技术被使用时,内存在不受任何互斥保护下被多个线程共享,内存乱序
+的影响能被看到.</p>
+
+<p>下面先比较Weak和Strong的内存模型,然后分两部分,实际内存乱序如何在编译和运行时发生,并如何防止它们.</p>
+
+<!-- more -->
+
+<h2 id="weak-vs-strong-memory-models">Weak VS strong Memory Models</h2>
+<p><a href="http://preshing.com/about">Jeff Preshing</a>在
+<a href="http://preshing.com/20120930/weak-vs-strong-memory-models/">Weak vs. Strong Memory Models</a>
+中很好的总结了从Weak到Strong的类型:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>非常弱</th>
+      <th>数据依赖性的弱</th>
+      <th>强制</th>
+      <th>顺序一致</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEC Alpha</td>
+      <td>ARM</td>
+      <td>X86/64</td>
+      <td>dual 386</td>
+    </tr>
+    <tr>
+      <td>C/C++11 low-level atomics</td>
+      <td>PowerPC</td>
+      <td>SPARC TSO</td>
+      <td>Java volatile/C/C++11 atomics</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section">弱内存模型</h3>
+
+<p>在最弱的内存模型中,可能经历所有四种内存乱序
+(<a href="http://g.oswego.edu/dl/jmm/cookbook.html">LoadLoad, StoreStore, LoadStore and StoreLoad</a>).任
+何load或store的操作能与任何的其他的load或store操作乱序,只要它不改变一
+个独立进程的行为.实际中,这样的乱序由于编译器引起的指令乱序或处理器本身
+处理指令的乱序.</p>
+
+<p>当处理器是弱硬件内存模式,通常称它为weakly-ordered或weak ordering.或说
+它有relaxed memory model. <strong>DEC Alpha</strong> 是
+<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#2277">最具代表</a>
+的弱排序的处理器.</p>
+
+<p>C/C++的底层原子操作也呈现弱内存模型,无论代码的平台是如x86/64的强序处理
+器.下面章节Memory ordering at compile time会演示,并说明如何强制内存顺
+序来保护编译器乱序.</p>
+
+<h3 id="section-1">数据依赖性的弱</h3>
+
+<h3 id="section-2">强内存模型</h3>
+
+<h3 id="section-3">顺序一致</h3>
+
+<h2 id="memory-ordering-at-compile-time">Memory ordering at compile time</h2>
+<p>看如下代码:</p>
+
+<p><code>c test.c
+int A, B;
+void test() {
+  A = B + 1;
+  B = 0;
+}
+</code></p>
+
+<p>不打开编译器的优化,把它编译成汇编,我们可以看到,<code>B</code>的赋值在<code>A</code>的后面,和
+原程序的顺序一样.</p>
+
+<p>``` sh
+$ gcc -S -masm=intel test.c</p>
+
+<pre><code>mov	eax, DWORD PTR B
+add	eax, 1
+mov	DWORD PTR A, eax
+mov	DWORD PTR B, 0 ```
+</code></pre>
+
+<p>用<code>O2</code>打开优化:</p>
+
+<p>``` sh
+$ gcc -S -O2  -masm=intel test.c</p>
+
+<pre><code>mov	eax, DWORD PTR B
+mov	DWORD PTR B, 0
+add	eax, 1
+mov	DWORD PTR A, eax ```
+</code></pre>
+
+<p>这次编译器把<code>B</code>的赋值提到<code>A</code>的前面.为什么它可以这么做呢?内存顺序的中心
+没有破坏.这样的改变并不影响单线程程序,单线程程序不能知道这样的区别.</p>
+
+<p>但是当编写lock-free代码时,这样的编译器乱序就会引起问题.看如下例子,一个
+共享的标识来表明其他共享数据是否更新:</p>
+
+<p><code>c
+int value;
+int updated = 0;
+void UpdateValue(int x) {
+    value = x;
+    update = 1;
+}
+</code></p>
+
+<p>如果编译器把<code>update</code>的赋值提到<code>value</code>赋值的前面.即使在单核处理器系统中,会
+有问题:在两个参数赋值的中间这个线程被中断,使得另外的程序通过<code>update</code>判
+断以为<code>value</code>的值已经得到更新,实际上却没有.</p>
+
+<h3 id="compiler-barriers">显性的Compiler Barriers</h3>
+<p>一种方法是用一个特殊的被称为Compiler Barrier的指令来防止编译器优化的乱
+序.以下
+<a href="http://en.wikipedia.org/wiki/Memory_ordering#Compiler_memory_barrier"><code>asm volative</code></a>
+是GCC中的方法.</p>
+
+<p><code>c test_barrier.c
+int A, B;
+void test() {
+  A = B + 1;
+  asm volatile("" ::: "memory");
+  B = 0;
+}
+</code></p>
+
+<p>经过这样的修改,打开优化,<code>B</code>的存储将保持在要求的顺序上.</p>
+
+<p>``` sh
+$ gcc -S -O2  -masm=intel test.c</p>
+
+<pre><code>mov	eax, DWORD PTR B
+add	eax, 1
+mov	DWORD PTR A, eax
+mov	DWORD PTR B, 0 ```
+</code></pre>
+
+<h3 id="compiler-barriers-1">隐性的Compiler Barriers</h3>
+<p>在C++11中原子库中,每个不是relaxed的原子操作同时是一个compiler barrier.</p>
+
+<p><code>c++
+int value;
+std::atomic&lt;int&gt; updated(0);
+void UpdateValue(int x) {
+    value = x;
+    // reordering is prevented here
+    update.store(1, std::memory_order_release);
+}
+</code></p>
+
+<p>每一个拥有compiler barrier的函数本身也是一个compiler barrier,即使它是
+inline的.</p>
+
+<p><code>c++
+int a;
+int b;
+void DoSomething() {
+    a = 1;
+    UpdateValue(1);
+    b = a + 1;
+}
+</code></p>
+
+<p>进一步推知,大多数被调用的函数是一个compiler barrier.无论它们是否包含
+memory barrier.排除inline函数,被声明为<a href="http://lwn.net/Articles/285332/"><code>pure attribution</code></a>
+或当
+<a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0474c/CHDHIEGF.html">link-time code generation</a>
+使用时.因为编译器在编译时,并不知道<code>UpdateValue</code>的运行是否依赖于<code>a</code>或会
+改变<code>a</code>的值从而影响<code>b</code>,所以编译器不会乱序它们之间的顺序.</p>
+
+<p>可以看到,有许多隐藏的规则禁止编译指令的乱序,也防止了编译器多进一步的代
+码优化,所以在某些场景
+<a href="https://www.kernel.org/doc/Documentation/volatile-considered-harmful.txt">Why the “volatile” type class should not be used</a>,
+来让编译器进一步优化.</p>
+
+<h3 id="section-4">无缘由的存储</h3>
+
+<p>有隐形的Compiler Barriers,同样GCC编译器也有无缘由的存储.来自<a href="https://gcc.gnu.org/ml/gcc/2007-10/msg00266.html">这里的实例</a>:</p>
+
+<p>``` c
+extern int v;</p>
+
+<pre><code>void
+f(int set_v)
+{
+  if (set_v)
+    v = 1;
+}
+</code></pre>
+
+<p>```</p>
+
+<p>在i686,GCC 3.3.4–4.3.0用<code>O1</code>编译得到:</p>
+
+<p><code>sh
+            pushl   %ebp
+            movl    %esp, %ebp
+            cmpl    $0, 8(%ebp)
+            movl    $1, %eax
+            cmove   v, %eax        ; load (maybe)
+            movl    %eax, v        ; store (always)
+            popl    %ebp
+            ret
+</code></p>
+
+<p>在单线程中,没有问题,但多线程中调用<code>f(0)</code>仅仅只是读取v的值,但中断后回去
+覆盖其他线程修改的值.引起
+<a href="http://www.devx.com/cplus/Article/42725">data rate</a>.在新的C++11标准中
+明确禁止了这样的行为,看<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">最近C+11标准进行的draft</a>§1.10.22节:</p>
+
+<p><blockquote><p>Compiler transformations that introduce assignments to a potentially shared memory location that would not be modified by the abstract machine are generally precluded by this standard.</p></blockquote></p>
+
+<h2 id="memory-ordering-at-processor-time">Memory ordering at processor time</h2>
+
+<h3 id="one-example-on-x86">One example on X86</h3>
+
+<h2 id="summarization">Summarization</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Double-Checked Locking Works In C++11]]></title>

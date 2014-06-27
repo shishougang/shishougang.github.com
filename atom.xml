@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-26T23:22:23+08:00</updated>
+  <updated>2014-06-27T23:33:05+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,279 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈Memory Reordering]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/"/>
+    <updated>2014-06-28T22:55:22+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering</id>
+    <content type="html"><![CDATA[<h2 id="memory-ordering">Memory ordering</h2>
+<p>在我们编写的 C/C++代码和它被在 CPU 上运行,按照一些规则,代码的内存交互会被乱序.内存乱序同时由编译器(编译时候)和处理器(运行时)造成,都为了使代码运行的更快.</p>
+
+<p><img src="http://dreamrunner.org/images/blog/2014/multithreading/memory_model.png" title="'memory_ordering'" /></p>
+
+<p>被编译开发者和处理器制造商遵循的中心内存排序准则是:</p>
+<blockquote><p>不能改变单线程程序的行为.</p></blockquote>
+
+<p>因为这条规则,在写单线程代码时内存乱序被普遍忽略.即使在多线程程序中,它也被时常忽略,因为有 mutexes,semaphores 等来防止它们调用中的内存乱序.仅当
+lock-free 技术被使用时,内存在不受任何互斥保护下被多个线程共享,内存乱序的影响能被看到.</p>
+
+<p>下面先比较 Weak 和 Strong 的内存模型,然后分两部分,实际内存乱序如何在编译和运行时发生,并如何防止它们.</p>
+
+<!-- more -->
+
+<h2 id="weak-vs-strong-memory-models">Weak VS strong Memory Models</h2>
+<p><a href="http://preshing.com/about">Jeff Preshing</a> 在
+<a href="http://preshing.com/20120930/weak-vs-strong-memory-models/">Weak vs. Strong Memory Models</a>
+中很好的总结了从 Weak 到 Strong 的类型:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>非常弱</th>
+      <th>数据依赖性的弱</th>
+      <th>强制</th>
+      <th>顺序一致</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEC Alpha</td>
+      <td>ARM</td>
+      <td>X86/64</td>
+      <td>dual 386</td>
+    </tr>
+    <tr>
+      <td>C/C++11 low-level atomics</td>
+      <td>PowerPC</td>
+      <td>SPARC TSO</td>
+      <td>Java volatile/C/C++11 atomics</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section">弱内存模型</h3>
+
+<p>在最弱的内存模型中,可能经历所有四种内存乱序
+(<a href="http://g.oswego.edu/dl/jmm/cookbook.html">LoadLoad, StoreStore, LoadStore and StoreLoad</a>).任何 load 或 store 的操作能与任何的其他的 load 或 store 操作乱序,只要它不改变一个独立进程的行为.实际中,这样的乱序由于编译器引起的指令乱序或处理器本身处理指令的乱序.</p>
+
+<p>当处理器是弱硬件内存模式,通常称它为 weakly-ordered 或 weak ordering.或说它有 relaxed memory model. <strong>DEC Alpha</strong> 是
+<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#2277">最具代表</a>
+的弱排序的处理器.</p>
+
+<p>C/C++的底层原子操作也呈现弱内存模型,无论代码的平台是如 x86/64 的强序处理器.下面章节 Memory ordering at compile time 会演示,并说明如何强制内存顺序来保护编译器乱序.</p>
+
+<h3 id="section-1">数据依赖性的弱</h3>
+
+<h3 id="section-2">强内存模型</h3>
+
+<h3 id="section-3">顺序一致</h3>
+
+<h2 id="memory-ordering-at-compile-time">Memory ordering at compile time</h2>
+<p>看如下代码:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>test.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">  <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>不打开编译器的优化,把它编译成汇编,我们可以看到,<code>B</code>的赋值在<code>A</code>的后面,和原程序的顺序一样.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span><span class="line">	mov	DWORD PTR B, 0
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>用<code>O2</code>打开优化:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -O2  -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	mov	DWORD PTR B, 0
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这次编译器把<code>B</code>的赋值提到<code>A</code>的前面.为什么它可以这么做呢?内存顺序的中心没有破坏.这样的改变并不影响单线程程序,单线程程序不能知道这样的区别.</p>
+
+<p>但是当编写 lock-free 代码时,这样的编译器乱序就会引起问题.看如下例子,一个共享的标识来表明其他共享数据是否更新:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">updated</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">UpdateValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span><span class="line">    <span class="n">update</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>如果编译器把<code>update</code>的赋值提到<code>value</code>赋值的前面.即使在单核处理器系统中,会有问题:在两个参数赋值的中间这个线程被中断,使得另外的程序通过<code>update</code>判断以为<code>value</code>的值已经得到更新,实际上却没有.</p>
+
+<h3 id="compiler-barriers">显性的 Compiler Barriers</h3>
+<p>一种方法是用一个特殊的被称为 Compiler Barrier 的指令来防止编译器优化的乱序.以下
+<a href="http://en.wikipedia.org/wiki/Memory_ordering#Compiler_memory_barrier"><code>asm volative</code></a>
+是 GCC 中的方法.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>test_barrier.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">  <span class="n">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">:::</span> <span class="s">&quot;memory&quot;</span><span class="p">);</span>
+</span><span class="line">  <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>经过这样的修改,打开优化,<code>B</code>的存储将保持在要求的顺序上.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -O2  -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span><span class="line">	mov	DWORD PTR B, 0
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="compiler-barriers-1">隐性的 Compiler Barriers</h3>
+<p>在 C++11 中原子库中,每个不是 relaxed 的原子操作同时是一个 compiler barrier.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">updated</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">UpdateValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span><span class="line">    <span class="c1">// reordering is prevented here</span>
+</span><span class="line">    <span class="n">update</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>每一个拥有 compiler barrier 的函数本身也是一个 compiler barrier,即使它是
+inline 的.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">DoSomething</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="n">UpdateValue</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>进一步推知,大多数被调用的函数是一个 compiler barrier.无论它们是否包含
+memory barrier.排除 inline 函数,被声明为<a href="http://lwn.net/Articles/285332/"><code>pure attribution</code></a>
+或当
+<a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0474c/CHDHIEGF.html">link-time code generation</a>
+使用时.因为编译器在编译时,并不知道<code>UpdateValue</code>的运行是否依赖于<code>a</code>或会改变<code>a</code>的值从而影响<code>b</code>,所以编译器不会乱序它们之间的顺序.</p>
+
+<p>可以看到,有许多隐藏的规则禁止编译指令的乱序,也防止了编译器多进一步的代码优化,所以在某些场景
+<a href="https://www.kernel.org/doc/Documentation/volatile-considered-harmful.txt">Why the “volatile” type class should not be used</a>,
+来让编译器进一步优化.</p>
+
+<h3 id="section-4">无缘由的存储</h3>
+
+<p>有隐形的 Compiler Barriers,同样 GCC 编译器也有无缘由的存储.来自<a href="https://gcc.gnu.org/ml/gcc/2007-10/msg00266.html">这里的实例</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="k">extern</span> <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kt">void</span>
+</span><span class="line">    <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">set_v</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">set_v</span><span class="p">)</span>
+</span><span class="line">        <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>在 i686,GCC 3.3.4–4.3.0 用<code>O1</code>编译得到:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">        pushl   %ebp
+</span><span class="line">        movl    %esp, %ebp
+</span><span class="line">        cmpl    <span class="nv">$0</span>, 8<span class="o">(</span>%ebp<span class="o">)</span>
+</span><span class="line">        movl    <span class="nv">$1</span>, %eax
+</span><span class="line">        cmove   v, %eax        ; load <span class="o">(</span>maybe<span class="o">)</span>
+</span><span class="line">        movl    %eax, v        ; store <span class="o">(</span>always<span class="o">)</span>
+</span><span class="line">        popl    %ebp
+</span><span class="line">        ret
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>在单线程中,没有问题,但多线程中调用<code>f(0)</code>仅仅只是读取 v 的值,但中断后回去覆盖其他线程修改的值.引起
+<a href="http://www.devx.com/cplus/Article/42725">data rate</a>.在新的 C++11 标准中明确禁止了这样的行为,看<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">最近 C+11 标准进行的 draft</a>§1.10.22 节:</p>
+
+<blockquote><p>Compiler transformations that introduce assignments to a potentially shared memory location that would not be modified by the abstract machine are generally precluded by this standard.</p></blockquote>
+
+<h2 id="memory-ordering-at-processor-time">Memory ordering at processor time</h2>
+
+<h3 id="one-example-on-x86">One example on X86</h3>
+
+<h2 id="summarization">Summarization</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[High Resolution Time]]></title>
@@ -8957,72 +9230,6 @@ open hashing with collision resolution by sequential search.
 
 <p>
 保持一个类专注于单一功能点上的一个重要的原因是，它会使得类更加的健壮。继续上面的例子，如果有一个对于报表编辑流程的修改，那么将存在极大的危险性，打印功能的代码会因此不工作，假使这两个功能存在于同一个类中的话。
-</p>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[浅谈设计模式附录一: 标识]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/05/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E9%99%84%E5%BD%95%E4%B8%80/"/>
-    <updated>2014-05-05T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/05/浅谈设计模式附录一</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 类图</h2>
-<div class="outline-text-2" id="text-1">
-<img src="http://dreamrunner.org/images/blog/2014/appendix/class_relationships.svg" />
-
-<ol class="org-ol">
-<li>实例化
-</li>
-</ol>
-<img src="http://dreamrunner.org/images/blog/2014/appendix/instantiate.jpeg" />
-
-<p>
-CreateTool 创建 LineShape 对象。
-</p>
-
-<!-- more -->
-
-<ol class="org-ol">
-<li>继承
-</li>
-</ol>
-<img src="http://dreamrunner.org/images/blog/2014/appendix/subclass.jpeg" />
-
-<p>
-类 LineShape 是继承父类 Shape.
-</p>
-
-<ol class="org-ol">
-<li>委托
-</li>
-</ol>
-<img src="http://dreamrunner.org/images/blog/2014/appendix/delegation.jpeg" />
-
-<p>
-委托是组合的一种方法，使组合具有继承的复用功能。LineShape 保持 Color 对象的一个引用，当 LineShape 做一些 Color 的功能时，它不用从父类继承，它把功能委托给 Color 来完成。
-</p>
-
-<ol class="org-ol">
-<li>聚合
-</li>
-</ol>
-<img src="http://dreamrunner.org/images/blog/2014/appendix/aggregate.jpeg" />
-
-<p>
-聚合意味这一个对象拥有另一个对象或对对另一个对象负责。同时意味这一个聚合对象和它的拥有者具有相同的生命周期。
-</p>
-
-<ol class="org-ol">
-<li>注释
-</li>
-</ol>
-<img src="http://dreamrunner.org/images/blog/2014/appendix/annotation.svg" />
-
-<p>
-右边的框框表示对 <code>Draw()</code> 的注释。
 </p>
 </div>
 </div>

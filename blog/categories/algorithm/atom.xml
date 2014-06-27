@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Algorithm | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-26T23:22:23+08:00</updated>
+  <updated>2014-06-27T23:33:05+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -969,7 +969,6 @@ log(a*b*c) = loga + lgob + log.所以求最长路径.
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -1870,7 +1869,6 @@ node in sorted order.
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -3293,7 +3291,6 @@ rest. Identify this coin in just three weighings.
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -4154,7 +4151,6 @@ Hash Table.
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
   <entry>
@@ -4673,7 +4669,6 @@ is to be divided. Who gets the dollar and how many are killed?
 </div>
 </div>
 ]]></content>
-  
   </entry>
   
 </feed>

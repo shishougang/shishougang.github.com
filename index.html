@@ -104,6 +104,61 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-28T22:55:22+08:00"  class="updated" >Jun 28<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/06/28/qian-tan-memory-reordering/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2 id="memory-ordering">Memory ordering</h2>
+<p>在我们编写的 C/C++代码和它被在 CPU 上运行,按照一些规则,代码的内存交互会被乱序.内存乱序同时由编译器(编译时候)和处理器(运行时)造成,都为了使代码运行的更快.</p>
+
+<p><img src="/images/blog/2014/multithreading/memory_model.png" title="'memory_ordering'" /></p>
+
+<p>被编译开发者和处理器制造商遵循的中心内存排序准则是:</p>
+<blockquote><p>不能改变单线程程序的行为.</p></blockquote>
+
+<p>因为这条规则,在写单线程代码时内存乱序被普遍忽略.即使在多线程程序中,它也被时常忽略,因为有 mutexes,semaphores 等来防止它们调用中的内存乱序.仅当
+lock-free 技术被使用时,内存在不受任何互斥保护下被多个线程共享,内存乱序的影响能被看到.</p>
+
+<p>下面先比较 Weak 和 Strong 的内存模型,然后分两部分,实际内存乱序如何在编译和运行时发生,并如何防止它们.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/28/qian-tan-memory-reordering/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a></h1>
     
     
@@ -679,54 +734,6 @@ computation and (2) the asymptotic analysis of worst-case complexity.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/24/programming-pearls-overview/">Programming Pearls Overview</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-24T10:34:37+08:00"  class="updated" >May 24<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/24/programming-pearls-overview/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/24/programming-pearls-overview/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>全书分为 3 部分：</p>
-
-<ul>
-  <li>预备知识：总的概括代码涉及的知识点，比如算法和数据结构的重要性和合理性，如何写出正确的代码并证明，如何测试代码，性能评估代码，debug 等。 </li>
-  <li>性能：先是介绍一些估算的技巧，比如 72 法则，利特尔法则(Little’s law)
-等，之后展开代码算法的性能，如何调试代码使得性能更好或更省空间。</li>
-  <li>产品：讲解具体的算法，如排序，搜索等。</li>
-</ul>
-
-<p>书本和习题大部分代码<a href="https://github.com/shishougang/Programming-Pearls">实现</a>。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -740,6 +747,10 @@ computation and (2) the asymptotic analysis of worst-case complexity.
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>
@@ -757,15 +768,11 @@ computation and (2) the asymptotic analysis of worst-case complexity.
         <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Algorithm Design Manual Chapter 4</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 102.3076923076923%'>Multithreading(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 104.61538461538461%'>Multithreading(2)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>

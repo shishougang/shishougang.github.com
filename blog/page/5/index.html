@@ -104,6 +104,80 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F4/">浅谈设计模式四: 工厂模式(Factory Method)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-05-03T00:00:00+08:00"  class="updated" >May 3<span>rd</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F4/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F4/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+批萨店有各种不同的批萨，根据不同的用户来点批萨，基本实现如下：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #98fb98;">Pizza</span>* <span style="color: #87cefa;">orderPizza</span>(<span style="color: #98fb98;">string</span> <span style="color: #eedd82;">type</span>) {
+  <span style="color: #98fb98;">Pizza</span> <span style="color: #eedd82;">pizza</span> = <span style="color: #7fffd4;">NULL</span>;
+  <span style="color: #00ffff;">if</span> (type == <span style="color: #ffa07a;">"cheese"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">CheesePizza</span>();
+  } <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">if</span> (type == <span style="color: #ffa07a;">"pepperoni"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">PepperoniPizza</span>();
+  } <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">if</span> (type == <span style="color: #ffa07a;">"clam"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">ClamPizza</span>();
+  } <span style="color: #00ffff;">else</span> <span style="color: #00ffff;">if</span> (type == <span style="color: #ffa07a;">"veggie"</span>) {
+    pizza = <span style="color: #00ffff;">new</span> <span style="color: #98fb98;">VeggiePizza</span>();
+  }
+  pizza-&gt;prepare();
+  pizza-&gt;bake();
+  pizza-&gt;cut();
+  pizza-&gt;box();
+  <span style="color: #00ffff;">return</span> pizza;
+}
+</pre>
+</div>
+
+<p>
+但是如果批萨店新添或下架其它的品种的批萨呢？就需要在这个函数里添加或删除不同的批萨，而这段代码包括变化的批萨品种，和不变的批萨制作过程。不易后期维护。
+</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F4/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/05/03/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F3/">浅谈设计模式三: 装饰器模式(Decorator)</a></h1>
     
     
@@ -676,67 +750,6 @@ click in OS X on the Apple on the top left, then &#8220;About this Mac&#8221; &#
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/08/13/license-server-administration-for-ccs/">License Server Administration for CCS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2012-08-13T21:27:00+08:00"  class="updated" >Aug 13<span>th</span>, 2012</time>
-        
-           | <a href="/blog/2012/08/13/license-server-administration-for-ccs/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2012/08/13/license-server-administration-for-ccs/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>
-Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio">http://processors.wiki.ti.com/index.php/License_Server_Administration_for_CCS#Configuring_Code_Composer_Studio</a>
-</p>
-<div id="outline-container-1" class="outline-2">
-<h2 id="sec-1">1. Requirements</h2>
-<div class="outline-text-2" id="text-1">
-
-<ul>
-<li><code>lmadmin</code> if graphical installation is desired
-</li>
-<li><code>lmgrd</code> and lmtools for command-line installation. Windows also has an additional utility called lmutils.
-</li>
-<li>Texas Instruments’ vendor daemon tidspssw
-</li>
-</ul>
-
-
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2012/08/13/license-server-administration-for-ccs/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/6/">&larr; Older</a>
@@ -754,6 +767,10 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>
       </li>
     
@@ -769,15 +786,11 @@ Official site: <a href="http://processors.wiki.ti.com/index.php/License_Server_A
         <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Algorithm Design Manual Chapter 4</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 102.3076923076923%'>Multithreading(1)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 104.61538461538461%'>Multithreading(2)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>

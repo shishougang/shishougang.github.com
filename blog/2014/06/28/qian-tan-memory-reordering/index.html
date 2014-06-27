@@ -1,0 +1,607 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>浅谈Memory Reordering - (learn&think)</title>
+  <meta name="author" content="DreamRunner">
+
+
+<meta name="description" content="浅谈Memory Reordering in C++">
+<meta name="keywords" content="Multithreading, C++, Memory Reordering, Memory Model">
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+<!-- mathjax config similar to math.stackexchange -->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  jax: ["input/TeX", "output/HTML-CSS"],
+  tex2jax: {
+    inlineMath: [ ['$', '$'] ],
+    displayMath: [ ['$$', '$$']],
+    processEscapes: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+  },
+  messageStyle: "none",
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+});
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
+
+
+  
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-32977383-1']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">(learn&think)</a></h1>
+  
+    <h2>不浮躁，不自傲，学习，思考，总结</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:dreamrunner.org" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/tag-cloud">Tag Cloud</a></li>
+  <li><a href="/my-wiki">My Wiki</a></li>
+  <li><a href="/friends-links">Friends' Links</a></li>
+  <li><a href="/about">About</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">浅谈Memory Reordering</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-28T22:55:22+08:00"  class="updated" >Jun 28<span>th</span>, 2014</time>
+        
+           | <a href="#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2 id="memory-ordering">Memory ordering</h2>
+<p>在我们编写的 C/C++代码和它被在 CPU 上运行,按照一些规则,代码的内存交互会被乱序.内存乱序同时由编译器(编译时候)和处理器(运行时)造成,都为了使代码运行的更快.</p>
+
+<p><img src="/images/blog/2014/multithreading/memory_model.png" title="'memory_ordering'" /></p>
+
+<p>被编译开发者和处理器制造商遵循的中心内存排序准则是:</p>
+<blockquote><p>不能改变单线程程序的行为.</p></blockquote>
+
+<p>因为这条规则,在写单线程代码时内存乱序被普遍忽略.即使在多线程程序中,它也被时常忽略,因为有 mutexes,semaphores 等来防止它们调用中的内存乱序.仅当
+lock-free 技术被使用时,内存在不受任何互斥保护下被多个线程共享,内存乱序的影响能被看到.</p>
+
+<p>下面先比较 Weak 和 Strong 的内存模型,然后分两部分,实际内存乱序如何在编译和运行时发生,并如何防止它们.</p>
+
+<!-- more -->
+
+<h2 id="weak-vs-strong-memory-models">Weak VS strong Memory Models</h2>
+<p><a href="http://preshing.com/about">Jeff Preshing</a> 在
+<a href="http://preshing.com/20120930/weak-vs-strong-memory-models/">Weak vs. Strong Memory Models</a>
+中很好的总结了从 Weak 到 Strong 的类型:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>非常弱</th>
+      <th>数据依赖性的弱</th>
+      <th>强制</th>
+      <th>顺序一致</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DEC Alpha</td>
+      <td>ARM</td>
+      <td>X86/64</td>
+      <td>dual 386</td>
+    </tr>
+    <tr>
+      <td>C/C++11 low-level atomics</td>
+      <td>PowerPC</td>
+      <td>SPARC TSO</td>
+      <td>Java volatile/C/C++11 atomics</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="section">弱内存模型</h3>
+
+<p>在最弱的内存模型中,可能经历所有四种内存乱序
+(<a href="http://g.oswego.edu/dl/jmm/cookbook.html">LoadLoad, StoreStore, LoadStore and StoreLoad</a>).任何 load 或 store 的操作能与任何的其他的 load 或 store 操作乱序,只要它不改变一个独立进程的行为.实际中,这样的乱序由于编译器引起的指令乱序或处理器本身处理指令的乱序.</p>
+
+<p>当处理器是弱硬件内存模式,通常称它为 weakly-ordered 或 weak ordering.或说它有 relaxed memory model. <strong>DEC Alpha</strong> 是
+<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#2277">最具代表</a>
+的弱排序的处理器.</p>
+
+<p>C/C++的底层原子操作也呈现弱内存模型,无论代码的平台是如 x86/64 的强序处理器.下面章节 Memory ordering at compile time 会演示,并说明如何强制内存顺序来保护编译器乱序.</p>
+
+<h3 id="section-1">数据依赖性的弱</h3>
+
+<h3 id="section-2">强内存模型</h3>
+
+<h3 id="section-3">顺序一致</h3>
+
+<h2 id="memory-ordering-at-compile-time">Memory ordering at compile time</h2>
+<p>看如下代码:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>test.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">  <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>不打开编译器的优化,把它编译成汇编,我们可以看到,<code>B</code>的赋值在<code>A</code>的后面,和原程序的顺序一样.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span><span class="line">	mov	DWORD PTR B, 0
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>用<code>O2</code>打开优化:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -O2  -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	mov	DWORD PTR B, 0
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这次编译器把<code>B</code>的赋值提到<code>A</code>的前面.为什么它可以这么做呢?内存顺序的中心没有破坏.这样的改变并不影响单线程程序,单线程程序不能知道这样的区别.</p>
+
+<p>但是当编写 lock-free 代码时,这样的编译器乱序就会引起问题.看如下例子,一个共享的标识来表明其他共享数据是否更新:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">updated</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">UpdateValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span><span class="line">    <span class="n">update</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>如果编译器把<code>update</code>的赋值提到<code>value</code>赋值的前面.即使在单核处理器系统中,会有问题:在两个参数赋值的中间这个线程被中断,使得另外的程序通过<code>update</code>判断以为<code>value</code>的值已经得到更新,实际上却没有.</p>
+
+<h3 id="compiler-barriers">显性的 Compiler Barriers</h3>
+<p>一种方法是用一个特殊的被称为 Compiler Barrier 的指令来防止编译器优化的乱序.以下
+<a href="http://en.wikipedia.org/wiki/Memory_ordering#Compiler_memory_barrier"><code>asm volative</code></a>
+是 GCC 中的方法.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>test_barrier.c</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="kt">int</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="nf">test</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">A</span> <span class="o">=</span> <span class="n">B</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">  <span class="n">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">:::</span> <span class="s">&quot;memory&quot;</span><span class="p">);</span>
+</span><span class="line">  <span class="n">B</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>经过这样的修改,打开优化,<code>B</code>的存储将保持在要求的顺序上.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line"><span class="nv">$ </span>gcc -S -O2  -masm<span class="o">=</span>intel test.c
+</span><span class="line">
+</span><span class="line">	mov	eax, DWORD PTR B
+</span><span class="line">	add	eax, 1
+</span><span class="line">	mov	DWORD PTR A, eax
+</span><span class="line">	mov	DWORD PTR B, 0
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="compiler-barriers-1">隐性的 Compiler Barriers</h3>
+<p>在 C++11 中原子库中,每个不是 relaxed 的原子操作同时是一个 compiler barrier.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">value</span><span class="p">;</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">updated</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">UpdateValue</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">value</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+</span><span class="line">    <span class="c1">// reordering is prevented here</span>
+</span><span class="line">    <span class="n">update</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">memory_order_release</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>每一个拥有 compiler barrier 的函数本身也是一个 compiler barrier,即使它是
+inline 的.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">a</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">b</span><span class="p">;</span>
+</span><span class="line"><span class="kt">void</span> <span class="n">DoSomething</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="n">UpdateValue</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>进一步推知,大多数被调用的函数是一个 compiler barrier.无论它们是否包含
+memory barrier.排除 inline 函数,被声明为<a href="http://lwn.net/Articles/285332/"><code>pure attribution</code></a>
+或当
+<a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0474c/CHDHIEGF.html">link-time code generation</a>
+使用时.因为编译器在编译时,并不知道<code>UpdateValue</code>的运行是否依赖于<code>a</code>或会改变<code>a</code>的值从而影响<code>b</code>,所以编译器不会乱序它们之间的顺序.</p>
+
+<p>可以看到,有许多隐藏的规则禁止编译指令的乱序,也防止了编译器多进一步的代码优化,所以在某些场景
+<a href="https://www.kernel.org/doc/Documentation/volatile-considered-harmful.txt">Why the “volatile” type class should not be used</a>,
+来让编译器进一步优化.</p>
+
+<h3 id="section-4">无缘由的存储</h3>
+
+<p>有隐形的 Compiler Barriers,同样 GCC 编译器也有无缘由的存储.来自<a href="https://gcc.gnu.org/ml/gcc/2007-10/msg00266.html">这里的实例</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line"><span class="k">extern</span> <span class="kt">int</span> <span class="n">v</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="kt">void</span>
+</span><span class="line">    <span class="nf">f</span><span class="p">(</span><span class="kt">int</span> <span class="n">set_v</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">set_v</span><span class="p">)</span>
+</span><span class="line">        <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>在 i686,GCC 3.3.4–4.3.0 用<code>O1</code>编译得到:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">        pushl   %ebp
+</span><span class="line">        movl    %esp, %ebp
+</span><span class="line">        cmpl    <span class="nv">$0</span>, 8<span class="o">(</span>%ebp<span class="o">)</span>
+</span><span class="line">        movl    <span class="nv">$1</span>, %eax
+</span><span class="line">        cmove   v, %eax        ; load <span class="o">(</span>maybe<span class="o">)</span>
+</span><span class="line">        movl    %eax, v        ; store <span class="o">(</span>always<span class="o">)</span>
+</span><span class="line">        popl    %ebp
+</span><span class="line">        ret
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>在单线程中,没有问题,但多线程中调用<code>f(0)</code>仅仅只是读取 v 的值,但中断后回去覆盖其他线程修改的值.引起
+<a href="http://www.devx.com/cplus/Article/42725">data rate</a>.在新的 C++11 标准中明确禁止了这样的行为,看<a href="http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2012/n3337.pdf">最近 C+11 标准进行的 draft</a>§1.10.22 节:</p>
+
+<blockquote><p>Compiler transformations that introduce assignments to a potentially shared memory location that would not be modified by the abstract machine are generally precluded by this standard.</p></blockquote>
+
+<h2 id="memory-ordering-at-processor-time">Memory ordering at processor time</h2>
+
+<h3 id="one-example-on-x86">One example on X86</h3>
+
+<h2 id="summarization">Summarization</h2>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">DreamRunner</span></span>
+
+      
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-28T22:55:22+08:00"  class="updated" >Jun 28<span>th</span>, 2014</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/multithreading/'>Multithreading</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/" data-via="" data-counturl="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/" >Tweet</a>
+  
+  
+  <div class="g-plusone" data-size="medium"></div>
+  
+  
+  
+	<!-- JiaThis Button BEGIN -->
+<div id="ckepop">
+	<span class="jiathis_txt">分享到：</span>
+	<a class="jiathis_button_qzone">QQ空间</a>
+	<a class="jiathis_button_tsina">新浪微博</a>
+	<a class="jiathis_button_tqq">腾讯微博</a>
+	<a class="jiathis_button_renren">人人网</a>
+	<a href="http://www.jiathis.com/share?uid=1658718" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+	<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript">var jiathis_config = {data_track_clickback:true};</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1342523038679945" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/06/24/high-resolution-time/" title="Previous Post: High Resolution Time">&laquo; High Resolution Time</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/">Double-Checked Locking Works in C++11</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/15/The-Algorithm-Design-Manual6/">Algorithm Design Manual Chapter 6</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>Category Cloud</h1>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 104.61538461538461%'>Multithreading(2)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+</section>
+
+<section>
+  <h1>GitHub Repos</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/shishougang">@shishougang</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        github.showRepos({
+            user: 'shishougang',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+
+
+
+<section class="googleplus">
+  <h1>
+    <a href="https://plus.google.com/103923268925965955200?rel=author">
+      <img src="http://www.google.com/images/icons/ui/gprofile_button-32.png" width="32" height="32">
+      Google+
+    </a>
+  </h1>
+</section>
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - DreamRunner -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'dreamrunner';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/';
+        var disqus_url = 'http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var script = document.createElement('script'); script.type = 'text/javascript'; script.async = true;
+      script.src = 'https://apis.google.com/js/plusone.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(script, s);
+    })();
+  </script>
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
