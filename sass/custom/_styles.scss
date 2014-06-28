@@ -35,7 +35,7 @@ blockquote{
 
 
 
-/* -----表格样式----- */
+/* -----Datalist----- */
 
 .datalist{
     border:1px solid #007eff;
@@ -69,13 +69,47 @@ blockquote{
 .datalist tr:hover{
     background-color:#c4e4fe;
 }
-
 /* -------------- */
+
+
+/* ----Table---- */
+* + table {
+  border-style:solid;
+  border-width:1px;
+  border-color:#e7e3e7;
+}
+
+* + table th, * + table td {
+  border-style:dashed;
+  border-width:1px;
+  border-color:#e7e3e7;
+  padding-left: 3px;
+  padding-right: 3px;
+}
+
+* + table th {
+  border-style:solid;
+  font-weight:bold;
+  background: url("/images/noise.png?1330434582") repeat scroll left top #00ffbc;
+}
+
+* + table th[align="left"], * + table td[align="left"] {
+  text-align:left;
+}
+
+* + table th[align="right"], * + table td[align="right"] {
+  text-align:right;
+}
+
+* + table th[align="center"], * + table td[align="center"] {
+  text-align:center;
+}
+/* -------------- */
+
 
 .none-left-margin{
     padding-left: 0;
 }
-
 
 
 /* -----侧边栏样式----- */
