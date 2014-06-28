@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: C++ | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/c-/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-27T23:33:05+08:00</updated>
+  <updated>2014-06-28T23:22:43+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -81,14 +81,46 @@ lock-free技术被使用时,内存在不受任何互斥保护下被多个线程�
 的弱排序的处理器.</p>
 
 <p>C/C++的底层原子操作也呈现弱内存模型,无论代码的平台是如x86/64的强序处理
-器.下面章节Memory ordering at compile time会演示,并说明如何强制内存顺
+器.下面章节
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#memory-ordering-at-compile-time">Memory ordering at compile time</a>
+会演示其弱内存模型,并说明如何强制内存顺
 序来保护编译器乱序.</p>
 
 <h3 id="section-1">数据依赖性的弱</h3>
 
+<p>ARM和PowerPC系列的处理器内存模型和Alpha同样弱,除了它们保持
+<a href="http://www.mjmwired.net/kernel/Documentation/memory-barriers.txt#305">data dependency ordering</a>.它
+意味两个相依赖的<code>load</code>(load A, load B&lt;-A)被保证顺序<code>load B&lt;-A</code>总能在
+<code>load A</code>之后.(A data dependency barrier is a partial ordering on interdependent loads only; it is not required to have any effect on stores, independent loads or overlapping loads.)</p>
+
 <h3 id="section-2">强内存模型</h3>
 
+<p>弱和强内存模型区别<a href="http://herbsutter.com/2012/08/02/strong-and-weak-hardware-memory-models/#comment-5903">存
+在分歧</a>.<a href="http://preshing.com/20120930/weak-vs-strong-memory-models/">Preshing</a>
+总结的定义是:</p>
+
+<p><blockquote><p>一个强硬件内存模型是在这样的硬件上每条机器指令隐性的保证acquire and release<br/>semantics的执行.因此,当一个CPU核进行了一串写操作,每个其他的CPU核看到这<br/>些值的改变顺序与其顺序一致.</p></blockquote></p>
+
+<p>所以也就是保证了四种内存乱序
+(<a href="http://g.oswego.edu/dl/jmm/cookbook.html">LoadLoad, StoreStore, LoadStore and StoreLoad</a>)
+中的3种,除了不保证StoreLoad的顺序.基于以上的定义,x86/64系列处理器基本
+就是强顺序的.之后
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#memory-ordering-at-processor-time">Memory ordering at processor time</a>
+可以看到StoreLoad在X86/64的乱序实验.</p>
+
 <h3 id="section-3">顺序一致</h3>
+
+<p>在顺序一致
+(<a href="http://en.wikipedia.org/wiki/Sequential_consistency">Sequential consistency</a>)
+的内存模型中,没有内存乱序存在.</p>
+
+<p>如今,很难找到一个现代多核设备保证在硬件层Sequential consistency.也就早
+期的386没有强大到能在运行时进行任何内存的乱序.</p>
+
+<p>当用上层语言编程时,Sequential consistency成为一个重要的软件内存模
+型.Java5和之后版本,用<code>volatile</code>声明共享变量.在C+11中,可以使用默认的顺
+序约束<code>memory_order_seq_cst</code>在做原子操作时.当使用这些术语后,编译器会限
+制编译乱序和插入特定CPU的指令来指定合适的memory barrier类型.</p>
 
 <h2 id="memory-ordering-at-compile-time">Memory ordering at compile time</h2>
 <p>看如下代码:</p>
@@ -246,7 +278,28 @@ f(int set_v)
 
 <h2 id="memory-ordering-at-processor-time">Memory ordering at processor time</h2>
 
-<h3 id="one-example-on-x86">One example on X86</h3>
+<p>看一个简单的CPU乱序的简单例子,即使在强内存模型的X86/64也能看到.有两个
+整数<code>X</code>和<code>Y</code>初始是0,另外两个变量r1和r2读取它们的值,两个线程并行运行,执
+行如下的机器代码:</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/ordering-example.png" width="370" height="100" title="‘ordering-example’" ></p>
+
+<p>每个线程存储1到一个共享变量,然后把对方变量读取到一个变量或一个寄存器中.无
+论哪个线程先写1到内存,另外个线程读回那个值,意味着最后r1=1或r2=1或两者
+都是.但是X86/64是强内存模型,它还是允许<em>乱序</em>机器指令.特别,每个线程允许
+延迟存储到读回之后.以致最后r1和r2能同时等于0–违反直觉的一个结果.因为
+指令可能如下顺序执行:</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/reordering-example.png" width="180" height="100" title="‘reordering-example’" ></p>
+
+<h2 id="more">More</h2>
+
+<ol>
+  <li><a href="http://www.cl.cam.ac.uk/~pes20/weakmemory/">University of Cambridge整理的文档和论文</a></li>
+  <li><a href="http://lwn.net/Articles/470681/">Paul McKenney概括他们做的一些工作和工具</a></li>
+  <li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&amp;tag=preshonprogr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0123973376">The Art of Multiprocessor Programming</a></li>
+  <li><a href="http://www.amazon.com/C-Concurrency-Action-Practical-Multithreading/dp/1933988770/ref=pd_sim_b_2?ie=UTF8&amp;refRID=1QTX99XZAM6HKVG7X0G2">C++ Concurrency in Action: Practical Multithreading</a></li>
+</ol>
 
 <h2 id="summarization">Summarization</h2>
 
