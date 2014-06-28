@@ -4,7 +4,7 @@ title: "Double-Checked Locking Works In C++11"
 date: 2014-06-22 14:07:01 +0800
 comments: true
 categories: [Multithreading]
-tags: [multithreading, C++, Singleton]
+tags: [Multithreading, C++, Singleton]
 keywords: "DCLP, Double-Checked Locking, multithreading"
 description: "Double-Checked Locking Works In C++11"
 ---
