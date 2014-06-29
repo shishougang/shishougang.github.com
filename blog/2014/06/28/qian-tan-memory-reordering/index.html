@@ -417,9 +417,245 @@ memory barrier.排除 inline 函数,被声明为<a href="http://lwn.net/Articles
 
 <p><img class="center" src="/images/blog/2014/multithreading/ordering-example.png" width="370" height="100" title="'ordering-example'" /></p>
 
-<p>每个线程存储 1 到一个共享变量,然后把对方变量读取到一个变量或一个寄存器中.无论哪个线程先写 1 到内存,另外个线程读回那个值,意味着最后 r1=1 或 r2=1 或两者都是.但是 X86/64 是强内存模型,它还是允许<em>乱序</em>机器指令.特别,每个线程允许延迟存储到读回之后.以致最后 r1 和 r2 能同时等于 0–违反直觉的一个结果.因为指令可能如下顺序执行:</p>
+<p>每个线程存储 1 到一个共享变量,然后把对方变量读取到一个变量或一个寄存器中.无论哪个线程先写 1 到内存,另外个线程读回那个值,意味着最后 r1=1 或 r2=1 或两者都是.但是 X86/64 是强内存模型,它还是允许<strong>乱序</strong>机器指令.特别,每个线程允许延迟存储到读回之后.以致最后 r1 和 r2 能同时等于 0–违反直觉的一个结果.因为指令可能如下顺序执行:</p>
 
-<p><img class="center" src="/images/blog/2014/multithreading/reordering-example.png" width="180" height="100" title="'reordering-example'" /></p>
+<p><img class="center" src="/images/blog/2014/multithreading/reordering-example.png" width="190" height="100" title="'reordering-example'" /></p>
+
+<p>写一个实例程序,实际看一下 CPU 的确乱序了指令.源码可以
+<a href="https://github.com/shishougang/blog_multithreading/tree/master/memory_reordering">Github 下载</a>.两个读写的线程代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">sem_t</span> <span class="n">begin_sem1</span><span class="p">;</span>
+</span><span class="line"><span class="n">sem_t</span> <span class="n">begin_sem2</span><span class="p">;</span>
+</span><span class="line"><span class="n">sem_t</span> <span class="n">end_sem</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">int</span> <span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">;</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">void</span> <span class="o">*</span><span class="n">ThreadFunc1</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">MersenneTwister</span> <span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem1</span><span class="p">);</span>
+</span><span class="line">    <span class="c1">// random delay</span>
+</span><span class="line">    <span class="k">while</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">()</span> <span class="o">%</span> <span class="mi">8</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">:::</span> <span class="s">&quot;memory&quot;</span><span class="p">);</span>  <span class="c1">// prevent compiler ordering</span>
+</span><span class="line">    <span class="n">r1</span> <span class="o">=</span> <span class="n">Y</span><span class="p">;</span>
+</span><span class="line">    <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="kt">void</span> <span class="o">*</span><span class="n">ThreadFunc2</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">MersenneTwister</span> <span class="n">random</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem2</span><span class="p">);</span>
+</span><span class="line">    <span class="c1">// random delay</span>
+</span><span class="line">    <span class="k">while</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">()</span> <span class="o">%</span> <span class="mi">8</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">Y</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&quot;&quot;</span> <span class="o">:::</span> <span class="s">&quot;memory&quot;</span><span class="p">);</span>  <span class="c1">// prevent compiler ordering</span>
+</span><span class="line">    <span class="n">r2</span> <span class="o">=</span> <span class="n">X</span><span class="p">;</span>
+</span><span class="line">    <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>随机的延迟被插入在存储的开始处,为了交错线程的开始时间,以来达到重叠两个线程的指令的目的.随机延迟使用线程安全的<code>MersenneTwister</code>类.汇编代码<code>asm
+volatile("" ::: "memory");</code>如上节所述只是用来
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#memory-ordering-at-compile-time">防止编译器的乱序</a>,
+因为这里是要看 CPU 的乱序,排除编译器的乱序影响.</p>
+
+<p>主线程如下,利用
+<a href="http://pubs.opengroup.org/onlinepubs/7908799/xsh/sem_init.html">POSIX 的 semaphore</a>
+同步它与两个子线程的同步.先让两个子线程等待,直到主线程初始化<code>X=0</code>和
+<code>Y=0</code>.然后主线程等待,直到两个子线程完成操作,然后主线程检查<code>r1</code>和<code>r2</code>的值.所以 semaphore 防止线程见的不同步引起的内存乱序,主线程代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">  <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">  <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">  <span class="n">pthread_t</span> <span class="kr">thread</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">ThreadFunc1</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="kr">thread</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">NULL</span><span class="p">,</span> <span class="n">ThreadFunc2</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">  <span class="kt">int</span> <span class="n">detected</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">X</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="n">Y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem1</span><span class="p">);</span>
+</span><span class="line">    <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem2</span><span class="p">);</span>
+</span><span class="line">    <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">);</span>
+</span><span class="line">    <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">r1</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">r2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">detected</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">      <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d reorders detected after %d iterations</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">detected</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>在 Intel i5-2435M X64 的 ubuntu 下运行一下程序:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+</pre></td><td class="code"><pre><code class="sh"><span class="line">1 reorders detected after 2181 iterations
+</span><span class="line">2 reorders detected after 4575 iterations
+</span><span class="line">3 reorders detected after 7689 iterations
+</span><span class="line">4 reorders detected after 22215 iterations
+</span><span class="line">5 reorders detected after 60023 iterations
+</span><span class="line">6 reorders detected after 60499 iterations
+</span><span class="line">7 reorders detected after 61639 iterations
+</span><span class="line">8 reorders detected after 62243 iterations
+</span><span class="line">9 reorders detected after 67998 iterations
+</span><span class="line">10 reorders detected after 68098 iterations
+</span><span class="line">11 reorders detected after 71179 iterations
+</span><span class="line">12 reorders detected after 71668 iterations
+</span><span class="line">13 reorders detected after 72417 iterations
+</span><span class="line">14 reorders detected after 73970 iterations
+</span><span class="line">15 reorders detected after 78227 iterations
+</span><span class="line">16 reorders detected after 81897 iterations
+</span><span class="line">17 reorders detected after 82722 iterations
+</span><span class="line">18 reorders detected after 85377 iterations
+</span><span class="line">...
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>差不多每** 4000 **次的迭代才发现一次 CPU 内存乱序.所以多线程的 bug 是多么难发现.那么如何消除这些乱序.至少有如下两种方法:</p>
+
+<ol>
+  <li>让两个子线程在同一个 CPU 核下运行.(没有可移植性方法,如下是 linux 平台的).</li>
+  <li>使用 CPU 的 memory barrier 防止它的乱序.</li>
+</ol>
+
+<h3 id="lock-to-one-processor">Lock to one processor</h3>
+<p>让两个子线程在同一个 CPU 核下运行,代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="n">cpu_set_t</span> <span class="n">cpus</span><span class="p">;</span>
+</span><span class="line">  <span class="n">CPU_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
+</span><span class="line">  <span class="n">CPU_SER</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="kr">thread</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cpu_set_t</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
+</span><span class="line">  <span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="kr">thread</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cpu_set_t</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="place-a-memory-barrier">Place a memory barrier</h3>
+
+<p>防止一个 Store 在 Load 之后的乱序,需要一个 StoreLoad 的 barrier.这里使用
+<code>mfence</code>的一个全部 memory barrier,防止任何类型的内存乱序.代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">void</span> <span class="o">*</span><span class="n">ThreadFunc1</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">param</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">  <span class="n">MersenneTwister</span> <span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">begin_sem1</span><span class="p">);</span>
+</span><span class="line">    <span class="c1">// random delay</span>
+</span><span class="line">    <span class="k">while</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">()</span> <span class="o">%</span> <span class="mi">8</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">X</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</span><span class="line">    <span class="k">asm</span> <span class="k">volatile</span><span class="p">(</span><span class="s">&quot;mfence&quot;</span> <span class="o">:::</span> <span class="s">&quot;memory&quot;</span><span class="p">);</span>  <span class="c1">// prevent CPU ordering</span>
+</span><span class="line">    <span class="n">r1</span> <span class="o">=</span> <span class="n">Y</span><span class="p">;</span>
+</span><span class="line">    <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end_sem</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h2 id="more">More</h2>
 
@@ -428,9 +664,15 @@ memory barrier.排除 inline 函数,被声明为<a href="http://lwn.net/Articles
   <li><a href="http://lwn.net/Articles/470681/">Paul McKenney 概括他们做的一些工作和工具</a></li>
   <li><a href="http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&amp;tag=preshonprogr-20&amp;linkCode=as2&amp;camp=1789&amp;creative=390957&amp;creativeASIN=0123973376">The Art of Multiprocessor Programming</a></li>
   <li><a href="http://www.amazon.com/C-Concurrency-Action-Practical-Multithreading/dp/1933988770/ref=pd_sim_b_2?ie=UTF8&amp;refRID=1QTX99XZAM6HKVG7X0G2">C++ Concurrency in Action: Practical Multithreading</a></li>
+  <li><a href="https://www.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.2011.01.02a.pdf">Is Parallel Programming Hard, And, If So, What Can You Do About It?</a></li>
 </ol>
 
 <h2 id="summarization">Summarization</h2>
+<ol>
+  <li>有两种内存乱序存在:编译器乱序和 CPU 乱序.</li>
+  <li>如何防止编译器乱序.</li>
+  <li>如何防止 CPU 乱序.</li>
+</ol>
 
 </div>
 
