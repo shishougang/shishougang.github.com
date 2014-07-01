@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Tag: Lock | (learn&think)]]></title>
+  <link href="http://dreamrunner.org/tags/lock/atom.xml" rel="self"/>
+  <link href="http://dreamrunner.org/"/>
+  <updated>2014-07-01T22:59:20+08:00</updated>
+  <id>http://dreamrunner.org/</id>
+  <author>
+    <name><![CDATA[DreamRunner]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/"/>
+    <updated>2014-06-29T20:52:09+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Mutual_exclusion">Mutex</a>(又叫Lock),在多线程中,作为同步的基本类型,用来保证没有两个线程或进程同时在他们的关键区域.因为Mutex这种排它性,很多人认为Mutex开销很大,尽量避免使用它.就如这篇
+分析完共享数据问题后,进一步分析说明
+<a href="http://courses.cs.washington.edu/courses/cse451/03wi/section/prodcons.htm">Avoiding locks</a>
+来解决这个问题.但Mutex真的开销如此大,还是被大家误解了?Matthew
+Dillon<a href="http://groups.google.com/group/net.micro.mac/msg/752d18de371bd65c?dmode=source">写道</a>,”Most
+people have the misconception that locks are slow.”, Jeff Preshing也
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">写了这篇”Locks Aren’t Slow; Lock Contention Is”</a>.</p>
+
+<p>那么接下来做3个关于Mutex的Benchmark,具体分析一下Mutex的开销如何,最后并
+利用原子操作和semaphore实现一个lightweight Mutex.</p>
+
+<!-- more -->
+
+<p>一个Mutex仅仅从Lock到Unlock具体开销是多少,是不是占用很多时间,从
+<a href="http://preshing.com/20111124/always-use-a-lightweight-mutex/">Always Use a Lightweight Mutex</a>
+从可以看到在windows中有两种
+Mutex:<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684266%28v=vs.85%29.aspx">Muetx</a>
+和
+<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682530%28v=vs.85%29.aspx">Critical Section</a>,
+重量级和轻量级的区别,两者的时间开销相差25倍多,所以一直使用轻量级的Mutex.</p>
+
+<p><a href="http://ridiculousfish.com/blog/posts/barrier.html">这篇文章</a>在高强度
+下lock的性能:每个线程做任何事情都占用lock(高冲突),lock占用极短的时间
+(高频率).值得一读,但是在实际应用中,基本避免如此使用locks.这里对
+Mutex Contention和Mutex Frequency都做最好和最坏场景的使用测试.</p>
+
+<p>Mutex被灌以避免使用也因为其他原因.现在有很多大家熟知的
+<a href="en.wikipedia.org/wiki/Non-blocking_algorithma">lock-free programming</a>
+技术.Lock-free编程非常具有挑战性,但在实际场景中获得巨大的性能.既然有
+lock-free的技术吸引我们使用它们,那么locks就显得索然无味了.</p>
+
+<p>但也不能因此忽略lock.因为在实际很多场景,它仍然是利器.</p>
+
+<h2 id="lightweight-mutex-benchmark">Lightweight Mutex Benchmark</h2>
+
+<p>Linux下的POSIX thread是轻量级的Mutex.基于Linux特有的
+<a href="http://en.wikipedia.org/wiki/Futex">futex</a>技术,当没有其他线程竞争锁时它被优化过.使
+用如下简单的例子,测试一个单线程lock和unlock,所有代码在<a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_time">Github上</a>.</p>
+
+<p><code>c++
+pthread_mutex_init(&amp;lock, NULL);
+const int kN = 1000000;
+for (int i = 0; i &lt; kN; ++i) {
+    pthread_mutex_lock(&amp;lock);
+    pthread_mutex_unlock(&amp;lock);
+}
+pthread_mutex_destroy(&amp;lock);
+</code></p>
+
+<p>插入相应的时间代码,算出10万次的单线程lock/unlock平均时间.在不同的处理
+器下,结果如下:</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/mutex_benchmark.png" width="450" height="200" title="‘mutex_benchmark’" ></p>
+
+<p>如果假设一个线程每分钟获取1e5次mutex,并且没有其他线程与它竞争.基于如下
+的图,可预计0.2%到0.4%的开销.不算差.在比较低频率下,开销基本忽略不计.之
+后<a href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock#build-own-lightweight-mutex">Build own lightweight mutex</a>,会利用<a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphore</a>和一个原子操作,实现一个lightweight mutex.</p>
+
+<p>POSIX thread与Windows Critical Section不同,它不仅支持线程间的同步,
+还支持进程间的同步.实例代码如下:</p>
+
+<p>```  c++  mutex_between_process.cc
+pthread_mutex_t mutex;
+pthread_mutexattr_t attrmutex;</p>
+
+<p>/* Initialise attribute to mutex. */
+pthread_mutexattr_init(&amp;attrmutex);
+pthread_mutexattr_setpshared(&amp;attrmutex, PTHREAD_PROCESS_SHARED);
+pthread_mutex_init(&amp;mutex, &amp;attrmutex);</p>
+
+<p>/* Use the mutex. */</p>
+
+<p>/* Clean up. */
+pthread_mutex_destroy(pmutex);
+pthread_mutexattr_destroy(&amp;attrmutex);
+```</p>
+
+<h2 id="mutex-contention-benchmark">Mutex Contention Benchmark</h2>
+
+<p>在测试中,产生一个不断生成随机数的线程,使用自己编制的线程安全的
+<a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a>实现
+代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但
+是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产
+生一个随机数的平均时间—ns在2.93 GHz i7上,把它作为运行单位.利用
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/poisson-process.html">Poisson Process</a>
+的算法决定运行多少个运行单位在获取和释放锁之间.并利用
+<a href="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>API
+计算时间.这个线程的代码如下,所有代码在<a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_contention">Github上</a>:</p>
+
+<p>``` c++
+  GetMonotonicTime(&amp;start);
+  for (;;) {
+    work_units = static_cast<int> (random.PoissonInterval(
+        global_state.average_unlock_count) + 0.5f);
+    for (int i = 0; i &lt; work_units; ++i) {
+      random.Integer();
+    }
+    thread_stats.workdone += work_units;</int></p>
+
+<pre><code>GetMonotonicTime(&amp;end);
+elapsed_time = GetElapsedTime(&amp;start, &amp;end);
+if (elapsed_time &gt;= global_state.time_limit) {
+  break;
+}
+
+// Do some work while holding the lock
+pthread_mutex_lock(&amp;global_state.thread_mutex);
+work_units = static_cast&lt;int&gt; (random.PoissonInterval(
+    global_state.average_locked_count) + 0.5f);
+for (int i = 0; i &lt; work_units; ++i) {
+  random.Integer();
+}
+thread_stats.workdone += work_units;
+pthread_mutex_unlock(&amp;global_state.thread_mutex);
+
+thread_stats.iterations++;
+GetMonotonicTime(&amp;end);
+elapsed_time = GetElapsedTime(&amp;start, &amp;end);
+if (elapsed_time &gt;= global_state.time_limit) {
+  break;
+}   } ```
+</code></pre>
+
+<p>这里模拟获取和释放15000次锁每秒,从1个线程运行到2个线程,最后到4个线
+程.并且验证占用锁的时间,从0%到100%的每次运行时间占用锁.把1个线程的完成
+的工作量作为基准数据,其他的去除以它,计算相对增益.基本测试方案如下:</p>
+
+<p><code>c++
+// Test 15000 locks per second: thread number, lock_interval
+    1, 1/15000.0f, 
+    2, 1/15000.0f,
+    3, 1/15000.0f,
+    4, 1/15000.0f,
+</code></p>
+
+<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用90%以后,单
+线程运行的更好.可以说,短时间的占用锁的时间,以10%以内,系统达到很高的并
+行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
+
+<p>把这个结果放到实际中,Jeff Preshing在
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">这篇</a>
+提到,实际的游戏程序中,15000的锁每秒来自3个线程,占用锁的时间相对2%.在图
+中很适中的区域.</p>
+
+<h2 id="mutex-frequency-benchmark">Mutex Frequency Benchmark</h2>
+
+<p><img src="/images/blog/2014/multithreading/frequency_benchmark.png" title="‘frequency_bechmark’" ></p>
+
+<h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
+
+]]></content>
+  </entry>
+  
+</feed>

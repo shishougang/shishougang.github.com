@@ -104,6 +104,57 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/29/qian-tan-mutex-lock/">浅谈Mutex (Lock)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-29T20:52:09+08:00"  class="updated" >Jun 29<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/06/29/qian-tan-mutex-lock/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://en.wikipedia.org/wiki/Mutual_exclusion">Mutex</a>(又叫 Lock),在多线程中,作为同步的基本类型,用来保证没有两个线程或进程同时在他们的关键区域.因为 Mutex 这种排它性,很多人认为 Mutex 开销很大,尽量避免使用它.就如这篇分析完共享数据问题后,进一步分析说明
+<a href="http://courses.cs.washington.edu/courses/cse451/03wi/section/prodcons.htm">Avoiding locks</a>
+来解决这个问题.但 Mutex 真的开销如此大,还是被大家误解了?Matthew
+Dillon <a href="http://groups.google.com/group/net.micro.mac/msg/752d18de371bd65c?dmode=source">写道</a>,”Most
+people have the misconception that locks are slow.”, Jeff Preshing 也
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">写了这篇”Locks Aren’t Slow; Lock Contention Is”</a>.</p>
+
+<p>那么接下来做 3 个关于 Mutex 的 Benchmark,具体分析一下 Mutex 的开销如何,最后并利用原子操作和 semaphore 实现一个 lightweight Mutex.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/29/qian-tan-mutex-lock/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a></h1>
     
     
@@ -661,79 +712,6 @@ computation and (2) the asymptotic analysis of worst-case complexity.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Algorithm Design Manual Chapter 1</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-26T00:00:00+08:00"  class="updated" >May 26<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/26/The-Algorithm-Design-Manual1/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book Notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">Combinatorial Objects</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>Permutations - arrangements, or orderings, of items (&#8220;arrangement&#8221;
-&#8220;tour&#8221; &#8220;ordering&#8221; or &#8220;sequence&#8221; )
-</li>
-<li>Subsets - selections from a set of items (&#8220;cluster&#8221; &#8220;collection&#8221;
-&#8220;committee&#8221; &#8220;group&#8221; &#8220;packaging&#8221; or &#8220;selection&#8221;)
-</li>
-<li>Trees - hierarchical relationships between items (&#8220;hierarchy&#8221;
-&#8220;dominance relationship&#8221; &#8220;ancestor/descendant relationship&#8221; or
-&#8220;taxonomy&#8221;)
-</li>
-<li>Graphs - relationships between arbitrary pairs of objects (&#8220;network&#8221;
-&#8220;circuit&#8221; &#8220;web&#8221; or &#8220;relationship&#8221;)
-</li>
-<li>Points - locations in some geometric space (&#8220;sites&#8221; &#8220;positions&#8221; or
-&#8220;locations.)
-</li>
-<li>Polygons - regions in some geometric spaces (&#8220;shapes&#8221; &#8220;regions&#8221; or
-&#8220;boundaries&#8221;)
-</li>
-<li>Strings - sequences of characters or patterns. (&#8220;text&#8221; &#8220;characters&#8221;
-&#8220;patterns&#8221; or &#8220;labels&#8221;)
-</li>
-</ul>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -747,6 +725,10 @@ computation and (2) the asymptotic analysis of worst-case complexity.
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/06/29/qian-tan-mutex-lock/">浅谈Mutex (Lock)</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
@@ -764,15 +746,11 @@ computation and (2) the asymptotic analysis of worst-case complexity.
         <a href="/blog/2014/06/15/The-Algorithm-Design-Manual6/">Algorithm Design Manual Chapter 6</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 104.61538461538461%'>Multithreading(2)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 106.92307692307692%'>Multithreading(3)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>

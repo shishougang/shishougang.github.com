@@ -104,6 +104,79 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Algorithm Design Manual Chapter 1</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-05-26T00:00:00+08:00"  class="updated" >May 26<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/26/The-Algorithm-Design-Manual1/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/26/The-Algorithm-Design-Manual1/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">Book Notes</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1">Combinatorial Objects</h3>
+<div class="outline-text-3" id="text-1-1">
+<ul class="org-ul">
+<li>Permutations - arrangements, or orderings, of items (&#8220;arrangement&#8221;
+&#8220;tour&#8221; &#8220;ordering&#8221; or &#8220;sequence&#8221; )
+</li>
+<li>Subsets - selections from a set of items (&#8220;cluster&#8221; &#8220;collection&#8221;
+&#8220;committee&#8221; &#8220;group&#8221; &#8220;packaging&#8221; or &#8220;selection&#8221;)
+</li>
+<li>Trees - hierarchical relationships between items (&#8220;hierarchy&#8221;
+&#8220;dominance relationship&#8221; &#8220;ancestor/descendant relationship&#8221; or
+&#8220;taxonomy&#8221;)
+</li>
+<li>Graphs - relationships between arbitrary pairs of objects (&#8220;network&#8221;
+&#8220;circuit&#8221; &#8220;web&#8221; or &#8220;relationship&#8221;)
+</li>
+<li>Points - locations in some geometric space (&#8220;sites&#8221; &#8220;positions&#8221; or
+&#8220;locations.)
+</li>
+<li>Polygons - regions in some geometric spaces (&#8220;shapes&#8221; &#8220;regions&#8221; or
+&#8220;boundaries&#8221;)
+</li>
+<li>Strings - sequences of characters or patterns. (&#8220;text&#8221; &#8220;characters&#8221;
+&#8220;patterns&#8221; or &#8220;labels&#8221;)
+</li>
+</ul>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/26/The-Algorithm-Design-Manual1/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/05/24/programming-pearls-overview/">Programming Pearls Overview</a></h1>
     
     
@@ -570,82 +643,6 @@ MathJax.Hub.Config({
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">设计模式基本原则</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-05T00:00:00+08:00"  class="updated" >May 5<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 封装那些改变的</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-识别出应用里改变的方面，然后把它们从不变部分里分离出来封装。这样变化的部分就不会影响到不变的部分。那么，之后代码改变的话，只需要修改封装好的变化部分，不引起无意的修改，并提供更好的扩展灵活性。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 面向接口编程，而不是实现</h2>
-<div class="outline-text-2" id="text-2">
-<ol class="org-ol">
-<li>由接口定义要实现的每个行为；
-</li>
-<li>只要依照接口定义好的编程实现；
-</li>
-<li>我们只需要知道接口是如何，根本不需要实现的细节而去使用这个接口派生的对象；
-</li>
-<li>在运行时才赋值具体的实现对象。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 使用组合优于继承</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-使用组合创建系统提高灵活性。不单单可以使你把一族的算法封装成它们各自的类，同时让你在运行时可以改变算法行为。
-</p>
-
-<p>
-而继承，子类直接实现好算法的具体行为，不能在运行时改变算法的行为，同时过多的继承加剧类图的复杂度。
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -663,6 +660,10 @@ MathJax.Hub.Config({
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/06/29/qian-tan-mutex-lock/">浅谈Mutex (Lock)</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
       </li>
     
@@ -678,15 +679,11 @@ MathJax.Hub.Config({
         <a href="/blog/2014/06/15/The-Algorithm-Design-Manual6/">Algorithm Design Manual Chapter 6</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 104.61538461538461%'>Multithreading(2)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 106.92307692307692%'>Multithreading(3)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>

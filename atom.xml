@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-01T22:57:37+08:00</updated>
+  <updated>2014-07-01T22:59:20+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,203 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/"/>
+    <updated>2014-06-29T20:52:09+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Mutual_exclusion">Mutex</a>(又叫 Lock),在多线程中,作为同步的基本类型,用来保证没有两个线程或进程同时在他们的关键区域.因为 Mutex 这种排它性,很多人认为 Mutex 开销很大,尽量避免使用它.就如这篇分析完共享数据问题后,进一步分析说明
+<a href="http://courses.cs.washington.edu/courses/cse451/03wi/section/prodcons.htm">Avoiding locks</a>
+来解决这个问题.但 Mutex 真的开销如此大,还是被大家误解了?Matthew
+Dillon <a href="http://groups.google.com/group/net.micro.mac/msg/752d18de371bd65c?dmode=source">写道</a>,”Most
+people have the misconception that locks are slow.”, Jeff Preshing 也
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">写了这篇”Locks Aren’t Slow; Lock Contention Is”</a>.</p>
+
+<p>那么接下来做 3 个关于 Mutex 的 Benchmark,具体分析一下 Mutex 的开销如何,最后并利用原子操作和 semaphore 实现一个 lightweight Mutex.</p>
+
+<!-- more -->
+
+<p>一个 Mutex 仅仅从 Lock 到 Unlock 具体开销是多少,是不是占用很多时间,从
+<a href="http://preshing.com/20111124/always-use-a-lightweight-mutex/">Always Use a Lightweight Mutex</a>
+从可以看到在 windows 中有两种
+Mutex:<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684266%28v=vs.85%29.aspx">Muetx</a>
+和
+<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682530%28v=vs.85%29.aspx">Critical Section</a>,
+重量级和轻量级的区别,两者的时间开销相差 25 倍多,所以一直使用轻量级的 Mutex.</p>
+
+<p><a href="http://ridiculousfish.com/blog/posts/barrier.html">这篇文章</a>在高强度下 lock 的性能:每个线程做任何事情都占用 lock(高冲突),lock 占用极短的时间
+(高频率).值得一读,但是在实际应用中,基本避免如此使用 locks.这里对
+Mutex Contention 和 Mutex Frequency 都做最好和最坏场景的使用测试.</p>
+
+<p>Mutex 被灌以避免使用也因为其他原因.现在有很多大家熟知的
+<a href="en.wikipedia.org/wiki/Non-blocking_algorithma">lock-free programming</a>
+技术.Lock-free 编程非常具有挑战性,但在实际场景中获得巨大的性能.既然有
+lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味了.</p>
+
+<p>但也不能因此忽略 lock.因为在实际很多场景,它仍然是利器.</p>
+
+<h2 id="lightweight-mutex-benchmark">Lightweight Mutex Benchmark</h2>
+
+<p>Linux 下的 POSIX thread 是轻量级的 Mutex.基于 Linux 特有的
+<a href="http://en.wikipedia.org/wiki/Futex">futex</a> 技术,当没有其他线程竞争锁时它被优化过.使用如下简单的例子,测试一个单线程 lock 和 unlock,所有代码在 <a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_time">Github 上</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">kN</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">kN</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span><span class="line">    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>插入相应的时间代码,算出 10 万次的单线程 lock/unlock 平均时间.在不同的处理器下,结果如下:</p>
+
+<p><img class="center" src="http://dreamrunner.org/images/blog/2014/multithreading/mutex_benchmark.png" width="450" height="200" title="'mutex_benchmark'" /></p>
+
+<p>如果假设一个线程每分钟获取 1e5 次 mutex,并且没有其他线程与它竞争.基于如下的图,可预计 0.2%到 0.4%的开销.不算差.在比较低频率下,开销基本忽略不计.之后 <a href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock#build-own-lightweight-mutex">Build own lightweight mutex</a>,会利用 <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphore</a> 和一个原子操作,实现一个 lightweight mutex.</p>
+
+<p>POSIX thread 与 Windows Critical Section 不同,它不仅支持线程间的同步,
+还支持进程间的同步.实例代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mutex_between_process.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">pthread_mutex_t</span> <span class="n">mutex</span><span class="p">;</span>
+</span><span class="line"><span class="n">pthread_mutexattr_t</span> <span class="n">attrmutex</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Initialise attribute to mutex. */</span>
+</span><span class="line"><span class="n">pthread_mutexattr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutexattr_setpshared</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">,</span> <span class="n">PTHREAD_PROCESS_SHARED</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Use the mutex. */</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Clean up. */</span>
+</span><span class="line"><span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="n">pmutex</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutexattr_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="mutex-contention-benchmark">Mutex Contention Benchmark</h2>
+
+<p>在测试中,产生一个不断生成随机数的线程,使用自己编制的线程安全的
+<a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a> 实现代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产生一个随机数的平均时间—ns 在 2.93 GHz i7 上,把它作为运行单位.利用
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/poisson-process.html">Poisson Process</a>
+的算法决定运行多少个运行单位在获取和释放锁之间.并利用
+<a href="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>API
+计算时间.这个线程的代码如下,所有代码在 <a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_contention">Github 上</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">);</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">work_units</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">PoissonInterval</span><span class="p">(</span>
+</span><span class="line">        <span class="n">global_state</span><span class="p">.</span><span class="n">average_unlock_count</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5f</span><span class="p">);</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">work_units</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">();</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">workdone</span> <span class="o">+=</span> <span class="n">work_units</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">GetElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">elapsed_time</span> <span class="o">&gt;=</span> <span class="n">global_state</span><span class="p">.</span><span class="n">time_limit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">break</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Do some work while holding the lock</span>
+</span><span class="line">    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">global_state</span><span class="p">.</span><span class="n">thread_mutex</span><span class="p">);</span>
+</span><span class="line">    <span class="n">work_units</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">PoissonInterval</span><span class="p">(</span>
+</span><span class="line">        <span class="n">global_state</span><span class="p">.</span><span class="n">average_locked_count</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5f</span><span class="p">);</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">work_units</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">();</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">workdone</span> <span class="o">+=</span> <span class="n">work_units</span><span class="p">;</span>
+</span><span class="line">    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">global_state</span><span class="p">.</span><span class="n">thread_mutex</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">iterations</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">    <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">GetElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">elapsed_time</span> <span class="o">&gt;=</span> <span class="n">global_state</span><span class="p">.</span><span class="n">time_limit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">break</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里模拟获取和释放 15000 次锁每秒,从 1 个线程运行到 2 个线程,最后到 4 个线程.并且验证占用锁的时间,从 0%到 100%的每次运行时间占用锁.把 1 个线程的完成的工作量作为基准数据,其他的去除以它,计算相对增益.基本测试方案如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="c1">// Test 15000 locks per second: thread number, lock_interval</span>
+</span><span class="line">    <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用 90%以后,单线程运行的更好.可以说,短时间的占用锁的时间,以 10%以内,系统达到很高的并行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
+
+<p>把这个结果放到实际中,Jeff Preshing 在
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">这篇</a>
+提到,实际的游戏程序中,15000 的锁每秒来自 3 个线程,占用锁的时间相对 2%.在图中很适中的区域.</p>
+
+<h2 id="mutex-frequency-benchmark">Mutex Frequency Benchmark</h2>
+
+<p><img src="http://dreamrunner.org/images/blog/2014/multithreading/frequency_benchmark.png" title="'frequency_bechmark'" /></p>
+
+<h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[浅谈Memory Reordering]]></title>
@@ -9365,154 +9562,6 @@ open hashing with collision resolution by sequential search.
 用铅笔。
 </p>
 </div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[设计模式基本原则]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/05/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%E5%9F%BA%E6%9C%AC%E5%8E%9F%E5%88%99/"/>
-    <updated>2014-05-05T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/05/设计模式基本原则</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 封装那些改变的</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-识别出应用里改变的方面，然后把它们从不变部分里分离出来封装。这样变化的部分就不会影响到不变的部分。那么，之后代码改变的话，只需要修改封装好的变化部分，不引起无意的修改，并提供更好的扩展灵活性。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> 面向接口编程，而不是实现</h2>
-<div class="outline-text-2" id="text-2">
-<ol class="org-ol">
-<li>由接口定义要实现的每个行为；
-</li>
-<li>只要依照接口定义好的编程实现；
-</li>
-<li>我们只需要知道接口是如何，根本不需要实现的细节而去使用这个接口派生的对象；
-</li>
-<li>在运行时才赋值具体的实现对象。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> 使用组合优于继承</h2>
-<div class="outline-text-2" id="text-3">
-<p>
-使用组合创建系统提高灵活性。不单单可以使你把一族的算法封装成它们各自的类，同时让你在运行时可以改变算法行为。
-</p>
-
-<p>
-而继承，子类直接实现好算法的具体行为，不能在运行时改变算法的行为，同时过多的继承加剧类图的复杂度。
-</p>
-
-<!-- more -->
-</div>
-</div>
-<div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> 追求交互对象间的松耦合</h2>
-<div class="outline-text-2" id="text-4">
-<p>
-当两个对象松耦合时，它们能交互，但互相了解很少。松耦合让我们建立能适应变化的灵活系统，因为它们最小化对象间的内部依赖。
-</p>
-
-<p>
-松耦合对象 A 和 B：
-</p>
-<ol class="org-ol">
-<li>A 和 B 只要知道对方的接口，就可以互相调用对方;
-</li>
-<li>我们可以独立复用 A 或 B;
-</li>
-<li>改变 A 或 B 不会影响对方。
-</li>
-</ol>
-</div>
-</div>
-
-<div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> 类需要对扩展开放，对修改闭合(The Open-Closed Principle)</h2>
-<div class="outline-text-2" id="text-5">
-<ol class="org-ol">
-<li>开放：自由添加任何新的行为来扩展类。
-</li>
-<li>闭合：现有的代码经过长时间的测试和修正，不允许别人修改现有代码。
-</li>
-</ol>
-
-<p>
-目的是允许类能容易的被扩展新的行为而不用修改现有的代码。为了达到这个目的，模式设计需要能弹性改变并足够灵活来对变化需求的新功能做出反应。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> 依赖于抽象类，而不是依赖具体类（The Dependency Inversion Principle)</h2>
-<div class="outline-text-2" id="text-6">
-<p>
-与“面向接口编程，而不是实现“原则类似，然而依赖反转原则对于抽象接口更严格：
-</p>
-
-<ol class="org-ol">
-<li>高层次的模块不应该依赖于低层次的模块，两者都应该依赖于抽象接口。
-</li>
-<li>抽象接口不应该依赖于具体实现。而具体实现则应该依赖于抽象接口。
-</li>
-</ol>
-</div>
-</div>
-<div id="outline-container-sec-7" class="outline-2">
-<h2 id="sec-7"><span class="section-number-2">7</span> 得墨忒耳定律(Law of Demeter or Principle of Least Knowledge)</h2>
-<div class="outline-text-2" id="text-7">
-<p>
-得墨忒耳定律是松耦合的一种具体案例:
-</p>
-<ol class="org-ol">
-<li>每个单元对于其他的单元只能拥有有限的知识：只是与当前单元紧密联系的单元；
-</li>
-<li>每个单元只能和它的朋友交谈：不能和陌生单元交谈；
-</li>
-<li>只和自己直接的朋友交谈
-</li>
-</ol>
-
-<p>
-这个原理的名称来源于希腊神话中的农业女神，孤独的得墨忒耳。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-8" class="outline-2">
-<h2 id="sec-8"><span class="section-number-2">8</span> 好莱坞原则(Hollywood Principle)</h2>
-<div class="outline-text-2" id="text-8">
-<p>
-总的概括就是：不要调用我们（高层次模块），我们会调用你（低层次模块）。
-</p>
-
-<p>
-好莱坞原则提供一种防止依赖腐烂的方法。依赖腐烂发生当高层次模块依赖于低层次模块，低层次模块依赖于高层次模块，高层次模块又依赖于边际模块，边际模块依赖于低层次模块如此。当腐烂发生，没有人能轻易理解这个系统如何设计。
-</p>
-
-<p>
-遵循好莱坞原则，允许低层次模块连入到系统中，但是由高层次模块决定什么时候它们被需要，和怎么使用它们。而不允许低层次的模块直接去调用一个高层次模块。
-</p>
-</div>
-</div>
-<div id="outline-container-sec-9" class="outline-2">
-<h2 id="sec-9"><span class="section-number-2">9</span> 单一功能原则（Single Responsibility Principle）</h2>
-<div class="outline-text-2" id="text-9">
-<p>
-单一功能原则（Single responsibility principle）规定每个类都应该有一个单一的功能，并且该功能应该由这个类完全封装起来。
-</p>
-
-<p>
-也就是一个类或者模块应该有且只有一个改变的原因。一个具体的例子就是，想象有一个用于编辑和打印报表的模块。这样的一个模块存在两个改变的原因。第一，报表的内容可以改变（编辑）。第二，报表的格式可以改变（打印）。这两方面会的改变因为完全不同的起因而发生：一个是本质的修改，一个是表面的修改。单一功能原则认为这两方面的问题事实上是两个分离的功能，因此他们应该分离在不同的类或者模块里。把有不同的改变原因的事物耦合在一起的设计是糟糕的。
-</p>
-
-<p>
-保持一个类专注于单一功能点上的一个重要的原因是，它会使得类更加的健壮。继续上面的例子，如果有一个对于报表编辑流程的修改，那么将存在极大的危险性，打印功能的代码会因此不工作，假使这两个功能存在于同一个类中的话。
-</p>
 </div>
 </div>
 ]]></content>
