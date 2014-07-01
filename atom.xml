@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-29T11:39:03+08:00</updated>
+  <updated>2014-07-01T22:57:37+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -491,7 +491,7 @@ volatile("" ::: "memory");</code>如上节所述只是用来
 </span><span class="line">...
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>差不多每** 4000 **次的迭代才发现一次 CPU 内存乱序.所以多线程的 bug 是多么难发现.那么如何消除这些乱序.至少有如下两种方法:</p>
+<p>差不多每 <strong>4000</strong> 次的迭代才发现一次 CPU 内存乱序.所以多线程的 bug 是多么难发现.那么如何消除这些乱序.至少有如下两种方法:</p>
 
 <ol>
   <li>让两个子线程在同一个 CPU 核下运行.(没有可移植性方法,如下是 linux 平台的).</li>
@@ -508,7 +508,7 @@ volatile("" ::: "memory");</code>如上节所述只是用来
 <span class="line-number">5</span>
 </pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="n">cpu_set_t</span> <span class="n">cpus</span><span class="p">;</span>
 </span><span class="line">  <span class="n">CPU_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
-</span><span class="line">  <span class="n">CPU_SER</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
+</span><span class="line">  <span class="n">CPU_SET</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
 </span><span class="line">  <span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="kr">thread</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cpu_set_t</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
 </span><span class="line">  <span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="kr">thread</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">cpu_set_t</span><span class="p">),</span> <span class="o">&amp;</span><span class="n">cpus</span><span class="p">);</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>

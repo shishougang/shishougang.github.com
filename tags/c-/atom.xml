@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: C++ | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/c-/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-06-29T11:39:03+08:00</updated>
+  <updated>2014-07-01T22:57:37+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -398,7 +398,7 @@ int main(int argc, char *argv[]) {
 ...
 </code></p>
 
-<p>差不多每<strong>4000</strong>次的迭代才发现一次CPU内存乱序.所以多线程的bug是多么难
+<p>差不多每 <strong>4000</strong> 次的迭代才发现一次CPU内存乱序.所以多线程的bug是多么难
 发现.那么如何消除这些乱序.至少有如下两种方法:</p>
 
 <ol>
@@ -412,7 +412,7 @@ int main(int argc, char *argv[]) {
 <p><code>c++
   cpu_set_t cpus;
   CPU_ZERO(&amp;cpus);
-  CPU_SER(0, &amp;cpus);
+  CPU_SET(0, &amp;cpus);
   pthread_setaffinity_np(thread[0], sizeof(cpu_set_t), &amp;cpus);
   pthread_setaffinity_np(thread[1], sizeof(cpu_set_t), &amp;cpus);
 </code></p>
