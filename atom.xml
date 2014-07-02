@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-01T22:59:20+08:00</updated>
+  <updated>2014-07-02T23:20:25+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,239 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>
+    <link href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/"/>
+    <updated>2014-06-29T20:52:09+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock (shougang-MacBookPro&#8217;s conflicted copy 2014-07-02)</id>
+    <content type="html"><![CDATA[<p><a href="http://en.wikipedia.org/wiki/Mutual_exclusion">Mutex</a>(又叫 Lock),在多线程中,作为同步的基本类型,用来保证没有两个线程或进程同时在他们的关键区域.因为 Mutex 这种排它性,很多人认为 Mutex 开销很大,尽量避免使用它.就如这篇分析完共享数据问题后,进一步分析说明
+<a href="http://courses.cs.washington.edu/courses/cse451/03wi/section/prodcons.htm">Avoiding locks</a>
+来解决这个问题.但 Mutex 真的开销如此大,还是被大家误解了?Matthew
+Dillon <a href="http://groups.google.com/group/net.micro.mac/msg/752d18de371bd65c?dmode=source">写道</a>,”Most
+people have the misconception that locks are slow.”, Jeff Preshing 也
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">写了这篇”Locks Aren’t Slow; Lock Contention Is”</a>.</p>
+
+<p>那么接下来做 3 个关于 Mutex 的 Benchmark,具体分析一下 Mutex 的开销如何,最后并利用原子操作和 semaphore 实现一个 lightweight Mutex.</p>
+
+<!-- more -->
+
+<p>一个 Mutex 仅仅从 Lock 到 Unlock 具体开销是多少,是不是占用很多时间,从
+<a href="http://preshing.com/20111124/always-use-a-lightweight-mutex/">Always Use a Lightweight Mutex</a>
+从可以看到在 windows 中有两种
+Mutex:<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms684266%28v=vs.85%29.aspx">Muetx</a>
+和
+<a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682530%28v=vs.85%29.aspx">Critical Section</a>,
+重量级和轻量级的区别,两者的时间开销相差 25 倍多,所以一直使用轻量级的 Mutex.</p>
+
+<p><a href="http://ridiculousfish.com/blog/posts/barrier.html">这篇文章</a>在高强度下 lock 的性能:每个线程做任何事情都占用 lock(高冲突),lock 占用极短的时间
+(高频率).值得一读,但是在实际应用中,基本避免如此使用 locks.这里对
+Mutex Contention 和 Mutex Frequency 都做最好和最坏场景的使用测试.</p>
+
+<p>Mutex 被灌以避免使用也因为其他原因.现在有很多大家熟知的
+<a href="en.wikipedia.org/wiki/Non-blocking_algorithma">lock-free programming</a>
+技术.Lock-free 编程非常具有挑战性,但在实际场景中获得巨大的性能.既然有
+lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味了.</p>
+
+<p>但也不能因此忽略 lock.因为在实际很多场景,它仍然是利器.</p>
+
+<h2 id="lightweight-mutex-benchmark">Lightweight Mutex Benchmark</h2>
+
+<p>Linux 下的 POSIX thread 是轻量级的 Mutex.基于 Linux 特有的
+<a href="http://en.wikipedia.org/wiki/Futex">futex</a> 技术,当没有其他线程竞争锁时它被优化过.使用如下简单的例子,测试一个单线程 lock 和 unlock,所有代码在 <a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_time">Github 上</a>.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+</span><span class="line"><span class="k">const</span> <span class="kt">int</span> <span class="n">kN</span> <span class="o">=</span> <span class="mi">1000000</span><span class="p">;</span>
+</span><span class="line"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">kN</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span><span class="line">    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>插入相应的时间代码,算出 10 万次的单线程 lock/unlock 平均时间.在不同的处理器下,结果如下:</p>
+
+<p><img class="center" src="http://dreamrunner.org/images/blog/2014/multithreading/mutex_benchmark.png" width="450" height="200" title="'mutex_benchmark'" /></p>
+
+<p>如果假设一个线程每分钟获取 1e5 次 mutex,并且没有其他线程与它竞争.基于如下的图,可预计 0.2%到 0.4%的开销.不算差.在比较低频率下,开销基本忽略不计.之后 <a href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock#build-own-lightweight-mutex">Build own lightweight mutex</a>,会利用 <a href="http://en.wikipedia.org/wiki/Semaphore_%28programming%29">semaphore</a> 和一个原子操作,实现一个 lightweight mutex.</p>
+
+<p>POSIX thread 与 Windows Critical Section 不同,它不仅支持线程间的同步,
+还支持进程间的同步.实例代码如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>mutex_between_process.cc</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">pthread_mutex_t</span> <span class="n">mutex</span><span class="p">;</span>
+</span><span class="line"><span class="n">pthread_mutexattr_t</span> <span class="n">attrmutex</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Initialise attribute to mutex. */</span>
+</span><span class="line"><span class="n">pthread_mutexattr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutexattr_setpshared</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">,</span> <span class="n">PTHREAD_PROCESS_SHARED</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Use the mutex. */</span>
+</span><span class="line">
+</span><span class="line"><span class="cm">/* Clean up. */</span>
+</span><span class="line"><span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="n">pmutex</span><span class="p">);</span>
+</span><span class="line"><span class="n">pthread_mutexattr_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attrmutex</span><span class="p">);</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h2 id="mutex-contention-benchmark">Mutex Contention Benchmark</h2>
+
+<p>在测试中,产生一个不断生成随机数的线程,使用自己编制的线程安全的
+<a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a> 实现代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产生一个随机数的平均时间—ns 在 2.93 GHz i7 上,把它作为运行单位.利用
+<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/poisson-process.html">Poisson Process</a>
+的算法决定运行多少个运行单位在获取和释放锁之间.并利用
+<a href="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>API
+计算时间.这个线程的代码如下,所有代码在 <a href="https://github.com/shishougang/blog_multithreading/tree/master/mutex_contention">Github 上</a>:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">);</span>
+</span><span class="line">  <span class="k">for</span> <span class="p">(;;)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">work_units</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">PoissonInterval</span><span class="p">(</span>
+</span><span class="line">        <span class="n">global_state</span><span class="p">.</span><span class="n">average_unlock_count</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5f</span><span class="p">);</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">work_units</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">();</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">workdone</span> <span class="o">+=</span> <span class="n">work_units</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">GetElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">elapsed_time</span> <span class="o">&gt;=</span> <span class="n">global_state</span><span class="p">.</span><span class="n">time_limit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">break</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Do some work while holding the lock</span>
+</span><span class="line">    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">global_state</span><span class="p">.</span><span class="n">thread_mutex</span><span class="p">);</span>
+</span><span class="line">    <span class="n">work_units</span> <span class="o">=</span> <span class="k">static_cast</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">random</span><span class="p">.</span><span class="n">PoissonInterval</span><span class="p">(</span>
+</span><span class="line">        <span class="n">global_state</span><span class="p">.</span><span class="n">average_locked_count</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.5f</span><span class="p">);</span>
+</span><span class="line">    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">work_units</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">random</span><span class="p">.</span><span class="n">Integer</span><span class="p">();</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">workdone</span> <span class="o">+=</span> <span class="n">work_units</span><span class="p">;</span>
+</span><span class="line">    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">global_state</span><span class="p">.</span><span class="n">thread_mutex</span><span class="p">);</span>
+</span><span class="line">
+</span><span class="line">    <span class="n">thread_stats</span><span class="p">.</span><span class="n">iterations</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">    <span class="n">GetMonotonicTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">GetElapsedTime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">start</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">end</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">elapsed_time</span> <span class="o">&gt;=</span> <span class="n">global_state</span><span class="p">.</span><span class="n">time_limit</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">break</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>这里模拟获取和释放 15000 次锁每秒,从 1 个线程运行到 2 个线程,最后到 4 个线程.并且验证占用锁的时间,从 0%到 100%的每次运行时间占用锁.把 1 个线程的完成的工作量作为基准数据,其他的去除以它,计算相对增益.基本测试方案如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="c1">// Test 15000 locks per second: thread number, lock_interval</span>
+</span><span class="line">    <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span><span class="line">    <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用 90%以后,单线程运行的更好.可以说,短时间的占用锁的时间,以 10%以内,系统达到很高的并行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
+
+<p>把这个结果放到实际中,Jeff Preshing 在
+<a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">这篇</a>
+提到,实际的游戏程序中,15000 的锁每秒来自 3 个线程,占用锁的时间相对 2%.在图中很适中的区域.</p>
+
+<h2 id="mutex-frequency-benchmark">Mutex Frequency Benchmark</h2>
+
+<p>尽管一个 lightweight mutex 有开销,但如上测试在 2.40GHz i5 上,lock/unlock 锁开销约 <strong>34.2ns</strong> ,因此 15000 锁每秒开销很低以致不是严重影响结果.那么把锁的每秒频率提高呢?</p>
+
+<p>只创建 2 个线程,进行一系列的锁的每秒频率测试在 2.40GHz i5 上,从占用锁时间
+10 ns(1e8/s)到 100 us(1e4/s),用单线程的占用锁时间 10 ms 作为基准工作量,其他与它比较,测试方案如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="c1">// Reference</span>
+</span><span class="line">  <span class="mi">1</span><span class="p">,</span> <span class="mf">10e-3</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 ms        100/s</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Test various lock rates with 2 threads</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">10e-9</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 ns        100000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">31.6e-9</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 31.6 ns      31600000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">100e-9</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 100 ns       10000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">316e-9</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 316 ns       3160000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">1e-6</span><span class="n">f</span><span class="p">,</span>       <span class="c1">// 1 us         1000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">3.16e-6</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 3.16 us      316000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">10e-6</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 us        100000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">31.6e-6</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 31.6 us      31600/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">100e-6</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 100 us       10000/s</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><img src="http://dreamrunner.org/images/blog/2014/multithreading/frequency_benchmark.png" title="'frequency_bechmark'" /></p>
+
+<p>如预想一样,对于非常高频率的锁,锁的开销开始减少实际工作量.在网络上,可以找到很多同样的测试.图中下边的线条,对于这样高的频率,也就是占用锁的时间很短,就一些 CPU 的指令,这样的情况下,当锁之间的工作如此简单,那么一个
+lock-free 的实现更适合.</p>
+
+<h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>
@@ -203,7 +436,46 @@ lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味�
 
 <h2 id="mutex-frequency-benchmark">Mutex Frequency Benchmark</h2>
 
+<p>尽管一个 lightweight mutex 有开销,但如上测试在 2.40GHz i5 上,lock/unlock 锁开销约 <strong>34.2ns</strong> ,因此 15000 锁每秒开销很低以致不是严重影响结果.那么把锁的每秒频率提高呢?</p>
+
+<p>只创建 2 个线程,进行一系列的锁的每秒频率测试在 2.40GHz i5 上,从占用锁时间
+10 ns(1e8/s)到 100 us(1e4/s),用单线程的占用锁时间 10 ms 作为基准工作量,其他与它比较,测试方案如下:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line">  <span class="c1">// Reference</span>
+</span><span class="line">  <span class="mi">1</span><span class="p">,</span> <span class="mf">10e-3</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 ms        100/s</span>
+</span><span class="line">
+</span><span class="line">    <span class="c1">// Test various lock rates with 2 threads</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">10e-9</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 ns        100000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">31.6e-9</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 31.6 ns      31600000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">100e-9</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 100 ns       10000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">316e-9</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 316 ns       3160000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">1e-6</span><span class="n">f</span><span class="p">,</span>       <span class="c1">// 1 us         1000000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">3.16e-6</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 3.16 us      316000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">10e-6</span><span class="n">f</span><span class="p">,</span>      <span class="c1">// 10 us        100000/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">31.6e-6</span><span class="n">f</span><span class="p">,</span>    <span class="c1">// 31.6 us      31600/s</span>
+</span><span class="line">    <span class="mi">2</span><span class="p">,</span> <span class="mf">100e-6</span><span class="n">f</span><span class="p">,</span>     <span class="c1">// 100 us       10000/s</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
 <p><img src="http://dreamrunner.org/images/blog/2014/multithreading/frequency_benchmark.png" title="'frequency_bechmark'" /></p>
+
+<p>如预想一样,对于非常高频率的锁,锁的开销开始减少实际工作量.在网络上,可以找到很多同样的测试.图中下边的线条,对于这样高的频率,也就是占用锁的时间很短,就一些 CPU 的指令,这样的情况下,当锁之间的工作如此简单,那么一个
+lock-free 的实现更适合.</p>
+
+<p>我们获得了一大块关于锁的性能:从它进行很好的情况,到缓慢应用的情况.在考虑实际锁的使用情况,不能说所有锁都是慢的.必须承认,很容易乱用锁,但不用太担心,任何的瓶颈问题都会在细心的 profiling 中发现.当你考虑锁是如何的稳定,
+相对容易的理解它们(与 lock-free 技术相比),锁有时候其实很好用.</p>
 
 <h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
 
@@ -9309,258 +9581,6 @@ pivot，pivot 右边的数都大于 pivot。
 </div>
 算法平均时间复杂度： $\mathcal{O}(n)$ 。
 </div>
-</div>
-</div>
-</div>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Programming Pearls: Column1]]></title>
-    <link href="http://dreamrunner.org/blog/2014/05/10/column1/"/>
-    <updated>2014-05-10T00:00:00+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/05/10/column1</id>
-    <content type="html"><![CDATA[<div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> Book notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1"><span class="section-number-3">1.1</span> The Bitmap Data Structure</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-这个数据结构用来表明在有限域中的一个密集集合，当集合中每个元素最多出现一次且没有其他数据与这些元素相关。即使这些情况得不到满足（比如，当有多个相同元素或其他附加数据），一个来自有限域的键能被在一个复杂数据表中用来做索引。
-</p>
-
-<!-- more -->
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdio&gt;</span>
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">BITSPERINTEGER</span> 32
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">SHIFT</span> 5
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MASK</span> 0x1F
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MAX_BITS</span> 10000000
-
-<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[1 + MAX_BITS / BITSPERINTEGER];
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  array[i &gt;&gt; SHIFT] |= (1 &lt;&lt; (i &amp; MASK));
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">clr_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  array[i &gt;&gt; SHIFT] &amp;= ~(1 &lt;&lt; (i &amp; MASK));
-}
-
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">test_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  <span style="color: #00ffff;">return</span> array[i &gt;&gt; SHIFT] &amp; (1 &lt;&lt; (i &amp; MASK));
-}
-
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>;
-  <span style="color: #00ffff;">for</span> (i = 0; i &lt; MAX_BITS; ++i) {
-    clr_bit(i);
-  }
-  <span style="color: #00ffff;">while</span> (scanf(<span style="color: #ffa07a;">"%d"</span>, &amp;i) != EOF) {
-    set_bit(i);
-  }
-  <span style="color: #00ffff;">for</span> (i = 0; i &lt; MAX_BITS; ++i) {
-    <span style="color: #00ffff;">if</span> (test_bit(i)) {
-      printf(<span style="color: #ffa07a;">"%d\n"</span>, i);
-    }
-  }
-  <span style="color: #00ffff;">return</span> 0;
-}
-</pre>
-</div>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2" class="outline-2">
-<h2 id="sec-2"><span class="section-number-2">2</span> Problems</h2>
-<div class="outline-text-2" id="text-2">
-</div><div id="outline-container-sec-2-1" class="outline-3">
-<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 1</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-如果内存足够大，如何用库实现排序算法。
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdlib&gt;</span>
-<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdio&gt;</span>
-
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">comp</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">void</span> *<span style="color: #eedd82;">a</span>, <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">void</span> *<span style="color: #eedd82;">b</span>) {
-  <span style="color: #00ffff;">return</span> (*<span style="color: #00ffff;">reinterpret_cast</span>&lt;<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> *&gt;(a) -
-          *<span style="color: #00ffff;">reinterpret_cast</span>&lt;<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> *&gt;(b));
-}
-
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">argc</span>, <span style="color: #98fb98;">char</span> *<span style="color: #eedd82;">argv</span>[]) {
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span> = 0;
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[10000];
-  <span style="color: #00ffff;">while</span> (scanf(<span style="color: #ffa07a;">"%d"</span>, &amp;array[n]) != EOF) {
-    ++n;
-  }
-  qsort(array, n, <span style="color: #00ffff;">sizeof</span>(<span style="color: #98fb98;">int</span>), comp);
-  <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; n; ++i) {
-      printf(<span style="color: #ffa07a;">"%d\n"</span>, array[i]);
-  }
-  <span style="color: #00ffff;">return</span> 0;
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-2" class="outline-3">
-<h3 id="sec-2-2"><span class="section-number-3">2.2</span> 2</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-如何使用 bit 操作来实现 bit 数组？
-</p>
-
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">BITSPERINTEGER</span> 32
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">SHIFT</span> 5
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MASK</span> 0x1F
-<span style="color: #b0c4de;">#define</span> <span style="color: #eedd82;">MAX_BITS</span> 10000000
-
-<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">array</span>[1 + MAX_BITS / BITSPERINTEGER];
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">set_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  array[i &gt;&gt; SHIFT] |= (1 &lt;&lt; (i &amp; MASK));
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">clr_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  array[i &gt;&gt; SHIFT] &amp;= ~(1 &lt;&lt; (i &amp; MASK));
-}
-
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">test_bit</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>) {
-  <span style="color: #00ffff;">return</span> array[i &gt;&gt; SHIFT] &amp; (1 &lt;&lt; (i &amp; MASK));
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-3" class="outline-3">
-<h3 id="sec-2-3"><span class="section-number-3">2.3</span> 4</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-如何在 0 到 n-1 间随机生成 k 个唯一的随机整数？
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;cstdlib&gt;</span>
-<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;utility&gt;</span>
-<span style="color: #b0c4de;">#include</span> <span style="color: #ffa07a;">&lt;ctime&gt;</span>
-
-<span style="color: #98fb98;">unsigned</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">seed</span> = time(<span style="color: #7fffd4;">NULL</span>);
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">randint</span>(<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>) {
-  <span style="color: #00ffff;">return</span> m + rand_r(&amp;seed) / (RAND_MAX / (n + 1 - m) + 1);
-}
-
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">generate_unique_random</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">n</span>, <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">k</span>, <span style="color: #98fb98;">int</span> *<span style="color: #eedd82;">out</span>) {
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">num</span>[n];
-  <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span>;
-  <span style="color: #00ffff;">for</span>(i = 0; i &lt; n; ++i) {
-    num[i] = i;
-  }
-  <span style="color: #00ffff;">for</span>(i = 0; i &lt; k; ++i) {
-    <span style="color: #98fb98;">int</span> <span style="color: #eedd82;">p</span> = randint(i, n - 1);
-    <span style="color: #7fffd4;">std</span>::swap(num[i], num[p]);
-    out[i] = num[i];
-  }
-}
-</pre>
-</div>
-
-<p>
-类似于洗牌问题或不知道 n 时，选取随机数：
-<a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/Fisher%E2%80%93Yates%20shuffle.html">Fisher–Yates shuffle</a>
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-4" class="outline-3">
-<h3 id="sec-2-4"><span class="section-number-3">2.4</span> 5</h3>
-<div class="outline-text-3" id="text-2-4">
-<p>
-使用两次传递算法，第一次排序 0-4,999,999，第二次排序
-5,000,000-9,999,999.
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-5" class="outline-3">
-<h3 id="sec-2-5"><span class="section-number-3">2.5</span> 6</h3>
-<div class="outline-text-3" id="text-2-5">
-<p>
-每个整数最多出现 10 次，用 4bit 就可以表示，多需要空间 n×4bit 就来存储每个数的个数就可以。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-6" class="outline-3">
-<h3 id="sec-2-6"><span class="section-number-3">2.6</span> 9</h3>
-<div class="outline-text-3" id="text-2-6">
-<p>
-One problem with trading more space to use less time is that
-initializing the space can itself take a great deal of time. Show how
-to circumvent this problem by designing a technique to initialize an
-entry of a vector to zero the first time it is accessed. Your scheme
-should use constant time for initialization and for each vector
-access, and use extra space proportional to the size of the vector.
-</p>
-
-<p>
-data[0&#x2026;n-1]是这个未初始化的数组，每个元素都是个随机数，额外添加两个数组 from[0..n-1]和 to[0&#x2026;n]，和一个 <code>top</code> 变量。如果元素 <code>data[i]</code> 已经被访问过，那么 <code>from[i] &lt; top</code> 且 <code>to[from[i]] = i</code> 。访问过的如下图：
-</p>
-
-<img src="http://dreamrunner.org/images/blog/2014/programmingpearls/column1_9.jpg" title="'column1_9'" />
-<p>
-代码如下：
-</p>
-<div class="org-src-container">
-
-<pre class="src src-c++"><span style="color: #00ffff;">if</span> (from[i] &lt; top &amp;&amp; to[from[i]] = i) {
-  <span style="color: #ff7f24;">//</span><span style="color: #ff7f24;">has been accessed</span>
-} <span style="color: #00ffff;">else</span> {
-  from[i] = top;
-  to[top] = i;
-  data[i] = 0;
-  top++;
-}
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-sec-2-7" class="outline-3">
-<h3 id="sec-2-7"><span class="section-number-3">2.7</span> 10</h3>
-<div class="outline-text-3" id="text-2-7">
-<p>
-open hashing with collision resolution by sequential search.
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-8" class="outline-3">
-<h3 id="sec-2-8"><span class="section-number-3">2.8</span> 11</h3>
-<div class="outline-text-3" id="text-2-8">
-<p>
-扫描图纸，通过信鸽载送 35nm 的影片到测试站，在那里图纸得到重新放大和打印。
-</p>
-</div>
-</div>
-
-<div id="outline-container-sec-2-9" class="outline-3">
-<h3 id="sec-2-9"><span class="section-number-3">2.9</span> 12</h3>
-<div class="outline-text-3" id="text-2-9">
-<p>
-用铅笔。
-</p>
 </div>
 </div>
 </div>

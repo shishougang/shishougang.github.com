@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock">
+  <link rel="canonical" href="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="(learn&think)" type="application/atom+xml">
@@ -350,9 +350,6 @@ lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味�
 <p>如预想一样,对于非常高频率的锁,锁的开销开始减少实际工作量.在网络上,可以找到很多同样的测试.图中下边的线条,对于这样高的频率,也就是占用锁的时间很短,就一些 CPU 的指令,这样的情况下,当锁之间的工作如此简单,那么一个
 lock-free 的实现更适合.</p>
 
-<p>我们获得了一大块关于锁的性能:从它进行很好的情况,到缓慢应用的情况.在考虑实际锁的使用情况,不能说所有锁都是慢的.必须承认,很容易乱用锁,但不用太担心,任何的瓶颈问题都会在细心的 profiling 中发现.当你考虑锁是如何的稳定,
-相对容易的理解它们(与 lock-free 技术相比),锁有时候其实很好用.</p>
-
 <h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
 
 </div>
@@ -391,7 +388,7 @@ lock-free 的实现更适合.</p>
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/" data-via="" data-counturl="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/" data-via="" data-counturl="http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/" >Tweet</a>
   
   
   <div class="g-plusone" data-size="medium"></div>
@@ -417,10 +414,8 @@ lock-free 的实现更适合.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/06/28/qian-tan-memory-reordering/" title="Previous Post: 浅谈Memory Reordering">&laquo; 浅谈Memory Reordering</a>
+        <a class="basic-alignment left" href="/blog/2014/06/29/qian-tan-mutex-lock/" title="Previous Post: 浅谈Mutex (Lock)">&laquo; 浅谈Mutex (Lock)</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/" title="Next Post: 浅谈Mutex (Lock)">浅谈Mutex (Lock) &raquo;</a>
       
     </p>
   </footer>
@@ -529,8 +524,8 @@ lock-free 的实现更适合.</p>
       
         
         // var disqus_developer = 1;
-        var disqus_identifier = 'http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/';
-        var disqus_url = 'http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/';
+        var disqus_identifier = 'http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/';
+        var disqus_url = 'http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock+%28shougang-MacBookPro%27s+conflicted+copy+2014-07-02%29/';
         var disqus_script = 'embed.js';
       
     (function () {
