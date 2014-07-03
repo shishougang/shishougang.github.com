@@ -218,7 +218,7 @@ lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味�
 <h2 id="mutex-contention-benchmark">Mutex Contention Benchmark</h2>
 
 <p>在测试中,产生一个不断生成随机数的线程,使用自己编制的线程安全的
-<a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a> 实现代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产生一个随机数的平均时间—ns 在 2.93 GHz i7 上,把它作为运行单位.利用
+<a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a> 实现代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产生一个随机数的平均时间 6.25 ns 在 2.93 GHz i7 上,把它作为运行单位.利用
 <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/poisson-process.html">Poisson Process</a>
 的算法决定运行多少个运行单位在获取和释放锁之间.并利用
 <a href="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>API
@@ -355,6 +355,187 @@ lock-free 的实现更适合.</p>
 
 <h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
 
+<p>我们也可以实现自己的简单轻量级的 mutex,但仅仅作为教育手段,理解 mutex 一些内在实现细节,实际现在操作系统都提供轻量级的 mutex,千万不要自己实现一个并实际使用,直接只用操作系统提供的即可.</p>
+
+<p>网络上有很多种方法在用户层写自己的 mutex:</p>
+
+<ul>
+  <li><a href="http://preshing.com/20120226/roll-your-own-lightweight-mutex/">roll-your-own-lightweight-mutex</a> 利用 Windows 提供的 semaphore 和 atomic 操作实现的 mutex.</li>
+  <li><a href="http://cbloomrants.blogspot.hk/2011/07/07-15-11-review-of-many-mutex.html">Review of many Mutex implementations</a> 很长的一篇文章,总结了很多种 mutex 的实现细节.</li>
+</ul>
+
+<p>这里利用
+<a href="http://www.haiku-os.org/legacy-docs/benewsletter/Issue1-26.html#Engineering1-26">Benaphore</a>
+技术,在 Linux 平台上利用 <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sem_init.html">semaphore</a> 和 <a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html">atomic</a> 操作实现自己的 C++版本的
+lightweight mutex.</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;semaphore.h&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">Benaphore</span> <span class="p">{</span>
+</span><span class="line"> <span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="n">Benaphore</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">counter_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="o">~</span><span class="n">Benaphore</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">Lock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">__sync_add_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">Unlock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">__sync_sub_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">bool</span> <span class="n">TryLock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">return</span> <span class="n">__sync_bool_compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">
+</span><span class="line"> <span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">long</span> <span class="n">counter_</span><span class="p">;</span>
+</span><span class="line">  <span class="n">sem_t</span> <span class="n">semaphore_</span><span class="p">;</span>
+</span><span class="line">  <span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<h3 id="mutex-">增强 Mutex 支持递归</h3>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+<span class="line-number">24</span>
+<span class="line-number">25</span>
+<span class="line-number">26</span>
+<span class="line-number">27</span>
+<span class="line-number">28</span>
+<span class="line-number">29</span>
+<span class="line-number">30</span>
+<span class="line-number">31</span>
+<span class="line-number">32</span>
+<span class="line-number">33</span>
+<span class="line-number">34</span>
+<span class="line-number">35</span>
+<span class="line-number">36</span>
+<span class="line-number">37</span>
+<span class="line-number">38</span>
+<span class="line-number">39</span>
+<span class="line-number">40</span>
+<span class="line-number">41</span>
+<span class="line-number">42</span>
+<span class="line-number">43</span>
+<span class="line-number">44</span>
+<span class="line-number">45</span>
+<span class="line-number">46</span>
+<span class="line-number">47</span>
+<span class="line-number">48</span>
+<span class="line-number">49</span>
+<span class="line-number">50</span>
+<span class="line-number">51</span>
+<span class="line-number">52</span>
+<span class="line-number">53</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;semaphore.h&gt;</span>
+</span><span class="line"><span class="cp">#include &lt;pthread.h&gt;</span>
+</span><span class="line"><span class="k">class</span> <span class="nc">RecursiveBenaphore</span> <span class="p">{</span>
+</span><span class="line"> <span class="k">public</span><span class="o">:</span>
+</span><span class="line">  <span class="n">RecursiveBenaphore</span><span class="p">()</span> <span class="o">:</span> <span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">owner_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">recursion_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="o">~</span><span class="n">RecursiveBenaphore</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">Lock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">pthread_t</span> <span class="n">thread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">__sync_add_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">thread_id</span> <span class="o">!=</span> <span class="n">owner_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">owner_</span> <span class="o">=</span> <span class="n">thread_id</span><span class="p">;</span>
+</span><span class="line">    <span class="n">recursion_</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">void</span> <span class="n">Unlock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">recur</span> <span class="o">=</span> <span class="o">--</span><span class="n">recursion_</span><span class="p">;</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">recur</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">owner_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="kt">long</span> <span class="n">result</span> <span class="o">=</span> <span class="n">__sync_sub_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">recur</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="kt">bool</span> <span class="n">TryLock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">pthread_t</span> <span class="n">thread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_id</span> <span class="o">==</span> <span class="n">owner_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="n">__sync_add_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+</span><span class="line">      <span class="kt">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="n">__sync_bool_compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">==</span> <span class="kc">false</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="kc">false</span><span class="p">;</span>
+</span><span class="line">      <span class="p">}</span>
+</span><span class="line">      <span class="n">owner_</span> <span class="o">=</span> <span class="n">thread_id</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="n">recursion_</span><span class="o">++</span><span class="p">;</span>
+</span><span class="line">    <span class="k">return</span> <span class="kc">true</span><span class="p">;</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">
+</span><span class="line"> <span class="k">private</span><span class="o">:</span>
+</span><span class="line">  <span class="kt">long</span> <span class="n">counter_</span><span class="p">;</span>
+</span><span class="line">  <span class="n">sem_t</span> <span class="n">semaphore_</span><span class="p">;</span>
+</span><span class="line">  <span class="n">pthread_t</span> <span class="n">owner_</span><span class="p">;</span>
+</span><span class="line">  <span class="kt">long</span> <span class="n">recursion_</span><span class="p">;</span>
+</span><span class="line"><span class="p">};</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 </div>
 
 

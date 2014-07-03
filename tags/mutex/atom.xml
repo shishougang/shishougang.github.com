@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Mutex | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/mutex/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-03T20:11:44+08:00</updated>
+  <updated>2014-07-03T23:07:13+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -101,7 +101,7 @@ pthread_mutexattr_destroy(&amp;attrmutex);
 <a href="http://en.wikipedia.org/wiki/Mersenne_twister">Mersenne Twister</a>实现
 代码.每过一段时间,它获取和释放一个锁,获取和释放锁之间的时间每次是随机的,但
 是总的平均时间是提前设计好的.这个随机的过程就是个泊松分布过程,计算出产
-生一个随机数的平均时间—ns在2.93 GHz i7上,把它作为运行单位.利用
+生一个随机数的平均时间6.25 ns在2.93 GHz i7上,把它作为运行单位.利用
 <a href="http://wiki.dreamrunner.org/public_html/Algorithms/Theory%20of%20Algorithms/poisson-process.html">Poisson Process</a>
 的算法决定运行多少个运行单位在获取和释放锁之间.并利用
 <a href="http://dreamrunner.org/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>API
@@ -202,6 +202,110 @@ lock-free的实现更适合.</p>
 
 <h2 id="build-own-lightweight-mutex">Build own lightweight mutex</h2>
 
+<p>我们也可以实现自己的简单轻量级的mutex,但仅仅作为教育手段,理解mutex一些
+内在实现细节,实际现在操作系统都提供轻量级的mutex,千万不要自己实现一个
+并实际使用,直接只用操作系统提供的即可.</p>
+
+<p>网络上有很多种方法在用户层写自己的mutex:</p>
+
+<ul>
+  <li><a href="http://preshing.com/20120226/roll-your-own-lightweight-mutex/">roll-your-own-lightweight-mutex</a>利用Windows提供的semaphore和atomic操作实现的mutex.</li>
+  <li><a href="http://cbloomrants.blogspot.hk/2011/07/07-15-11-review-of-many-mutex.html">Review of many Mutex implementations</a>很长的一篇文章,总结了很多种mutex的实现细节.</li>
+</ul>
+
+<p>这里利用
+<a href="http://www.haiku-os.org/legacy-docs/benewsletter/Issue1-26.html#Engineering1-26">Benaphore</a>
+技术,在Linux平台上利用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sem_init.html">semaphore</a>和<a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html">atomic</a>操作实现自己的C++版本的
+lightweight mutex.</p>
+
+<p>``` c++
+#include <semaphore.h>
+class Benaphore {
+ public:
+  Benaphore() {
+    counter_ = 0;
+    sem_init(&amp;semaphore_, 0, 1);
+  }
+  ~Benaphore() {
+    sem_destroy(&amp;semaphore_);
+  }
+  void Lock() {
+    if (__sync_add_and_fetch(&amp;counter_, 1) &gt; 1) {
+      sem_wait(&amp;semaphore_);
+    }
+  }
+  void Unlock() {
+    if (__sync_sub_and_fetch(&amp;counter_, 1) &gt; 0) {
+      sem_post(&amp;semaphore_);
+    }
+  }
+  bool TryLock() {
+    return __sync_bool_compare_and_swap(&amp;counter_, 0, 1);
+  }</semaphore.h></p>
+
+<p>private:
+  long counter<em>;
+  sem_t semaphore</em>;
+  };
+```</p>
+
+<h3 id="mutex">增强Mutex支持递归</h3>
+
+<p>``` c++
+#include <semaphore.h>
+#include <pthread.h>
+class RecursiveBenaphore {
+ public:
+  RecursiveBenaphore() : counter_(0), owner_(0), recursion_(0) {
+    sem_init(&amp;semaphore_, 0, 1);
+  }
+  ~RecursiveBenaphore() {
+    sem_destroy(&amp;semaphore_);
+  }
+  void Lock() {
+    pthread_t thread_id = pthread_self();
+    if (__sync_add_and_fetch(&amp;counter_, 1) &gt; 1) {
+      if (thread_id != owner_) {
+        sem_wait(&amp;semaphore_);
+      }
+    }
+    owner_ = thread_id;
+    recursion_++;
+  }
+  void Unlock() {
+    long recur = --recursion_;
+    if (recur == 0) {
+      owner_ = 0;
+    }
+    long result = __sync_sub_and_fetch(&amp;counter_, 1);
+    if (result &gt; 0) {
+      if (recur == 0) {
+        sem_post(&amp;semaphore_);
+      }
+    }
+  }
+  bool TryLock() {
+    pthread_t thread_id = pthread_self();
+    if (thread_id == owner_) {
+      __sync_add_and_fetch(&amp;counter_, 1);
+    } else {
+      bool result = __sync_bool_compare_and_swap(&amp;counter_, 0, 1);
+      if (result == false) {
+        return false;
+      }
+      owner_ = thread_id;
+    }
+    recursion_++;
+    return true;
+  }</pthread.h></semaphore.h></p>
+
+<p>private:
+  long counter<em>;
+  sem_t semaphore</em>;
+  pthread_t owner<em>;
+  long recursion</em>;
+};
+```</p>
 ]]></content>
   </entry>
   
