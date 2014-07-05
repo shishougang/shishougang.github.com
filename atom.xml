@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-05T09:10:15+08:00</updated>
+  <updated>2014-07-05T12:52:10+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -541,7 +541,7 @@ and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原�
   </li>
 </ul>
 
-<h2 id="mutex-vs-spinlock">Mutex Vs Spinlock</h2>
+<h2 id="mutex-vs-spinlock">Mutex VS Spinlock</h2>
 
 <p>提到 Mutex,往往会提到 Spinlock,因为在使用 Lock 时,会遇到如何在 Mutex 与 Spinlock 之间选择.那么接下来对比一下两者.</p>
 
@@ -559,11 +559,100 @@ and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原�
 <p>Spinlock: Spinlock 持续获取锁,浪费很多 CPU 时间,如果锁被其他线程占用很长时间,那么它将浪费很多时间,不如使得线程进入睡眠,让出 CPU.<a href="http://jfdube.wordpress.com/2011/09/24/lessons-learnt-while-spinning/">Spinlock 的确能优化 context switches</a>
 但会在没有
 <a href="http://en.wikipedia.org/wiki/Priority_inversion">threads priority inversion</a>
-的平台上产生副作用.(但一个高优先级的线程自旋一个锁来等待一个低优先级的线程释放这个锁,就会造成死锁).</p>
+的平台上产生副作用.(但一个高优先级的线程自旋一个锁来等待一个低优先级的线程释放这个锁,就会造成死锁).在没有 Preemption 的 Uniprocessor,使用
+spinlock 是没有意义的,当前只有一个线程运行,没有必要保护关键区域,也没有其他线程同时运行,释放锁给它.</p>
+
+<p>所以在 Linux 下,Spinlock 在 kernel 这样实现:</p>
+
+<ul>
+  <li>没有打开<code>CONFIG_SMP</code>和<code>CONFIG_PREEMPT</code>,spinlock 实现代码是空的.</li>
+  <li>没有打开<code>CONFIG_SMP</code>,打开<code>CONFIG_PREEMPT</code>,spinlock 仅仅是简单的关闭
+preemption,足够来防止任何的
+<a href="http://en.wikipedia.org/wiki/Race_condition">races</a>. </li>
+  <li>打开<code>CONFIG_SMP</code>,打开<code>CONFIG_PREEMPT</code>,spinlock 实现如下代码,不断检查
+lock 是否被其他线程释放: </li>
+</ul>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="c"><span class="line">  <span class="k">extern</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">spin_lock</span><span class="p">(</span><span class="n">spinlock_t</span> <span class="o">*</span><span class="n">plock</span><span class="p">)</span>
+</span><span class="line">  <span class="p">{</span>
+</span><span class="line">    <span class="n">__asm__</span> <span class="n">__volatile__</span><span class="p">(</span>
+</span><span class="line">        <span class="n">spin_lock_string</span>
+</span><span class="line">        <span class="o">:</span><span class="s">&quot;=m&quot;</span> <span class="p">(</span><span class="n">__dummy_lock</span><span class="p">(</span><span class="n">plock</span><span class="p">)));</span>
+</span><span class="line">  <span class="p">}</span>
+</span><span class="line">  <span class="c1">// Macro spin_lock_string expand</span>
+</span><span class="line">  <span class="k">extern</span> <span class="kr">inline</span> <span class="kt">void</span> <span class="nf">spin_lock</span><span class="p">(</span><span class="n">spinlock_t</span> <span class="o">*</span><span class="n">plock</span><span class="p">)</span>
+</span><span class="line"> <span class="p">{</span>
+</span><span class="line">  <span class="mi">1</span><span class="o">:</span>
+</span><span class="line">    <span class="n">lock</span> <span class="p">;</span> <span class="n">btsl</span> <span class="p">,</span><span class="n">plock</span><span class="p">;</span>
+</span><span class="line">    <span class="n">jc</span> <span class="mf">2f</span><span class="p">;</span>
+</span><span class="line">    <span class="p">.</span><span class="n">section</span> <span class="p">.</span><span class="n">text</span><span class="p">.</span><span class="n">lock</span><span class="p">,</span><span class="s">&quot;ax&quot;</span>
+</span><span class="line">  <span class="mi">2</span><span class="o">:</span>
+</span><span class="line">    <span class="n">testb</span> <span class="p">,</span><span class="n">plock</span><span class="p">;</span>
+</span><span class="line">    <span class="n">rep</span><span class="p">;</span><span class="n">nop</span><span class="p">;</span>
+</span><span class="line">    <span class="n">jne</span> <span class="mi">2</span><span class="n">b</span><span class="p">;</span>
+</span><span class="line">    <span class="n">jmp</span> <span class="mi">1</span><span class="n">b</span><span class="p">;</span>
+</span><span class="line">    <span class="p">.</span><span class="n">previous</span>
+</span><span class="line"> <span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <h3 id="section-3">总结</h3>
 
-<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括 Solaris,Mac OS X 和 FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Criteria</th>
+      <th>Muutex</th>
+      <th>Spinlock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>机制</td>
+      <td>尝试获取锁.若可得到就占有.若不能,就进入睡眠等待.</td>
+      <td>尝试获取锁.若可得到就占有.若不能,持续尝试直到获取.</td>
+    </tr>
+    <tr>
+      <td>什么时候使用</td>
+      <td>当线程进入睡眠没有伤害.或需要等待一段足够长的时间才能获取锁.</td>
+      <td>当线程不应该进入睡眠如中断处理等.当只需等待非常短的时间就能获取锁.</td>
+    </tr>
+    <tr>
+      <td>缺点</td>
+      <td>引起 context switch 和 scheduling 开销.</td>
+      <td>线程不做任何事情在获取到锁前.浪费 CPU 运行.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括 Solaris,Mac OS X 和 FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.一个 hybrid mutex 首先行为和 spinlock 一样,如果不能获取锁,持续尝试获取,但过了一定的时间,它就和 mutex 一样,让线程进入睡眠.<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:f1">
+      <p>http://stackoverflow.com/questions/5869825/when-should-one-use-a-spinlock-instead-of-mutex<a href="#fnref:f1" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 ]]></content>
   </entry>
   

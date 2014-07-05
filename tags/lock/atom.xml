@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Lock | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/lock/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-05T09:10:15+08:00</updated>
+  <updated>2014-07-05T12:52:10+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -406,7 +406,7 @@ and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原�
   </li>
 </ul>
 
-<h2 id="mutex-vs-spinlock">Mutex Vs Spinlock</h2>
+<h2 id="mutex-vs-spinlock">Mutex VS Spinlock</h2>
 
 <p>提到Mutex,往往会提到Spinlock,因为在使用Lock时,会遇到如何在Mutex与Spinlock之
 间选择.那么接下来对比一下两者.</p>
@@ -431,11 +431,84 @@ and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原�
 但会在没有
 <a href="http://en.wikipedia.org/wiki/Priority_inversion">threads priority inversion</a>
 的平台上产生副作用.(但一个高优先级的线程自旋一个锁来等待一个低优先级的
-线程释放这个锁,就会造成死锁).</p>
+线程释放这个锁,就会造成死锁).在没有Preemption的Uniprocessor,使用
+spinlock是没有意义的,当前只有一个线程运行,没有必要保护关键区域,也没有其他线程同时运行,释放锁
+给它.</p>
+
+<p>所以在Linux下,Spinlock在kernel这样实现:</p>
+
+<ul>
+  <li>没有打开<code>CONFIG_SMP</code>和<code>CONFIG_PREEMPT</code>,spinlock实现代码是空的.</li>
+  <li>没有打开<code>CONFIG_SMP</code>,打开<code>CONFIG_PREEMPT</code>,spinlock仅仅是简单的关闭
+preemption,足够来防止任何的
+<a href="http://en.wikipedia.org/wiki/Race_condition">races</a>. </li>
+  <li>打开<code>CONFIG_SMP</code>,打开<code>CONFIG_PREEMPT</code>,spinlock实现如下代码,不断检查
+lock是否被其他线程释放: </li>
+</ul>
+
+<p><code>c
+  extern inline void spin_lock(spinlock_t *plock)
+  {
+    __asm__ __volatile__(
+        spin_lock_string
+        :"=m" (__dummy_lock(plock)));
+  }
+  // Macro spin_lock_string expand
+  extern inline void spin_lock(spinlock_t *plock)
+ {
+  1:
+    lock ; btsl ,plock;
+    jc 2f;
+    .section .text.lock,"ax"
+  2: 
+    testb ,plock;
+    rep;nop;
+    jne 2b;
+    jmp 1b;
+    .previous
+ }
+</code></p>
 
 <h3 id="section-3">总结</h3>
 
-<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括Solaris,Mac OS X和FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Criteria</th>
+      <th>Muutex</th>
+      <th>Spinlock</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>机制</td>
+      <td>尝试获取锁.若可得到就占有.若不能,就进入睡眠等待.</td>
+      <td>尝试获取锁.若可得到就占有.若不能,持续尝试直到获取.</td>
+    </tr>
+    <tr>
+      <td>什么时候使用</td>
+      <td>当线程进入睡眠没有伤害.或需要等待一段足够长的时间才能获取锁.</td>
+      <td>当线程不应该进入睡眠如中断处理等.当只需等待非常短的时间就能获取锁.</td>
+    </tr>
+    <tr>
+      <td>缺点</td>
+      <td>引起context switch和scheduling开销.</td>
+      <td>线程不做任何事情在获取到锁前.浪费CPU运行.</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括Solaris,Mac OS X和FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.一
+个hybrid mutex首先行为和spinlock一样,如果不能获取锁,持续尝试获取,但过
+了一定的时间,它就和mutex一样,让线程进入睡眠.<sup id="fnref:f1"><a href="#fn:f1" rel="footnote">1</a></sup>.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:f1">
+      <p>http://stackoverflow.com/questions/5869825/when-should-one-use-a-spinlock-instead-of-mutex<a href="#fnref:f1" rel="reference">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 ]]></content>
   </entry>
   
