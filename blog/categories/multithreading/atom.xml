@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/blog/categories/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-05T12:52:10+08:00</updated>
+  <updated>2014-07-05T22:44:49+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Multithreading相关术语总结]]></title>
+    <link href="http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/"/>
+    <updated>2014-07-05T23:23:52+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie</id>
+    <content type="html"><![CDATA[<p>在谈到内存模型,Multithreading,尤其 lock-free programmming 等时,总会遇到
+一些相关术语来描述,如 Memory Barrier,Acquire semantics,Release
+semantics,happened-before relation 等.在这里稍微整理一下.</p>
+
+<!-- more -->
+
+<h2 id="memory-barriers">Memory Barriers</h2>
+
+<p>在之前
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/">浅谈 Memory Reordering</a>
+中谈到编译器 reordering 和在多核下的处理器的 reordering,在 lock-free
+programming 中,如果不控制好这两者的 reordering 就会引起上文中所不想的结果.</p>
+
+<p>你可以通过指令强制 CPU 和编译器在内存处理上的顺序,这些指令就被成为
+<a href="http://en.wikipedia.org/wiki/Memory_barrier">Memory Barrier</a>.</p>
+
+<p>有很多指令作为 memory barriers,所以需要知道很多不同类型的 memory
+barriers.<a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea 指出</a>如下
+的四大类可以很好的归纳在 CPU 上的特殊指令.尽管不是完全,大多数时候,一个正
+真的 CPU 指令执行包含上面 barrier 类型的各种组合,或附带其他效果.无论如何,
+一旦你理解了这四种类型的 memory barriers,你就很好的理解了大部分真正 CPU
+的关于内存约束的指令.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/memory_barriers_types.png" title="‘memory_barriers_types’" ></p>
+
+<h2 id="acquire-and-release-semantics">Acquire and Release semantics</h2>
+
+<h2 id="happened-before-relation">Happened-before relation</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>

@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: C++ | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/c-/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-05T12:52:10+08:00</updated>
+  <updated>2014-07-05T22:44:49+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,43 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Multithreading相关术语总结]]></title>
+    <link href="http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/"/>
+    <updated>2014-07-05T23:23:52+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie</id>
+    <content type="html"><![CDATA[<p>在谈到内存模型,Multithreading,尤其lock-free programmming等时,总会遇到
+一些相关术语来描述,如Memory Barrier,Acquire semantics,Release
+semantics,happened-before relation等.在这里稍微整理一下.</p>
+
+<!-- more -->
+
+<h2 id="memory-barriers">Memory Barriers</h2>
+
+<p>在之前
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
+中谈到编译器reordering和在多核下的处理器的reordering,在lock-free
+programming中,如果不控制好这两者的reordering就会引起上文中所不想的结果.</p>
+
+<p>你可以通过指令强制CPU和编译器在内存处理上的顺序,这些指令就被成为
+<a href="http://en.wikipedia.org/wiki/Memory_barrier">Memory Barrier</a>.</p>
+
+<p>有很多指令作为memory barriers,所以需要知道很多不同类型的memory
+barriers.<a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea指出</a>如下
+的四大类可以很好的归纳在CPU上的特殊指令.尽管不是完全,大多数时候,一个正
+真的CPU指令执行包含上面barrier类型的各种组合,或附带其他效果.无论如何,
+一旦你理解了这四种类型的memory barriers,你就很好的理解了大部分真正CPU
+的关于内存约束的指令.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/memory_barriers_types.png" title="‘memory_barriers_types’" ></p>
+
+<h2 id="acquire-and-release-semantics">Acquire and Release semantics</h2>
+
+<h2 id="happened-before-relation">Happened-before relation</h2>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[浅谈Mutex (Lock)]]></title>
@@ -1362,338 +1399,6 @@ std::mutex Singleton::m_mutex;</p>
 的支持下,使用它的<a href="http://preshing.com/20130930/double-checked-locking-is-fixed-in-cpp11/#using-mintomic-fences">Mintomic Fences实现DCLP</a>.</p>
 
 <p>更多关于C++11的multithreading库的详解见之后的文章.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[The Last Thing D Needs总结]]></title>
-    <link href="http://dreamrunner.org/blog/2014/06/01/the-last-thing-d-needszong-jie/"/>
-    <updated>2014-06-01T16:24:47+08:00</updated>
-    <id>http://dreamrunner.org/blog/2014/06/01/the-last-thing-d-needszong-jie</id>
-    <content type="html"><![CDATA[<ul id="markdown-toc">
-  <li><a href="#initialization">Initialization</a></li>
-  <li><a href="#type-deduction">Type Deduction</a></li>
-  <li><a href="#inheritance">Inheritance</a></li>
-  <li><a href="#computational-complexity">Computational Complexity</a></li>
-  <li><a href="#apis">APIs</a></li>
-  <li><a href="#specifications">Specifications</a></li>
-  <li><a href="#essential-and-accidental-complexity">Essential and Accidental Complexity</a></li>
-</ul>
-
-<p><a href="http://www.amazon.com/gp/product/0321334876?ie=UTF8&amp;tag=aristeia.com-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0321334876">Effective C++</a>
-系列的作者<a href="http://www.aristeia.com/">Scott Meyers</a>在Dconf中<a href="http://www.ustream.tv/recorded/47947981">The Last Thing D Needs</a>聊了些C++的
-特性，稍微总结一下。</p>
-
-<h2 id="initialization">Initialization</h2>
-
-<p><code>c++ Initialization
-int x1;         // unknown, initial(pay for it)
-int x2;         // (at global scope) 0, no run time cost
-static int x3;  // 0, static initialization
-int *px = new int;  // heap memory, unknown, has run time cost
-{
-    int x4;    // unknown, has run time cost 
-}
-int a1[100];   // unknown
-int a2[100];   // (at global scope) 0
-static int a3[100];  // 0
-std::vector&lt;int&gt; v(100);  // 0, use run time cost
-</code></p>
-
-<!-- more -->
-
-<h2 id="type-deduction">Type Deduction</h2>
-<p>``` c++ Type Deduction
-const int cx = 0;
-auto my_cx1 = cx;          // int, new independent value
-decltype(cx) my_cx2 = cx;  // const int, standard said</p>
-
-<p>template<typname t="">
-void f1(T param);
-f1(cx);                    // T's type, int, same rules with auto</typname></p>
-
-<p>template<typename t="">
-void f2(T&amp; param);
-f2(cx);                   //T's type, const int, reference a chunk of memory, preserve the const</typename></p>
-
-<p>template<typename t="">
-void f3(T&amp;&amp; param);
-f3(cx);                  //T's type, const int&amp;, perfect argument forwarding, a special rule</typename></p>
-
-<p>const int cx = 0;
-auto lam= [cx] {cx = 10;};       //error!
-class UpToTheCompiler {
-private:
-  ??? cx;                      //const int
-  …
-};</p>
-
-<p>const int cx = 0;
-auto lam= [cx = cx] {cx = 10;};     //error!
-class UpToTheCompiler {
-private:
-  ??? cx;                          //int (but acts like const int)
-  …
-public:
-  void operator() const
-  {cx = 0;}
-};</p>
-
-<p>const int cx = 0;
-auto lam1= [cx = cx] mutable {cx = 10;};     //error!
-auto lam2= <a href="">cx = cx</a> mutable {cx = 10;};     //correct
-class UpToTheCompiler {
-private:
-  ??? cx;                          //int (but acts like int)
-  …
-};
-```</p>
-
-<p>For
-<div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>const int cx = 0;</span></code></pre></td></tr></table></div></figure></notextile></div>
-type deduction for cx yields:</p>
-
-<style>
-table,th,td
-{
-border:1px solid black;
-}
-</style>
-
-<table border="1" style="width:500px">
-<tr>
-<th> Context </th>
-<th> Type </th>
-</tr>
-
-<tr>
-<td> auto </td>
-<td> int </td>
-</tr>
-
-<tr>
-<td> decltype </td>
-<td>  const int</td>
-</tr>
-
-<tr>
-<td> template(T parameter)  </td>
-<td> int </td>
-</tr>
-
-<tr>
-<td> template(T&amp; parameter)  </td>
-<td> const int </td>
-</tr>
-
-<tr>
-<td> template(T&amp;&amp; parameter)  </td>
-<td> const int&amp; </td>
-</tr>
-
-<tr>
-<td> lambda (by-value capture) </td>
-<td> const int  </td>
-</tr>
-
-<tr>
-<td> lambda (int capture) </td>
-<td>  int</td>
-</tr>
-</table>
-
-<p>``` c++ Type Deduction
-//all do the same thing
-int x1 = 0;
-int x2(0);
-int x3 = {0};
-int x4 {0};</p>
-
-<p>auto x1 = 0;  // int
-auto x2(0);   // int
-auto x3 = {0};// initializer_list<int>
-auto x4 {0};  // initializer_list<int /></int></p>
-
-<p>template <typname t="">
-void f(T param);
-f({0});       // error! "{0}" has no type
-```</typname></p>
-
-<h2 id="inheritance">Inheritance</h2>
-<p>``` c++ inheritance
-class Base {
-public:
-  void doBaseWork();
-};
-class Derived : public Base {
-public:
-  void doDerivedWord() {
-    doBaseWord();               //ok
-  }
-};</p>
-
-<p>template <typename t="">
-class Base {
-public:
-  void doBaseWork();
-};
-template <typename t="">
-class Derived : public Base<t> {
-public:
-  void doDerivedWord() {
-    doBaseWord();               //no compile, later specialized version
-  }
-};</t></typename></typename></p>
-
-<p>template &lt;&gt;
-class Base<int> ();  // no doBasework</int></p>
-
-<p>Derived<int> d;
-d.doDerivedWord();  // fail
-```</int></p>
-
-<p>In essence, the <strong>One Definition Rule</strong> states that the same entity should have the exact same definition throughout an application, otherwise the effects are undefined.</p>
-
-<p>The fundamental problem is that the code that doesn’t see the specialized version of your class template member function might still compile, is likely to link, and sometimes might even run. This is because in the absence of (a forward declaration of) the explicit specialization, the non-specialized version kicks in, likely implementing a generic functionality that works for your specialized type as well.</p>
-
-<h2 id="computational-complexity">Computational Complexity</h2>
-<p>``` c++ computational Complexity
-std::vector<int> v;
-...
-std::sort(v.begin(), v.end());   // O(nlogn)</int></p>
-
-<p>std::list<int> li;
-...
-std::sort(li.begin(), li.end());  // not compile, list doesnot have random access iterator</int></p>
-
-<p>auto it1 =
-std::binary_search(v.begin(), v.end(), 10);  // O(logn)</p>
-
-<p>auto it2 =
-std::binary_search(li.begin(), li.end(), 10);  // O(n), officially(number of compares): O(logn)
-```</p>
-
-<h2 id="apis">APIs</h2>
-
-<p><code>c++ example
-std::set&lt;int&gt; si;
-...
-si.erase(14);    // eliminate all 14s from si
-</code></p>
-
-<ul>
-  <li>set             –&gt;  erase</li>
-  <li>multiset        –&gt;     erase</li>
-  <li>map             –&gt;     erase</li>
-  <li>multimap        –&gt;     erase</li>
-  <li>unordered_set   –&gt;     erase</li>
-  <li>unordered_multiset –&gt;  erase</li>
-  <li>unordered_map      –&gt;  erase</li>
-  <li>unordered_multimap –&gt;  erase</li>
-  <li>list               –&gt;  remove</li>
-  <li>forward_list       –&gt;  remove</li>
-</ul>
-
-<p>Sorts can be stable or unstable. Which are guaranteed to be stable?
-* sort –&gt; not guaranteed
-* stable_sort  –&gt; guaranteed
-* list::sort –&gt; guaranteed</p>
-
-<h2 id="specifications">Specifications</h2>
-<p>Five sequence containers:</p>
-
-<ul>
-  <li>array –&gt; No</li>
-  <li>deque –&gt; Yes</li>
-  <li>forward_list  –&gt; No(fulfill of 1 of 16)</li>
-  <li>list  –&gt; Yes</li>
-  <li>vector – &gt; Yes</li>
-</ul>
-
-<h2 id="essential-and-accidental-complexity">Essential and Accidental Complexity</h2>
-<p>Essential Complexity: due to inherent design tensions.</p>
-
-<ul>
-  <li>Simplicity and regularity vs expressiveness.</li>
-  <li>Abstraction and portability vs efficiency.</li>
-  <li>New approaches vs compatibility with legacy systems.</li>
-  <li>Expressiveness vs ability to issue good diagnostics.</li>
-</ul>
-
-<p><em>Essential Complexity</em></p>
-
-<p><code>c++ Point
-struct Point {
-  int x, y;
-};
-</code>
-What is the type of Point::x?</p>
-
-<p><code>c++ Point
-Point p;
-const Point &amp;cp = p;
-</code>
-What is the type of cp.x?</p>
-
-<p>C++ soluction:</p>
-
-<p><code>c++
-decltype(cp.x) = int
-decltype((cp.x)) = const int&amp;
-</code></p>
-
-<p><code>c++ inheritance
-template &lt;typename T&gt;
-class Base {
-public:
-  void doBaseWork();
-};
-template &lt;typename T&gt;
-class Derived : public Base&lt;T&gt; {
-public:
-  void doDerivedWord() {
-    doBaseWrd();               //okay?
-  }
-};
-</code></p>
-
-<p>Assume typo and diagnose now?</p>
-
-<ul>
-  <li>Wrong if later specialization offers doBaseWrk.</li>
-</ul>
-
-<p>Assume later specialization and defer lookup until instantiation?</p>
-
-<ul>
-  <li>If typo, imposes diagnostics for library errors on clients.</li>
-</ul>
-
-<p>C++ solution:</p>
-
-<ul>
-  <li>Template author has control
-    <ul>
-      <li>doBaseWrk() -&gt; lookup name when parsing template.</li>
-      <li>this-&gt;doBaseWrk() -&gt; lookup name when instantiating template.</li>
-    </ul>
-  </li>
-</ul>
-
-<p><em>Accidental Complexity</em></p>
-
-<ul>
-  <li>ints are sometimes initialized to 0.</li>
-  <li>By-value lambda capture somtimes retains the constness of what’s captured.</li>
-  <li>mutable lambdas must declare a parameter list, but non-mutable lambdas don’t</li>
-  <li>Braced initializers (e.g.”{0}”) sometimes have a type.</li>
-  <li>Computation complexity guarantees usually meaningful.</li>
-  <li>Elimination all container elements with a given value usually means
-calling <code>erase</code>.</li>
-  <li><code>sort</code> is sometimes stable.</li>
-  <li>Container “requirements” are sometimes required.</li>
-</ul>
 ]]></content>
   </entry>
   
