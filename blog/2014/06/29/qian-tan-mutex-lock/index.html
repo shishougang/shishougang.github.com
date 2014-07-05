@@ -367,7 +367,8 @@ lock-free 的实现更适合.</p>
 <p>这里利用
 <a href="http://www.haiku-os.org/legacy-docs/benewsletter/Issue1-26.html#Engineering1-26">Benaphore</a>
 技术,在 Linux 平台上利用 <a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sem_init.html">semaphore</a> 和 <a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html">atomic</a> 操作实现自己的 C++版本的
-lightweight mutex.</p>
+lightweight mutex.这里并没有用
+<a href="http://www.open-std.org/JTC1/sc22/wg21/docs/papers/2007/n2427.html">C++11 的原子库</a>.所有代码在 <a href="https://github.com/shishougang/blog_multithreading/tree/master/benaphore_mutex">Github 上</a>.</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -396,13 +397,11 @@ lightweight mutex.</p>
 <span class="line-number">25</span>
 <span class="line-number">26</span>
 <span class="line-number">27</span>
-<span class="line-number">28</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;semaphore.h&gt;</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">semaphore</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
 </span><span class="line"><span class="k">class</span> <span class="nc">Benaphore</span> <span class="p">{</span>
 </span><span class="line"> <span class="k">public</span><span class="o">:</span>
-</span><span class="line">  <span class="n">Benaphore</span><span class="p">()</span> <span class="p">{</span>
-</span><span class="line">    <span class="n">counter_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">  <span class="n">Benaphore</span><span class="p">()</span> <span class="o">:</span> <span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span><span class="line">  <span class="p">}</span>
 </span><span class="line">  <span class="o">~</span><span class="n">Benaphore</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="line">    <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
@@ -424,10 +423,79 @@ lightweight mutex.</p>
 </span><span class="line"> <span class="k">private</span><span class="o">:</span>
 </span><span class="line">  <span class="kt">long</span> <span class="n">counter_</span><span class="p">;</span>
 </span><span class="line">  <span class="n">sem_t</span> <span class="n">semaphore_</span><span class="p">;</span>
-</span><span class="line">  <span class="p">};</span>
+</span><span class="line"><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html"><code>__sync_add_and_fetch</code></a>
+是一个由 GCC 内部提供的 <em>atomic read-modify-write (RMW)</em> 操作,它把 1 加到某个数并且返回新的数,在同一时间所有操作由一个线程原子操作完成,其他线程不能干涉,只能在后等待.这里<code>counter_</code>初始化为 0,第一个线程调用<code>Lock</code>将得到 1 从<code>__sync_add_and_fetch</code>,然后跳过<code>sem_wait</code>,一旦这个线程占用这个锁,
+之后线程都将递增<code>counter_</code>,获得大于 1 的数,从而调用<code>sem_wait</code>等待.</p>
+
+<p>之后,第一个线程完成自己的操作,调用<code>Unlock</code>,<code>__sync_sub_and_fetch</code>的返回值大于 1 说明有其他线程在等待这个 mutex,调用<code>sem_post</code>唤醒其他线程.</p>
+
+<h3 id="section">底层分析与性能</h3>
+
+<p>上面使用了<code>__sync_add_and_fetch</code>,它编译成<code>lock xadd</code>指令如下.在没有竞争下的 lock/unlock 操作性能与 pthread mutex 相当.但是在 mutex 多线程竞争情况下,这个 mutex 性能没有 pthread mutex 好.</p>
+
+<p><img src="/images/blog/2014/multithreading/lightweight_mutex_assembly.png" title="'lightweight_mutex_assembly'" /></p>
+
 <h3 id="mutex-">增强 Mutex 支持递归</h3>
+
+<p>上面简单的 lightweight mutex 的局限性是它不能递归.也就是同一个线程试图获取同样的锁两次以上,将造成死锁(deadlock).递归锁在函数调用自己时很有用.比如在内存管理代码中,可能会遇到如下代码:</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+<span class="line-number">21</span>
+<span class="line-number">22</span>
+<span class="line-number">23</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="n">Realloc</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">LOCK</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">ptr</span> <span class="o">==</span> <span class="nb">NULL</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="k">return</span> <span class="n">Alloc</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+</span><span class="line">    <span class="p">{</span>
+</span><span class="line">        <span class="n">Free</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+</span><span class="line">        <span class="k">return</span> <span class="nb">NULL</span><span class="p">;</span>
+</span><span class="line">    <span class="p">}</span>
+</span><span class="line">    <span class="k">else</span>
+</span><span class="line">        <span class="p">...</span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line">
+</span><span class="line"><span class="n">Alloc</span><span class="p">(</span><span class="n">size_t</span> <span class="n">size</span><span class="p">)</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="n">LOCK</span><span class="p">;</span>
+</span><span class="line">
+</span><span class="line">    <span class="p">...</span>
+</span><span class="line"><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p><code>Lock</code>是个封装好的 C++宏,用来获取锁和自动结果当退出函数.</p>
+
+<p>可以看到,当传递<code>NULL</code>给<code>Realloc</code>,锁被<code>Realloc</code>函数获取,然后第二次被获取当<code>Alloc</code>被调用.</p>
+
+<p>把它扩展成可递归的锁如下,加入 2 个新成员变量,<code>owner_</code>,存储当前占有线程的
+ID(TID),和<code>recursion_</code>,存储递归的层数.基本代码如下:</p>
 
 <div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
@@ -482,12 +550,22 @@ lightweight mutex.</p>
 <span class="line-number">51</span>
 <span class="line-number">52</span>
 <span class="line-number">53</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="cp">#include &lt;semaphore.h&gt;</span>
-</span><span class="line"><span class="cp">#include &lt;pthread.h&gt;</span>
+<span class="line-number">54</span>
+<span class="line-number">55</span>
+<span class="line-number">56</span>
+<span class="line-number">57</span>
+<span class="line-number">58</span>
+<span class="line-number">59</span>
+<span class="line-number">60</span>
+<span class="line-number">61</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">semaphore</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class="line"> <span class="err">#</span><span class="n">include</span> <span class="o">&lt;</span><span class="n">pthread</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span>
+</span><span class="line"> <span class="err">#</span><span class="n">define</span> <span class="n">LIGHT_ASSERT</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="n">__builtin_trap</span><span class="p">();</span> <span class="p">}</span>
+</span><span class="line">
 </span><span class="line"><span class="k">class</span> <span class="nc">RecursiveBenaphore</span> <span class="p">{</span>
 </span><span class="line"> <span class="k">public</span><span class="o">:</span>
 </span><span class="line">  <span class="n">RecursiveBenaphore</span><span class="p">()</span> <span class="o">:</span> <span class="n">counter_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">owner_</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">recursion_</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</span><span class="line">    <span class="n">sem_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
 </span><span class="line">  <span class="p">}</span>
 </span><span class="line">  <span class="o">~</span><span class="n">RecursiveBenaphore</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="line">    <span class="n">sem_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
@@ -495,7 +573,7 @@ lightweight mutex.</p>
 </span><span class="line">  <span class="kt">void</span> <span class="n">Lock</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="line">    <span class="n">pthread_t</span> <span class="n">thread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
 </span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">__sync_add_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">thread_id</span> <span class="o">!=</span> <span class="n">owner_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pthread_equal</span><span class="p">(</span><span class="n">thread_id</span><span class="p">,</span> <span class="n">owner_</span><span class="p">))</span> <span class="p">{</span>
 </span><span class="line">        <span class="n">sem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
 </span><span class="line">      <span class="p">}</span>
 </span><span class="line">    <span class="p">}</span>
@@ -503,6 +581,8 @@ lightweight mutex.</p>
 </span><span class="line">    <span class="n">recursion_</span><span class="o">++</span><span class="p">;</span>
 </span><span class="line">  <span class="p">}</span>
 </span><span class="line">  <span class="kt">void</span> <span class="n">Unlock</span><span class="p">()</span> <span class="p">{</span>
+</span><span class="line">    <span class="n">pthread_t</span> <span class="n">thread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
+</span><span class="line">    <span class="n">LIGHT_ASSERT</span><span class="p">(</span><span class="n">pthread_equal</span><span class="p">(</span><span class="n">thread_id</span><span class="p">,</span> <span class="n">owner_</span><span class="p">));</span>
 </span><span class="line">    <span class="kt">long</span> <span class="n">recur</span> <span class="o">=</span> <span class="o">--</span><span class="n">recursion_</span><span class="p">;</span>
 </span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">recur</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="line">      <span class="n">owner_</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
@@ -510,13 +590,17 @@ lightweight mutex.</p>
 </span><span class="line">    <span class="kt">long</span> <span class="n">result</span> <span class="o">=</span> <span class="n">__sync_sub_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">result</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
 </span><span class="line">      <span class="k">if</span> <span class="p">(</span><span class="n">recur</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-</span><span class="line">        <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">        <span class="kt">int</span> <span class="n">sem_value</span><span class="p">;</span>
+</span><span class="line">        <span class="n">sem_getvalue</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">sem_value</span><span class="p">);</span>
+</span><span class="line">        <span class="k">if</span> <span class="p">(</span><span class="n">sem_value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">          <span class="n">sem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">semaphore_</span><span class="p">);</span>
+</span><span class="line">        <span class="p">}</span>
 </span><span class="line">      <span class="p">}</span>
 </span><span class="line">    <span class="p">}</span>
 </span><span class="line">  <span class="p">}</span>
 </span><span class="line">  <span class="kt">bool</span> <span class="n">TryLock</span><span class="p">()</span> <span class="p">{</span>
 </span><span class="line">    <span class="n">pthread_t</span> <span class="n">thread_id</span> <span class="o">=</span> <span class="n">pthread_self</span><span class="p">();</span>
-</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">thread_id</span> <span class="o">==</span> <span class="n">owner_</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="line">    <span class="k">if</span> <span class="p">(</span><span class="n">pthread_equal</span><span class="p">(</span><span class="n">thread_id</span><span class="p">,</span> <span class="n">owner_</span><span class="p">))</span> <span class="p">{</span>
 </span><span class="line">      <span class="n">__sync_add_and_fetch</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
 </span><span class="line">    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
 </span><span class="line">      <span class="kt">bool</span> <span class="n">result</span> <span class="o">=</span> <span class="n">__sync_bool_compare_and_swap</span><span class="p">(</span><span class="o">&amp;</span><span class="n">counter_</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
@@ -536,6 +620,59 @@ lightweight mutex.</p>
 </span><span class="line">  <span class="kt">long</span> <span class="n">recursion_</span><span class="p">;</span>
 </span><span class="line"><span class="p">};</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
+
+<p>如之前一样,第一个线程调用<code>Lock</code>,设置<code>owner_</code>为自己的 TID,增加
+<code>recursion_</code>到 1.如果同一个线程再次调用<code>Lock</code>,它将同时增加
+<code>recursion_</code>和<code>counter_</code>.</p>
+
+<p>之后,第一个线程完成自己的操作,调用<code>Unlock</code>,同时减少<code>recursion_</code>和<code>counter_</code>,
+仅仅调用<code>sem_post</code>唤醒其他线程当<code>recursion_</code>减少到<code>0</code>.如果
+<code>recursion_</code>仍然大于 0,意味着当前的线程仍然占有此锁在外层程序.</p>
+
+<p>最后进行<strong>压力测试</strong>,建立一些线程,每个随机获取锁,随机的递归层次.代码在
+<a href="https://github.com/shishougang/blog_multithreading/tree/master/benaphore_mutex">Github 上</a>.</p>
+
+<p>一些细节问题:
+* 在<code>Unlock</code>中,设置<code>owner_</code>为 0 在调用<code>__sync_sub_and_fetch</code>之前,否则可能发生死锁(deadlock).比如,有两个线程 TID 是 111 和 222.
+    1. 线程 111 完成操作调用<code>Unlock</code>,先调用<code>__sync_sub_and_fetch</code>把<code>counter_</code>减到 0
+    2. 在设置<code>owner_</code>为 0 被中断,线程 222 得到运行,它调用<code>Lock</code>,发现<code>counter_</code>为 0,跳过<code>sem_wait</code>,设置<code>owner_=222</code>,完成<code>Lock</code>操作.
+    3. 线程 222 被中断调出,线程 111 重新得到运行,设置<code>owner_</code>为 0,然后完成<code>Unlock</code>操作.
+    4. 因为此时<code>owner_</code>为 0,线程 222 不能在递归占用锁,一旦它再次获取锁,形成死锁.</p>
+
+<ul>
+  <li>
+    <p>在<code>Unlock</code>中,<code>recursion_</code>被拷贝到本地变量一次,之后只本地变量,比如没有在<code>__sync_sub_and_fetch</code>之后重新读取她.因为在那之后它能被其他线程已经改变. </p>
+  </li>
+  <li>
+    <p><code>recursion_</code>和<code>owner_</code>没有原子操作.因为它们在调用<code>Lock</code>的
+<code>__sync_add_and_fetch</code>和调用<code>Unlock</code>的<code>__sync_sub_and_fetch</code>之间,线程占有锁,独占<code>recursion_</code>和<code>owner_</code>的读写操作,并拥有所有的 acquire
+and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原子操作没必要.因为在 X86/84 的平台上,<code>__sync_add_and_fetch</code>生成<code>lock xadd</code>的指令,保证全部的 memory barrier,也就保证 acquire and release semantics.</p>
+  </li>
+</ul>
+
+<h2 id="mutex-vs-spinlock">Mutex Vs Spinlock</h2>
+
+<p>提到 Mutex,往往会提到 Spinlock,因为在使用 Lock 时,会遇到如何在 Mutex 与 Spinlock 之间选择.那么接下来对比一下两者.</p>
+
+<h3 id="section-1">定义</h3>
+
+<p>Mutex: 如果一个线程试图获取一个 mutex,但是没有成功,因为 mutex 已经被占用,
+它将进入睡眠,让其他进程运行,直到 mutex 被其他进程释放.</p>
+
+<p>Spinlock: 如果一个线程试图获取一个 Spinlock, 但是没有成功,它将持续试着去获取它,直到它最终成功获取,因为它将不允许其他线程运行(然而,操作系统将强制调度其他线程).</p>
+
+<h3 id="section-2">各自缺点</h3>
+
+<p>Mutex: Mutex 将使得线程睡眠,然后再唤醒它们,两者都是开销比较大的操作,也就是 context switch 的开销.如果锁只是被其他线程占用非常短的时间,那么时间花在使的线程睡眠并唤醒它可能超过它使用 spinlock 持续获取锁的时间.</p>
+
+<p>Spinlock: Spinlock 持续获取锁,浪费很多 CPU 时间,如果锁被其他线程占用很长时间,那么它将浪费很多时间,不如使得线程进入睡眠,让出 CPU.<a href="http://jfdube.wordpress.com/2011/09/24/lessons-learnt-while-spinning/">Spinlock 的确能优化 context switches</a>
+但会在没有
+<a href="http://en.wikipedia.org/wiki/Priority_inversion">threads priority inversion</a>
+的平台上产生副作用.(但一个高优先级的线程自旋一个锁来等待一个低优先级的线程释放这个锁,就会造成死锁).</p>
+
+<h3 id="section-3">总结</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括 Solaris,Mac OS X 和 FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.</p>
 </div>
 
 

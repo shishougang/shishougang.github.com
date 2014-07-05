@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-03T23:07:13+08:00</updated>
+  <updated>2014-07-05T09:10:15+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -216,15 +216,16 @@ lock-free的实现更适合.</p>
 <p>这里利用
 <a href="http://www.haiku-os.org/legacy-docs/benewsletter/Issue1-26.html#Engineering1-26">Benaphore</a>
 技术,在Linux平台上利用<a href="http://pubs.opengroup.org/onlinepubs/9699919799/functions/sem_init.html">semaphore</a>和<a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html">atomic</a>操作实现自己的C++版本的
-lightweight mutex.</p>
+lightweight mutex.这里并没有用
+<a href="http://www.open-std.org/JTC1/sc22/wg21/docs/papers/2007/n2427.html">C++11的原子库</a>.所
+有代码在<a href="https://github.com/shishougang/blog_multithreading/tree/master/benaphore_mutex">Github上</a>.</p>
 
 <p>``` c++
-#include <semaphore.h>
+ #include <semaphore.h>
 class Benaphore {
  public:
-  Benaphore() {
-    counter_ = 0;
-    sem_init(&amp;semaphore_, 0, 1);
+  Benaphore() : counter_(0) {
+    sem_init(&amp;semaphore_, 0, 0);
   }
   ~Benaphore() {
     sem_destroy(&amp;semaphore_);
@@ -246,50 +247,113 @@ class Benaphore {
 <p>private:
   long counter<em>;
   sem_t semaphore</em>;
-  };
+};
 ```</p>
+
+<p><a href="https://gcc.gnu.org/onlinedocs/gcc-4.1.2/gcc/Atomic-Builtins.html"><code>__sync_add_and_fetch</code></a>
+是一个由GCC内部提供的 <em>atomic read-modify-write (RMW)</em> 操作,它把1加到
+某个数并且返回新的数,在同一时间所有操作由一个线程原子操作完成,其他线程
+不能干涉,只能在后等待.这里<code>counter_</code>初始化为0,第一个线程调用<code>Lock</code>将得
+到1从<code>__sync_add_and_fetch</code>,然后跳过<code>sem_wait</code>,一旦这个线程占用这个锁,
+之后线程都将递增<code>counter_</code>,获得大于1的数,从而调用<code>sem_wait</code>等待.</p>
+
+<p>之后,第一个线程完成自己的操作,调用<code>Unlock</code>,<code>__sync_sub_and_fetch</code>的返
+回值大于1说明有其他线程在等待这个mutex,调用<code>sem_post</code>唤醒其他线程.</p>
+
+<h3 id="section">底层分析与性能</h3>
+
+<p>上面使用了<code>__sync_add_and_fetch</code>,它编译成<code>lock xadd</code>指令如下.在没有竞
+争下的lock/unlock操作性能与pthread mutex相当.但是在mutex多线程竞争情况
+下,这个mutex性能没有pthread mutex好.</p>
+
+<p><img src="/images/blog/2014/multithreading/lightweight_mutex_assembly.png" title="‘lightweight_mutex_assembly’" ></p>
 
 <h3 id="mutex">增强Mutex支持递归</h3>
 
+<p>上面简单的lightweight mutex的局限性是它不能递归.也就是同一个线程试图获
+取同样的锁两次以上,将造成死锁(deadlock).递归锁在函数调用自己时很有用.比
+如在内存管理代码中,可能会遇到如下代码:</p>
+
 <p>``` c++
-#include <semaphore.h>
-#include <pthread.h>
-class RecursiveBenaphore {
+Realloc(void* ptr, size_t size)
+{
+    LOCK;</p>
+
+<pre><code>if (ptr == NULL)
+{
+    return Alloc(size);
+}
+else if (size == 0)
+{
+    Free(size);
+    return NULL;
+}
+else
+    ... }
+</code></pre>
+
+<p>Alloc(size_t size)
+{
+    LOCK;</p>
+
+<pre><code>... } ```
+</code></pre>
+
+<p><code>Lock</code>是个封装好的C++宏,用来获取锁和自动结果当退出函数.</p>
+
+<p>可以看到,当传递<code>NULL</code>给<code>Realloc</code>,锁被<code>Realloc</code>函数获取,然后第二次被获
+取当<code>Alloc</code>被调用.</p>
+
+<p>把它扩展成可递归的锁如下,加入2个新成员变量,<code>owner_</code>,存储当前占有线程的
+ID(TID),和<code>recursion_</code>,存储递归的层数.基本代码如下:</p>
+
+<p>``` c++
+ #include <semaphore.h>
+ #include <pthread.h>
+ #define LIGHT_ASSERT(x) { if (!(x)) __builtin_trap(); }</pthread.h></semaphore.h></p>
+
+<p>class RecursiveBenaphore {
  public:
-  RecursiveBenaphore() : counter_(0), owner_(0), recursion_(0) {
-    sem_init(&amp;semaphore_, 0, 1);
+  RecursiveBenaphore() : counter<em>(0), owner</em>(0), recursion<em>(0) {
+    sem_init(&amp;semaphore</em>, 0, 0);
   }
   ~RecursiveBenaphore() {
-    sem_destroy(&amp;semaphore_);
+    sem_destroy(&amp;semaphore<em>);
   }
   void Lock() {
     pthread_t thread_id = pthread_self();
-    if (__sync_add_and_fetch(&amp;counter_, 1) &gt; 1) {
-      if (thread_id != owner_) {
-        sem_wait(&amp;semaphore_);
+    if (__sync_add_and_fetch(&amp;counter</em>, 1) &gt; 1) {
+      if (!pthread_equal(thread_id, owner<em>)) {
+        sem_wait(&amp;semaphore</em>);
       }
     }
     owner_ = thread_id;
-    recursion_++;
+    recursion<em>++;
   }
   void Unlock() {
-    long recur = --recursion_;
+    pthread_t thread_id = pthread_self();
+    LIGHT_ASSERT(pthread_equal(thread_id, owner</em>));
+    long recur = –recursion<em>;
     if (recur == 0) {
-      owner_ = 0;
+      owner</em> = 0;
     }
-    long result = __sync_sub_and_fetch(&amp;counter_, 1);
+    long result = <em>_sync_sub_and_fetch(&amp;counter</em>, 1);
     if (result &gt; 0) {
       if (recur == 0) {
-        sem_post(&amp;semaphore_);
+        int sem_value;
+        sem_getvalue(&amp;semaphore<em>, &amp;sem_value);
+        if (sem_value == 0) {
+          sem_post(&amp;semaphore</em>);
+        }
       }
     }
   }
   bool TryLock() {
     pthread_t thread_id = pthread_self();
-    if (thread_id == owner_) {
-      __sync_add_and_fetch(&amp;counter_, 1);
+    if (pthread_equal(thread_id, owner<em>)) {
+      __sync_add_and_fetch(&amp;counter</em>, 1);
     } else {
-      bool result = __sync_bool_compare_and_swap(&amp;counter_, 0, 1);
+      bool result = <em>_sync_bool_compare_and_swap(&amp;counter</em>, 0, 1);
       if (result == false) {
         return false;
       }
@@ -297,7 +361,7 @@ class RecursiveBenaphore {
     }
     recursion_++;
     return true;
-  }</pthread.h></semaphore.h></p>
+  }</p>
 
 <p>private:
   long counter<em>;
@@ -306,6 +370,72 @@ class RecursiveBenaphore {
   long recursion</em>;
 };
 ```</p>
+
+<p>如之前一样,第一个线程调用<code>Lock</code>,设置<code>owner_</code>为自己的TID,增加
+<code>recursion_</code>到1.如果同一个线程再次调用<code>Lock</code>,它将同时增加
+<code>recursion_</code>和<code>counter_</code>.</p>
+
+<p>之后,第一个线程完成自己的操作,调用<code>Unlock</code>,同时减少<code>recursion_</code>和<code>counter_</code>,
+仅仅调用<code>sem_post</code>唤醒其他线程当<code>recursion_</code>减少到<code>0</code>.如果
+<code>recursion_</code>仍然大于0,意味着当前的线程仍然占有此锁在外层程序.</p>
+
+<p>最后进行<strong>压力测试</strong>,建立一些线程,每个随机获取锁,随机的递归层次.代码在
+<a href="https://github.com/shishougang/blog_multithreading/tree/master/benaphore_mutex">Github上</a>.</p>
+
+<p>一些细节问题:
+* 在<code>Unlock</code>中,设置<code>owner_</code>为0在调用<code>__sync_sub_and_fetch</code>之前,否则可
+  能发生死锁(deadlock).比如,有两个线程TID是111和222.
+    1. 线程111完成操作调用<code>Unlock</code>,先调用<code>__sync_sub_and_fetch</code>把<code>counter_</code>减到0
+    2. 在设置<code>owner_</code>为0被中断,线程222得到运行,它调用<code>Lock</code>,发现<code>counter_</code>为0,跳过<code>sem_wait</code>,设置<code>owner_=222</code>,完成<code>Lock</code>操作.
+    3. 线程222被中断调出,线程111重新得到运行,设置<code>owner_</code>为0,然后完成<code>Unlock</code>操作.
+    4. 因为此时<code>owner_</code>为0,线程222不能在递归占用锁,一旦它再次获取锁,形成死锁.</p>
+
+<ul>
+  <li>
+    <p>在<code>Unlock</code>中,<code>recursion_</code>被拷贝到本地变量一次,之后只本地变量,比如没
+有在<code>__sync_sub_and_fetch</code>之后重新读取她.因为在那之后它能被其他线程
+已经改变. </p>
+  </li>
+  <li>
+    <p><code>recursion_</code>和<code>owner_</code>没有原子操作.因为它们在调用<code>Lock</code>的
+<code>__sync_add_and_fetch</code>和调用<code>Unlock</code>的<code>__sync_sub_and_fetch</code>之间,线
+程占有锁,独占<code>recursion_</code>和<code>owner_</code>的读写操作,并拥有所有的acquire
+and release semantics.对<code>recursion_</code>和<code>owner_</code>使用原子操作没必要.因
+为在X86/84的平台上,<code>__sync_add_and_fetch</code>生成<code>lock xadd</code>的指令,保证
+全部的memory barrier,也就保证acquire and release semantics.</p>
+  </li>
+</ul>
+
+<h2 id="mutex-vs-spinlock">Mutex Vs Spinlock</h2>
+
+<p>提到Mutex,往往会提到Spinlock,因为在使用Lock时,会遇到如何在Mutex与Spinlock之
+间选择.那么接下来对比一下两者.</p>
+
+<h3 id="section-1">定义</h3>
+
+<p>Mutex: 如果一个线程试图获取一个mutex,但是没有成功,因为mutex已经被占用,
+它将进入睡眠,让其他进程运行,直到mutex被其他进程释放.</p>
+
+<p>Spinlock: 如果一个线程试图获取一个Spinlock, 但是没有成功,它将持续试着
+去获取它,直到它最终成功获取,因为它将不允许其他线程运行(然而,操作系统将
+强制调度其他线程).</p>
+
+<h3 id="section-2">各自缺点</h3>
+
+<p>Mutex: Mutex将使得线程睡眠,然后再唤醒它们,两者都是开销比较大的操作,也
+就是context switch的开销.如果锁只是被其他线程占用非常短的时间,那么时间
+花在使的线程睡眠并唤醒它可能超过它使用spinlock持续获取锁的时间.</p>
+
+<p>Spinlock: Spinlock持续获取锁,浪费很多CPU时间,如果锁被其他线程占用很长
+时间,那么它将浪费很多时间,不如使得线程进入睡眠,让出CPU.<a href="http://jfdube.wordpress.com/2011/09/24/lessons-learnt-while-spinning/">Spinlock的确能优化context switches</a>
+但会在没有
+<a href="http://en.wikipedia.org/wiki/Priority_inversion">threads priority inversion</a>
+的平台上产生副作用.(但一个高优先级的线程自旋一个锁来等待一个低优先级的
+线程释放这个锁,就会造成死锁).</p>
+
+<h3 id="section-3">总结</h3>
+
+<p><a href="http://en.wikipedia.org/wiki/Spinlock#Alternatives">大多数操作系统(包括Solaris,Mac OS X和FreeBSD)使用混合的机制叫”adaptive mutex”或”hybrid mutex”</a>.</p>
 ]]></content>
   </entry>
   
