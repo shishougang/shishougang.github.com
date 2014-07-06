@@ -4,7 +4,7 @@
   <title><![CDATA[(learn&think)]]></title>
   <link href="http://dreamrunner.org/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-06T18:36:08+08:00</updated>
+  <updated>2014-07-06T19:39:36+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -383,7 +383,9 @@ lock-free 的技术吸引我们使用它们,那么 locks 就显得索然无味�
 </span><span class="line">    <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mf">15000.0f</span><span class="p">,</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用 90%以后,单线程运行的更好.可以说,短时间的占用锁的时间,以 10%以内,系统达到很高的并行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
+<p><img class="center" src="http://dreamrunner.org/images/blog/2014/multithreading/lock_benchmark.png" title="lock_benchmark'" /></p>
+
+<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用 60%以后,单线程运行的更好.可以说,短时间的占用锁的时间,以 10%以内,系统达到很高的并行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
 
 <p>把这个结果放到实际中,Jeff Preshing 在
 <a href="http://preshing.com/20111118/locks-arent-slow-lock-contention-is/">这篇</a>

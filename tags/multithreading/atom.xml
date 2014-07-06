@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-06T18:36:08+08:00</updated>
+  <updated>2014-07-06T19:39:36+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -353,7 +353,9 @@ if (elapsed_time &gt;= global_state.time_limit) {
     4, 1/15000.0f,
 </code></p>
 
-<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用90%以后,单
+<p><img class="center" src="/images/blog/2014/multithreading/lock_benchmark.png" title="lock_benchmark’" ></p>
+
+<p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用60%以后,单
 线程运行的更好.可以说,短时间的占用锁的时间,以10%以内,系统达到很高的并
 行性.虽然并不是完美的,但是也接近.锁总体很快.</p>
 
