@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-06T19:39:36+08:00</updated>
+  <updated>2014-07-06T23:38:58+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -20,7 +20,7 @@
     <id>http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie</id>
     <content type="html"><![CDATA[<p>在谈到内存模型,Multithreading,尤其lock-free programmming等时,总会遇到
 一些相关术语来描述,如Memory Barrier,Acquire semantics,Release
-semantics,happened-before relation等.在这里稍微整理一下.</p>
+semantics,happens-before relation等.在这里稍微整理一下.</p>
 
 <!-- more -->
 
@@ -208,8 +208,102 @@ Release semantics防止write release程序上<strong>之前</strong>的任何读
 
 <p><img class="center" src="/images/blog/2014/multithreading/without_fence_c++11.png" title="‘without_fence_c++11’" ></p>
 
-<h2 id="happened-before-relation">Happened-before relation</h2>
+<h2 id="happens-before-relation">Happens-before relation</h2>
 
+<p><em>Happens-before</em> 是一个术语来描述C++11,Java,LLVM之类背后的<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#weak-vs-strong-memory-models">软件内存模型</a>.</p>
+
+<p>在之上每个语言里都能找到<em>happends-before</em>的定义,尽管每个都有不同的说法,但
+内在意思基本一致.粗略地讲,基本定义如下:</p>
+
+<p><blockquote><p>A和B表示一个多线程进行的操作.若A <strong>happens-before</strong> B,那<br/>么,在B进行前,A对B的内存影响有效的被B看到.</p></blockquote></p>
+
+<p>无论使用任何编程语言,它们都有一个共同处:如果操作A和B被同一个进程进行,A
+的语句在B的语句之前在程序顺序上,那么A<em>优先发生(happens-before)</em>B.这也
+是在之前
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#weak-vs-strong-memory-models">Memory ordering</a>
+中谈到中心原则.</p>
+
+<p>这里再次提一下指令重排序问题,有人有如下疑问: 指令重排序会破坏
+happens-before原则吗？happens-before的程序次序原则说：在一个线程内，按
+照程序代码顺序，书写在前面的操作会先行发生于书写在后面的操作。如果线程
+内出现指令重排序，那不是破坏了程序次序原则了吗？</p>
+
+<p>是会破坏程序次序的执行,但是并不破坏happens-before原则,并不造成内存对单
+线程有效性的破坏.这里主要的困惑是时间上顺序的发生之前(happening
+before)与先行发生(happens-before)两者关系.</p>
+
+<p>时间上顺序的发生在前于(happening before)与先行发生(happens-before)两者是
+不一样的,基本没太大关系.特别:</p>
+
+<ol>
+  <li>A先行发生(happens-before)B并不意味着A发生在前于(happening before)B.</li>
+  <li>A发生在前于(happening before)B并不意味A先行发生(happens-before)B.</li>
+</ol>
+
+<p>谨记happens-before是由一系列编程语言特定定义的操作间的关系,它的存在独
+立于时间的概念.</p>
+
+<h3 id="happens-beforehappening-before">happens-before并不意味happening before</h3>
+
+<p>如下例子有happens-before关系但并不是顺序执行,没有happening before.如下
+代码:(1) 存储到A,之后(2)存储到B.根据程序顺序原则,(1) happens-before (2).</p>
+
+<p><code>c++
+int A, B;
+void test() {
+  A = B + 1;  // (1)
+  B = 0;  // (2)
+}
+</code></p>
+
+<p>用O2打开优化编译的如下:</p>
+
+<p>``` sh
+$ gcc -S -O2  -masm=intel test.c</p>
+
+<pre><code>mov	eax, DWORD PTR B
+mov	DWORD PTR B, 0
+add	eax, 1
+mov	DWORD PTR A, eax ```
+</code></pre>
+
+<p>从汇编指令看出,第二句<code>mov DWORD PTR B, 0</code>就已经完成对<code>B</code>的存储,但是
+对<code>A</code>的存储还没进行.(1)顺序上并没有在(2)之前执行!</p>
+
+<p>但是happens-before原则有被违背吗?根据定义,(1)的内存效用必须有效被看到
+在进行(2)之前.也就是存储A必须影响存储B.</p>
+
+<p>在这里,存储A实际并没有影响存储B.(2)被提前执行与之后执行仍然一样,相当与
+(1)的内存有效性是一样的.因此,这并不算违背happens-before原则.</p>
+
+<h3 id="happening-beforehappens-before">happening before并不意味happens-before</h3>
+
+<p>这是个时间上发生于前但并含有happens-before关系的例子.如下的代码,想象一
+个线程调用<code>UpdateValue</code>,而另一个线程调用<code>ConsumeValue</code>.因为处理共享的
+数据并行的,为了简单,认为普通的读取和存储<code>int</code>是atomic的.因为程序顺序原
+则,在(1)和(2)之间happens-before关系,(3)和(4)之间happens-before关系.</p>
+
+<p>``` c++
+int value = 0;
+int updated = 0;</p>
+
+<p>void UpdateValue() {
+    value = 123;  // (1)
+    update = 1;  // (2)
+}</p>
+
+<p>void ConsumeValue() {
+if (update) {  // (3)
+    printf(“%d\n”, value);  // (4)
+}
+```</p>
+
+<p>进一步假设在运行开始的时候,(3)读取<code>update</code>到为1,这个值是有(2)在另外个线程
+中存储的.这里,我们可以得出时间顺序上(2)必须发生前于(3).但是这里并没有规
+则意味着在(2)和(3)之间有happens-before关系.(2)和(3)之间没有
+happens-before关系,(1)和(4)之间也没有happens-before关系.因此,(1)和(4)
+的内存可以重排序,因为编译器重排序或在CPU上内存重排序,以致(4)可以打印
+“0”,即使(3)读到1.</p>
 ]]></content>
   </entry>
   
@@ -353,7 +447,7 @@ if (elapsed_time &gt;= global_state.time_limit) {
     4, 1/15000.0f,
 </code></p>
 
-<p><img class="center" src="/images/blog/2014/multithreading/lock_benchmark.png" title="lock_benchmark’" ></p>
+<p><img src="/images/blog/2014/multithreading/lock_benchmark.png" title="lock_benchmark’" ></p>
 
 <p>从图中看出,随着锁占用的时间增加,并行性越来越差,直到最后占用60%以后,单
 线程运行的更好.可以说,短时间的占用锁的时间,以10%以内,系统达到很高的并
