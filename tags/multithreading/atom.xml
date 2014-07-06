@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-05T22:44:49+08:00</updated>
+  <updated>2014-07-06T14:38:49+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -35,13 +35,121 @@ programming中,如果不控制好这两者的reordering就会引起上文中所�
 <a href="http://en.wikipedia.org/wiki/Memory_barrier">Memory Barrier</a>.</p>
 
 <p>有很多指令作为memory barriers,所以需要知道很多不同类型的memory
-barriers.<a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea指出</a>如下
+barriers. <a href="http://g.oswego.edu/dl/jmm/cookbook.html">Doug Lea指出</a>如下
 的四大类可以很好的归纳在CPU上的特殊指令.尽管不是完全,大多数时候,一个正
 真的CPU指令执行包含上面barrier类型的各种组合,或附带其他效果.无论如何,
 一旦你理解了这四种类型的memory barriers,你就很好的理解了大部分真正CPU
-的关于内存约束的指令.</p>
+的关于内存约束的指令.
+<a href="http://preshing.com/20120710/memory-barriers-are-like-source-control-operations/">Memory Barriers Are Like Source Control Operations</a>
+这篇把Memory Barriers与Source Control作类比,熟悉Source Control机制的可
+以很形象的理解各类Memory Barriers机制.</p>
 
 <p><img class="center" src="/images/blog/2014/multithreading/memory_barriers_types.png" title="‘memory_barriers_types’" ></p>
+
+<h3 id="loadload">LoadLoad</h3>
+
+<p>顺序: Load1; <strong>LoadLoad</strong>; Load2</p>
+
+<p>保证Load1的数据加载在被load2和之后的load指令读取加载之前.是一个比较好
+的方法防止看到旧的数据.以这个经典的例子,CPU1检查一个共享的标识变量flag来确
+认一些数据是否被CPU1更新.如果标识变量flag是true的话,把<code>LoadLoad</code>barrier
+放在读取更新数据之前:</p>
+
+<p><code>c++
+if (is_updated) {
+    LOADLOAD_FENCE();  // Prevent reordering of loads
+    return value;  // Load updated value
+}
+</code></p>
+
+<p>只要<code>is_updated</code>被CPU1看到为true, <code>LoadLoad</code>fence防止CPU1读到比标识变
+量flag本身旧的<code>value</code>.</p>
+
+<h3 id="storestore">StoreStore</h3>
+
+<p>顺序: Store1; <strong>StoreStore</strong>; Store2</p>
+
+<p>保证Store1的数据被其他CPU看到在与这数据相关的Store2和之后的store指令之
+前.同样,它足够的防止其他CPU看到自己的旧数据.同上一样的例子,CPU1需要更
+新一些数据到共享的内存中,把<code>StoreStore</code> barrier放在标识变量flag是true
+之前:</p>
+
+<p><code>c++
+value = x;
+STORESTORE_FENCE();
+is_updated = 1;  // Set shared flag to show the update of data
+</code></p>
+
+<p>一旦其他CPU看到<code>is_updated</code>为true,它能自信它看到正确的<code>value</code>值.而且
+<code>value</code>不需要原子类型,它可以是一个包含很多元素的大数据结构.</p>
+
+<h3 id="loadstore">LoadStore</h3>
+
+<p>顺序: Load1; <strong>LoadStore</strong>; Store2</p>
+
+<p>保证Load1的数据被加载在与这数据相关的Store2和之后的store指令之
+前.</p>
+
+<h3 id="storeload">StoreLoad</h3>
+
+<p>顺序: Store1; <strong>StoreLoad</strong>; Load2</p>
+
+<p>保证Store1的数据被其他CPU看到在数据被Load2和之后的load指令加载之前.也
+就是说,它有效的防止所有barrier之前的stores与所有barrier之后的load乱序.</p>
+
+<p><code>StoreLoad</code>是唯一的.它是唯一的memory barrier类型来防止<code>r1=r2=0</code>在之前
+<a href="http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/#memory-ordering-at-processor-time">Memory ordering at processor time</a>
+中给出的例子.</p>
+
+<p><code>StoreLoad</code>有什么区别与<code>StoreStore</code>之后跟<code>LoadLoad</code>?虽
+然,<code>StoreStore</code>按序把存储改变推送到主内存中,<code>LoadLoad</code>按序把改变加载过
+来,但是这两种类型的barrier是不够的.Store可以延迟任意的指令,以致在Load
+之后,Load也可以不是加载最新Store之后的内容.这就是为啥PowerPC的指令
+<code>lwsync</code>,包含这三种memory barriers,<code>LoadLoad</code>,<code>LoadStore</code>和
+<code>StoreStore</code>,但不包含<code>StoreLoad</code>,是不足以防止<code>r1=r2=0</code>在那个实例中.</p>
+
+<h3 id="data-dependency-barriers">Data dependency barriers</h3>
+
+<p>除了上面4大类,还有<code>Loadload</code>的弱化模式的<code>Data dependency barrier</code>.如
+<code>LoadLoad</code>类似,在两个load顺序执行,load2依赖于load1的结果,<code>Data
+dependency barrier</code>需要插入保证两者的顺序.</p>
+
+<p>但与<code>LoadLoad</code>不同,<code>Data dependency barrier</code>只是部分顺序约束在内在以来
+的load,就是load1必须与load2是 <strong>data</strong> dependency 而不是仅仅是
+<strong>control</strong> dependency.</p>
+
+<ul>
+  <li>data dependency</li>
+</ul>
+
+<p>r1与r2之间是data dependency.</p>
+
+<p><code>c
+r1 = 1;
+r2 = r1;
+</code></p>
+
+<ul>
+  <li>control dependency</li>
+</ul>
+
+<p>r1与r2之间是control dependency.</p>
+
+<p><code>c
+r1 = value;
+if (r1) {
+    r2 = r1;
+} else {
+    r2 = 1;
+}
+</code></p>
+
+<h3 id="more">More</h3>
+
+<ul>
+  <li><a href="https://www.kernel.org/doc/Documentation/memory-barriers.txt">LINUX KERNEL MEMORY BARRIERS</a> </li>
+  <li><a href="www.rdrop.com/users/paulmck/scalability/paper/whymb.2010.07.23a.pdf">Memory Barriers: a Hardware View for Software Hackers</a></li>
+</ul>
 
 <h2 id="acquire-and-release-semantics">Acquire and Release semantics</h2>
 
