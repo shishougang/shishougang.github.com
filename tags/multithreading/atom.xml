@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Multithreading | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/multithreading/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-07-06T14:38:49+08:00</updated>
+  <updated>2014-07-06T18:36:08+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -152,6 +152,61 @@ if (r1) {
 </ul>
 
 <h2 id="acquire-and-release-semantics">Acquire and Release semantics</h2>
+
+<p>在lock-free programming中,共享内存被多个线程通过合作传递信息来处理,在
+这种处理下,acquire和release semantics是关键技术保证可靠的传递信息在线
+程之间.</p>
+
+<p>acqure和release semantics并没有好的被定义,这里借用Jeff Preshing在
+<a href="http://preshing.com/20120913/acquire-and-release-semantics/">这里</a>给
+予的定义:</p>
+
+<p><img class="right" src="/images/blog/2014/multithreading/read_acquire.png" width="170" height="110" title="‘read_acquire’" ></p>
+
+<p><strong>Acquire semantics</strong> 是一种只能应用于如下操作的性质: 从
+共享内存读取,无论是
+<a href="http://en.wikipedia.org/wiki/Read-modify-write">read-modify-write</a>操
+作还是普通的加载.这一操作被认为是一个 <strong>read acquire</strong>. Acquire
+semantics防止read acquire程序上<strong>之后</strong>的任何读或写操作与它的内存乱
+序.</p>
+
+<p><br /></p>
+
+<p><img class="right" src="/images/blog/2014/multithreading/write_release.png" width="170" height="110" title="‘write_release’" ></p>
+
+<p><strong>Release semantics</strong> 是一种只能应用于如下操作的性质: 写入到共享内存,
+无论是read-modify-write操作还是普通的存储.这一操作被认为是一个 <strong>write release</strong>.
+Release semantics防止write release程序上<strong>之前</strong>的任何读或写
+操作与它的乱序.</p>
+
+<p>Acqure和release semantics能通过之前四种memory barrier的简单组合来达到.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/acquire_release_semantics.png" title="‘acquire_release_semantics’" ></p>
+
+<p>Acqure和release semantics可以基本划分为如下结构:</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/acquire_release_semantics_category.png" title="‘acquire_release_semantics_category’" ></p>
+
+<h3 id="fence">使用明确的平台相关Fence指令</h3>
+
+<p>在X86/64使用<code>mefence</code>指令,mfence是一个满足全部memory barrier,防止任何类型的内存乱序.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/platform-specific_fence.png" title="‘platform-specific_fence’" ></p>
+
+<h3 id="c11fences">可移植的C++11的Fences</h3>
+
+<p>C++11的atomic库定义了一个可移植的函数<code>atomic_thread_fence()</code>,输入一个
+变量来指定什么类型的fence.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/fence_in_c++11.png" title="‘fence_in_c++11’" ></p>
+
+<h3 id="c11atomicfence">可移植的C++11的atomic,非明确的fence</h3>
+
+<p>在C++11中,可以直接对atomic变量直接约束fence,而不是显示的明确fence.与上
+面明确fence相比,这实际是更优的方法来表达acquire and release semantics
+在C++11中.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/without_fence_c++11.png" title="‘without_fence_c++11’" ></p>
 
 <h2 id="happened-before-relation">Happened-before relation</h2>
 

@@ -259,6 +259,52 @@ dependency barrier</code>需要插入保证两者的顺序.</p>
 
 <h2 id="acquire-and-release-semantics">Acquire and Release semantics</h2>
 
+<p>在 lock-free programming 中,共享内存被多个线程通过合作传递信息来处理,在这种处理下,acquire 和 release semantics 是关键技术保证可靠的传递信息在线程之间.</p>
+
+<p>acqure 和 release semantics 并没有好的被定义,这里借用 Jeff Preshing 在
+<a href="http://preshing.com/20120913/acquire-and-release-semantics/">这里</a>给予的定义:</p>
+
+<p><img class="right" src="/images/blog/2014/multithreading/read_acquire.png" width="170" height="110" title="'read_acquire'" /></p>
+
+<p><strong>Acquire semantics</strong> 是一种只能应用于如下操作的性质: 从共享内存读取,无论是
+<a href="http://en.wikipedia.org/wiki/Read-modify-write">read-modify-write</a> 操作还是普通的加载.这一操作被认为是一个 <strong>read acquire</strong>. Acquire
+semantics 防止 read acquire 程序上<strong>之后</strong>的任何读或写操作与它的内存乱序.</p>
+
+<p><br /></p>
+
+<p><img class="right" src="/images/blog/2014/multithreading/write_release.png" width="170" height="110" title="'write_release'" /></p>
+
+<p><strong>Release semantics</strong> 是一种只能应用于如下操作的性质: 写入到共享内存,
+无论是 read-modify-write 操作还是普通的存储.这一操作被认为是一个 <strong>write release</strong>.
+Release semantics 防止 write release 程序上<strong>之前</strong>的任何读或写操作与它的乱序.</p>
+
+<p>Acqure 和 release semantics 能通过之前四种 memory barrier 的简单组合来达到.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/acquire_release_semantics.png" title="'acquire_release_semantics'" /></p>
+
+<p>Acqure 和 release semantics 可以基本划分为如下结构:</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/acquire_release_semantics_category.png" title="'acquire_release_semantics_category'" /></p>
+
+<h3 id="fence-">使用明确的平台相关 Fence 指令</h3>
+
+<p>在 X86/64 使用<code>mefence</code>指令,mfence 是一个满足全部 memory barrier,防止任何类型的内存乱序.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/platform-specific_fence.png" title="'platform-specific_fence'" /></p>
+
+<h3 id="c11--fences">可移植的 C++11 的 Fences</h3>
+
+<p>C++11 的 atomic 库定义了一个可移植的函数<code>atomic_thread_fence()</code>,输入一个变量来指定什么类型的 fence.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/fence_in_c++11.png" title="'fence_in_c++11'" /></p>
+
+<h3 id="c11--atomic-fence">可移植的 C++11 的 atomic,非明确的 fence</h3>
+
+<p>在 C++11 中,可以直接对 atomic 变量直接约束 fence,而不是显示的明确 fence.与上面明确 fence 相比,这实际是更优的方法来表达 acquire and release semantics
+在 C++11 中.</p>
+
+<p><img class="center" src="/images/blog/2014/multithreading/without_fence_c++11.png" title="'without_fence_c++11'" /></p>
+
 <h2 id="happened-before-relation">Happened-before relation</h2>
 
 </div>
