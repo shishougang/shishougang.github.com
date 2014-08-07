@@ -264,7 +264,7 @@
     </url>
     <url>
         <loc>http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/</loc>
-        <lastmod>2014-07-01T09:31:27+08:00</lastmod>
+        <lastmod>2014-07-08T15:00:59+08:00</lastmod>
     </url>
     <url>
         <loc>http://dreamrunner.org/blog/2014/06/29/qian-tan-mutex-lock/</loc>
@@ -275,6 +275,10 @@
             http://dreamrunner.org/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/
         </loc>
         <lastmod>2014-07-06T23:38:42+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://dreamrunner.org/blog/2014/08/07/C-multithreading-programming/</loc>
+        <lastmod>2014-08-07T20:40:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://dreamrunner.org/tag-cloud/</loc>
@@ -290,7 +294,7 @@
     </url>
     <url>
         <loc>http://dreamrunner.org/blog/archives/</loc>
-        <lastmod>2014-07-06T23:38:42+08:00</lastmod>
+        <lastmod>2014-08-07T20:40:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://dreamrunner.org/robots.txt</loc>
@@ -298,7 +302,7 @@
     </url>
     <url>
         <loc>http://dreamrunner.org/</loc>
-        <lastmod>2014-07-06T23:38:42+08:00</lastmod>
+        <lastmod>2014-08-07T20:40:21+08:00</lastmod>
     </url>
     <url>
         <loc>http://dreamrunner.org/my-wiki/</loc>

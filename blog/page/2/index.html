@@ -104,6 +104,87 @@ MathJax.Hub.Config({
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2014/06/01/the-last-thing-d-needszong-jie/">The Last Thing D Needs总结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-06-01T16:24:47+08:00"  class="updated" >Jun 1<span>st</span>, 2014</time>
+        
+           | <a href="/blog/2014/06/01/the-last-thing-d-needszong-jie/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/01/the-last-thing-d-needszong-jie/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul id="markdown-toc">
+  <li><a href="#initialization">Initialization</a></li>
+  <li><a href="#type-deduction">Type Deduction</a></li>
+  <li><a href="#inheritance">Inheritance</a></li>
+  <li><a href="#computational-complexity">Computational Complexity</a></li>
+  <li><a href="#apis">APIs</a></li>
+  <li><a href="#specifications">Specifications</a></li>
+  <li><a href="#essential-and-accidental-complexity">Essential and Accidental Complexity</a></li>
+</ul>
+
+<p><a href="http://www.amazon.com/gp/product/0321334876?ie=UTF8&amp;tag=aristeia.com-20&amp;linkCode=as2&amp;camp=1789&amp;creative=9325&amp;creativeASIN=0321334876">Effective C++</a>
+系列的作者 <a href="http://www.aristeia.com/">Scott Meyers</a> 在 Dconf 中 <a href="http://www.ustream.tv/recorded/47947981">The Last Thing D Needs</a> 聊了些 C++的特性，稍微总结一下。</p>
+
+<h2 id="initialization">Initialization</h2>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>Initialization</span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="n">x1</span><span class="p">;</span>         <span class="c1">// unknown, initial(pay for it)</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">x2</span><span class="p">;</span>         <span class="c1">// (at global scope) 0, no run time cost</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">x3</span><span class="p">;</span>  <span class="c1">// 0, static initialization</span>
+</span><span class="line"><span class="kt">int</span> <span class="o">*</span><span class="n">px</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">;</span>  <span class="c1">// heap memory, unknown, has run time cost</span>
+</span><span class="line"><span class="p">{</span>
+</span><span class="line">    <span class="kt">int</span> <span class="n">x4</span><span class="p">;</span>    <span class="c1">// unknown, has run time cost </span>
+</span><span class="line"><span class="p">}</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">a1</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>   <span class="c1">// unknown</span>
+</span><span class="line"><span class="kt">int</span> <span class="n">a2</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>   <span class="c1">// (at global scope) 0</span>
+</span><span class="line"><span class="k">static</span> <span class="kt">int</span> <span class="n">a3</span><span class="p">[</span><span class="mi">100</span><span class="p">];</span>  <span class="c1">// 0</span>
+</span><span class="line"><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">v</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>  <span class="c1">// 0, use run time cost</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/06/01/the-last-thing-d-needszong-jie/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2014/05/29/The-Algorithm-Design-Manual2/">Algorithm Design Manual Chapter 2</a></h1>
     
     
@@ -588,59 +669,6 @@ computation and (2) the asymptotic analysis of worst-case complexity.
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/05/11/column2/">Programming Pearls: Column2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-11T00:00:00+08:00"  class="updated" >May 11<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/11/column2/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/11/column2/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">A</h3>
-<div class="outline-text-3" id="text-1-1">
-<p>
-一个文件中有 4 十亿的 32 位整数，已随机排序，如何找如一个不在这个文件中的
-32 位数？有足够的内存如何解决？如果你可以用很多外部存储文件但是只有几百个字节的主内存，如何解决？
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/11/column2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -658,6 +686,10 @@ computation and (2) the asymptotic analysis of worst-case complexity.
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/08/07/C-multithreading-programming/">浅谈C++ Multithreading Programming</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/">Multithreading相关术语总结</a>
       </li>
     
@@ -673,15 +705,11 @@ computation and (2) the asymptotic analysis of worst-case complexity.
         <a href="/blog/2014/06/24/high-resolution-time/">High Resolution Time</a>
       </li>
     
-      <li class="post">
-        <a href="/blog/2014/06/22/double-checked-locking-works-in-c-plus-plus-11/">Double-Checked Locking Works in C++11</a>
-      </li>
-    
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 109.23076923076923%'>C++(4)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 109.23076923076923%'>Multithreading(4)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 111.53846153846153%'>C++(5)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 111.53846153846153%'>Multithreading(5)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
 </section>
 
 <section>
