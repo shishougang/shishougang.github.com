@@ -379,7 +379,7 @@ int main(int argc, char *argv[]) {
 ...
 ```
 
-差不多每**4000**次的迭代才发现一次CPU内存乱序.所以多线程的bug是多么难
+差不多每 **4000** 次的迭代才发现一次CPU内存乱序.所以多线程的bug是多么难
 发现.那么如何消除这些乱序.至少有如下两种方法:
 
 1. 让两个子线程在同一个CPU核下运行.(没有可移植性方法,如下是linux平台的).
@@ -425,7 +425,7 @@ void *ThreadFunc1(void *param) {
 3. [The Art of Multiprocessor Programming](http://www.amazon.com/gp/product/0123973376/ref=as_li_ss_tl?ie=UTF8&tag=preshonprogr-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0123973376)
 4. [C++ Concurrency in Action: Practical Multithreading](http://www.amazon.com/C-Concurrency-Action-Practical-Multithreading/dp/1933988770/ref=pd_sim_b_2?ie=UTF8&refRID=1QTX99XZAM6HKVG7X0G2)
 5. [Is Parallel Programming Hard, And, If So, What Can You Do About It?](https://www.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook.2011.01.02a.pdf)
-
+6. [The C++11 Memory Model and GCC](https://gcc.gnu.org/wiki/Atomic/GCCMM)
 
 ## Summarization
 1. 有两种内存乱序存在:编译器乱序和CPU乱序.
