@@ -4,7 +4,7 @@
   <title><![CDATA[Tag: Octopress | (learn&think)]]></title>
   <link href="http://dreamrunner.org/tags/octopress/atom.xml" rel="self"/>
   <link href="http://dreamrunner.org/"/>
-  <updated>2014-09-01T22:20:56+08:00</updated>
+  <updated>2014-12-16T20:10:06+08:00</updated>
   <id>http://dreamrunner.org/</id>
   <author>
     <name><![CDATA[DreamRunner]]></name>
@@ -12,6 +12,77 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Make colorful equations with mathjax]]></title>
+    <link href="http://dreamrunner.org/blog/2014/12/15/make-colorful-equations-with-mathjax/"/>
+    <updated>2014-12-15T22:18:35+08:00</updated>
+    <id>http://dreamrunner.org/blog/2014/12/15/make-colorful-equations-with-mathjax</id>
+    <content type="html"><![CDATA[<script type="math/tex; mode=display">
+\begin{align}
+\definecolor{x}{RGB}{114,0,172}
+\definecolor{mean}{RGB}{45,177,93}
+\definecolor{var}{RGB}{251,0,29}
+\definecolor{e}{RGB}{18,110,213}
+
+f(\color{x} x,\color{mean} \mu,\color{var} \sigma \color{black} ) =
+\frac{1}{\color{var}\sigma \color{black} \sqrt{2\pi}} \color{e}
+e \color{black} ^{- \frac{( {\color{x}x} - {\color{mean} \mu})^2}
+{2{ \color{var} \sigma}^2}}
+\end{align}
+</script>
+
+<p>其中,<font color="2DB15D"> $\mu$ </font> 是分布的均值或期望值,
+而<font color="FB001D"> $\sigma$ </font> 是它的标准差, 
+<font color="FB001D"> $\sigma^2$ </font>则是方差.</p>
+
+<!-- more -->
+
+<h2 id="mathjax-color-extension">加载Mathjax Color extension</h2>
+
+<p><code>diff
+--- a/head.html
++++ b/head.html
+@@ -13,7 +13,8 @@
+     skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+   },
+   messageStyle: "none",
+-  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
++  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] },
++  TeX: { extensions: ["color.js"] }
+ });
+ &lt;/script&gt;
+ &lt;script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"&gt;&lt;/script&gt;
+</code></p>
+
+<h2 id="section">使用</h2>
+
+<p>使用 <code>\definecolor</code> 和 <code>\color</code> 来为公式添加颜色如下:</p>
+
+<p>``` javascript
+\begin{align}
+\definecolor{x}{RGB}{114,0,172}
+\definecolor{mean}{RGB}{45,177,93}
+\definecolor{var}{RGB}{251,0,29}
+\definecolor{e}{RGB}{18,110,213}</p>
+
+<p>f(\color{x} x,\color{mean} \mu,\color{var} \sigma \color{black} ) =
+\frac{1}{\color{var}\sigma \color{black} \sqrt{2\pi}} \color{e}
+e \color{black} ^{- \frac{( {\color{x}x} - {\color{mean} \mu})^2}
+{2{ \color{var} \sigma}^2}}
+\end{align}
+```</p>
+
+<p>MathJax的 <code>\definecolor</code> 不支持 <code>HTML</code> 的颜色颜色空间,所以手动在它
+们之间转换颜色,文字部分如下:</p>
+
+<p><code>html
+其中,&lt;font color="2DB15D"&gt; $\mu$ &lt;/font&gt; 是分布的均值或期望值,
+而&lt;font color="FB001D"&gt; $\sigma$ &lt;/font&gt; 是它的标准差, 
+&lt;font color="FB001D"&gt; $\sigma^2$ &lt;/font&gt;则是方差.
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Octopress中添加目录]]></title>

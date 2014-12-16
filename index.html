@@ -41,7 +41,8 @@ MathJax.Hub.Config({
     skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
   },
   messageStyle: "none",
-  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] }
+  "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] },
+  TeX: { extensions: ["color.js"] }
 });
 </script>
 <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML" type="text/javascript"></script>
@@ -98,6 +99,66 @@ MathJax.Hub.Config({
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/12/15/make-colorful-equations-with-mathjax/">Make Colorful Equations With Mathjax</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-12-15T22:18:35+08:00"  class="updated" >Dec 15<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/12/15/make-colorful-equations-with-mathjax/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/12/15/make-colorful-equations-with-mathjax/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><script type="math/tex; mode=display">
+\begin{align}
+\definecolor{x}{RGB}{114,0,172}
+\definecolor{mean}{RGB}{45,177,93}
+\definecolor{var}{RGB}{251,0,29}
+\definecolor{e}{RGB}{18,110,213}
+
+f(\color{x} x,\color{mean} \mu,\color{var} \sigma \color{black} ) =
+\frac{1}{\color{var}\sigma \color{black} \sqrt{2\pi}} \color{e}
+e \color{black} ^{- \frac{( {\color{x}x} - {\color{mean} \mu})^2}
+{2{ \color{var} \sigma}^2}}
+\end{align}
+</script>
+
+<p>其中,<font color="2DB15D"> $\mu$ </font> 是分布的均值或期望值,
+而<font color="FB001D"> $\sigma$ </font> 是它的标准差, 
+<font color="FB001D"> $\sigma^2$ </font>则是方差.</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/12/15/make-colorful-equations-with-mathjax/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -244,6 +305,48 @@ OpenMP 的 tutorial:<a href="https://computing.llnl.gov/tutorials/openMP/">这�
     <footer>
       <a rel="full-article" href="/blog/2014/08/07/C-multithreading-programming/">Read on &rarr;</a>
     </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/07/09/ru-he-shi-xian-pythonde-withyu-ju/">如何实现Python的with语句</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-07-09T20:36:36+08:00"  class="updated" >Jul 9<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/07/09/ru-he-shi-xian-pythonde-withyu-ju/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/07/09/ru-he-shi-xian-pythonde-withyu-ju/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>http://preshing.com/20110920/the-python-with-statement-by-example/</p>
+
+<p>http://preshing.com/20110924/timing-your-code-using-pythons-with-statement/</p>
+
+</div>
+  
   
 
 
@@ -564,160 +667,6 @@ outside. （选取相邻最近的不在树内的点。）
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Algorithm Design Manual Chapter 5</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-06-12T00:00:00+08:00"  class="updated" >Jun 12<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/06/12/The-Algorithm-Design-Manual5/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/12/The-Algorithm-Design-Manual5/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book Notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">5.1 Flavors of Graphs</h3>
-<div class="outline-text-3" id="text-1-1">
-<ul class="org-ul">
-<li>Undirected vs. Directed
-</li>
-<li>Weighted vs. Unweighted
-</li>
-<li>Simple vs. Non-simple
-</li>
-<li>Sparse vs. Dense
-</li>
-<li>Cyclic vs. Acyclic
-</li>
-<li>Embedded vs. Topological
-</li>
-<li>Implicit vs. Explicit
-</li>
-<li>Labeled vs. Unlabeled
-</li>
-</ul>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/06/12/The-Algorithm-Design-Manual5/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Algorithm Design Manual Chapter 4</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-06-09T00:00:00+08:00"  class="updated" >Jun 9<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/06/09/The-Algorithm-Design-Manual4/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/06/09/The-Algorithm-Design-Manual4/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1">Book Notes</h2>
-<div class="outline-text-2" id="text-1">
-</div><div id="outline-container-sec-1-1" class="outline-3">
-<h3 id="sec-1-1">4.3 Heapsort: Fast Sorting via Data Structures</h3>
-<div class="outline-text-3" id="text-1-1">
-</div><div id="outline-container-sec-1-1-1" class="outline-4">
-<h4 id="sec-1-1-1">Where in the Heap?</h4>
-<div class="outline-text-4" id="text-1-1-1">
-<p>
-Problem: Given an array-based heap on n elements and a real number x,
-efficiently determine whether the kth smallest element in the heap is
-greater than or equal to x. Your algorithm should be O(k) in the
-worst-case, independent of the size of the heap. Hint: you do not have
-to find the kth smallest element; you need only determine its
-relationship to x.
-</p>
-
-<p>
-Solution: There are at least two different ideas that lead to correct
-but inefficient algorithms for this problem:
-</p>
-
-<ol class="org-ol">
-<li>Call extract-minktimes, and test whether all of these are less
-thanx. This explicitly sorts the firstkelements and so gives us
-more information than the desired answer, but it takes O(klogn) time
-to do so.
-</li>
-<li>The kth smallest element cannot be deeper than the kth level of the
-heap, since the path from it to the root must go through elements
-of decreasing value. Thus we can look at all the elements on the
-first k levels of the heap, and count how many of them are less
-thanx, stopping when we either find k of them or run out of
-elements. This is correct, but takes O(min(n,2<sup>k</sup>-1)) time, since
-the top k elements have 2<sup>k</sup>-1 elements.
-</li>
-</ol>
-
-<p>
-An O(k) solution can look at only k elements smaller than x, plus at
-most O(k) elements greater than x. Consider the following recursive
-procedure, called at the root with i= 1 with count=k:
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/06/09/The-Algorithm-Design-Manual4/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -733,6 +682,10 @@ procedure, called at the root with i= 1 with count=k:
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2014/12/15/make-colorful-equations-with-mathjax/">Make Colorful Equations With Mathjax</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/08/25/C11-multithreading-programming/">浅谈C++11 Multithreading Programming</a>
       </li>
     
@@ -741,22 +694,18 @@ procedure, called at the root with i= 1 with count=k:
       </li>
     
       <li class="post">
+        <a href="/blog/2014/07/09/ru-he-shi-xian-pythonde-withyu-ju/">如何实现Python的with语句</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/">Multithreading相关术语总结</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/29/qian-tan-mutex-lock/">浅谈Mutex (Lock)</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/06/28/qian-tan-memory-reordering/">浅谈Memory Reordering</a>
       </li>
     
   </ul>
 </section>
 <section>
   <h1>Category Cloud</h1>
-    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 113.84615384615384%'>C++(6)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 113.84615384615384%'>Multithreading(6)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 104.61538461538461%'>Web(2)</a> </span>
+    <span id="tag-cloud"><a href='/blog/categories/algorithm' style='font-size: 113.84615384615384%'>Algorithm(6)</a> <a href='/blog/categories/c-' style='font-size: 113.84615384615384%'>C++(6)</a> <a href='/blog/categories/design-pattern' style='font-size: 160.0%'>Design Pattern(26)</a> <a href='/blog/categories/dsp' style='font-size: 102.3076923076923%'>DSP(1)</a> <a href='/blog/categories/fpga' style='font-size: 102.3076923076923%'>FPGA(1)</a> <a href='/blog/categories/misc' style='font-size: 102.3076923076923%'>Misc(1)</a> <a href='/blog/categories/multithreading' style='font-size: 113.84615384615384%'>Multithreading(6)</a> <a href='/blog/categories/programming-pearls' style='font-size: 116.15384615384616%'>Programming Pearls(7)</a> <a href='/blog/categories/software' style='font-size: 106.92307692307692%'>Software(3)</a> <a href='/blog/categories/web' style='font-size: 106.92307692307692%'>Web(3)</a> </span>
 </section>
 
 <section>
