@@ -105,55 +105,6 @@ MathJax.Hub.Config({
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F20/">浅谈设计模式二十: 解释器模式(Interpreter)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-
-
-
-<time datetime="2014-05-04T00:00:00+08:00"  class="updated" >May 4<span>th</span>, 2014</time>
-        
-           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F20/#disqus_thread"
-             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F20/">Comments</a>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
-<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
-<div class="outline-text-2" id="text-1">
-<p>
-以简单计算器为实例,计算器做加减乘除有一套自己的语言(堆栈形式),可以直接计算,那么用语法树来解释并计算计算器语言如何设计呢?
-</p>
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F20/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
       <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F19/">浅谈设计模式十九: 责任链模式(Chain of Responsibility)</a></h1>
     
     
@@ -696,6 +647,95 @@ MathJax.Hub.Config({
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F10/">浅谈设计模式十: 模板方法模式(Template Method)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+
+
+
+<time datetime="2014-05-04T00:00:00+08:00"  class="updated" >May 4<span>th</span>, 2014</time>
+        
+           | <a href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F10/#disqus_thread"
+             data-disqus-identifier="http://dreamrunner.org/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F10/">Comments</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 实例</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+有些人喜欢喝茶，有些人喜欢喝咖啡，所以现在有咖啡和茶两个类，基本代码如下：
+</p>
+
+<p>
+<code>Coffee</code> 类：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Coffee</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Coffee</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">prepareRecipe</span>();
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">boilWater</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">brewCoffeeGrinds</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">pourInCup</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">addSugarAndMilk</span>();
+};
+</pre>
+</div>
+
+<p>
+<code>Tea</code> 类：
+</p>
+<div class="org-src-container">
+
+<pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Tea</span> {
+ <span style="color: #00ffff;">public</span>:
+  <span style="color: #00ffff;">virtual</span> ~<span style="color: #87cefa;">Tea</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">prepareRecipe</span>();
+ <span style="color: #00ffff;">protected</span>:
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">boilWater</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">steepTeaBag</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">pourInCup</span>();
+  <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">addLemon</span>();
+};
+</pre>
+</div>
+
+<p>
+我们发现代码有重复： <code>void boilWater()</code> 和 <code>void pourInCup()</code> 。那么如何整合代码消除重复代码呢？
+</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2014/05/04/%E6%B5%85%E8%B0%88%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F10/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/5/">&larr; Older</a>
@@ -725,11 +765,11 @@ MathJax.Hub.Config({
       </li>
     
       <li class="post">
-        <a href="/blog/2014/07/09/ru-he-shi-xian-pythonde-withyu-ju/">如何实现Python的with语句</a>
+        <a href="/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/">Multithreading相关术语总结</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2014/07/05/multithreadingxiang-guan-zhu-yu-zong-jie/">Multithreading相关术语总结</a>
+        <a href="/blog/2014/06/29/qian-tan-mutex-lock/">浅谈Mutex (Lock)</a>
       </li>
     
   </ul>
@@ -788,7 +828,7 @@ MathJax.Hub.Config({
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - DreamRunner -
+  Copyright &copy; 2016 - DreamRunner -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
