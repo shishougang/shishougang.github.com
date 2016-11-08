@@ -261,10 +261,10 @@ int main() {
 }
 #+end_src
 
-暂时GCC4.8不支持,结果:
+使用Super User,结果:
 #+begin_src sh
-Failed to setschedparam: Operation not permitted
-Thread 1 is executing at priority 0
+$ sudo ./test
+Thread 1 is executing at priority 20
 Thread 2 is executing at priority 0
 #+end_src
 ** =hardware_concurrency= (static)

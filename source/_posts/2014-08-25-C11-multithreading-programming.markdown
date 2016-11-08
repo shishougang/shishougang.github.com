@@ -23,7 +23,7 @@ C++11的<a href="http://en.cppreference.com/w/cpp/atomic">Atomic操作的库</a>
 
 <p>
 <a href="https://en.wikipedia.org/wiki/C++11">C++11</a>(之前被成为C++0x)是编程语言C++最新版本的标准.它由 <a href="https://en.wikipedia.org/wiki/International_Organization_for_Standardization">ISO </a>在2011年8月
-12日被批准替代<a href="https://en.wikipedia.org/wiki/C%2B%2B03">C++03</a>. C++11标准正在规范中,从<a href="https://isocpp.org/std/the-standard">ISO页面</a> 可以知道如何获得进行中的草稿:
+12日被批准替代<a href="https://en.wikipedia.org/wiki/C++03">C++03</a>. C++11标准正在规范中,从<a href="https://isocpp.org/std/the-standard">ISO页面</a> 可以知道如何获得进行中的草稿:
 </p>
 <ul class="org-ul">
 <li><a href="https://isocpp.org/files/papers/N3690.pdf">下载最新进行的pdf版草稿(N3690)</a>
@@ -51,6 +51,7 @@ C++11的<a href="http://en.cppreference.com/w/cpp/atomic">Atomic操作的库</a>
 <!-- more -->
 </div>
 </div>
+
 <div id="outline-container-sec-2" class="outline-2">
 <h2 id="sec-2">Compile</h2>
 <div class="outline-text-2" id="text-2">
@@ -76,6 +77,7 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3">Threads</h2>
 <div class="outline-text-2" id="text-3">
@@ -88,6 +90,7 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 </p>
 </div>
 </div>
+
 <div id="outline-container-sec-3-2" class="outline-3">
 <h3 id="sec-3-2"><code>thread::id</code> 类</h3>
 <div class="outline-text-3" id="text-3-2">
@@ -122,7 +125,6 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-3" class="outline-3">
 <h3 id="sec-3-3"><code>thread</code> 类</h3>
 <div class="outline-text-3" id="text-3-3">
@@ -135,13 +137,13 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
   <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">id</span>;
   <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">implementation</span>-defined native_handle_type; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">See 30.2.3</span>
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">construct/copy/destroy:</span>
-  <span style="color: #87cefa;">thread</span>() noexcept;
-  <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span> ...Args&gt; <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">thread</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+  thread() noexcept;
+  <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span> ...Args&gt; <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">thread</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args);
   ~<span style="color: #87cefa;">thread</span>();
   <span style="color: #87cefa;">thread</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">thread</span>&amp;) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #87cefa;">thread</span>(<span style="color: #98fb98;">thread</span>&amp;&amp;) noexcept;
+  thread(<span style="color: #98fb98;">thread</span>&amp;&amp;) noexcept;
   <span style="color: #98fb98;">thread</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">thread</span>&amp;) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #98fb98;">thread</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">thread</span>&amp;&amp;) noexcept;
+  thread&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">thread</span>&amp;&amp;) noexcept;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">members:</span>
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swap</span>(<span style="color: #98fb98;">thread</span>&amp;) noexcept;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">joinable</span>() <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
@@ -157,6 +159,7 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-3-4" class="outline-3">
 <h3 id="sec-3-4">Constructs a thread object</h3>
 <div class="outline-text-3" id="text-3-4">
@@ -176,7 +179,7 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 
 <pre class="src src-c++"><span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">T</span>&gt;
 <span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">T</span>&gt;::<span style="color: #98fb98;">type</span> <span style="color: #87cefa;">decay_copy</span>(<span style="color: #98fb98;">T</span>&amp;&amp; <span style="color: #eedd82;">v</span>) {
-    <span style="color: #00ffff;">return</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">forward</span>&lt;<span style="color: #98fb98;">T</span>&gt;(<span style="color: #eedd82;">v</span>);
+    <span style="color: #00ffff;">return</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">forward</span>&lt;T&gt;(v);
 }
 </pre>
 </div>
@@ -228,7 +231,6 @@ GNU扩张支持.并加上 <code>-pthread</code> 选项.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-5" class="outline-3">
 <h3 id="sec-3-5">joinable</h3>
 <div class="outline-text-3" id="text-3-5">
@@ -274,7 +276,6 @@ initial construct, joinable: 1
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-6" class="outline-3">
 <h3 id="sec-3-6"><code>get_id</code></h3>
 <div class="outline-text-3" id="text-3-6">
@@ -306,6 +307,7 @@ initial construct, joinable: 1
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-3-7" class="outline-3">
 <h3 id="sec-3-7"><code>native_handle</code></h3>
 <div class="outline-text-3" id="text-3-7">
@@ -355,18 +357,17 @@ initial construct, joinable: 1
 </div>
 
 <p>
-暂时GCC4.8不支持,结果:
+使用Super User,结果:
 </p>
 <div class="org-src-container">
 
-<pre class="src src-sh">Failed to setschedparam: Operation not permitted
-Thread 1 is executing at priority 0
+<pre class="src src-sh">$ sudo ./test
+Thread 1 is executing at priority 20
 Thread 2 is executing at priority 0
 </pre>
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-8" class="outline-3">
 <h3 id="sec-3-8"><code>hardware_concurrency</code> (static)</h3>
 <div class="outline-text-3" id="text-3-8">
@@ -387,7 +388,6 @@ Thread 2 is executing at priority 0
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-9" class="outline-3">
 <h3 id="sec-3-9">swap</h3>
 <div class="outline-text-3" id="text-3-9">
@@ -435,7 +435,6 @@ Thread 2 is executing at priority 0
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-3-10" class="outline-3">
 <h3 id="sec-3-10">管理当前thread的函数</h3>
 <div class="outline-text-3" id="text-3-10">
@@ -512,10 +511,10 @@ Thread 2 is executing at priority 0
   cout &lt;&lt; <span style="color: #ffa07a;">"thread "</span> &lt;&lt; id &lt;&lt; <span style="color: #ffa07a;">"is running"</span> &lt;&lt; endl;
   ready = <span style="color: #7fffd4;">true</span>;
 
-  <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">time_t</span> <span style="color: #eedd82;">tt</span> = <span style="color: #7fffd4;">system_clock</span>::<span style="color: #98fb98;">to_time_t</span>(<span style="color: #7fffd4;">system_clock</span>::<span style="color: #98fb98;">now</span>());
+  <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">time_t</span> <span style="color: #eedd82;">tt</span> = <span style="color: #7fffd4;">system_clock</span>::to_time_t(<span style="color: #7fffd4;">system_clock</span>::now());
   <span style="color: #00ffff;">struct</span> <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">tm</span> *<span style="color: #eedd82;">ptm</span> = <span style="color: #7fffd4;">std</span>::localtime(&amp;tt);
   ptm-&gt;tm_sec += 2;
-  <span style="color: #7fffd4;">std</span>::<span style="color: #7fffd4;">this_thread</span>::sleep_until(<span style="color: #7fffd4;">system_clock</span>::<span style="color: #98fb98;">from_time_t</span>(<span style="color: #eedd82;">mktime</span>(ptm)));
+  <span style="color: #7fffd4;">std</span>::<span style="color: #7fffd4;">this_thread</span>::sleep_until(<span style="color: #7fffd4;">system_clock</span>::from_time_t(mktime(ptm)));
 }
 
 <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>() {
@@ -530,7 +529,6 @@ Thread 2 is executing at priority 0
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4" class="outline-2">
 <h2 id="sec-4">Mutual exclusion</h2>
 <div class="outline-text-2" id="text-4">
@@ -544,7 +542,7 @@ Thread 2 is executing at priority 0
 
 <ul class="org-ul">
 <li><b>Mutexes</b> 是<a href="#lockable_types">lockable types</a>,用来对关键区域代码访问保护: <a href="#mutex_class"><code>mutex</code></a>,
-  <a href="#recursive_mutex_class"><code>recursive_mutex</code></a>, <a href="#timed_mutex_class"><code>timed_mutex</code></a>, <a href="#recursive_timed_mutex_class"><code>recursive_timed_mutex</code></a>.
+<a href="#recursive_mutex_class"><code>recursive_mutex</code></a>, <a href="#timed_mutex_class"><code>timed_mutex</code></a>, <a href="#recursive_timed_mutex_class"><code>recursive_timed_mutex</code></a>.
 </li>
 <li><b>Locks</b> 是用来管理mutex的对象,并对mutex的lifetime自我管理:<a href="#lock_guard_class"><code>lock_guard</code></a>, <a href="#unique_lock_class"><code>unique_lock</code></a>.
 </li>
@@ -553,6 +551,7 @@ Thread 2 is executing at priority 0
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-4-2" class="outline-3">
 <h3 id="sec-4-2">Lockable types</h3>
 <div class="outline-text-3" id="text-4-2">
@@ -586,7 +585,6 @@ BasicLockable 概念描述了最少特性类型,也就是满足(若m是BasicLock
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-4-2-2" class="outline-4">
 <h4 id="sec-4-2-2">Lockable</h4>
 <div class="outline-text-4" id="text-4-2-2">
@@ -600,7 +598,6 @@ Lockable 概念扩展了 BasicLockable 概念,并支持 <code>try_lock</code>.
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-4-2-3" class="outline-4">
 <h4 id="sec-4-2-3">TimedLockable</h4>
 <div class="outline-text-4" id="text-4-2-3">
@@ -616,6 +613,7 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-4-3" class="outline-3">
 <h3 id="sec-4-3"><code>mutex</code> 类</h3>
 <div class="outline-text-3" id="text-4-3">
@@ -683,7 +681,6 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-4" class="outline-3">
 <h3 id="sec-4-4"><code>recursive_mutex</code> 类</h3>
 <div class="outline-text-3" id="text-4-4">
@@ -710,7 +707,6 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-5" class="outline-3">
 <h3 id="sec-4-5"><code>timed_mutex</code> 类</h3>
 <div class="outline-text-3" id="text-4-5">
@@ -741,7 +737,6 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-6" class="outline-3">
 <h3 id="sec-4-6"><code>recursive_timed_mutex</code> 类</h3>
 <div class="outline-text-3" id="text-4-6">
@@ -773,7 +768,6 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-7" class="outline-3">
 <h3 id="sec-4-7">Mutex Exception safety</h3>
 <div class="outline-text-3" id="text-4-7">
@@ -823,6 +817,7 @@ TimedLockable 概念扩展了 Lockable 概念,并支持 <code>try_lock_for</code
 </table>
 </div>
 </div>
+
 <div id="outline-container-sec-4-8" class="outline-3">
 <h3 id="sec-4-8"><code>lock_guard</code> 类</h3>
 <div class="outline-text-3" id="text-4-8">
@@ -857,8 +852,8 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
   <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">lock_guard</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>);
   <span style="color: #87cefa;">lock_guard</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">adopt_lock_t</span>);
   ~<span style="color: #87cefa;">lock_guard</span>();
-  <span style="color: #87cefa;">lock_guard</span>(<span style="color: #98fb98;">lock_guard</span> <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #98fb98;">lock_guard</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">lock_guard</span> <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
+  <span style="color: #87cefa;">lock_guard</span>(lock_guard <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
+  <span style="color: #98fb98;">lock_guard</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(lock_guard <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
  <span style="color: #00ffff;">private</span>:
   <span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">pm</span>; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">exposition only</span>
 };
@@ -898,7 +893,7 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
 <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">main</span>() {
   <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">thread</span> <span style="color: #eedd82;">threads</span>[10];
   <span style="color: #00ffff;">for</span> (<span style="color: #98fb98;">int</span> <span style="color: #eedd82;">i</span> = 0; i &lt; 10; ++i) {
-    threads[i] = <span style="color: #7fffd4;">std</span>::<span style="color: #eedd82;">thread</span>(PrintThreadEvenId, i+1);
+    threads[i] = <span style="color: #7fffd4;">std</span>::thread(PrintThreadEvenId, i+1);
   }
   <span style="color: #00ffff;">for</span> (<span style="color: #00ffff;">auto</span>&amp; <span style="color: #eedd82;">th</span> : threads) {
     th.join();
@@ -909,7 +904,6 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-9" class="outline-3">
 <h3 id="sec-4-9"><code>unique_lock</code> 类</h3>
 <div class="outline-text-3" id="text-4-9">
@@ -937,9 +931,9 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
  <span style="color: #00ffff;">public</span>:
   <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">Mutex</span> <span style="color: #98fb98;">mutex_type</span>;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">30.4.2.2.1, construct/copy/destroy:</span>
-  <span style="color: #87cefa;">unique_lock</span>() noexcept;
+  unique_lock() noexcept;
   <span style="color: #00ffff;">explicit</span> <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>);
-  <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">defer_lock_t</span>) noexcept;
+  unique_lock(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">defer_lock_t</span>) noexcept;
   <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">try_to_lock_t</span>);
   <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #98fb98;">adopt_lock_t</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Clock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Duration</span>&gt;
@@ -947,10 +941,10 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Rep</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Period</span>&gt;
   <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">mutex_type</span>&amp; <span style="color: #eedd82;">m</span>, <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">duration</span>&lt;<span style="color: #98fb98;">Rep</span>, <span style="color: #98fb98;">Period</span>&gt;&amp; <span style="color: #eedd82;">rel_time</span>);
   ~<span style="color: #87cefa;">unique_lock</span>();
-  <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">unique_lock</span> <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #98fb98;">unique_lock</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">unique_lock</span> <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #87cefa;">unique_lock</span>(<span style="color: #98fb98;">unique_lock</span>&amp;&amp; <span style="color: #eedd82;">u</span>) noexcept;
-  <span style="color: #98fb98;">unique_lock</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">unique_lock</span>&amp;&amp; u) noexcept;
+  <span style="color: #87cefa;">unique_lock</span>(unique_lock <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
+  <span style="color: #98fb98;">unique_lock</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(unique_lock <span style="color: #00ffff;">const</span>&amp;) = <span style="color: #00ffff;">delete</span>;
+  unique_lock(<span style="color: #98fb98;">unique_lock</span>&amp;&amp; <span style="color: #eedd82;">u</span>) noexcept;
+  unique_lock&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">unique_lock</span>&amp;&amp; u) noexcept;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">30.4.2.2.2, locking:</span>
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">lock</span>();
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">try_lock</span>();
@@ -961,11 +955,11 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">unlock</span>();
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">30.4.2.2.3, modifiers:</span>
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swap</span>(<span style="color: #98fb98;">unique_lock</span>&amp; <span style="color: #eedd82;">u</span>) noexcept;
-  <span style="color: #98fb98;">mutex_type</span> *<span style="color: #87cefa;">release</span>() noexcept;
+  mutex_type *release() noexcept;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">30.4.2.2.4, observers:</span>
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">owns_lock</span>() <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
   <span style="color: #00ffff;">explicit</span> <span style="color: #00ffff;">operator</span> <span style="color: #98fb98;">bool</span> () <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
-  <span style="color: #98fb98;">mutex_type</span>* <span style="color: #87cefa;">mutex</span>() <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
+  mutex_type* mutex() <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
  <span style="color: #00ffff;">private</span>:
   <span style="color: #98fb98;">mutex_type</span> *<span style="color: #eedd82;">pm</span>; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">exposition only</span>
   <span style="color: #98fb98;">bool</span> <span style="color: #eedd82;">owns</span>; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">exposition only</span>
@@ -977,7 +971,6 @@ lock guard 是一个用来管理一个 mutex 对象,并保持锁住它的对象.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-9-2" class="outline-4">
 <h4 id="sec-4-9-2">Constructor</h4>
 <div class="outline-text-4" id="text-4-9-2">
@@ -1004,9 +997,9 @@ safe等.
 <pre class="src src-c++"><span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">defer_lock_t</span> { };
 <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">try_to_lock_t</span> { };
 <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">adopt_lock_t</span> { };
-constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">defer_lock_t</span> <span style="color: #eedd82;">defer_lock</span> = <span style="color: #7fffd4;">std</span>::<span style="color: #87cefa;">defer_lock_t</span>();
-constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">try_to_lock_t</span> <span style="color: #eedd82;">try_to_lock</span> = <span style="color: #7fffd4;">std</span>::<span style="color: #87cefa;">try_to_lock_t</span>();
-constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">adopt_lock_t</span> <span style="color: #eedd82;">adopt_lock</span> = <span style="color: #7fffd4;">std</span>::<span style="color: #87cefa;">adopt_lock_t</span>();
+constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">defer_lock_t</span> <span style="color: #eedd82;">defer_lock</span> = <span style="color: #7fffd4;">std</span>::defer_lock_t();
+constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">try_to_lock_t</span> <span style="color: #eedd82;">try_to_lock</span> = <span style="color: #7fffd4;">std</span>::try_to_lock_t();
+constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">adopt_lock_t</span> <span style="color: #eedd82;">adopt_lock</span> = <span style="color: #7fffd4;">std</span>::adopt_lock_t();
 </pre>
 </div>
 
@@ -1017,7 +1010,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 <li><code>unique_lock();</code> :仅仅创建一个 <code>nique_lock</code> 对象,不和任何mutex相关联.
 </li>
 <li><code>nique_lock(unique_lock&amp;&amp; other);</code> : 通过other的内容来构造
-  <code>nique_lock</code>  对像,使得other不和任何mutex相关连联.
+<code>nique_lock</code>  对像,使得other不和任何mutex相关连联.
 </li>
 <li><code>explicit unique_lock(mutex_type&amp; m);</code> : 通过 <code>m.lock()</code> 来构造与m相关联的 <code>unique_lock</code> 对象.
 </li>
@@ -1031,6 +1024,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-4-9-3" class="outline-4">
 <h4 id="sec-4-9-3">实例</h4>
 <div class="outline-text-4" id="text-4-9-3">
@@ -1081,7 +1075,6 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-4-10" class="outline-3">
 <h3 id="sec-4-10"><code>lock_guard</code> VS <code>unique_lock</code></h3>
 <div class="outline-text-3" id="text-4-10">
@@ -1100,7 +1093,6 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-4-11" class="outline-3">
 <h3 id="sec-4-11"><code>try_lock</code> 和 <code>lock</code></h3>
 <div class="outline-text-3" id="text-4-11">
@@ -1110,7 +1102,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 <div class="org-src-container">
 
 <pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt; <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lockable1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lockable2</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">LockableN</span>... &gt;
-<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">try_lock</span>(<span style="color: #98fb98;">Lockable1</span>&amp; <span style="color: #eedd82;">lock1</span>, <span style="color: #98fb98;">Lockable2</span>&amp; <span style="color: #eedd82;">lock2</span>, <span style="color: #98fb98;">LockableN</span>&amp; <span style="color: #eedd82;">lockn</span>... );
+<span style="color: #98fb98;">int</span> <span style="color: #87cefa;">try_lock</span>(<span style="color: #98fb98;">Lockable1</span>&amp; <span style="color: #eedd82;">lock1</span>, <span style="color: #98fb98;">Lockable2</span>&amp; <span style="color: #eedd82;">lock2</span>, LockableN&amp; lockn... );
 </pre>
 </div>
 
@@ -1129,7 +1121,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 <div class="org-src-container">
 
 <pre class="src src-c++"><span style="color: #00ffff;">template</span>&lt; <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lockable1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lockable2</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">LockableN</span>... &gt;
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">lock</span>( <span style="color: #98fb98;">Lockable1</span>&amp; <span style="color: #eedd82;">lock1</span>, <span style="color: #98fb98;">Lockable2</span>&amp; <span style="color: #eedd82;">lock2</span>, <span style="color: #98fb98;">LockableN</span>&amp; <span style="color: #eedd82;">lockn</span>... );
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">lock</span>( <span style="color: #98fb98;">Lockable1</span>&amp; <span style="color: #eedd82;">lock1</span>, <span style="color: #98fb98;">Lockable2</span>&amp; <span style="color: #eedd82;">lock2</span>, LockableN&amp; lockn... );
 </pre>
 </div>
 
@@ -1143,7 +1135,6 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 </p>
 </div>
 </div>
-
 <div id="outline-container-sec-4-12" class="outline-3">
 <h3 id="sec-4-12"><code>call_once</code></h3>
 <div class="outline-text-3" id="text-4-12">
@@ -1154,7 +1145,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 
 <pre class="src src-c++"><span style="color: #00ffff;">class</span> <span style="color: #98fb98;">once_flag</span>;
 <span style="color: #00ffff;">template</span>&lt; <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Callable</span>, <span style="color: #00ffff;">class</span>... Args &gt;
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">call_once</span>( <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">once_flag</span>&amp; <span style="color: #eedd82;">flag</span>, <span style="color: #eedd82;">Callable</span>&amp;&amp; f, <span style="color: #eedd82;">Args</span>&amp;&amp;... args );
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">call_once</span>( <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;">once_flag</span>&amp; <span style="color: #eedd82;">flag</span>, <span style="color: #98fb98;">Callable</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args );
 </pre>
 </div>
 <p>
@@ -1219,6 +1210,7 @@ constexpr <span style="color: #7fffd4;">std</span>::<span style="color: #98fb98;
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-5" class="outline-2">
 <h2 id="sec-5">Condition variables</h2>
 <div class="outline-text-2" id="text-5">
@@ -1262,6 +1254,7 @@ time limit (timeout).
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-5-1-2" class="outline-4">
 <h4 id="sec-5-1-2"><code>notify_all_at_thread_exit</code></h4>
 <div class="outline-text-4" id="text-5-1-2">
@@ -1316,7 +1309,6 @@ cond.notify_all();
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-5-2" class="outline-3">
 <h3 id="sec-5-2"><code>condition_variable</code> 类</h3>
 <div class="outline-text-3" id="text-5-2">
@@ -1340,14 +1332,14 @@ cond.notify_all();
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Clock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Duration</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Predicate</span>&gt;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">wait_until</span>(<span style="color: #98fb98;">unique_lock</span>&lt;mutex&gt;&amp; <span style="color: #eedd82;">lock</span>,
                   <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">time_point</span>&lt;<span style="color: #98fb98;">Clock</span>, <span style="color: #98fb98;">Duration</span>&gt;&amp; <span style="color: #eedd82;">abs_time</span>,
-                  <span style="color: #eedd82;">Predicate</span> pred);
+                  <span style="color: #98fb98;">Predicate</span> <span style="color: #eedd82;">pred</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Rep</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Period</span>&gt;
   <span style="color: #98fb98;">cv_status</span> <span style="color: #87cefa;">wait_for</span>(<span style="color: #98fb98;">unique_lock</span>&lt;mutex&gt;&amp; <span style="color: #eedd82;">lock</span>,
                      <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">duration</span>&lt;<span style="color: #98fb98;">Rep</span>, <span style="color: #98fb98;">Period</span>&gt;&amp; <span style="color: #eedd82;">rel_time</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Rep</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Period</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Predicate</span>&gt;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">wait_for</span>(<span style="color: #98fb98;">unique_lock</span>&lt;mutex&gt;&amp; <span style="color: #eedd82;">lock</span>,
                 <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">duration</span>&lt;<span style="color: #98fb98;">Rep</span>, <span style="color: #98fb98;">Period</span>&gt;&amp; <span style="color: #eedd82;">rel_time</span>,
-                <span style="color: #eedd82;">Predicate</span> pred);
+                <span style="color: #98fb98;">Predicate</span> <span style="color: #eedd82;">pred</span>);
   <span style="color: #00ffff;">typedef</span> <span style="color: #98fb98;">implementation</span>-defined native_handle_type; <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">See 30.2.3</span>
   <span style="color: #98fb98;">native_handle_type</span> <span style="color: #87cefa;">native_handle</span>(); <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">See 30.2.3</span>
 };
@@ -1440,7 +1432,6 @@ Predicate pred);</code> 接口:
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-5-3" class="outline-3">
 <h3 id="sec-5-3"><code>condition_variable_any</code> 类</h3>
 <div class="outline-text-3" id="text-5-3">
@@ -1463,12 +1454,12 @@ Predicate pred);</code> 接口:
   <span style="color: #98fb98;">cv_status</span> <span style="color: #87cefa;">wait_until</span>(<span style="color: #98fb98;">Lock</span>&amp; <span style="color: #eedd82;">lock</span>, <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">time_point</span>&lt;<span style="color: #98fb98;">Clock</span>, <span style="color: #98fb98;">Duration</span>&gt;&amp; <span style="color: #eedd82;">abs_time</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Clock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Duration</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Predicate</span>&gt;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">wait_until</span>(<span style="color: #98fb98;">Lock</span>&amp; <span style="color: #eedd82;">lock</span>, <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">time_point</span>&lt;<span style="color: #98fb98;">Clock</span>, <span style="color: #98fb98;">Duration</span>&gt;&amp; <span style="color: #eedd82;">abs_time</span>,
-                  <span style="color: #eedd82;">Predicate</span> pred);
+                  <span style="color: #98fb98;">Predicate</span> <span style="color: #eedd82;">pred</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Rep</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Period</span>&gt;
   <span style="color: #98fb98;">cv_status</span> <span style="color: #87cefa;">wait_for</span>(<span style="color: #98fb98;">Lock</span>&amp; <span style="color: #eedd82;">lock</span>, <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">duration</span>&lt;<span style="color: #98fb98;">Rep</span>, <span style="color: #98fb98;">Period</span>&gt;&amp; <span style="color: #eedd82;">rel_time</span>);
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Lock</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Rep</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Period</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Predicate</span>&gt;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">wait_for</span>(<span style="color: #98fb98;">Lock</span>&amp; <span style="color: #eedd82;">lock</span>, <span style="color: #00ffff;">const</span> <span style="color: #7fffd4;">chrono</span>::<span style="color: #98fb98;">duration</span>&lt;<span style="color: #98fb98;">Rep</span>, <span style="color: #98fb98;">Period</span>&gt;&amp; <span style="color: #eedd82;">rel_time</span>,
-                <span style="color: #eedd82;">Predicate</span> pred);
+                <span style="color: #98fb98;">Predicate</span> <span style="color: #eedd82;">pred</span>);
 };
 }
 </pre>
@@ -1537,7 +1528,6 @@ Predicate pred);</code> 接口:
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-5-4" class="outline-3">
 <h3 id="sec-5-4"><code>condition_variable</code> VS <code>condition_variable_any</code></h3>
 <div class="outline-text-3" id="text-5-4">
@@ -1560,6 +1550,7 @@ lock types.
 </div>
 </div>
 </div>
+
 <div id="outline-container-sec-6" class="outline-2">
 <h2 id="sec-6">Future</h2>
 <div class="outline-text-2" id="text-6">
@@ -1588,6 +1579,7 @@ multi-threaded 程序中,同样可以在 single-threaded 使用.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-6-2" class="outline-3">
 <h3 id="sec-6-2">Error handling</h3>
 <div class="outline-text-3" id="text-6-2">
@@ -1638,7 +1630,6 @@ multi-threaded 程序中,同样可以在 single-threaded 使用.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-2-2" class="outline-4">
 <h4 id="sec-6-2-2"><code>future_errc</code></h4>
 <div class="outline-text-4" id="text-6-2-2">
@@ -1700,7 +1691,6 @@ multi-threaded 程序中,同样可以在 single-threaded 使用.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-2-3" class="outline-4">
 <h4 id="sec-6-2-3"><code>future_status</code></h4>
 <div class="outline-text-4" id="text-6-2-3">
@@ -1724,6 +1714,7 @@ multi-threaded 程序中,同样可以在 single-threaded 使用.
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-6-2-4" class="outline-4">
 <h4 id="sec-6-2-4"><code>future_category</code></h4>
 <div class="outline-text-4" id="text-6-2-4">
@@ -1771,7 +1762,6 @@ multi-threaded 程序中,同样可以在 single-threaded 使用.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-3" class="outline-3">
 <h3 id="sec-6-3"><code>template promise</code></h3>
 <div class="outline-text-3" id="text-6-3">
@@ -1796,11 +1786,11 @@ promise对象在共享状态(shared state)存储值的操作 <b>synchronizes-wit
   <span style="color: #87cefa;">promise</span>();
   <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Allocator</span>&gt;
   <span style="color: #87cefa;">promise</span>(<span style="color: #98fb98;">allocator_arg_t</span>, <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">Allocator</span>&amp; <span style="color: #eedd82;">a</span>);
-  <span style="color: #87cefa;">promise</span>(<span style="color: #98fb98;">promise</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
+  promise(<span style="color: #98fb98;">promise</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
   <span style="color: #87cefa;">promise</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">promise</span>&amp; <span style="color: #eedd82;">rhs</span>) = <span style="color: #00ffff;">delete</span>;
   ~<span style="color: #87cefa;">promise</span>();
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">assignment</span>
-  <span style="color: #98fb98;">promise</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">promise</span>&amp;&amp; rhs) noexcept;
+  promise&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">promise</span>&amp;&amp; rhs) noexcept;
   <span style="color: #98fb98;">promise</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">promise</span>&amp; <span style="color: #eedd82;">rhs</span>) = <span style="color: #00ffff;">delete</span>;
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swap</span>(<span style="color: #98fb98;">promise</span>&amp; <span style="color: #eedd82;">other</span>) noexcept;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">retrieving the result</span>
@@ -1822,7 +1812,6 @@ promise对象在共享状态(shared state)存储值的操作 <b>synchronizes-wit
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-3-2" class="outline-4">
 <h4 id="sec-6-3-2"><code>set_value</code> and <code>set_value_at_thread_exit</code></h4>
 <div class="outline-text-4" id="text-6-3-2">
@@ -1863,7 +1852,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-3-3" class="outline-4">
 <h4 id="sec-6-3-3"><code>set_exception</code> and <code>set_exception_at_thread_exit</code></h4>
 <div class="outline-text-4" id="text-6-3-3">
@@ -1907,7 +1895,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-4" class="outline-3">
 <h3 id="sec-6-4"><code>template packaged_task</code></h3>
 <div class="outline-text-3" id="text-6-4">
@@ -1937,8 +1924,8 @@ shared state中,只在当前函数退出时.
   packaged_task(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">packaged_task</span>&amp;) = <span style="color: #00ffff;">delete</span>;
   <span style="color: #98fb98;">packaged_task</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">packaged_task</span>&amp;) = <span style="color: #00ffff;">delete</span>;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">move support</span>
-  <span style="color: #87cefa;">packaged_task</span>(<span style="color: #98fb98;">packaged_task</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
-  <span style="color: #98fb98;">packaged_task</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">packaged_task</span>&amp;&amp; rhs) noexcept;
+  packaged_task(<span style="color: #98fb98;">packaged_task</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
+  packaged_task&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">packaged_task</span>&amp;&amp; rhs) noexcept;
   <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swap</span>(<span style="color: #98fb98;">packaged_task</span>&amp; <span style="color: #eedd82;">other</span>) noexcept;
   <span style="color: #98fb98;">bool</span> <span style="color: #87cefa;">valid</span>() <span style="color: #00ffff;">const</span> <span style="color: #98fb98;">noexcept</span>;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">result retrieval</span>
@@ -1957,7 +1944,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-4-2" class="outline-4">
 <h4 id="sec-6-4-2">construct and use</h4>
 <div class="outline-text-4" id="text-6-4-2">
@@ -2032,7 +2018,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-4-3" class="outline-4">
 <h4 id="sec-6-4-3">reset</h4>
 <div class="outline-text-4" id="text-6-4-3">
@@ -2069,7 +2054,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-5" class="outline-3">
 <h3 id="sec-6-5"><code>template future</code> 类</h3>
 <div class="outline-text-3" id="text-6-5">
@@ -2110,12 +2094,12 @@ shared state中,只在当前函数退出时.
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">R</span>&gt;
 <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">future</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">future</span>() noexcept;
-  <span style="color: #87cefa;">future</span>(<span style="color: #98fb98;">future</span> &amp;&amp;) noexcept;
+  future() noexcept;
+  future(<span style="color: #98fb98;">future</span> &amp;&amp;) noexcept;
   <span style="color: #87cefa;">future</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">future</span>&amp; <span style="color: #eedd82;">rhs</span>) = <span style="color: #00ffff;">delete</span>;
   ~<span style="color: #87cefa;">future</span>();
   <span style="color: #98fb98;">future</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">future</span>&amp; <span style="color: #eedd82;">rhs</span>) = <span style="color: #00ffff;">delete</span>;
-  <span style="color: #98fb98;">future</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">future</span>&amp;&amp;) noexcept;
+  future&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">future</span>&amp;&amp;) noexcept;
   <span style="color: #98fb98;">shared_future</span>&lt;<span style="color: #98fb98;">R</span>&gt; <span style="color: #87cefa;">share</span>();
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">retrieving the value</span>
   see <span style="color: #98fb98;">below</span> <span style="color: #87cefa;">get</span>();
@@ -2132,7 +2116,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-6" class="outline-3">
 <h3 id="sec-6-6"><code>template shared_future</code> 类</h3>
 <div class="outline-text-3" id="text-6-6">
@@ -2147,13 +2130,13 @@ shared state中,只在当前函数退出时.
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">R</span>&gt;
 <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">shared_future</span> {
  <span style="color: #00ffff;">public</span>:
-  <span style="color: #87cefa;">shared_future</span>() noexcept;
+  shared_future() noexcept;
   <span style="color: #87cefa;">shared_future</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">shared_future</span>&amp; <span style="color: #eedd82;">rhs</span>);
-  <span style="color: #87cefa;">shared_future</span>(<span style="color: #98fb98;">future</span>&lt;<span style="color: #98fb98;">R</span>&gt;&amp;&amp;) noexcept;
-  <span style="color: #87cefa;">shared_future</span>(<span style="color: #98fb98;">shared_future</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
+  shared_future(<span style="color: #98fb98;">future</span>&lt;<span style="color: #98fb98;">R</span>&gt;&amp;&amp;) noexcept;
+  shared_future(<span style="color: #98fb98;">shared_future</span>&amp;&amp; <span style="color: #eedd82;">rhs</span>) noexcept;
   ~<span style="color: #87cefa;">shared_future</span>();
   <span style="color: #98fb98;">shared_future</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">shared_future</span>&amp; <span style="color: #eedd82;">rhs</span>);
-  <span style="color: #98fb98;">shared_future</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #98fb98;">shared_future</span>&amp;&amp; rhs) noexcept;
+  shared_future&amp; <span style="color: #00ffff;">operator</span>=(<span style="color: #98fb98;">shared_future</span>&amp;&amp; rhs) noexcept;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">retrieving the value</span>
   see <span style="color: #98fb98;">below</span> <span style="color: #87cefa;">get</span>() <span style="color: #00ffff;">const</span>;
   <span style="color: #ff7f24;">// </span><span style="color: #ff7f24;">functions to check state</span>
@@ -2217,7 +2200,6 @@ shared state中,只在当前函数退出时.
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-6-7" class="outline-3">
 <h3 id="sec-6-7">template async 函数</h3>
 <div class="outline-text-3" id="text-6-7">
@@ -2253,6 +2235,7 @@ state被访问时(wait或get).
 </ul>
 </div>
 </div>
+
 <div id="outline-container-sec-6-7-2" class="outline-4">
 <h4 id="sec-6-7-2">async</h4>
 <div class="outline-text-4" id="text-6-7-2">
@@ -2260,10 +2243,10 @@ state被访问时(wait或get).
 
 <pre class="src src-c++"><span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span>... Args&gt;
 <span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;Args&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
-<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args);
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span>... Args&gt;
-<span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">Args</span>&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
-<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">launch</span> <span style="color: #eedd82;">policy</span>, <span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+<span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;Args&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
+<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">launch</span> <span style="color: #eedd82;">policy</span>, <span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args);
 </pre>
 </div>
 
@@ -2306,7 +2289,6 @@ state被访问时(wait或get).
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-7" class="outline-2">
 <h2 id="sec-7">Header synopsis</h2>
 <div class="outline-text-2" id="text-7">
@@ -2336,7 +2318,6 @@ state被访问时(wait或get).
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-7-2" class="outline-3">
 <h3 id="sec-7-2"><code>&lt;mutex&gt;</code></h3>
 <div class="outline-text-3" id="text-7-2">
@@ -2361,21 +2342,20 @@ constexpr <span style="color: #98fb98;">adopt_lock_t</span> <span style="color: 
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mutex</span>&gt; <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">unique_lock</span>;
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Mutex</span>&gt;
 <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">swap</span>(<span style="color: #98fb98;">unique_lock</span>&lt;<span style="color: #98fb98;">Mutex</span>&gt;&amp; <span style="color: #eedd82;">x</span>, <span style="color: #98fb98;">unique_lock</span>&lt;<span style="color: #98fb98;">Mutex</span>&gt;&amp; <span style="color: #eedd82;">y</span>) noexcept;
-<span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L2</span>, <span style="color: #00ffff;">class</span>... L3&gt; <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">try_lock</span>(<span style="color: #98fb98;">L1</span>&amp;, <span style="color: #98fb98;">L2</span>&amp;, <span style="color: #98fb98;">L3</span>&amp;...);
-<span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L2</span>, <span style="color: #00ffff;">class</span>... L3&gt; <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">lock</span>(<span style="color: #98fb98;">L1</span>&amp;, <span style="color: #98fb98;">L2</span>&amp;, <span style="color: #98fb98;">L3</span>&amp;...);
+<span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L2</span>, <span style="color: #00ffff;">class</span>... L3&gt; <span style="color: #98fb98;">int</span> <span style="color: #87cefa;">try_lock</span>(<span style="color: #98fb98;">L1</span>&amp;, <span style="color: #98fb98;">L2</span>&amp;, L3&amp;...);
+<span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L1</span>, <span style="color: #00ffff;">class</span> <span style="color: #98fb98;">L2</span>, <span style="color: #00ffff;">class</span>... L3&gt; <span style="color: #98fb98;">void</span> <span style="color: #87cefa;">lock</span>(<span style="color: #98fb98;">L1</span>&amp;, <span style="color: #98fb98;">L2</span>&amp;, L3&amp;...);
 <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">once_flag</span> {
   <span style="color: #98fb98;">constexpr</span> <span style="color: #87cefa;">once_flag</span>() noexcept;
   <span style="color: #87cefa;">once_flag</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">once_flag</span>&amp;) = <span style="color: #00ffff;">delete</span>;
   <span style="color: #98fb98;">once_flag</span>&amp; <span style="color: #00ffff;">operator</span><span style="color: #87cefa;">=</span>(<span style="color: #00ffff;">const</span> <span style="color: #98fb98;">once_flag</span>&amp;) = <span style="color: #00ffff;">delete</span>;
 };
 <span style="color: #00ffff;">template</span>&lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">Callable</span>, <span style="color: #00ffff;">class</span> ...Args&gt;
-<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">call_once</span>(<span style="color: #98fb98;">once_flag</span>&amp; <span style="color: #eedd82;">flag</span>, <span style="color: #98fb98;">Callable</span> <span style="color: #eedd82;">func</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+<span style="color: #98fb98;">void</span> <span style="color: #87cefa;">call_once</span>(<span style="color: #98fb98;">once_flag</span>&amp; <span style="color: #eedd82;">flag</span>, <span style="color: #98fb98;">Callable</span> <span style="color: #eedd82;">func</span>, Args&amp;&amp;... args);
 }
 </pre>
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-7-3" class="outline-3">
 <h3 id="sec-7-3"><code>&lt;future&gt;</code></h3>
 <div class="outline-text-3" id="text-7-3">
@@ -2428,17 +2408,16 @@ constexpr <span style="color: #98fb98;">adopt_lock_t</span> <span style="color: 
 <span style="color: #00ffff;">struct</span> <span style="color: #98fb98;">uses_allocator</span>&lt;<span style="color: #98fb98;">packaged_task</span>&lt;<span style="color: #98fb98;">R</span>&gt;, <span style="color: #98fb98;">Alloc</span>&gt;;
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span>... Args&gt;
 <span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;Args&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
-<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args);
 <span style="color: #00ffff;">template</span> &lt;<span style="color: #00ffff;">class</span> <span style="color: #98fb98;">F</span>, <span style="color: #00ffff;">class</span>... Args&gt;
-<span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">Args</span>&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
-<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">launch</span> <span style="color: #eedd82;">policy</span>, <span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, <span style="color: #98fb98;">Args</span>&amp;&amp;... args);
+<span style="color: #98fb98;">future</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">result_of</span>&lt;<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;<span style="color: #98fb98;">F</span>&gt;::<span style="color: #98fb98;">type</span>(<span style="color: #00ffff;">typename</span> <span style="color: #7fffd4;">decay</span>&lt;Args&gt;::<span style="color: #98fb98;">type</span>...)&gt;::<span style="color: #98fb98;">type</span>&gt;
+<span style="color: #87cefa;">async</span>(<span style="color: #98fb98;">launch</span> <span style="color: #eedd82;">policy</span>, <span style="color: #98fb98;">F</span>&amp;&amp; <span style="color: #eedd82;">f</span>, Args&amp;&amp;... args);
 }
 </pre>
 </div>
 </div>
 </div>
 </div>
-
 <div id="outline-container-sec-8" class="outline-2">
 <h2 id="sec-8">其他资料</h2>
 <div class="outline-text-2" id="text-8">
@@ -2455,7 +2434,6 @@ constexpr <span style="color: #98fb98;">adopt_lock_t</span> <span style="color: 
 </ul>
 </div>
 </div>
-
 <div id="outline-container-sec-8-2" class="outline-3">
 <h3 id="sec-8-2">Online resources</h3>
 <div class="outline-text-3" id="text-8-2">
