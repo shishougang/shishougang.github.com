@@ -1,0 +1,338 @@
+
+#+begin_html
+---
+layout: post
+title: "C++11 Memory Model and Atomic"
+date: 2017-06-11 23:47:41 +0800
+comments: true
+categories: [Multithreading]
+tags: [Multithreading, C++]
+keywords: "Multithreading, C++, Memory Reordering, Memory Model, Atomic"
+description: "C++11 Memory Model and Atomic"
+---
+#+end_html
+#+OPTIONS: toc:nil
+
+#+TOC: headlines 1
+
+* C++11 Atomic[fn:1]
+C++11 Atomic可简单分为4部分:
+1. =atomic= 类
+2. 对 =atomic= 类型的操作函数
+3. =atomic_flag= 类
+4. 内存序列同步相关操作
+
+
+#+begin_html
+<!-- more -->
+#+end_html
+
+** =atomic= 类
+主要分为四种模板类:
+1. 基本 =std::atomic=
+   #+begin_src c++
+     template< class T >
+     struct atomic;
+   #+end_src
+2. 整形(Integral)的特化
+   #+begin_src c++
+     template<>
+     struct atomic<Integral>;
+   #+end_src
+3. bool的特化
+   #+begin_src c++
+     template<>
+     struct atomic<bool>;
+   #+end_src
+4. 指针的特化
+   #+begin_src c++
+     template< class T >
+     struct atomic<T*>;
+   #+end_src
+
+bool和integral类型:
+#+begin_src c++
+std::atomic_bool	std::atomic<bool>
+
+std::atomic_char	std::atomic<char>
+std::atomic_schar	std::atomic<signed char>
+std::atomic_uchar	std::atomic<unsigned char>
+std::atomic_short	std::atomic<short>
+std::atomic_ushort	std::atomic<unsigned short>
+std::atomic_int	std::atomic<int>
+std::atomic_uint	std::atomic<unsigned int>
+std::atomic_long	std::atomic<long>
+std::atomic_ulong	std::atomic<unsigned long>
+std::atomic_llong	std::atomic<long long>
+std::atomic_ullong	std::atomic<unsigned long long>
+std::atomic_char16_t	std::atomic<char16_t>
+std::atomic_char32_t	std::atomic<char32_t>
+std::atomic_wchar_t	std::atomic<wchar_t>
+std::atomic_int8_t	std::atomic<std::int8_t>
+std::atomic_uint8_t	std::atomic<std::uint8_t>
+std::atomic_int16_t	std::atomic<std::int16_t>
+std::atomic_uint16_t	std::atomic<std::uint16_t>
+std::atomic_int32_t	std::atomic<std::int32_t>
+std::atomic_uint32_t	std::atomic<std::uint32_t>
+std::atomic_int64_t	std::atomic<std::int64_t>
+std::atomic_uint64_t	std::atomic<std::uint64_t>
+std::atomic_int_least8_t	std::atomic<std::int_least8_t>
+std::atomic_uint_least8_t	std::atomic<std::uint_least8_t>
+std::atomic_int_least16_t	std::atomic<std::int_least16_t>
+std::atomic_uint_least16_t	std::atomic<std::uint_least16_t>
+std::atomic_int_least32_t	std::atomic<std::int_least32_t>
+std::atomic_uint_least32_t	std::atomic<std::uint_least32_t>
+std::atomic_int_least64_t	std::atomic<std::int_least64_t>
+std::atomic_uint_least64_t	std::atomic<std::uint_least64_t>
+std::atomic_int_fast8_t	std::atomic<std::int_fast8_t>
+std::atomic_uint_fast8_t	std::atomic<std::uint_fast8_t>
+std::atomic_int_fast16_t	std::atomic<std::int_fast16_t>
+std::atomic_uint_fast16_t	std::atomic<std::uint_fast16_t>
+std::atomic_int_fast32_t	std::atomic<std::int_fast32_t>
+std::atomic_uint_fast32_t	std::atomic<std::uint_fast32_t>
+std::atomic_int_fast64_t	std::atomic<std::int_fast64_t>
+std::atomic_uint_fast64_t	std::atomic<std::uint_fast64_t>
+std::atomic_intptr_t	std::atomic<std::intptr_t>
+std::atomic_uintptr_t	std::atomic<std::uintptr_t>
+std::atomic_size_t	std::atomic<std::size_t>
+std::atomic_ptrdiff_t	std::atomic<std::ptrdiff_t>
+std::atomic_intmax_t	std::atomic<std::intmax_t>
+std::atomic_uintmax_t	std::atomic<std::uintmax_t>
+#+end_src
+
+基本模板类定义:
+#+begin_src sh
+template < class T > struct atomic {
+    bool is_lock_free() const volatile;
+    bool is_lock_free() const;
+    void store(T, memory_order = memory_order_seq_cst) volatile;
+    void store(T, memory_order = memory_order_seq_cst);
+    T load(memory_order = memory_order_seq_cst) const volatile;
+    T load(memory_order = memory_order_seq_cst) const;
+    operator  T() const volatile;
+    operator  T() const;
+    T exchange(T, memory_order = memory_order_seq_cst) volatile;
+    T exchange(T, memory_order = memory_order_seq_cst);
+    bool compare_exchange_weak(T &, T, memory_order, memory_order) volatile;
+    bool compare_exchange_weak(T &, T, memory_order, memory_order);
+    bool compare_exchange_strong(T &, T, memory_order, memory_order) volatile;
+    bool compare_exchange_strong(T &, T, memory_order, memory_order);
+    bool compare_exchange_weak(T &, T, memory_order = memory_order_seq_cst) volatile;
+    bool compare_exchange_weak(T &, T, memory_order = memory_order_seq_cst);
+    bool compare_exchange_strong(T &, T, memory_order = memory_order_seq_cst) volatile;
+    bool compare_exchange_strong(T &, T, memory_order = memory_order_seq_cst);
+    atomic() = default;
+    constexpr atomic(T);
+    atomic(const atomic &) = delete;
+    atomic & operator=(const atomic &) = delete;
+    atomic & operator=(const atomic &) volatile = delete;
+    T operator=(T) volatile;
+    T operator=(T);
+};
+#+end_src
+
+Integral 特有的函数:
+#+begin_src c++
+    integral fetch_add(integral, memory_order = memory_order_seq_cst) volatile;
+    integral fetch_add(integral, memory_order = memory_order_seq_cst);
+ 
+    integral fetch_sub(integral, memory_order = memory_order_seq_cst) volatile;
+    integral fetch_sub(integral, memory_order = memory_order_seq_cst);
+ 
+    integral fetch_and(integral, memory_order = memory_order_seq_cst) volatile;
+    integral fetch_and(integral, memory_order = memory_order_seq_cst);
+ 
+    integral fetch_or(integral, memory_order = memory_order_seq_cst) volatile;
+    integral fetch_or(integral, memory_order = memory_order_seq_cst);
+ 
+    integral fetch_xor(integral, memory_order = memory_order_seq_cst) volatile;
+    integral fetch_xor(integral, memory_order = memory_order_seq_cst);
+
+    integral operator++(int) volatile;
+    integral operator++(int);
+    integral operator--(int) volatile;
+    integral operator--(int);
+    integral operator++() volatile;
+    integral operator++();
+    integral operator--() volatile;
+    integral operator--();
+    integral operator+=(integral) volatile;
+    integral operator+=(integral);
+    integral operator-=(integral) volatile;
+    integral operator-=(integral);
+    integral operator&=(integral) volatile;
+    integral operator&=(integral);
+    integral operator|=(integral) volatile;
+    integral operator|=(integral);
+    integral operator^=(integral) volatile;
+    integral operator^=(integral);
+#+end_src
+
+指针特有的函数
+#+begin_src c++
+  T* fetch_add(ptrdiff_t, memory_order = memory_order_seq_cst) volatile;
+  T* fetch_add(ptrdiff_t, memory_order = memory_order_seq_cst);
+   
+  T* fetch_sub(ptrdiff_t, memory_order = memory_order_seq_cst) volatile;
+  T* fetch_sub(ptrdiff_t, memory_order = memory_order_seq_cst);
+
+    T* operator=(T*) volatile;
+    T* operator=(T*);
+    T* operator++(int) volatile;
+    T* operator++(int);
+    T* operator--(int) volatile;
+    T* operator--(int);
+    T* operator++() volatile;
+    T* operator++();
+    T* operator--() volatile;
+    T* operator--();
+    T* operator+=(ptrdiff_t) volatile;
+    T* operator+=(ptrdiff_t);
+    T* operator-=(ptrdiff_t) volatile;
+    T* operator-=(ptrdiff_t);
+#+end_src
+
+** =atomic= 类型的操作函数
+除了 =atomic= 类的成员函数,也提供了对其操作的函数:
+
++ =atomic_is_lock_free=: checks if the atomic type's operations are
+  lock-free
++ =atomic_store= and =atomic_store_explicit=: atomically replaces the
+  value of the atomic object with a non-atomic argument
++ =atomic_load= and =atomic_load_explicit=: atomically obtains the
+  value stored in an atomic object
++ =atomic_exchange= and =atomic_exchange_explicit=: atomically
+  replaces the value of the atomic object with non-atomic argument and
+  returns the old value of the atomic
++ =atomic_compare_exchange_weak=
+  =atomic_compare_exchange_weak_explicit=
+  =atomic_compare_exchange_strong=
+  =atomic_compare_exchange_strong_explicit=: atomically compares the
+  value of the atomic object with non-atomic argument and performs
+  atomic exchange if equal or atomic load if not
++ =atomic_fetch_add=
+  =atomic_fetch_add_explicit=: adds a non-atomic value to an atomic
+  object and obtains the previous value of the atomic 
++ =atomic_fetch_sub=
+  =atomic_fetch_sub_explicit=: subtracts a non-atomic value from an
+  atomic object and obtains the previous value of the atomic 
++ =atomic_fetch_and=
+  =atomic_fetch_and_explicit=: replaces the atomic object with the
+  result of logical AND with a non-atomic argument and obtains the
+  previous value of the atomic 
++ =atomic_fetch_or=
+  =atomic_fetch_or_explicit=: replaces the atomic object with the
+  result of logical OR with a non-atomic argument and obtains the
+  previous value of the atomic 
++ =atomic_fetch_xor=
+  =atomic_fetch_xor_explicit=: replaces the atomic object with the
+  result of logical XOR with a non-atomic argument and obtains the
+  previous value of the atomic 
+
+** =atomic_flag= 类
+=atomic_flag= 是一种原子布尔类型，不同于 =std::atomic<bool>=, 不提供load
+或store操作,只支持两种操作， =test_and_set= 和 =clear= 。
+
+#+begin_src c++
+atomic_flag() noexcept = default;
+atomic_flag (const atomic_flag&T) = delete;
+#+end_src
+
+=std::atomic_flag= 只有默认构造函数，拷贝构造函数已被禁用. 一般使用
+=ATOMIC_FLAG_INIT= 初始化为clear状态.
+
+** 内存序列同步相关操作
++ =memory_order=: defines memory ordering constraints for the given
+  atomic operation 
+  #+begin_src c++
+    enum memory_order {
+        memory_order_relaxed,
+        memory_order_consume,
+        memory_order_acquire,
+        memory_order_release,
+        memory_order_acq_rel,
+        memory_order_seq_cst
+    };
+  #+end_src
++ =kill_dependency=: removes the specified object from the
+  =std::memory_order_consume= dependency tree
++ =atomic_thread_fence=: Establishes memory synchronization ordering
+  of non-atomic and relaxed atomic accesses, as instructed by order,
+  without an associated atomic operation.
++ =atomic_signal_fence=: Establishes memory synchronization ordering
+  of non-atomic and relaxed atomic accesses, as instructed by order,
+  between a thread and a signal handler executed on the same thread.
+  This is equivalent to std::atomic_thread_fence, except no CPU
+  instructions for memory ordering are issued. Only reordering of the
+  instructions by the compiler is suppressed as order instructs. 
+
+* Memory Model and Order
+在[[http://dreamrunner.org/blog/2014/06/28/qian-tan-memory-reordering/][浅谈Memory Reordering]]中提及编译开发者和处理器制造商遵循的中心内存排
+序准则是: 不能改变单线程程序的行为. 从而产生了:
++ Memory ordering at compile time: 编译优化造成
++ Memory ordering at processor time: CPU允许乱序机器指令优化造成
+
+在多核多线程时代，当多线程共享某一变量时，不同线程对共享变量的读写就应
+该格外小心，不适当的乱序执行可能导致程序运行错误。所以必须对编译器和
+CPU 作出一定的约束才能合理正确地优化你的程序，这个约束就是 *内存模型
+(Memory Model)* .
+
+或者说,程序转化成机器指令执行时并不按照之前的原始代码顺序执行,所以内存
+模型是程序员、编译器，CPU 之间的准则约束,遵守这一准则约束后,大家各自做
+优化, 从而尽可能提高程序的性能。
+
+[[https://en.wikipedia.org/wiki/Memory_model_(programming)][wiki上的Memory model]]给出一个比较抽象的描述: In computing, a memory
+model describes the interactions of threads through memory and their
+shared use of the data.
+
+C++11 中规定了 6 种访存次序(Memory Order)，如下：
+#+begin_src c++
+enum memory_order {
+    memory_order_relaxed,
+    memory_order_consume,
+    memory_order_acquire,
+    memory_order_release,
+    memory_order_acq_rel,
+    memory_order_seq_cst
+};
+#+end_src
+
+上面C++11 Atomic涉及 =memory_order= 的接口, 默认值是
+=std::memory_order_seq_cst= .
+
+可以把上述6种访存次序(内存序)分为3类，顺序一致性模型
+(=memory_order_seq_cst=)，Acquire-Release 模型
+(=memory_order_consume=, =memory_order_acquire=,
+=memory_order_release=, =memory_order_acq_rel=) 和 Relax 模型
+(=memory_order_relaxed=). 
+
++ =memory_order_relaxed=: all reorderings are okay[fn:2]
++ =memory_order_acquire=: guarantees that subsequent loads are not
+  moved before the current load or any preceding loads.
++ =memory_order_release=: preceding stores are not moved past the
+  current store or any subsequent stores.
++ =memory_order_acq_rel=: combines the two previous guarantees.
++ =memory_order_consume=: potentially weaker form of
+  memory_order_acquire that enforces ordering of the current load
+  before other operations that are data-dependent on it (for instance,
+  when a load of a pointer is marked memory_order_consume, subsequent
+  operations that dereference this pointer won’t be moved before it
+  (yes, even that is not guaranteed on all platforms!).
++ =memory_order_scq_cst=: 是 =memory_order_acq_rel= 的加强版，除了有
+  =acq_rel= 语义，还保证是[[https://en.wikipedia.org/wiki/Sequential_consistency][sequencially-consistent]].
+
+* More
++ [[https://github.com/forhappy/Cplusplus-Concurrency-In-Practice/blob/master/zh/chapter8-Memory-Model/web-resources.md][C++ 多线程与内存模型资料汇总]]
++ Herb Sutter的talk
+  + [[https://channel9.msdn.com/Shows/Going+Deep/Cpp-and-Beyond-2012-Herb-Sutter-atomic-Weapons-1-of-2][Atomic Weapons 1]]
+  + [[https://channel9.msdn.com/Shows/Going+Deep/Cpp-and-Beyond-2012-Herb-Sutter-atomic-Weapons-1-of-2][Atomic Weapon 2]]
++ [[https://bartoszmilewski.com/2008/12/01/c-atomics-and-memory-ordering/][C++ atomics and memory ordering]]
+
+* Footnotes
+
+[fn:1] http://en.cppreference.com/w/cpp/atomic
+
+[fn:2] https://bartoszmilewski.com/2008/12/01/c-atomics-and-memory-ordering/
+
+
+
